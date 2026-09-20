@@ -1,0 +1,89 @@
+{
+  "schema": "qr-final-01-evidence/1.0",
+  "plan_id": "QR-FINAL-01",
+  "deliverable_id": "QR-FINAL-01-D01",
+  "task_id": "RUN-20260918-QR-FINAL",
+  "write_owner": "lfa-api",
+  "status": "IMPLEMENTED_PENDING_REVIEW",
+  "stage": "CONTROLLED_CAPTURE_INVESTOR_MVP",
+  "formal_reporting_allowed": false,
+  "source_receipt": {
+    "path": "herdr-team/.agent-control/ROUNDS/20260918T043217Z-meeting.md",
+    "lines": "2682-3551",
+    "utf8_bytes": 26273,
+    "sha256": "b2162749c781991cbdd3a2a44577bda3b0059606d30058563098353905f04f8c"
+  },
+  "authority": {
+    "master_plan": {"sha256": "649b1bd0e6be6a576d3d08721de74fdfb8ec7ab0e1ae340beaf4f3ea58f4e5eb", "bytes": 71744},
+    "file_ownership": {"sha256": "4b43393753ea21ec091e83fd296014290f2e27afafe54263d290d44b670da62c", "bytes": 52307},
+    "node1_evidence": {"sha256": "129730595d1bc42ef226df6a50a60e6e03793abb07a7a64e250e11dcc90491db", "bytes": 22762, "preserved_byte_for_byte": true}
+  },
+  "implementation_files": [
+    {"path": "core/product_identity.py", "sha256": "de70dff8321fd524a9daff2ce257ce743884ceb769bf6579bb386b47b60133f4", "bytes": 3822},
+    {"path": "core/dhea_diagnostics.py", "sha256": "97dc157ae00f2bd9fbca2c109b173c5420547059a30ad4ba8e786c4444781241", "bytes": 32596},
+    {"path": "python_gateway/dhea.py", "sha256": "1008534472dc6706d7eb3ca33564caa26791f9be37c8d971362423563ff93b9d", "bytes": 29914},
+    {"path": "python_gateway/dhea_input.py", "sha256": "2538f584b0d8b3d88d9eae3b341b2cb47e102a1fcce11d50e06e348601ccea60", "bytes": 18010},
+    {"path": "python_gateway/dhea_export.py", "sha256": "03dc6db2e88056a206b21a288c6f5e5d7224850354a933d02c9182cb795bb6ec", "bytes": 8310},
+    {"path": "tests/test_dhea_product.py", "sha256": "f7708345c49f76ac4bbce79018d3c8ab8d61e4055daa6bf468be6a25e78e6e83", "bytes": 3666},
+    {"path": "python_gateway/tests/test_dhea_product_recheck.py", "sha256": "a3fc3680c1b38b6a045b8734d0e48851037cec038f07fe3cb193161f1ff09ac0", "bytes": 3812},
+    {"path": "python_gateway/tests/test_dhea_diagnostics.py", "sha256": "e1c1090442d9380a199e78ca8fd944cdea170dda04cf55b509c947296c8b8f03", "bytes": 11039},
+    {"path": "python_gateway/tests/test_dhea.py", "sha256": "3cfb0a070b351f60cbac2096bcd4fb68e17021cddf6b800ee6d5f7a36b00d1a7", "bytes": 18111},
+    {"path": "docs/api/api-reference.md", "sha256": "6b40df57007df08b88c52eaea82ef7cbcd8b0c530a53e94c33a01823718273bd", "bytes": 47369},
+    {"path": "docs/api/openapi-dhea-v2.json", "sha256": "b1a9b40b256f9da1c27ba784f7669c349024b3529f9224a7a0e9bff54d9ddb02", "bytes": 38229}
+  ],
+  "self_binding": {
+    "path": "herdr-team/.agent-control/EVIDENCE/QR-FINAL-01-D01.json",
+    "sha256": null,
+    "bytes": null,
+    "binding": "START records the exact post-write SHA-256 and byte size externally."
+  },
+  "behavior": {
+    "decoder": "cv2.QRCodeDetector on reopened immutable persisted complete JPEG bytes",
+    "payload_hash": "SHA-256 of decoder-returned text encoded as exact UTF-8 bytes",
+    "success": "PRODUCT_IDENTIFICATION_COMPLETED then unchanged DheaRuntime.analyze",
+    "failure": "200 rejected with exact product code; scientific runtime not called; T, C, T/C and concentration null",
+    "diagnostics": "existing PRODUCT_IDENTIFICATION stage; exactly 18 top-level stages",
+    "legacy_v2": "unchanged DheaRuntime.analyze path",
+    "complete_v3": "422 V3_ACCEPTANCE_NOT_IMPLEMENTED"
+  },
+  "focused_checks": [
+    {
+      "command": "uv run --project python_gateway --offline python -m unittest python_gateway.tests.test_dhea_product_contract -v",
+      "result": "PASS 4/4",
+      "evidence": "Frozen Node1 declaration, exact parser/hash/registry, strict schema and four-identity/monotonic bindings remain valid."
+    },
+    {
+      "command": "uv run --project python_gateway --offline python -m unittest tests.test_dhea_product python_gateway.tests.test_dhea_product_recheck.FinalJpegGatewayTest.test_success_reads_immutable_persisted_bytes_then_calls_same_runtime python_gateway.tests.test_dhea_product_recheck.FinalJpegGatewayTest.test_unreadable_rejects_before_science_and_keeps_values_null python_gateway.tests.test_dhea_product_recheck.FinalJpegGatewayTest.test_legacy_v2_still_bypasses_product_gate python_gateway.tests.test_dhea_product_recheck.FinalJpegGatewayTest.test_422_precedes_persistence_and_core python_gateway.tests.test_dhea_diagnostics.ProductDiagnosticTest.test_invalid_original_never_reports_verified python_gateway.tests.test_dhea_diagnostics.DiagnosticHistoryTest.test_product_recheck_populates_existing_stage_only python_gateway.tests.test_dhea.DheaHttpTest.test_product_declaration_rechecks_persisted_jpeg_before_core python_gateway.tests.test_dhea.DheaHttpTest.test_product_schema_or_binding_rejection_is_422 -v",
+      "result": "PASS 11/11",
+      "evidence": "Actual OpenCV QR decode plus ASGI API/Core execution covered success, unreadable and protocol categories, exact payload hash, all four declaration identities, Registry family mismatch, source SHA mismatch, immutable persisted bytes, continuously observed replay/409 runtime count, empty measurement/blob/object state before 422, null refusal values, unchanged v2 path, migrated old-stage behavior, original-image failure diagnostics, and exactly 18 stages."
+    },
+    {
+      "command": "uv run --project python_gateway --offline python -m py_compile core/product_identity.py core/dhea_diagnostics.py python_gateway/dhea.py python_gateway/dhea_input.py python_gateway/dhea_export.py tests/test_dhea_product.py python_gateway/tests/test_dhea_product_recheck.py python_gateway/tests/test_dhea_diagnostics.py python_gateway/tests/test_dhea.py && uv run --project python_gateway --offline python -c <OpenAPI assertions>",
+      "result": "PASS",
+      "evidence": "All changed Python modules compile; generated OpenAPI is 3.1.0 and advertises FINAL_JPEG_PRODUCT_RECHECK_ENABLED."
+    }
+  ],
+  "broader_suite_observation": {
+    "preserved_node1_observation": "python_gateway.tests.test_dhea was observed as 13/14 before Node3; cause was not established in that run.",
+    "node3_run_note": "A broader inherited-class discovery was stopped after failures outside the focused command. One obsolete product-disabled expectation was identified by Review, migrated to the current persisted-JPEG QR_NOT_READABLE behavior, and passes in the 11/11 focused run. No causal claim is made for other observed failures."
+  },
+  "requirement_btw_checks": [
+    {"TODO_ID":"QR-FINAL-01-01","Goal":"Validate multipart and metadata schema first.","Files Changed":["python_gateway/dhea_input.py"],"Build Result":"Upload.finish preserves bounded multipart and strict CAPTURE_INPUT parsing.","Requirement Trace":"ROUNDS 3181-3185.","Test Result":"PASS focused 422 test.","Artifact Evidence":"No measurement row, blob row, or object file exists after source-hash 422.","Known Limitations":"Complete v3 remains disabled.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-FINAL-01-02","Goal":"Validate original SHA before declaration semantics and bind canonical metadata.","Files Changed":["python_gateway/dhea_input.py","python_gateway/dhea.py","core/dhea_diagnostics.py"],"Build Result":"Original SHA precedes declaration validation; canonical JCS digest binds persistence and replay; failed SHA/JPEG cannot report ORIGINAL_JPEG_VERIFIED.","Requirement Trace":"ROUNDS 3185-3188.","Test Result":"PASS ORIGINAL_SHA256_MISMATCH 422 before Core/persistence and both invalid-original diagnostic cases.","Artifact Evidence":"Focused ASGI response, empty repository/blob/object assertions, and ORIGINAL_IMAGE FAIL reason assertions.","Known Limitations":"Metadata digest remains server-computed, not client-supplied.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-FINAL-01-03","Goal":"Validate four identities and trusted declaration.","Files Changed":["python_gateway/dhea_input.py","core/product_identity.py","tests/test_dhea_product.py"],"Build Result":"Frozen declaration validates session, camera session, attempt, verification, timing, protocol and payload hash.","Requirement Trace":"ROUNDS 3187-3188, 3206-3208.","Test Result":"PASS Node1 4/4 and all four Core identity mismatch checks.","Artifact Evidence":"Session/camera-session/attempt/verification mutations reject; Registry family mismatch rejects.","Known Limitations":"QR does not infer identities.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-FINAL-01-04","Goal":"Run idempotency before new persistence and execution.","Files Changed":["python_gateway/dhea.py","python_gateway/tests/test_dhea_product_recheck.py"],"Build Result":"Existing measurement lookup and digest/image comparison precede blob writes and QR/Core execution.","Requirement Trace":"ROUNDS 3189.","Test Result":"PASS identical replay and changed metadata 409 while the runtime observation patch remained active throughout.","Artifact Evidence":"First response byte-identical replay; continuous observer recorded exactly one runtime call.","Known Limitations":"Failed identical requests retain explicit retry behavior.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-FINAL-01-05","Goal":"Persist and reopen complete immutable JPEG.","Files Changed":["python_gateway/dhea.py"],"Build Result":"Service reads product recheck input only through BlobStore.open_private(image_id).","Requirement Trace":"ROUNDS 3190-3192, 3198-3199.","Test Result":"PASS stored bytes equal uploaded bytes.","Artifact Evidence":"SHA-bound byte equality from repository image_object.","Known Limitations":"No real-device capture in server automation.","Open Post-Funding Gates":["REAL_DEVICE_ACCEPTANCE"],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-FINAL-01-06","Goal":"Decode QR independently from persisted final JPEG.","Files Changed":["core/product_identity.py","tests/test_dhea_product.py"],"Build Result":"OpenCV QRCodeDetector decodes complete JPEG; unreadable and invalid JPEG fail closed.","Requirement Trace":"ROUNDS 3198-3204.","Test Result":"PASS success, unreadable, malformed, version, namespace and product cases.","Artifact Evidence":"Generated real QR raster embedded in JPEG and decoded by OpenCV.","Known Limitations":"Product-family evidence only; no authenticity inference.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-FINAL-01-07","Goal":"Hash actual decoder UTF-8 and use trusted Registry.","Files Changed":["core/product_identity.py","tests/test_dhea_product.py"],"Build Result":"Decoded string hashes via payload.encode('utf-8'); Registry supplies product/analyte/template.","Requirement Trace":"ROUNDS 3205-3208.","Test Result":"PASS exact digest and registry identity.","Artifact Evidence":"Success digest a5c42b99a1aa1c91482b3d4d795e4663d3a203818376dbc0e2383da6e64c10b6.","Known Limitations":"Only exact v1 QIUQIU DHEA is registered.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-FINAL-01-08","Goal":"Populate existing PRODUCT_IDENTIFICATION stage only.","Files Changed":["core/dhea_diagnostics.py","python_gateway/tests/test_dhea_diagnostics.py"],"Build Result":"Stage becomes PASS or FAIL with actual reason and product metrics; SHA/JPEG failures mark ORIGINAL_IMAGE FAIL; setup does not overwrite stages.","Requirement Trace":"ROUNDS 3209, 3227-3228.","Test Result":"PASS product stage reason, SHA/JPEG original failure reasons, and exactly 18 stages.","Artifact Evidence":"Queried diagnostics manifest contains PRODUCT_IDENTIFICATION_COMPLETED; direct regressions forbid false ORIGINAL_JPEG_VERIFIED.","Known Limitations":"No QR Homography/ROI artifact by design.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-FINAL-01-09","Goal":"Block science on product failure and retain null values.","Files Changed":["python_gateway/dhea.py","python_gateway/tests/test_dhea_product_recheck.py"],"Build Result":"Contract-valid rejected result is built without runtime execution.","Requirement Trace":"ROUNDS 3210, 3230-3236.","Test Result":"PASS unreadable runtime-not-called and four scientific null assertions.","Artifact Evidence":"200 rejected wire_code QR_NOT_READABLE.","Known Limitations":"Unreadable is insufficient evidence, not counterfeit evidence.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-FINAL-01-10","Goal":"Enter unchanged DheaRuntime only after product success.","Files Changed":["python_gateway/dhea.py","python_gateway/tests/test_dhea_product_recheck.py"],"Build Result":"Successful recheck calls the existing runtime method once with stored bytes and expected SHA.","Requirement Trace":"ROUNDS 3211, 3263.","Test Result":"PASS observed runtime arguments and single call.","Artifact Evidence":"ASGI success proceeds to ordinary scientific domain result.","Known Limitations":"Scientific outcome may independently refuse after product PASS.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-FINAL-01-11","Goal":"Preserve HTTP replay, v2 and immutable bytes.","Files Changed":["python_gateway/dhea.py","python_gateway/dhea_export.py","python_gateway/tests/test_dhea_product_recheck.py","python_gateway/tests/test_dhea.py","docs/api/api-reference.md","docs/api/openapi-dhea-v2.json"],"Build Result":"v2 bypass remains; same replay is byte-identical; conflict is 409 before runtime; stored original is unchanged; maintained generator and OpenAPI describe the enabled gate.","Requirement Trace":"ROUNDS 3258-3264.","Test Result":"PASS focused Gateway cases, migrated old-stage case, compile and OpenAPI assertions.","Artifact Evidence":"Replay response equality, continuous call count one, blob bytes equality, and generated current_acceptance token.","Known Limitations":"Broader non-focused failures were not causally classified.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-FINAL-01-12","Goal":"Freeze exact Node3 evidence and submit existing START.","Files Changed":["herdr-team/.agent-control/EVIDENCE/QR-FINAL-01-D01.json"],"Build Result":"Evidence binds authority, implementation files, focused checks and twelve BTW-CHECK records.","Requirement Trace":"ROUNDS 3268-3277 and cross-cutting evidence rules.","Test Result":"JSON written after all focused checks passed.","Artifact Evidence":"START records this file's external SHA-256 and byte size.","Known Limitations":"Evidence cannot self-contain a stable whole-file digest.","Open Post-Funding Gates":["REAL_DEVICE_ACCEPTANCE"],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."}
+  ],
+  "fixture_disclosure": {
+    "PRODUCT_FAMILY_TEST_FIXTURE": true,
+    "PHYSICAL_DHEA_CARD_ID": null,
+    "AUTHENTICITY_CLAIM": false
+  }
+}

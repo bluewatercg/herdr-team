@@ -1,0 +1,72 @@
+{
+  "task_id": "RUN-20260918-QR-G1-AUTH",
+  "plan_id": "QR-GEOMETRY-01",
+  "deliverable_id": "QR-GEOMETRY-01-G1",
+  "status": "PASS_TRUTHFUL_INCOMPLETE",
+  "runtime_executed": false,
+  "jpeg_bytes_read": false,
+  "qr_or_homography_executed": false,
+  "authority_inputs": {
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/06_TEMPLATE_ESTABLISHMENT_AND_VALIDATION_PLAN_v1.0.md": "4cdde5ce2efff9d032504762d591f0706df3bd605a198e37ff4bdd46a3fbc430",
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T075255Z-QRP-G0-AUTH.md": "71b8522a9f24308cb89abf1c294f603e297e6c3119a7b56265cf17d0536f447d",
+    "herdr-team/.agent-control/FILE_OWNERSHIP.md": "0da02bd0249ad5bc69eef25abf53f72b49ec78429d42fc0c15d2ea374850efb4",
+    "herdr-team/.agent-control/ROUNDS/20260918T043217Z-meeting.md": "a9ff37d574cc8bf9337581c5d500c60eaa1361d318be9186f2e759a40628e0c1"
+  },
+  "outputs_before_checks": {
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-report.md": "21f2be67f5e5953ac82f6d24abf78400ad8ceed41622b51629cd207c81b5938f",
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-dataset.json": "017b6b155518e0c311bedcec35e90f0d1c2c624e65cfa09ca469dc2c03341578",
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-geometry.json": "b525cd0844a786910bb177329225db06b2c6ab13cb1769cbd13293c9b8f1f35a"
+  },
+  "requirements": {
+    "QR-G1-REQ-01": {
+      "status": "INCOMPLETE_MISSING_REAL_INPUTS",
+      "check": "No fabricated sample/card/lot/assembly/group/allocation/custodian records; required 12/8/20 and six slots recorded; holdout not accessed."
+    },
+    "QR-G1-REQ-02": {
+      "status": "INCOMPLETE_MISSING_REAL_INPUTS",
+      "check": "Physical geometry and operator rows empty; unsupported numerical values null; coplanarity unknown stops candidate; no G2 computation."
+    },
+    "QR-G1-REQ-03": {
+      "status": "INCOMPLETE_MISSING_REAL_INPUTS",
+      "check": "No individually authorized JPEG exists; registry empty; no wildcard, image access, mutation, zero fill, or false 12-card/72-reference claim."
+    },
+    "QR-G1-REQ-04": {
+      "status": "INCOMPLETE_MISSING_REAL_INPUTS",
+      "check": "Annotation/adjudication rows empty; no invented humans or independence; authority, quantification and formal-reporting flags false."
+    }
+  },
+  "assertions": {
+    "exact_three_precheck_output_hashes_match": true,
+    "dataset_json_parses": true,
+    "geometry_json_parses": true,
+    "registered_original_jpeg_count_zero": true,
+    "physical_measurement_count_zero": true,
+    "independent_annotation_count_zero": true,
+    "all_required_missing_values_have_reasons": true,
+    "numeric_measurements_not_zero_filled": true,
+    "g1_exit_met_false": true,
+    "measurement_authority_false": true,
+    "quantification_allowed_false": true,
+    "formal_reporting_allowed_false": true,
+    "g2_g3_not_authorized": true,
+    "integration_not_authorized": true,
+    "downstream_not_dispatched": true
+  },
+  "write_scope": [
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-report.md",
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-dataset.json",
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-geometry.json",
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-checks.json"
+  ],
+  "review": {
+    "author": "lfa-api(w13:p1)",
+    "independent_reviewer": "lfa-review(w11:p1)",
+    "independent_review_status": "PENDING",
+    "pm_gate_status": "PENDING",
+    "self_accepted": false
+  },
+  "exit": {
+    "met": false,
+    "reason": "No real individually registered JPEG, allocation, identity, physical geometry, coplanarity, operator, annotation, or adjudication evidence was supplied."
+  }
+}

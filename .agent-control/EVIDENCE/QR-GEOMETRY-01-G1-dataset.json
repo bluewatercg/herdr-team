@@ -1,0 +1,55 @@
+{
+  "task_id": "RUN-20260918-QR-G1-AUTH",
+  "plan_id": "QR-GEOMETRY-01",
+  "deliverable_id": "QR-GEOMETRY-01-G1",
+  "workstream": "QR_GEOMETRY_RESEARCH",
+  "mainline_impact": "NONE",
+  "status": "INCOMPLETE_MISSING_REAL_INPUTS",
+  "allocation": {
+    "required_partition_sizes": {
+      "establishment": 12,
+      "tuning": 8,
+      "holdout": 20
+    },
+    "required_slots_per_card": 6,
+    "seed": null,
+    "seed_missing_reason": "No real allocation seed or custodian record was supplied in the authorized G1 inputs.",
+    "custodian": null,
+    "custodian_missing_reason": "No actual allocation custodian identity or record was supplied in the authorized G1 inputs.",
+    "grouping_registered": false,
+    "holdout_isolation_verified": false,
+    "holdout_access_state": "NOT_ACCESSED_NO_REGISTERED_INPUTS"
+  },
+  "registered_original_jpegs": [],
+  "registered_original_jpeg_record_count": 0,
+  "observed_establishment_card_count": null,
+  "observed_valid_geometric_reference_count": null,
+  "identity_fields": {
+    "sample_id": null,
+    "physical_card_id": null,
+    "lot_id": null,
+    "assembly_method": null,
+    "upstream_source_group": null,
+    "dataset_partition": null,
+    "slot_id": null
+  },
+  "identity_missing_reason": "No individually authorized original JPEG path/SHA/source or real sample, card, lot, assembly, group, partition, or slot record was supplied.",
+  "first_attempts_preserved": null,
+  "failed_attempts_preserved": null,
+  "replacement_attempts_preserved": null,
+  "attempt_history_missing_reason": "No real capture attempt records were supplied.",
+  "input_access": {
+    "jpeg_paths_authorized": [],
+    "directory_wildcards_used": false,
+    "jpeg_bytes_read": false,
+    "holdout_jpegs_accessed": false,
+    "annotations_accessed": false,
+    "metrics_accessed": false
+  },
+  "exit": {
+    "required_establishment_cards": 12,
+    "required_valid_geometric_references": 72,
+    "met": false,
+    "reason": "No real registered JPEG, identity, allocation, physical geometry, operator, or annotation evidence was supplied; successful G1 Exit cannot be established."
+  }
+}

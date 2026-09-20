@@ -1,0 +1,315 @@
+{
+  "schema": "qr-pc-01-evidence/1.0",
+  "plan_id": "QR-PC-01",
+  "deliverable_id": "QR-PC-01-D01",
+  "task_id": "RUN-20260918-QR-PC",
+  "write_owner": "lfa-api",
+  "status": "IMPLEMENTED_PENDING_REVIEW",
+  "stage": "CONTROLLED_CAPTURE_INVESTOR_MVP",
+  "formal_reporting_allowed": false,
+  "source_receipt": {
+    "path": "herdr-team/.agent-control/ROUNDS/20260918T043217Z-meeting.md",
+    "lines": "2682-3551",
+    "utf8_bytes": 26273,
+    "sha256": "b2162749c781991cbdd3a2a44577bda3b0059606d30058563098353905f04f8c",
+    "recorded_at": "herdr-team/.agent-control/MASTER_PLAN.md:377"
+  },
+  "authority": {
+    "path": "herdr-team/.agent-control/MASTER_PLAN.md",
+    "utf8_bytes": 69964,
+    "sha256": "6a67d9c2f05e4b0e83ac6e1addf33e8a36ffc868a08c13d5529b8212a699a70c",
+    "verified_command": "sha256sum herdr-team/.agent-control/MASTER_PLAN.md && wc -c herdr-team/.agent-control/MASTER_PLAN.md",
+    "note": "Latest authority after START appended the source-storage and Node1-dispatch receipt; this replaces the earlier complete authority digest for submission binding."
+  },
+  "revision": {
+    "contract_name": "product_gate_declaration",
+    "metadata_schema_version": "dhea-capture/2.1-product",
+    "declaration_schema_version": "qiuqiu-product-gate/1.0",
+    "legacy_v2_behavior": "UNCHANGED_DHEA_RUNTIME_PATH",
+    "product_request_behavior": "422_PRODUCT_RECHECK_NOT_IMPLEMENTED_BEFORE_ACCEPT_OR_PERSISTENCE_OR_CORE",
+    "complete_v3_behavior": "422_V3_ACCEPTANCE_NOT_IMPLEMENTED",
+    "node2_android": "REGISTERED_NOT_IMPLEMENTED",
+    "node3_final_jpeg_recheck": "REGISTERED_NOT_IMPLEMENTED",
+    "scope_path_count_including_evidence": 11,
+    "unauthorized_generated_path_check": "docs/api/schemas/dhea-v2.schema.json has zero git diff"
+  },
+  "implementation_files": [
+    {"path": "python_gateway/dhea_input.py", "sha256": "a159a1747bda3350e8bf104c9cb522fe76db37574364e4cd9e0b141623126871", "bytes": 17923},
+    {"path": "python_gateway/dhea_export.py", "sha256": "afaa6320bf0e859f984d5492fdae8cfc9cbf14e91be2efaf7b5cc55483abc250", "bytes": 8249},
+    {"path": "python_gateway/dhea.py", "sha256": "faeefa6e6b023c59cb9f6e2ec16d0fe5d39c0778a90b0c6871a4c41aaa14ec94", "bytes": 28122},
+    {"path": "core/product_identity.py", "sha256": "9d9bfd5eacbfe0a854cedf57d10d872f1b1b553d34a7f07af07c27d8826d7431", "bytes": 1753},
+    {"path": "docs/api/api-reference.md", "sha256": "88281277842d2ba8be2568dd7b58e3d61bff0dc04bcc28e3deb5759c494603f8", "bytes": 46235},
+    {"path": "docs/api/schemas/dhea-product.schema.json", "sha256": "9acf94d1679aed6593b30490caf9a49fd90f403b699a312c8b030a973205aa7a", "bytes": 16338},
+    {"path": "docs/api/openapi-dhea-v2.json", "sha256": "0aff75ed704e64d94294a3d266ee30532833ff963d925cdd1ddef7b478321752", "bytes": 38168},
+    {"path": "fixtures/dhea-product/cases.json", "sha256": "c1bace2cac6965e90efe3c971bb78b16b4e03a2601516ea07e0f730fdddb492d", "bytes": 1014},
+    {"path": "python_gateway/tests/test_dhea_product_contract.py", "sha256": "039114cf0ee35325fa61c9dd2e31b8a327ee8a372edf0d96356510007fd3c7e7", "bytes": 5824},
+    {"path": "python_gateway/tests/test_dhea.py", "sha256": "6b1f41a4e5f1a0390af10072113f0c95aaab06cd6c4829bd573f8975539cca07", "bytes": 18108}
+  ],
+  "self_binding": {
+    "path": "herdr-team/.agent-control/EVIDENCE/QR-PC-01-D01.json",
+    "sha256": null,
+    "bytes": null,
+    "binding": "START must record the exact post-write SHA-256 and byte size externally; a JSON file cannot contain its own stable whole-file digest."
+  },
+  "focused_checks": [
+    {
+      "command": "uv run --project python_gateway --offline python -m unittest python_gateway.tests.test_dhea_product_contract -v",
+      "result": "PASS 4/4",
+      "evidence": "Author rerun: exact success hash/registry; all strict parse cases including 01:QIUQIU:DHEA -> QR_VERSION_UNSUPPORTED; each identity mismatch; shutter epoch and monotonic mismatches separately; matched > last_observed and last_observed > shutter monotonic inversions; each of nine prohibited geometry/science properties injected and rejected by the strict schema."
+    },
+    {
+      "command": "uv run --project python_gateway --offline python -m unittest python_gateway.tests.test_dhea.DheaHttpTest.test_real_runtime_replay_frozen_metadata_and_subject_isolation python_gateway.tests.test_dhea.DheaHttpTest.test_product_declaration_fails_closed_without_persistence_or_core python_gateway.tests.test_dhea.DheaHttpTest.test_product_schema_or_binding_rejection_is_422 -v",
+      "result": "PASS 3/3",
+      "evidence": "Legacy v2 real DheaRuntime path and replay/changed-metadata 409; valid product declaration pre-acceptance 422 with no DB/blob/Core effect and unchanged JPEG/hash; malformed or mismatched declaration 422."
+    },
+    {
+      "command": "uv run --project python_gateway --offline python -m unittest python_gateway.tests.test_dhea_v3_api -v",
+      "result": "PASS 6/6",
+      "evidence": "Complete v3 remains disabled and all v3 input boundary cases fail before acceptance."
+    },
+    {
+      "command": "uv run --project python_gateway --offline python -m py_compile core/product_identity.py python_gateway/dhea_input.py python_gateway/dhea_export.py python_gateway/dhea.py python_gateway/tests/test_dhea_product_contract.py python_gateway/tests/test_dhea.py",
+      "result": "PASS",
+      "evidence": "All changed Python modules compile."
+    },
+    {
+      "command": "Draft202012Validator.check_schema plus OpenAPI cross-file $ref assertions",
+      "result": "PASS",
+      "evidence": "Product schema has exactly ProductGateDeclaration and ProductMetadata definitions; upload metadata alternatives reference legacy v2 Metadata and the separate product schema; current acceptance is PRODUCT_RECHECK_NOT_IMPLEMENTED."
+    },
+    {
+      "command": "git diff --exit-code -- docs/api/schemas/dhea-v2.schema.json",
+      "result": "PASS",
+      "evidence": "Exporter no longer rewrites the unregistered twelfth path."
+    }
+  ],
+  "broader_suite_observation": {
+    "command": "uv run --project python_gateway --offline python -m unittest python_gateway.tests.test_dhea -v",
+    "result": "13/14 passed; 1 scientific-fixture expectation failed",
+    "failed_test": "test_optional_validation_revision_keeps_immutable_result",
+    "observed": "The real runtime returned business_status=rejected while the test expected completed.",
+    "cause": "UNCONFIRMED: no before-change or isolated baseline result is available, so this evidence does not assign a cause to the failure.",
+    "scope_observation": "The failing test is not one of the two Node1 product tests. Those product tests and the focused legacy replay/409 test passed. No scientific path or expectation was changed to force the broader suite green."
+  },
+  "parser_defect_repair": {
+    "reported": "Converting version_text with int() incorrectly accepted 01:QIUQIU:DHEA.",
+    "root_cause_fix": "Require the exact ASCII decimal source text version_text == '1' before assigning numeric protocol version 1.",
+    "retained_negative_fixture": "01:QIUQIU:DHEA",
+    "actual_result": "QR_VERSION_UNSUPPORTED",
+    "success_payload": "1:QIUQIU:DHEA",
+    "success_payload_utf8_sha256": "a5c42b99a1aa1c91482b3d4d795e4663d3a203818376dbc0e2383da6e64c10b6"
+  },
+  "requirement_btw_checks": [
+    {
+      "TODO_ID": "QR-PC-REQ-01",
+      "Goal": "Use one unambiguous declaration name and separate preview declaration from future server identification output.",
+      "Files Changed": ["python_gateway/dhea_input.py", "docs/api/api-reference.md", "docs/api/schemas/dhea-product.schema.json"],
+      "Build Result": "product_gate_declaration is the sole request field; PRODUCT_IDENTIFICATION remains a future server result concept.",
+      "Requirement Trace": "Authorization section six item 1; ROUNDS lines 2881-2883.",
+      "Test Result": "PASS: strict schema and product request smoke.",
+      "Artifact Evidence": "ProductMetadata requires product_gate_declaration; OpenAPI exports the same name.",
+      "Known Limitations": "Node3 server recheck output is not implemented.",
+      "Open Post-Funding Gates": [],
+      "Current MVP Blocker Remaining": "Node1 Review and PM Gate pending."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-02",
+      "Goal": "Define <qr_protocol_version>:<opaque_payload> without normalization.",
+      "Files Changed": ["core/product_identity.py", "fixtures/dhea-product/cases.json"],
+      "Build Result": "Parser reads exact decoder text and extracts the version prefix.",
+      "Requirement Trace": "Authorization section six item 2; ROUNDS lines 2885-2887.",
+      "Test Result": "PASS: exact success and invalid-format cases.",
+      "Artifact Evidence": "Product contract test_exact_payload_hash_and_registry and parse_cases.",
+      "Known Limitations": "Only protocol version 1 is registered.",
+      "Open Post-Funding Gates": [],
+      "Current MVP Blocker Remaining": "Node1 Review and PM Gate pending."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-03",
+      "Goal": "Split the protocol text exactly once at the first colon.",
+      "Files Changed": ["core/product_identity.py", "fixtures/dhea-product/cases.json"],
+      "Build Result": "payload.split(':', 1) preserves the opaque remainder for strict parsing.",
+      "Requirement Trace": "Authorization section six item 3; ROUNDS line 2888.",
+      "Test Result": "PASS: extra-colon and missing-colon negative fixtures.",
+      "Artifact Evidence": "test_first_colon_strict_negative_cases.",
+      "Known Limitations": "Opaque v1 body is deliberately limited to QIUQIU:DHEA.",
+      "Open Post-Funding Gates": [],
+      "Current MVP Blocker Remaining": "Node1 Review and PM Gate pending."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-04",
+      "Goal": "Accept exactly 1:QIUQIU:DHEA and reject textually different forms including a leading zero.",
+      "Files Changed": ["core/product_identity.py", "fixtures/dhea-product/cases.json", "python_gateway/tests/test_dhea_product_contract.py"],
+      "Build Result": "version_text must equal '1'; 01 is never normalized through int().",
+      "Requirement Trace": "Authorization section six item 4; ROUNDS lines 2890-2891; PM pre-freeze defect feedback.",
+      "Test Result": "PASS: 01:QIUQIU:DHEA actual result QR_VERSION_UNSUPPORTED.",
+      "Artifact Evidence": "Focused product contract 4/4; parser_defect_repair in this evidence.",
+      "Known Limitations": "No QR image decoder is implemented in Node1; inputs are decoded payload fixtures.",
+      "Open Post-Funding Gates": [],
+      "Current MVP Blocker Remaining": "Android decoder belongs to Node2."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-05",
+      "Goal": "Bind protocol, namespace, code and product-family-only identity semantics.",
+      "Files Changed": ["core/product_identity.py", "python_gateway/dhea_input.py"],
+      "Build Result": "The parser returns protocol 1, QIUQIU, DHEA and the declaration fixes PRODUCT_FAMILY_ONLY.",
+      "Requirement Trace": "Authorization section six item 5; ROUNDS lines 2893-2897.",
+      "Test Result": "PASS: registry success and semantic declaration validation.",
+      "Artifact Evidence": "test_exact_payload_hash_and_registry and test_identity_hash_and_monotonic_bindings.",
+      "Known Limitations": "No physical-card identity conclusion.",
+      "Open Post-Funding Gates": ["Future specialist review before production claims."],
+      "Current MVP Blocker Remaining": "None beyond Node1 gates."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-06",
+      "Goal": "Hash the decoder's exact UTF-8 payload bytes.",
+      "Files Changed": ["core/product_identity.py", "python_gateway/dhea_input.py", "fixtures/dhea-product/cases.json"],
+      "Build Result": "payload_sha256 uses sha256(payload.encode('utf-8')) with no trim, case fold, reconstruction or JCS.",
+      "Requirement Trace": "Authorization section six item 6; ROUNDS lines 2899-2902.",
+      "Test Result": "PASS: success hash a5c42b99... and every negative fixture's actual source hash.",
+      "Artifact Evidence": "test_exact_payload_hash_and_registry and test_first_colon_strict_negative_cases.",
+      "Known Limitations": "Decoder byte-to-string correctness belongs to Node2 platform integration.",
+      "Open Post-Funding Gates": [],
+      "Current MVP Blocker Remaining": "Android implementation pending Node1 dual Gate."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-07",
+      "Goal": "Bind four capture identities, protocol/hash and all match/observation/shutter audit timestamps.",
+      "Files Changed": ["python_gateway/dhea_input.py", "docs/api/schemas/dhea-product.schema.json"],
+      "Build Result": "ProductMetadata and declaration require capture_session_id, camera_session_id, capture_attempt_id and verification_record_id plus all required protocol/hash/time fields.",
+      "Requirement Trace": "Authorization section six item 7; ROUNDS lines 2904-2916.",
+      "Test Result": "PASS: author focused rerun separately changed declaration shutter_pressed_at_epoch_ms and shutter_pressed_at_monotonic_ns away from capture_time_evidence; both returned 422 INVALID_PRODUCT_GATE_DECLARATION. Each of four identity mismatches also returned the same refusal.",
+      "Artifact Evidence": "test_identity_hash_and_monotonic_bindings; uv run --project python_gateway --offline python -m unittest python_gateway.tests.test_dhea_product_contract -v => PASS 4/4.",
+      "Known Limitations": "Node1 validates supplied identities; Node2 creates them.",
+      "Open Post-Funding Gates": [],
+      "Current MVP Blocker Remaining": "Android lifecycle generation pending."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-08",
+      "Goal": "Use wall clocks only for audit and monotonic clocks for order validity.",
+      "Files Changed": ["python_gateway/dhea_input.py", "docs/api/api-reference.md"],
+      "Build Result": "Semantic validator enforces matched <= last_observed <= shutter monotonic order and does not order wall-clock values.",
+      "Requirement Trace": "Authorization section six item 8; ROUNDS lines 2918-2924.",
+      "Test Result": "PASS: author focused rerun covers matched_at_monotonic_ns=21 > last_observed_at_monotonic_ns=20 and last_observed_at_monotonic_ns=31 > shutter_pressed_at_monotonic_ns=30; both return 422 INVALID_PRODUCT_GATE_DECLARATION. Wall fields remain audit data.",
+      "Artifact Evidence": "test_identity_hash_and_monotonic_bindings; focused product contract PASS 4/4.",
+      "Known Limitations": "No cross-device monotonic comparison is attempted.",
+      "Open Post-Funding Gates": [],
+      "Current MVP Blocker Remaining": "None beyond downstream implementation."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-09",
+      "Goal": "Prevent LOT, serial, unique-card and authenticity inference.",
+      "Files Changed": ["python_gateway/dhea_input.py", "docs/api/api-reference.md"],
+      "Build Result": "lot_id and serial_id are required null; authenticity_status is required UNSUPPORTED.",
+      "Requirement Trace": "Authorization section six item 9; ROUNDS lines 2926-2927.",
+      "Test Result": "PASS: strict schema rejects non-null or unrecognized values.",
+      "Artifact Evidence": "test_schema_is_geometry_free_and_strict and exported product schema.",
+      "Known Limitations": "Authenticity and per-card identity are explicitly out of scope.",
+      "Open Post-Funding Gates": ["Authenticity system requires separately authorized product and validation work."],
+      "Current MVP Blocker Remaining": "None."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-10",
+      "Goal": "Keep product declaration independent of geometry and science fields.",
+      "Files Changed": ["python_gateway/dhea_input.py", "docs/api/schemas/dhea-product.schema.json", "python_gateway/tests/test_dhea_product_contract.py"],
+      "Build Result": "Declaration has no mapping, Homography, ROI, observation-window, T/C or 4PL property and additionalProperties is false.",
+      "Requirement Trace": "Authorization section six item 10; ROUNDS lines 2929-2935.",
+      "Test Result": "PASS: author focused rerun validates the geometry-free declaration, then separately injects qr_region_mapping_status, homography, roi, observation_window, t_response, c_response, tc_ratio, concentration and template_id; strict schema rejects every case.",
+      "Artifact Evidence": "test_schema_is_geometry_free_and_strict; focused product contract PASS 4/4.",
+      "Known Limitations": "Geometry remains a separate deferred research track.",
+      "Open Post-Funding Gates": ["Production geometry generalization is POST_FUNDING_GATE."],
+      "Current MVP Blocker Remaining": "None."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-11",
+      "Goal": "State that declaration proves product-family match only and no broader claim.",
+      "Files Changed": ["docs/api/api-reference.md", "docs/api/openapi-dhea-v2.json"],
+      "Build Result": "Reference excludes physical-card identity, LOT, serial, anti-copy, authenticity, observation-window, T/C, concentration, clinical validity and formal reporting.",
+      "Requirement Trace": "Authorization section six item 11; ROUNDS lines 2937-2946.",
+      "Test Result": "PASS: identity_level and unsupported/null contract assertions.",
+      "Artifact Evidence": "API reference section 0.1 and x-product-gate.",
+      "Known Limitations": "MVP_RESEARCH_RESULT_ONLY; formal_reporting_allowed=false.",
+      "Open Post-Funding Gates": ["Clinical, regulatory, production and authenticity claims require future evidence and specialist roles."],
+      "Current MVP Blocker Remaining": "None for Node1."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-12",
+      "Goal": "Freeze explicit v2 compatibility, path requirements and idempotency semantics.",
+      "Files Changed": ["python_gateway/dhea.py", "docs/api/api-reference.md", "docs/api/openapi-dhea-v2.json", "python_gateway/tests/test_dhea.py"],
+      "Build Result": "Legacy dhea-capture/2.0 reaches unchanged DheaRuntime; product metadata is accepted by schema but refused before service.accept; future accepted metadata JCS includes declaration and changed content conflicts 409.",
+      "Requirement Trace": "Authorization section six item 12; ROUNDS lines 2948-2955.",
+      "Test Result": "PASS: real v2 runtime/replay/changed-metadata 409; product no-side-effect 422; complete v3 6/6 remains disabled.",
+      "Artifact Evidence": "Focused ASGI 3/3 and v3 API 6/6.",
+      "Known Limitations": "Current product requests create no accepted identity before Node3, so they truthfully cannot produce a product-specific 409 yet.",
+      "Open Post-Funding Gates": [],
+      "Current MVP Blocker Remaining": "Node3 final-JPEG recheck is required before product acceptance."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-13",
+      "Goal": "Provide rollback without rewriting history or deleting immutable images.",
+      "Files Changed": ["python_gateway/dhea.py", "docs/api/api-reference.md"],
+      "Build Result": "The product branch is a single pre-acceptance refusal that can remain disabled; legacy storage and v2 path are untouched.",
+      "Requirement Trace": "Authorization section six item 13; ROUNDS lines 2957-2961.",
+      "Test Result": "PASS: product request leaves DB rows, blob files and Core calls unchanged; JPEG bytes and SHA remain exact.",
+      "Artifact Evidence": "test_product_declaration_fails_closed_without_persistence_or_core.",
+      "Known Limitations": "No product-bearing record is persisted until Node3.",
+      "Open Post-Funding Gates": [],
+      "Current MVP Blocker Remaining": "None; rollback boundary is explicit."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-14",
+      "Goal": "Define and preserve 422, 409, 200 and 503 semantics.",
+      "Files Changed": ["docs/api/api-reference.md", "docs/api/openapi-dhea-v2.json", "python_gateway/dhea.py"],
+      "Build Result": "Product validation/recheck uses 422 before Core; accepted identity conflicts use existing 409; completed/domain rejected remain 200; system/persistence/execution failure remains 503.",
+      "Requirement Trace": "Authorization section six item 14; ROUNDS lines 2963-2967.",
+      "Test Result": "PASS: schema/binding/product recheck 422 and legacy changed-metadata 409 actual ASGI paths.",
+      "Artifact Evidence": "Focused ASGI 3/3 and API reference compatibility table.",
+      "Known Limitations": "Current fail-closed product branch does not exercise 200/503 because acceptance is intentionally disabled.",
+      "Open Post-Funding Gates": [],
+      "Current MVP Blocker Remaining": "Node3 required for accepted product execution."
+    },
+    {
+      "TODO_ID": "QR-PC-REQ-15",
+      "Goal": "Resolve product/analyte/template only through a server-trusted registry.",
+      "Files Changed": ["core/product_identity.py", "python_gateway/dhea_input.py"],
+      "Build Result": "Registry key (1,QIUQIU,DHEA) returns fixed product_id QIUQIU-DHEA-LFA, analyte_id DHEA and template_id DHEA-17X4-V1; QR text has no template field and no controlled ROI default.",
+      "Requirement Trace": "Authorization section six item 15; ROUNDS lines 2969-2972.",
+      "Test Result": "PASS: registry identity exact match and namespace/product negative cases.",
+      "Artifact Evidence": "test_exact_payload_hash_and_registry.",
+      "Known Limitations": "Registry has one authorized product family only.",
+      "Open Post-Funding Gates": ["Additional products/templates require an explicit server registry revision."],
+      "Current MVP Blocker Remaining": "None beyond Node1 gates."
+    }
+  ],
+  "node1_validation": {
+    "schema_positive_negative": "PASS",
+    "first_colon_only": "PASS",
+    "actual_utf8_hash": "PASS",
+    "whitespace_case_extra_colon": "PASS",
+    "missing_fields": "PASS",
+    "session_attempt_verification_mismatch": "PASS",
+    "monotonic_order_error": "PASS",
+    "geometry_free_declaration": "PASS",
+    "lot_serial_not_inferred": "PASS",
+    "v2_compatibility": "PASS",
+    "idempotency_conflict": "PASS_LEGACY_ACCEPTED_PATH_AND_FUTURE_PRODUCT_CONTRACT; CURRENT_PRODUCT_PRE_ACCEPTANCE_HAS_NO_IDENTITY",
+    "original_jpeg_and_sha_unchanged": "PASS"
+  },
+  "node1_exit": {
+    "contract_schema_reference_fixture_implementation_consistent": "PASS",
+    "current_callers_migrated": "PASS_FOR_NODE1_GATEWAY_AND_EXPORTER; ANDROID_NODE2_NOT_YET_AUTHORIZED_ACTIVE",
+    "complete_v3_not_enabled": "PASS",
+    "focused_checks": "PASS",
+    "exact_revision": "IMPLEMENTATION_FILES_BOUND; EVIDENCE_SELF_HASH_PENDING_START_EXTERNAL_RECEIPT",
+    "lfa_review": "PENDING",
+    "lfa_pm_same_revision": "PENDING",
+    "closed": false
+  },
+  "review_request": {
+    "reviewer_role": "lfa-review",
+    "must_be_non_author": true,
+    "requested_outcome": "CODE_REVIEW_ACCEPTED_OR_CHANGES_REQUESTED",
+    "pm_gate_after_review_only": true,
+    "repair_owner_on_changes_requested": "lfa-api"
+  }
+}

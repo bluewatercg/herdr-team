@@ -1,0 +1,124 @@
+{
+  "task_id": "PM-ONBOARD",
+  "run_id": "20260918T043217Z",
+  "git_head": "410b17a00b63374f5d28a5531c478db8b30e8427",
+  "branch": "main",
+  "status": " M docs/DHEA_NATIVE_APPS_API_RECOGNITION_TODO_2026-09-15.md\n M docs/api/api-reference.md\n M python_gateway/dhea.py\n M python_gateway/dhea_input.py\n?? IOS_App/\n?? docs/MAC-SSH连接信息.md\n?? docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.2.md\n?? docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.3_IMPLEMENTATION_READY.md\n?? docs/api/dhea-v3-product-gate.md\n?? docs/api/generate_dhea_v3.py\n?? docs/api/openapi-dhea-v3.json\n?? docs/api/schemas/capture-bundle-1.6.schema.json\n?? docs/api/schemas/dhea-capture-v3.schema.json\n?? docs/api/schemas/dhea-diagnostics-v2.schema.json\n?? docs/api/schemas/dhea-error-v3.schema.json\n?? docs/api/schemas/dhea-result-v3.schema.json\n?? docs/api/schemas/dhea-validation-v3.schema.json\n?? docs/www.huijg.cn.crt\n?? fixtures/dhea-v3/\n?? herdr-team/\n?? python_gateway/dhea_v3_schema.py\n?? python_gateway/tests/test_dhea_v3_api.py\n?? python_gateway/tests/test_dhea_v3_contract.py\n?? qiuqiu.png\n",
+  "recent_commits": "410b17a00b63374f5d28a5531c478db8b30e8427 feat(android): 完成 DHEA 受控采集与 Gate 验收\nf43f8668bc45a757c1b65e25fdde20d2b675344c fix(gateway): 固定研发 token，停止每次启动轮换\n3876f00b5064e1a1b72cba77382d5e212985ebcc fix: 补充 minimum_control_area 字段 + Debug 自动写入 Gateway 配置\n88cb09fe28ebdb7d8bd9312d525cbead8ccf4bd6 feat(camera): 竖向引导框 + 初始引导框中心AF+AE + 点击对焦 + 对焦结果记录\n944b50e8ea996b42c095dc9810e30d81fbdd2430 fix: PRE-CHECK 修复 — 移除多余 nominal 字段，统一入口 JPEG 校验\n",
+  "evidence_files": [
+    {
+      "path": "artifacts/cap-and-00-distance-confirmation-20260916/evidence.json",
+      "sha256": "85a6addd9cd2d2c52b15a5eba7c3411852fab2eafa586de7842fbf81bf1030e8",
+      "schema": "cap-and-00-distance-confirmation/1.1",
+      "top_level_keys": [
+        "schema",
+        "date",
+        "profile",
+        "samples",
+        "exit_confirmation_batch",
+        "summary",
+        "decision",
+        "limitations"
+      ],
+      "git_bindings": {}
+    },
+    {
+      "path": "artifacts/and-02-device-acceptance-20260916/evidence.json",
+      "sha256": "b671b864fd12db1c9af6422a06dd061a49b81e29f0b97831e2455bddecb9cb3d",
+      "schema": "and-02-device-evidence/1.0",
+      "top_level_keys": [
+        "schema",
+        "date",
+        "device",
+        "status",
+        "exit_targets",
+        "completed",
+        "samples",
+        "counts",
+        "remaining"
+      ],
+      "git_bindings": {}
+    },
+    {
+      "path": "artifacts/dhea-api-03-acceptance-20260916/evidence.json",
+      "sha256": "dd84f29f38a460ef1bfb3befc14492e34f418cf1b8edf5771be39a313eb3bf3b",
+      "schema": "dhea-api-03-acceptance/1.0",
+      "top_level_keys": [
+        "schema",
+        "deployment",
+        "target_cohort",
+        "stages",
+        "artifacts",
+        "restored_existing_bundles",
+        "authorization",
+        "subject_migration",
+        "note"
+      ],
+      "git_bindings": {}
+    },
+    {
+      "path": "artifacts/core-02-acceptance-20260916/evidence.json",
+      "sha256": "44c0e900494713c471687ca4105015c127c77b26cfcbbcf5a432423680a7674e",
+      "schema": "core-02-acceptance/1.0",
+      "top_level_keys": [
+        "schema",
+        "date",
+        "android_cohort",
+        "unsupported_icc_originals",
+        "decision"
+      ],
+      "git_bindings": {}
+    }
+  ],
+  "verification": "Read-only source and JSON/hash inventory; no build, test suite, live API or device run executed.",
+  "snapshot_check": {
+    "result": "PASS",
+    "checks": [
+      "RUN_ID/SNAPSHOT_ID/GIT_HEAD match",
+      "CONFLICTED retained",
+      "source brief ID distinct",
+      "four historical evidence hashes unchanged"
+    ],
+    "task_id": "PM-ONBOARD 08"
+  },
+  "notification": {
+    "task_id": "PM-ONBOARD 09",
+    "recipient": "lfa-start",
+    "command": "herdr agent prompt lfa-start <PM onboarding findings>",
+    "exit_code": 0,
+    "result": "PROMPT_SUBMITTED_NOT_ACCEPTANCE",
+    "receipt_artifact": "artifact://12"
+  },
+  "gate_reconciliation": {
+    "result": "PASS",
+    "gate": {
+      "RUN_ID": "20260918T043217Z",
+      "STATUS": "READY",
+      "SNAPSHOT_ID": "PM-ONBOARD-20260918T043217Z-410b17a0",
+      "GIT_HEAD": "410b17a00b63374f5d28a5531c478db8b30e8427"
+    },
+    "scope": "frozen Bundle 1.5/public v2",
+    "v3_authorization": "unknown",
+    "v3_owner": "unknown",
+    "v3_boundary": "protected; overlap requires baseline and ownership coordination",
+    "role_evidence": "Android and API direct read-only coordination reports received; no tests claimed",
+    "open_delivery": [
+      "B-PM-02",
+      "B-PM-03 internal UnifiedAnalysisRequest acceptance",
+      "B-PM-04",
+      "B-PM-05"
+    ],
+    "acceptance": "NOT_ACCEPTED",
+    "checks": [
+      "gate/snapshot/status match",
+      "identity fields match",
+      "acceptance withheld"
+    ],
+    "notification": {
+      "recipient": "lfa-start",
+      "result": "PROMPT_SUBMITTED_NOT_ACKNOWLEDGED",
+      "exit_code": 0,
+      "receipt": "artifact://15"
+    }
+  }
+}

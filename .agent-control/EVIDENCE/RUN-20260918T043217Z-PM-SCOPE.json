@@ -1,0 +1,454 @@
+{
+  "task_id": "RUN-20260918T043217Z-PM-SCOPE",
+  "run_id": "20260918T043217Z",
+  "result": "PASS",
+  "checks": [
+    "16 acceptance rows present",
+    "task/run/base identity recorded",
+    "product acceptance withheld",
+    "six todo traces present"
+  ],
+  "inputs": [
+    {
+      "path": "herdr-team/.agent-control/ROUNDS/20260918T043217Z-meeting.md",
+      "sha256": "c61eabdfa580dcfc3b25014b3039fb2849f51d3c8127e09c688773b5e3f22779"
+    },
+    {
+      "path": "herdr-team/.agent-control/TASK_BOARD.md",
+      "sha256": "406664c7b4357cd493dd929d69ed5f24e47072e202e40b6697161a0880e0af95"
+    },
+    {
+      "path": "herdr-team/.agent-control/PM_GATE",
+      "sha256": "d155369bf6f8e164933d20f77f1641ecb14218a18b43c94a61356c568069ae65"
+    },
+    {
+      "path": "docs/QA.md",
+      "sha256": "9bb8c7a2298c5d510c96a84799d47f56269f5372194f49822a4e239f52496c1b"
+    },
+    {
+      "path": "artifacts/core-02-acceptance-20260916/evidence.json",
+      "sha256": "44c0e900494713c471687ca4105015c127c77b26cfcbbcf5a432423680a7674e"
+    },
+    {
+      "path": "docs/api/api-reference.md",
+      "sha256": "4c8d7d96a354c6aae5786ad516aa6ffa2ac3cc5699ed8b749a10c09b35681c76"
+    },
+    {
+      "path": "docs/LFA_最新完整文档集合/11_DHEA原生Android研究v2公开契约.md",
+      "sha256": "1c648f525aa41bf2fc27e2bff762df00a8f52a53ae09f70a9ca319bc0e53720d"
+    }
+  ],
+  "report_sha256": "b1e8782d60c87d8ec72907ef38c7c240be5001ba0b954d4371f66493cb98c8ae",
+  "builds_or_business_tests_run": false,
+  "device_or_live_api_checks": false,
+  "limitations": "Hashes bind inspected current bytes; not an immutable baseline for later edits and not runtime evidence.",
+  "notification": {
+    "recipient": "lfa-start",
+    "exit_code": 0,
+    "result": "PROMPT_SUBMITTED_NOT_ACKNOWLEDGED",
+    "receipt": "artifact://18",
+    "ledger_proposal": "REPORT_READY_FOR_REVIEW; start owns shared update; no closure"
+  },
+  "review_integration": {
+    "result": "PASS",
+    "review_report_sha256": "3d11b7df7765db3934e30ee1cecb800ed65046b052ecd5ce1211178915e31dd4",
+    "mapping": {
+      "RBL-01": "B-PM-03",
+      "RBL-02": "B-PM-02",
+      "RBL-03": "B-PM-04",
+      "RBL-04": "OPEN_CONDITIONAL_OVERLAP"
+    },
+    "implementation_acceptance": "NOT_REVIEWED",
+    "business_tests_run": false,
+    "notification": {
+      "recipient": "lfa-start",
+      "exit_code": 0,
+      "receipt": "artifact://21",
+      "result": "PROMPT_SUBMITTED"
+    },
+    "repeatability_clarification": "Same-card identity required; non-null lab concentration not required.",
+    "clarification_notification": {
+      "recipient": "lfa-start",
+      "exit_code": 0,
+      "receipt": "artifact://23",
+      "result": "PROMPT_SUBMITTED_NOT_ACCEPTANCE"
+    }
+  },
+  "android_audit_disposition": {
+    "status": "REPORT_READY_FOR_REVIEW",
+    "checks": "PASS: disposition and report digest recorded",
+    "source_sha256": "f21c13ab6359b558ac17c05ba136b66a451f68c1597d247d577c3fc221124c3d",
+    "reported_host_tests": "34/34 passed; not rerun by PM",
+    "reported_apk_sha256": "b10fbd75f1c731133a2c5c650fd535787b81ccd5e655315c3d5b0d1117554cd7",
+    "findings": {
+      "A-SEC-01": "HIGH OPEN_DELIVERY",
+      "A-DIAG-01": "HIGH OPEN_DELIVERY / B-PM-04 Android rendering"
+    },
+    "ledger_notification": {
+      "recipient": "lfa-start",
+      "receipt": "artifact://25",
+      "exit_code": 0,
+      "status": "ACKNOWLEDGED_BY_START_LEDGER_UPDATED"
+    },
+    "device_acceptance": false,
+    "implementation_acceptance": "NOT_REVIEWED"
+  },
+  "reported_targeted_review": {
+    "reviewed_report_sha256": "842de7d7745ce9256aff8327ea975b22ed09ee23e5299e35fb6a664054c9925b",
+    "lines": "92-126",
+    "result": "No new HIGH contract contradiction; not implementation acceptance",
+    "source": "Reviewer direct notification"
+  },
+  "api_audit_disposition": {
+    "source_sha256": "75384511fe2867d60cd13f46355c860f37fb9eecd4c67854e60293b926f450af",
+    "receipt": "REPORT_READY_FOR_REVIEW",
+    "acceptance": {
+      "A01": "NOT_ACCEPTED",
+      "A02": "NOT_ACCEPTED",
+      "A03": "NOT_ACCEPTED",
+      "A04": "NOT_ACCEPTED",
+      "A05": "NOT_ACCEPTED",
+      "A06": "NOT_ACCEPTED",
+      "A07": "NOT_ACCEPTED",
+      "A08": "NOT_ACCEPTED",
+      "A09": "NOT_ACCEPTED",
+      "A10": "NOT_ACCEPTED",
+      "A11": "NOT_ACCEPTED",
+      "A12": "NOT_ACCEPTED",
+      "A13": "NOT_ACCEPTED",
+      "A14": "NOT_ACCEPTED",
+      "A15": "NOT_ACCEPTED",
+      "A16": "NOT_ACCEPTED"
+    },
+    "checks": "PASS: supplied SHA and all 16 NOT_ACCEPTED rows",
+    "reported_tests": {
+      "Core": 30,
+      "Gateway": 11,
+      "diagnostics": 5
+    },
+    "pm_behavior_tests_run": false,
+    "implementation_acceptance": "NOT_REVIEWED",
+    "live_acceptance": false
+  },
+  "m1_scope_disposition": {
+    "plan_id": "M1",
+    "deliverable_id": "M1-D03",
+    "request_id_query": "IN_SCOPE_FOR_M1_SPEC_AND_M2_D05_REPAIR; implementation not authorized",
+    "milestone": "M1",
+    "current_deliverable": "M1-D05",
+    "m1_exit": "M1-D04/D05 evidence and dual acceptance pending",
+    "high_findings": "OPEN; do not prohibit M1 gap audit completion",
+    "dashboard_check": {
+      "exit_code": 0,
+      "receipt": "artifact://29",
+      "errors": []
+    },
+    "master_plan_sha256": "4b9ab52d4630940d80b44e6b7bb0fec911fba42dbf16cba1fa8a7ae769734208"
+  },
+  "m1_boundary_review_integration": {
+    "source_sha256": "3b6e390a8350b5847561f07181c2b984bb68cdf0ff1ca0c4724ef81a4efe64bc",
+    "reviewed_lines": "130–176",
+    "obligations": [
+      "M1-B01",
+      "M1-B02",
+      "M1-B03"
+    ],
+    "checks": "PASS: three obligations recorded; source/report hashes bound",
+    "scope_ruling": "UNCHANGED; spec drafting permitted, implementation not authorized",
+    "implementation_acceptance": "NOT_GRANTED",
+    "live_credential_disclosure": "NOT_VERIFIED",
+    "high_findings": "OPEN"
+  },
+  "d05_submission_assessment": {
+    "submitted_sha256": {
+      ".md": "b03dbe6c37530755edc90b577dc249dbcc70f560a2f7328b3719e3a6a7a8495d",
+      "-manifest.json": "6c7b39167f29a9be97d4a938a357da2a2698734ab9e20ebe5384353f8cbc9918",
+      "-old-tracked.patch": "c80055a2da264496b2998bc971f74afc07af69d6b9349da9c5ca79f657907325"
+    },
+    "digest_check": "3/3 PASS",
+    "reconstructed_paths": [
+      "docs/api/api-reference.md",
+      "python_gateway/dhea.py",
+      "python_gateway/dhea_input.py",
+      "python_gateway/tests/test_dhea.py"
+    ],
+    "current_manifest_hashes": "12/12 match",
+    "unhashed_proposed_paths": [
+      "Android_App/app/src/main/java/com/example/ui/screens/ResearchResultPanel.kt",
+      "docs/LFA_最新完整文档集合/11_DHEA原生Android研究v2公开契约.md",
+      "docs/api/dhea-v2-app-integration.md",
+      "python_gateway/dhea_export.py"
+    ],
+    "disposition": "PM_SPEC_ACCEPTANCE_PENDING_CLARIFICATIONS",
+    "pending": [
+      "prior preservation chronology/continuity",
+      "transient POST/GET/retry byte/state policy and first-accept failure",
+      "complete proposed-path baseline inventory",
+      "ICC state combinations and concrete schema placement"
+    ],
+    "m1_exit": false,
+    "m2_authorized": false,
+    "rbl04": "CONDITIONAL",
+    "business_tests_run": false,
+    "live_device_checks": false
+  },
+  "d05_independent_review": {
+    "source_sha256": "24ca2de20e5ec4b488734b9f43b5b131aee93603356c7dc56ae8d127812aa978",
+    "reviewed_lines": "178–214",
+    "disposition": "CHANGES_REQUESTED",
+    "findings": [
+      "D05-R1",
+      "D05-R2",
+      "D05-R3",
+      "D05-R4",
+      "D05-R5"
+    ],
+    "historical_writer": "NOT_VERIFIED",
+    "reconstruction_repeated": false,
+    "patch_rewritten": false,
+    "original_submission_sha256": {
+      ".md": "b03dbe6c37530755edc90b577dc249dbcc70f560a2f7328b3719e3a6a7a8495d",
+      "-manifest.json": "6c7b39167f29a9be97d4a938a357da2a2698734ab9e20ebe5384353f8cbc9918",
+      "-old-tracked.patch": "c80055a2da264496b2998bc971f74afc07af69d6b9349da9c5ca79f657907325"
+    },
+    "revision_preservation": "Original report byte prefix retained; original manifest bytes recoverable in revision_history before update; patch unchanged",
+    "coordinator_status": "User reports consolidated feedback routed to existing D05; no new task",
+    "m1_exit": false,
+    "m2_authorized": false
+  },
+  "d05_revision_assessment": {
+    "report_sha256": "73a8658eebd14110a4f3951df080dfb1ca0e669d28ee0bd041489899a1500531",
+    "manifest_sha256": "72a818ce2be0b3eb86560cfe790b809aeeee1cbe3d3eacada9f3264ab5bec45f",
+    "patch_sha256": "c80055a2da264496b2998bc971f74afc07af69d6b9349da9c5ca79f657907325",
+    "disposition": "CHANGES_REQUESTED",
+    "pm_executed_checks": [
+      "artifact SHA/length checks",
+      "original report prefix SHA",
+      "embedded original manifest byte recovery/SHA",
+      "original files deep equality"
+    ],
+    "reconstruction_repeated": false,
+    "attribution": "These preservation checks executed by PM; start did not execute them. Submitted source baseline hashes not independently re-audited.",
+    "finding_dispositions": {
+      "R1": "Clarification addressed; continuity NOT_PROVEN; RBL04 CONDITIONAL",
+      "R2": "Specification clarification addressed",
+      "R3": "Inventory clarification addressed; source facts attributed to API",
+      "R4": "Specification clarification addressed",
+      "R5": "Public projection addressed; structured manifest_gate comparator/owner and prefetch ordering need clarification"
+    },
+    "m1_exit": false,
+    "m2_status": "NOT_STARTED",
+    "independent_rereview": "REQUESTED"
+  },
+  "d05_final_independent_alignment": {
+    "report_sha256": "550f6fbba4f4220395ed35f6730d0f89fd25aa1b1bab863721bbf1ae16c8f955",
+    "checks_sha256": "a488a9775853d9a844a08ba8d2a0dc3d07dd48f4e37d7d69626cb4f025417405",
+    "section": "242-266",
+    "supersedes_interim": "216-240; history retained",
+    "disposition": "CHANGES_REQUESTED",
+    "remaining_spec_finding": "R5 MEDIUM: gate owner/comparator/order and server/client mismatch outcomes",
+    "r2_repeat_mapping_request": "WITHDRAWN",
+    "rbl04": "CONDITIONAL",
+    "m2": "NOT_STARTED",
+    "m1_exit": "NOT_GRANTED",
+    "duplicate_dispatch": false
+  },
+  "d05_final_r5_pm_assessment": {
+    "task_id": "RUN-20260918T043217Z-REPAIR-BOUNDARY",
+    "disposition": "R5_SPECIFICATION_ADDRESSED",
+    "report_sha256": "82098374c48dfd6bf97cf5e0f1b3b5bfae6fb5119fa66cff6a5cf2b789f0f36f",
+    "report_bytes": 47402,
+    "manifest_sha256": "0f158adbaf9c5ff4360bb84c7e02c8a0dc9abc6af962e36b575c88c1b45399f6",
+    "manifest_bytes": 71512,
+    "patch_sha256": "c80055a2da264496b2998bc971f74afc07af69d6b9349da9c5ca79f657907325",
+    "patch_bytes": 11368,
+    "pm_executed_checks": [
+      "full artifact hashes and lengths",
+      "42641-byte and 23391-byte report prefixes",
+      "29328-byte and 7960-byte embedded manifest strict base64 recovery, hashes and lengths",
+      "files deep-equality against both recovered manifests",
+      "section 10 and structured four-gate owners/comparators/order/failure outcomes"
+    ],
+    "checks_result": "PASS",
+    "patch_reconstruction_repeated": false,
+    "independent_review": "SPECIFICATION_ADDRESSED_WITH_LIMITATIONS; REVIEW-BASELINE:268-285",
+    "r1": "limitations retained; continuity NOT_PROVEN; writer NOT_VERIFIED",
+    "r2_r4": "specification disposition preserved, not reopened",
+    "rbl04": "CONDITIONAL",
+    "implementation_high": "OPEN",
+    "d04": "UNKNOWN_OR_UNACCEPTED",
+    "m1_exit": "NOT_GRANTED",
+    "m2": "NOT_STARTED"
+  },
+  "d05_independent_r5_closure": {
+    "source": "REVIEW-BASELINE:268-285 / checks.d05_final_r5_re_review",
+    "checks_sha256": "cd90e959d47dae2f4e3f889b56bdaf26542447a1b74d49b5764731b54aef7e01",
+    "version_binding_check": "PASS: three full digests and lengths match PM assessment",
+    "disposition": "SPECIFICATION_ADDRESSED_WITH_LIMITATIONS",
+    "r5": "CLOSED_AT_SPECIFICATION_LEVEL",
+    "supersedes": "R5-only CHANGES_REQUESTED at report 242-266 for prior revision; history retained",
+    "preservation_executor": "PM",
+    "independent_gate_comparison_executor": "reviewer",
+    "no_new_acceptance": true
+  },
+  "d05_task_disposition": {
+    "disposition": "NOT_ACCEPTED_PENDING_REQUIREMENT_TRACE",
+    "specification_disposition": "SPECIFICATION_ADDRESSED_WITH_LIMITATIONS",
+    "r5": "CLOSED_AT_SPECIFICATION_LEVEL",
+    "remaining_task_prerequisites": [
+      "evidenced authoritative REQUIREMENT_IDS and REQUIREMENT_SOURCE_REFERENCES replacing UNMAPPED",
+      "verify complete existing requirement-to-Exit-to-board-to-evidence-to-Dashboard chain",
+      "explicit PM assessment of applicable deliverable Exit evidence after trace resolution"
+    ],
+    "separate_implementation_milestone_gaps": [
+      "original HIGH OPEN",
+      "D04 UNKNOWN_OR_UNACCEPTED"
+    ],
+    "rbl04": "CONDITIONAL",
+    "r1": "limitations retained",
+    "r2_r4": "NOT_REOPENED",
+    "task_board_status_changed": false,
+    "m1_exit": "NOT_GRANTED",
+    "m2": "NOT_STARTED",
+    "business_permission": false
+  },
+  "authorized_mapping_assessment": {
+    "d05_requirements": ["M1-D05-REQ-01", "M1-D05-REQ-02", "M1-D05-REQ-03", "M1-D05-REQ-04", "M1-D05-REQ-05", "M1-D05-REQ-06"],
+    "source": "MASTER_PLAN authoritative mapping and frozen research-v2 source sections",
+    "downstream_sync": "START_ACK_INDEX_TASK_BOARD_MEETING_AND_DASHBOARD_PARSE",
+    "pm_checks": "PASS: six unique mapping rows, two exact ACTIVE G0 outputs, unchanged M1/progress; D05 three digests matched previously reviewed version",
+    "d05_exit": "PENDING_EXACT_CREDENTIAL_BOUNDARY_AND_FRESH_DUAL_GATE",
+    "r5": "CLOSED_AT_SPECIFICATION_LEVEL",
+    "d04_requirements": ["M1-D04-REQ-01", "M1-D04-REQ-02"],
+    "d04_assessment": "PM_ACCEPTED_DOCUMENTARY_INVENTORY_ONLY",
+    "current_deployed_runtime_config_device_binding": "UNKNOWN",
+    "g0_execution": "AUTHORIZED_READ_ONLY_DOCUMENTARY_G0",
+    "g0_review": "PENDING_FINAL_TWO_OUTPUTS_DISTINCT_REVIEWER",
+    "m1_exit": "NOT_GRANTED",
+    "m2": "NOT_STARTED",
+    "g1": "NOT_AUTHORIZED",
+    "integration": "NOT_AUTHORIZED"
+  },
+  "d04_exact_pm_disposition": {
+    "key": "RUN-20260918T043217Z-START:3ee30d1034b83db9b52d24844c9d91aaa61135ea3bb551a8c341c881dec8c7d7",
+    "role": "lfa-pm(w12:p1)",
+    "disposition": "PM_ACCEPTED",
+    "scope": "M1-D04-REQ-01/02 documentary inventory only",
+    "pm_verification": "4/4 artifact and 2/2 source hashes MATCH; independent inventory Exit assessment",
+    "independent_reviewer": "lfa-review(w11:p1)",
+    "independent_disposition": "DOCUMENTARY_REQUIREMENTS_SATISFIED_WITH_EXPLICIT_UNKNOWNS",
+    "deployed_runtime_config_device_binding": "UNKNOWN",
+    "missing_live_evidence_route": "M3",
+    "inherited_acceptance": false,
+    "runtime_pass": false,
+    "implementation_authorized": false,
+    "m1_exit": "NOT_GRANTED",
+    "m2": "NOT_STARTED",
+    "g1": "NOT_AUTHORIZED",
+    "integration": "NOT_AUTHORIZED"
+  },
+  "g0_exact_pm_disposition": {
+    "key": "RUN-20260918T075255Z-QRP-G0-AUTH:1ed3abb926903e69a49583a1ffdd1e01c4d5fc1083163d7864ee1c234a36ae57",
+    "role": "lfa-pm(w12:p1)",
+    "disposition": "PM_ACCEPTED",
+    "scope": "QR-G0-REQ-01..06 documentary outputs only",
+    "author": "lfa-review(w11:p1)",
+    "independent_reviewer": "lfa-api(w13:p1)",
+    "independent_disposition": "G0_DOCUMENTARY_REQUIREMENTS_ACCEPTED_FOR_SEPARATE_PM_GATE",
+    "pm_checks": "Exact envelope/report review; two SHA and byte counts MATCH",
+    "independent_checks": "Reviewer-reported EXIT0; 63 protected inputs, 9 package entries, 11 frozen-v2 entries",
+    "runtime_acceptance": false,
+    "automatic_dependent_execution_authorized": false,
+    "g1": "NOT_AUTHORIZED",
+    "integration": "NOT_AUTHORIZED",
+    "m1_exit": "NOT_GRANTED",
+    "m2": "NOT_STARTED"
+  },
+  "review_role_repair_registration": {
+    "task_id": "RUN-20260918-REVIEW-ROLE-FIX",
+    "owner": "lfa-start(w15:p1)",
+    "status": "AUTHORIZED_FOR_IMPLEMENTATION",
+    "scope": "CONTROL_PLANE_ONLY",
+    "files": ["herdr-team/review_dispatch.py", "herdr-team/SHA256SUMS.txt"],
+    "requirements": ["REVIEW-ROLE-REQ-01", "REVIEW-ROLE-REQ-02", "REVIEW-ROLE-REQ-03", "REVIEW-ROLE-REQ-04"],
+    "default_review_role": "lfa-review",
+    "forbidden_review_roles": ["lfa-pm", "lfa-start"],
+    "old_g0_acceptance_migration": false,
+    "new_g0_review_role": "lfa-api",
+    "fresh_dual_gate_required": true,
+    "bound_artifacts_mutation_authorized": false,
+    "business_implementation_authorized": false,
+    "g1": "NOT_AUTHORIZED",
+    "integration": "NOT_AUTHORIZED",
+    "m1_exit": "NOT_GRANTED",
+    "m2": "NOT_STARTED"
+  },
+  "g0_role_bound_fresh_pm_disposition": {
+    "key": "RUN-20260918T075255Z-QRP-G0-AUTH:20c1b6d127826effc71f7fb87435e59fb28cdd0d553c1a632c74de1e7b1e8de8",
+    "role": "lfa-pm(w12:p1)",
+    "disposition": "PM_ACCEPTED",
+    "scope": "QR-G0-REQ-01..06 frozen documentary outputs only",
+    "review_role": "lfa-api",
+    "independent_disposition": "CODE_REVIEW_ACCEPTED",
+    "pm_verification": "New envelope inspected; 2 artifact and 2 source SHA256 MATCH",
+    "inherited_acceptance": false,
+    "automatic_continuation": false,
+    "continuation": "NOT_AUTHORIZED",
+    "runtime_acceptance": false,
+    "control_repair_acceptance_granted": false,
+    "g1": "NOT_AUTHORIZED",
+    "integration": "NOT_AUTHORIZED",
+    "m1_exit": "NOT_GRANTED",
+    "m2": "NOT_STARTED"
+  },
+  "review_role_control_final_pm_disposition": {
+    "task_id": "RUN-20260918-REVIEW-ROLE-FIX",
+    "controller_sha256": "ae08ff4205aa0e1180117f15b650dd071ee7e466c5d9338ef60bc7d05b28ad76",
+    "role": "lfa-pm(w12:p1)",
+    "disposition": "PM_ACCEPTED",
+    "scope": "CONTROL_PLANE_ONLY",
+    "independent_reviewer": "lfa-review",
+    "independent_disposition": "CODE_REVIEW_ACCEPTED",
+    "pm_verification": "Exact SHA MATCH; gate, bound-role, continuation and resolve source assessment",
+    "test_execution_attribution": "Fresh reviewer temp-root PASS; author self-test EXIT0; not PM reruns",
+    "inherited_acceptance": false,
+    "continuation_policy": "Mandatory START eligibility notification after fresh dual acceptance; no authorization grant",
+    "distributed_exactly_once_guarantee": false,
+    "watcher_restarted": false,
+    "business_authority_expanded": false,
+    "g1": "NOT_AUTHORIZED",
+    "integration": "NOT_AUTHORIZED",
+    "m1_exit": "NOT_GRANTED",
+    "m2": "NOT_STARTED"
+  },
+  "g0_third_key_pm_disposition": {
+    "key": "RUN-20260918T075255Z-QRP-G0-AUTH:d420e429a9cc1b24aa8e3697d52c58e266fa52dafbc42a11021c0d51aade5373",
+    "role": "lfa-pm(w12:p1)",
+    "disposition": "PM_ACCEPTED",
+    "scope": "QR-G0-REQ-01..06 documentary only",
+    "independent_reviewer": "lfa-api",
+    "inherited_acceptance": false,
+    "continuation": "START_ELIGIBILITY_NOTIFICATION_ONLY",
+    "business_authority_expanded": false,
+    "recovery_git_head": "410b17a00b63374f5d28a5531c478db8b30e8427",
+    "d05": "WAITING_FRESH_INDEPENDENT_REVIEW",
+    "g1": "NOT_AUTHORIZED",
+    "integration": "NOT_AUTHORIZED",
+    "m1_exit": "NOT_GRANTED",
+    "m2": "NOT_STARTED"
+  },
+  "d05_exact_final_pm_disposition": {
+    "key": "RUN-20260918T043217Z-REPAIR-BOUNDARY:1c9ba7cd74b912141ec2336371f9ad567bdcd01ea1c2d59b208cdfe4f290f2b0",
+    "disposition": "PM_ACCEPTED",
+    "scope": "DOCUMENTARY_REPAIR_SPECIFICATION_ONLY",
+    "independent_reviewer": "lfa-review",
+    "verification": "Canonical envelope MATCH; 3 artifacts and 3 sources MATCH",
+    "continuity": "NOT_PROVEN",
+    "writer": "NOT_VERIFIED",
+    "rbl04": "CONDITIONAL",
+    "implementation_high": "OPEN",
+    "m1_exit": "NOT_GRANTED",
+    "m2": "NOT_STARTED",
+    "business_authority_expanded": false
+  }
+}

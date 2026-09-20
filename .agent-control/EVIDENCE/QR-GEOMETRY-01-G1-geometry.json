@@ -1,0 +1,53 @@
+{
+  "task_id": "RUN-20260918-QR-G1-AUTH",
+  "plan_id": "QR-GEOMETRY-01",
+  "deliverable_id": "QR-GEOMETRY-01-G1",
+  "status": "INCOMPLETE_MISSING_REAL_INPUTS",
+  "coordinate_contract": {
+    "card_corner_order": "TL_TR_BR_BL",
+    "card_origin": null,
+    "card_axes": null,
+    "units": "mm",
+    "qr_boundary": "symbol_outer_boundary_excluding_quiet_zone",
+    "image_coordinates": "original_encoded_jpeg_pixels",
+    "screen_sorting_allowed": false
+  },
+  "physical_measurements": [],
+  "physical_measurement_operator": null,
+  "physical_measurement_operator_missing_reason": "No actual human measurement operator or measurement record was supplied.",
+  "measurement_instrument": null,
+  "measurement_resolution_mm": null,
+  "repeat_readings": null,
+  "coplanarity_evidence": null,
+  "coplanarity_status": "UNKNOWN_STOP_CANDIDATE",
+  "coplanarity_missing_reason": "No physical QR-plane and observation-window coplanarity evidence was supplied.",
+  "independent_annotations": [],
+  "annotator_1": null,
+  "annotator_2": null,
+  "adjudicator": null,
+  "annotation_blinding_verified": false,
+  "annotation_missing_reason": "No two independent human QR/window annotations, actual annotator identities, corrections, or adjudication records were supplied.",
+  "adjudication_trigger": {
+    "window_short_side_fraction": 0.01,
+    "evaluated": false,
+    "triggered": null,
+    "reason": "No independent annotation pair exists for disagreement evaluation."
+  },
+  "candidate_geometry": {
+    "detected_qr_quad": null,
+    "H_card_to_image": null,
+    "predicted_window_quad": null,
+    "manual_comparison": null,
+    "overlay_path": null,
+    "config_sha256": null,
+    "stage": "NOT_EXECUTED",
+    "reason": "G1 authorizes physical evidence establishment only; QR/homography tool development and execution are prohibited."
+  },
+  "measurement_authority": false,
+  "quantification_allowed": false,
+  "formal_reporting_allowed": false,
+  "exit": {
+    "met": false,
+    "reason": "Required per-card physical geometry, coplanarity, repeat readings, human operators, independent annotations, and adjudication provenance are unavailable."
+  }
+}

@@ -1,0 +1,199 @@
+diff --git a/docs/api/api-reference.md b/docs/api/api-reference.md
+index 3f0a220..59e2157 100644
+--- a/docs/api/api-reference.md
++++ b/docs/api/api-reference.md
+@@ -1,5 +1,7 @@
+ # 拍照识别闭环接口契约
+ 
++独立的 DHEA Product Gate v3 契约见 [DHEA v3 product-gate contract](dhea-v3-product-gate.md) 与 `openapi-dhea-v3.json`。该契约不修改历史 DHEA v2 OpenAPI、Schema 或 fixtures。
++
+ 版本：`2.0-draft`。日期：2026-09-09。性质：本轮工程开发目标，不代表接口已经实现。仅研发测试，`prototype_only=true`、`evidence_eligible=false`，不用于临床。
+ 
+ ## 1. 权威范围与阅读顺序
+diff --git a/python_gateway/dhea.py b/python_gateway/dhea.py
+index 191cf9b..9e4543b 100644
+--- a/python_gateway/dhea.py
++++ b/python_gateway/dhea.py
+@@ -135,37 +135,32 @@ class DheaService:
+                     return row["response"], row["http_status"]
+                 if (row["profile_id"], row["profile_sha"]) != (self.runtime.profile_id, self.runtime.profile_sha256):
+                     raise InputError(503, "FROZEN_PROFILE_UNAVAILABLE")
+-            if not self.execution.acquire(blocking=False):
+-                raise InputError(429, "ANALYSIS_CAPACITY")
+-            try:
+-                if row is None:
+-                    analysis_id = str(uuid4())
+-                    body = envelope(metadata, metadata_sha256=digest, analysis_id=analysis_id,
+-                                    business_status="processing", wire_code="PROCESSING", retryable=False)
+-                    execution_id = str(uuid4())
+-                    image_id = self.blob(image, MAX_IMAGE)
+-                    raw_id = self.blob(raw, MAX_JSON)
+-                    canonical_id = self.blob(canonical, MAX_JSON)
+-                    with self.repository._connection(write=True) as db:
+-                        db.execute("""INSERT INTO dhea_measurement VALUES
+-                            (?,?,?,?,?,?,?,?,?,?,?,'processing',?,202,NULL,?)""",
+-                            (self.repository._subject(subject), bundle, analysis_id, metadata["original_sha256"],
+-                             digest, canonical, image_id, raw_id, canonical_id, self.runtime.profile_id,
+-                             self.runtime.profile_sha256, encoded(body), time.time() + 30 * 86400))
+-                        diagnostic_store.begin(db, analysis_id, execution_id)
+-                else:
+-                    analysis_id = row["analysis_id"]
+-                    execution_id = str(uuid4())
+-                    image_id = row["image_object"]
+-                    body = json.loads(row["response"])
+-                    body.update(business_status="processing", wire_code="PROCESSING", retryable=False, data=None)
+-                    with self.repository._connection(write=True) as db:
+-                        db.execute("UPDATE dhea_measurement SET state='processing',response=?,http_status=202 WHERE analysis_id=?",
+-                                   (encoded(body), analysis_id))
+-                        diagnostic_store.begin(db, analysis_id, execution_id)
+-            except BaseException:
+-                self.execution.release()
+-                raise
++            if row is None:
++                analysis_id = str(uuid4())
++                body = envelope(metadata, metadata_sha256=digest, analysis_id=analysis_id,
++                                business_status="processing", wire_code="PROCESSING", retryable=False)
++                execution_id = str(uuid4())
++                image_id = self.blob(image, MAX_IMAGE)
++                raw_id = self.blob(raw, MAX_JSON)
++                canonical_id = self.blob(canonical, MAX_JSON)
++                with self.repository._connection(write=True) as db:
++                    db.execute("""INSERT INTO dhea_measurement VALUES
++                        (?,?,?,?,?,?,?,?,?,?,?,'processing',?,202,NULL,?)""",
++                        (self.repository._subject(subject), bundle, analysis_id, metadata["original_sha256"],
++                         digest, canonical, image_id, raw_id, canonical_id, self.runtime.profile_id,
++                         self.runtime.profile_sha256, encoded(body), time.time() + 30 * 86400))
++                    diagnostic_store.begin(db, analysis_id, execution_id)
++            else:
++                analysis_id = row["analysis_id"]
++                execution_id = str(uuid4())
++                image_id = row["image_object"]
++                body = json.loads(row["response"])
++                body.update(business_status="processing", wire_code="PROCESSING", retryable=False, data=None)
++                with self.repository._connection(write=True) as db:
++                    db.execute("UPDATE dhea_measurement SET state='processing',response=?,http_status=202 WHERE analysis_id=?",
++                               (encoded(body), analysis_id))
++                    diagnostic_store.begin(db, analysis_id, execution_id)
++        self.execution.acquire()
+         collector = None
+         try:
+             # Always analyze frozen original storage, including explicit retries after restart.
+@@ -434,6 +429,8 @@ def create_dhea_app(runtime, state_dir, tokens, *, diagnostic_tokens=None, workb
+             async for chunk in request.stream():
+                 parser.feed(chunk)
+             upload = parser.finish(request.headers["idempotency-key"])
++            if upload[0]["schema_version"] == "dhea-capture/3.0":
++                raise InputError(422, "V3_ACCEPTANCE_NOT_IMPLEMENTED")
+             return response(*await run_in_threadpool(service.accept, identity, upload))
+         finally:
+             admission.release()
+diff --git a/python_gateway/dhea_input.py b/python_gateway/dhea_input.py
+index d41cf70..57487ec 100644
+--- a/python_gateway/dhea_input.py
++++ b/python_gateway/dhea_input.py
+@@ -11,6 +11,7 @@ import rfc8785
+ from jsonschema import Draft202012Validator
+ from python_multipart import MultipartParser
+ from python_multipart.exceptions import MultipartParseError
++from .dhea_v3_schema import CAPTURE_V3, validate_capture_semantics
+ 
+ MAX_IMAGE = 20 * 1024 * 1024
+ MAX_BODY = 25 * 1024 * 1024
+@@ -61,6 +62,17 @@ METADATA = obj(dict(
+ # Optional per-installation UUID, generated once by the capture client and sealed with every photo.
+ # Missing historical evidence stays missing; device model is not a unique physical identity.
+ METADATA["properties"]["camera_metadata"]["properties"]["device_instance_id"] = nullable(UUID)
++CAPTURE_INPUT = {"oneOf": [METADATA, CAPTURE_V3]}
++Draft202012Validator.check_schema(CAPTURE_INPUT)
++
++
++def validate_capture_v3(metadata):
++    if metadata["schema_version"] != "dhea-capture/3.0":
++        return
++    try:
++        validate_capture_semantics(metadata)
++    except ValueError:
++        raise InputError(422, "INVALID_PRODUCT_GATE_DECLARATION") from None
+ VALIDATION_ONLY = obj(dict(md500_t_response=nullable(NUMBER), md500_c_response=nullable(NUMBER),
+                            md500_tc_ratio=nullable(NUMBER), md500_concentration=nullable(NUMBER),
+                            concentration_unit={"const": "ng/mL"}, not_runtime_required={"const": True}))
+@@ -277,7 +289,8 @@ class Upload:
+         if not self.ended or set(self.parts) != {"image", "metadata"}:
+             raise InputError(400, "INVALID_MULTIPART")
+         raw = bytes(self.parts["metadata"])
+-        metadata, canonical = parse_json(raw, METADATA)
++        metadata, canonical = parse_json(raw, CAPTURE_INPUT)
++        validate_capture_v3(metadata)
+         if key != metadata["capture_bundle_id"]:
+             raise InputError(422, "IDEMPOTENCY_KEY_MISMATCH")
+         image = bytes(self.parts["image"])
+diff --git a/python_gateway/tests/test_dhea.py b/python_gateway/tests/test_dhea.py
+index eea1dad..bacbd6c 100644
+--- a/python_gateway/tests/test_dhea.py
++++ b/python_gateway/tests/test_dhea.py
+@@ -6,7 +6,7 @@ import json
+ from pathlib import Path
+ import tempfile
+ import unittest
+-from unittest.mock import patch
++from unittest.mock import Mock, patch
+ 
+ import httpx
+ import rfc8785
+@@ -95,6 +95,30 @@ class DheaHttpTest(unittest.IsolatedAsyncioTestCase):
+         self.start()
+         self.assertEqual((await self.get()).content, first.content)
+ 
++    async def test_busy_core_slot_admits_queryable_processing_record(self):
++        second_bundle = "550e8400-e29b-41d4-a716-446655440001"
++        second_metadata = copy.deepcopy(self.metadata)
++        for key in ("capture_session_id", "capture_attempt_id", "capture_bundle_id"):
++            second_metadata[key] = second_bundle
++        raw = json.dumps(second_metadata).encode()
++        parsed, canonical = parse_json(raw, METADATA)
++        service = self.app.state.dhea
++        observed = {}
++
++        def acquire():
++            processing, observed["status"] = service.get("subject-a", second_bundle)
++            observed["business_status"] = json.loads(processing)["business_status"]
++            return True
++
++        execution = Mock()
++        execution.acquire.side_effect = acquire
++        with patch.object(service, "execution", execution), \
++             patch.object(type(self.runtime), "analyze", side_effect=RuntimeError("controlled failure")):
++            result, status = service.accept("subject-a", (parsed, raw, canonical, self.image))
++        self.assertEqual(observed, {"status": 202, "business_status": "processing"})
++        self.assertEqual(status, 503)
++        self.assertEqual(json.loads(result)["capture_bundle_id"], second_bundle)
++
+     async def test_failed_execution_only_retries_identical_original_post(self):
+         with patch.object(type(self.runtime), "analyze", side_effect=RuntimeError("private path must not escape")):
+             failed = await self.upload()
+@@ -106,10 +130,11 @@ class DheaHttpTest(unittest.IsolatedAsyncioTestCase):
+         self.assertEqual(retried.json()["analysis_id"], failed.json()["analysis_id"])
+ 
+     async def test_restart_recovers_processing_without_automatic_execution(self):
+-        complete = await self.upload()
++        with patch.object(type(self.runtime), "analyze", side_effect=RuntimeError("interrupted")):
++            failed = await self.upload()
+         service = self.app.state.dhea
+-        body = complete.json()
+-        body.update(business_status="processing", wire_code="PROCESSING", data=None)
++        body = failed.json()
++        body.update(business_status="processing", wire_code="PROCESSING", retryable=False, data=None)
+         with service.repository._connection(write=True) as db:
+             db.execute("UPDATE dhea_measurement SET state='processing',response=?,http_status=202,result_object=NULL",
+                        (json.dumps(body).encode(),))
+@@ -120,9 +145,7 @@ class DheaHttpTest(unittest.IsolatedAsyncioTestCase):
+         recovered = await self.get()
+         self.assertEqual(recovered.status_code, 503)
+         self.assertEqual(recovered.json()["wire_code"], "EXECUTION_INTERRUPTED")
+-        retried = await self.upload()
+-        self.assertEqual(retried.status_code, 200)
+-        self.assertEqual(retried.json()["analysis_id"], complete.json()["analysis_id"])
++        self.assertEqual(recovered.json()["analysis_id"], failed.json()["analysis_id"])
+ 
+     async def test_changed_source_cannot_retry_frozen_failure(self):
+         with patch.object(type(self.runtime), "analyze", side_effect=RuntimeError("interrupted")):

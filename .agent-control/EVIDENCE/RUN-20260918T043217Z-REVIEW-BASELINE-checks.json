@@ -1,0 +1,132 @@
+{
+  "task_id": "RUN-20260918T043217Z-REVIEW-BASELINE",
+  "base_head": "410b17a00b63374f5d28a5531c478db8b30e8427",
+  "baseline": "BASE_HEAD plus pre-existing dirty work",
+  "audited_file_sha256": {
+    "herdr-team/.agent-control/ROUNDS/20260918T043217Z-meeting.md": "c61eabdfa580dcfc3b25014b3039fb2849f51d3c8127e09c688773b5e3f22779",
+    "herdr-team/.agent-control/PROJECT_SNAPSHOT.md": "b8a6237b5cf6f63217ceb3f6c21e35620f757786b8a132b3c098ad04c7e31f0a",
+    "herdr-team/.agent-control/DECISIONS.md": "c656f4f12564e7bc1e154d21d6c619eca5321330b77c340b84c576763fa5171b",
+    "herdr-team/.agent-control/TASK_BOARD.md": "406664c7b4357cd493dd929d69ed5f24e47072e202e40b6697161a0880e0af95",
+    "herdr-team/.agent-control/EVIDENCE/PM-ONBOARD-20260918T043217Z.json": "ff55056fb602870f2f7b2c7c901f4bf2b7cc40e1e5d55348eb0bfb45f28ff75d",
+    "docs/LFA_最新完整文档集合/11_DHEA原生Android研究v2公开契约.md": "1c648f525aa41bf2fc27e2bff762df00a8f52a53ae09f70a9ca319bc0e53720d",
+    "docs/api/api-reference.md": "4c8d7d96a354c6aae5786ad516aa6ffa2ac3cc5699ed8b749a10c09b35681c76",
+    "python_gateway/dhea.py": "d3c3a448cc3edd999b80b9c90cf23bee00f83cc77c5af2488e951d5b9d7d7f5d",
+    "core/dhea.py": "73e69f20ee20cf83f89456e2d50b6e86477ced02da393313196c5d36e776fe1b",
+    "core/contracts.py": "9c07942581fd1beb2c9397efa8a91fd6460086ab2ca059ab228c64a600e23136",
+    "core/dhea_diagnostics.py": "45ee6fc492cc71719d9c308609147a679299ab83a7d986e429154453afa64664",
+    "python_gateway/dhea_diagnostics.py": "e8ecb6cae0633307ef50ce432e0ca3cb0c9ad27ba1d40ad811604b8f9fb7cec1"
+  },
+  "historical_checks": [
+    {
+      "path": "artifacts/cap-and-00-distance-confirmation-20260916/evidence.json",
+      "sha256": "85a6addd9cd2d2c52b15a5eba7c3411852fab2eafa586de7842fbf81bf1030e8",
+      "matches_onboarding": true,
+      "json_parse": true
+    },
+    {
+      "path": "artifacts/and-02-device-acceptance-20260916/evidence.json",
+      "sha256": "b671b864fd12db1c9af6422a06dd061a49b81e29f0b97831e2455bddecb9cb3d",
+      "matches_onboarding": true,
+      "json_parse": true
+    },
+    {
+      "path": "artifacts/dhea-api-03-acceptance-20260916/evidence.json",
+      "sha256": "dd84f29f38a460ef1bfb3befc14492e34f418cf1b8edf5771be39a313eb3bf3b",
+      "matches_onboarding": true,
+      "json_parse": true
+    },
+    {
+      "path": "artifacts/core-02-acceptance-20260916/evidence.json",
+      "sha256": "44c0e900494713c471687ca4105015c127c77b26cfcbbcf5a432423680a7674e",
+      "matches_onboarding": true,
+      "json_parse": true
+    }
+  ],
+  "verification": "Fresh local SHA-256 and JSON parsing only; no build, behavior test, live API or device execution",
+  "fresh_role_reports_at_inspection": "AND-AUDIT, API-AUDIT and PM-SCOPE outputs not yet present",
+  "implementation_acceptance": "NOT_REVIEWED",
+  "d05_followup": {
+    "task_id": "RUN-20260918T043217Z-REVIEW-BASELINE",
+    "disposition": "CHANGES_REQUESTED",
+    "report_section_line": 178,
+    "submitted_sha256": {
+      "report": "b03dbe6c37530755edc90b577dc249dbcc70f560a2f7328b3719e3a6a7a8495d",
+      "manifest": "6c7b39167f29a9be97d4a938a357da2a2698734ab9e20ebe5384353f8cbc9918",
+      "patch": "c80055a2da264496b2998bc971f74afc07af69d6b9349da9c5ca79f657907325"
+    },
+    "pm_assessment_sha256": "90429dbd7e0937d6ce7123e6e8b7391696f9ada704f82b23866c107bbe307002",
+    "pm_executed_evidence": "3 digest matches; 4 patched paths reconstructed; 12 current file hashes matched. Accepted as attributed PM evidence, not rerun.",
+    "reviewer_executed_checks": ["manifest JSON parse", "patch path headers only: four paths matching declared preservation set", "proposed path versus manifest inventory comparison: four missing entries", "focused specification and existing schema/lifecycle reads", "ACTIVE ownership check before writes"],
+    "findings": ["D05-R1 HIGH preservation continuity unproven", "D05-R2 HIGH transient and first-accept observable failure semantics incomplete", "D05-R3 MEDIUM four missing baseline entries and unnamed Android test paths", "D05-R4 MEDIUM ICC combinations/schema transitions incomplete", "D05-R5 MEDIUM same-execution field-to-response contract incomplete"],
+    "written_paths": ["herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REVIEW-BASELINE.md", "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REVIEW-BASELINE-checks.json"],
+    "write_owner": "lfa-review(w11:p1)",
+    "historical_writer_attribution": "NOT_VERIFIED",
+    "prior_snapshot_continuity": "NOT_PROVEN",
+    "host_tests_rerun": false,
+    "live_credentials_inspected": false,
+    "raw_patch_hunks_emitted": false,
+    "rbl04": "CONDITIONAL_OPEN",
+    "m1_exit": "NOT_GRANTED",
+    "implementation_acceptance": "NOT_REVIEWED"
+  },
+  "d05_clarification_re_review": {
+    "task_id": "RUN-20260918T043217Z-REVIEW-BASELINE",
+    "same_assignment": true,
+    "disposition": "CHANGES_REQUESTED",
+    "final_report_section_line": 242,
+    "supersedes_interim_assessment_lines": "216-240; retained as history, not a separate D05 submission",
+    "submitted_sha256": {
+      "report": "73a8658eebd14110a4f3951df080dfb1ca0e669d28ee0bd041489899a1500531",
+      "manifest": "72a818ce2be0b3eb86560cfe790b809aeeee1cbe3d3eacada9f3264ab5bec45f",
+      "patch": "c80055a2da264496b2998bc971f74afc07af69d6b9349da9c5ca79f657907325"
+    },
+    "submitted_bytes": {"report": 42641, "manifest": 29328, "patch": 11368},
+    "reviewer_executed_checks": ["three complete artifact SHA-256 checks matched supplied values", "section 9 and manifest specification comparison", "control readiness and ACTIVE ownership reads"],
+    "pm_executed_checks": ["artifact hashes and lengths", "original report prefix", "embedded original manifest recovery and hash", "original files deep-equality"],
+    "pm_evidence_source": "PM-SCOPE:210-220 and d05_revision_assessment JSON; not start execution; not reviewer reruns",
+    "patch_reconstruction_repeated": false,
+    "finding_dispositions": {
+      "R1": "Limitation documented sufficiently for gap audit; continuity NOT_PROVEN; protected overlap not cleared",
+      "R2": "Specification addressed, including explicit public failure mapping; interim classification objection withdrawn",
+      "R3": "Specification inventory addressed; source baseline claims attributed, not re-audited",
+      "R4": "Specification addressed; no implementation proof",
+      "R5": "MEDIUM OPEN: structured manifest_gate must distinguish server accepted-authority verification from client post-fetch cross-response comparison"
+    },
+    "written_paths": ["herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REVIEW-BASELINE.md", "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REVIEW-BASELINE-checks.json"],
+    "rbl04": "CONDITIONAL",
+    "implementation_high": "OPEN",
+    "d04_runtime_device": "UNKNOWN_OR_UNACCEPTED",
+    "m2": "NOT_STARTED",
+    "m1_exit": "NOT_GRANTED",
+    "implementation_acceptance": "NOT_REVIEWED",
+    "business_tests_run": false,
+    "live_credentials_inspected": false
+  },
+  "d05_final_r5_re_review": {
+    "task_id": "RUN-20260918T043217Z-REVIEW-BASELINE",
+    "same_assignment": true,
+    "disposition": "SPECIFICATION_ADDRESSED_WITH_LIMITATIONS",
+    "report_section_line": 268,
+    "supersedes": "R5-only CHANGES_REQUESTED at report 242-266 for prior revision; history retained",
+    "submitted_sha256": {
+      "report": "82098374c48dfd6bf97cf5e0f1b3b5bfae6fb5119fa66cff6a5cf2b789f0f36f",
+      "manifest": "0f158adbaf9c5ff4360bb84c7e02c8a0dc9abc6af962e36b575c88c1b45399f6",
+      "patch": "c80055a2da264496b2998bc971f74afc07af69d6b9349da9c5ca79f657907325"
+    },
+    "submitted_bytes": {"report": 47402, "manifest": 71512, "patch": 11368},
+    "reviewer_executed_checks": ["three full artifact SHA-256 matches", "section 10 against final R5 finding and four structured gates", "ACTIVE ownership before writes", "companion JSON validation"],
+    "preservation_evidence": {"executor": "PM", "source": "PM-SCOPE.md:230-238 and JSON d05_final_r5_pm_assessment", "result": "PASS", "checks": ["full artifact hashes and lengths", "42641-byte and 23391-byte report prefixes", "29328-byte and 7960-byte embedded manifests strict recovery/hash/length", "files deep equality against both"], "rerun_by_reviewer": false, "patch_reconstruction_repeated": false},
+    "r5": "CLOSED_AT_SPECIFICATION_LEVEL",
+    "r2_r4": "NOT_REOPENED",
+    "prior_snapshot_continuity": "NOT_PROVEN",
+    "historical_writer_attribution": "NOT_VERIFIED",
+    "rbl04": "CONDITIONAL",
+    "implementation_high": "OPEN",
+    "d04_runtime_device": "UNKNOWN_OR_UNACCEPTED",
+    "m2": "NOT_STARTED",
+    "m1_exit": "NOT_GRANTED",
+    "implementation_acceptance": "NOT_REVIEWED",
+    "business_tests_run": false,
+    "written_paths": ["herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REVIEW-BASELINE.md", "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REVIEW-BASELINE-checks.json"]
+  }
+}

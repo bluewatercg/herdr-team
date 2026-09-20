@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+.agent-control/dashboard.log
+.agent-control/tmp*
+.agent-control/AGENT_STATUS/
+.agent-control/EVIDENCE/activate-lfa-*.log

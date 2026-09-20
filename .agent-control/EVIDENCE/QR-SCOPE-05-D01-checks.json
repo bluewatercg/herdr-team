@@ -1,0 +1,2349 @@
+{
+  "task_id": "RUN-20260918-QR-PRODUCT-DECOUPLING",
+  "plan_id": "QR-SCOPE-05",
+  "deliverable_id": "QR-SCOPE-05-D01",
+  "requirements": [
+    "QR-SCOPE-REQ-01",
+    "QR-SCOPE-REQ-02",
+    "QR-SCOPE-REQ-03",
+    "QR-SCOPE-REQ-04",
+    "QR-SCOPE-REQ-05"
+  ],
+  "authority": [
+    {
+      "path": "herdr-team/.agent-control/MASTER_PLAN.md",
+      "sha256": "67f455400f22565be86379398bc78f806e238f824e7a9803e84018cf08b4d6cf",
+      "bytes": 56808
+    },
+    {
+      "path": "herdr-team/.agent-control/FILE_OWNERSHIP.md",
+      "sha256": "4e767f51af25da70c3b04ce549ccd319f8b741548316b9df7935c91a1218b93f",
+      "bytes": 42739
+    }
+  ],
+  "previous_authority_prefixes": [
+    {
+      "path": "herdr-team/.agent-control/MASTER_PLAN.md",
+      "sha256": "00929705f6ea4139225d2ee9622cc78bf65ef110c5595dd8b12e907c73fadff5",
+      "bytes": 52501
+    },
+    {
+      "path": "herdr-team/.agent-control/FILE_OWNERSHIP.md",
+      "sha256": "6f83aadfa7a0a432a17dab31330959b31315147e609db9b0e9fc26d53eb73d44",
+      "bytes": 41063
+    }
+  ],
+  "candidate": {
+    "path": "herdr-team/.agent-control/EVIDENCE/QR-SCOPE-05-D01-candidate.md",
+    "sha256": "d56fb07266b989902551e2cda310e9243e2bdcbd1e40e8221fffbf7397514ed4",
+    "bytes": 37780
+  },
+  "search_inventory": {
+    "summary": "Found one real transitive coupling: the old geometry graph made QRP-C1 contract/API migration depend on QRP-G5, while v1.7 then placed product declaration/final-JPEG Product Identification inside that migration-shaped baseline. Decode, strict parse, preview Product Family Match, and shutter logic themselves have no intrinsic geometry dependency. The current QR-SCOPE-05 authority already removes 72/48h/G2/G3E/Homography/ROI/G5 prerequisites from product-only work. Geometry validation, ROI authority, direction/association geometry, and ten-point release constraints remain valid and must be preserved. Historical evidence/reviews should remain untouched.",
+    "files": [
+      {
+        "path": "herdr-team/.agent-control/MASTER_PLAN.md",
+        "description": "Current authority. Lines 325+ define QR-SCOPE-05 and remove geometry prerequisites from Decode/Parse/Product Match/Shutter/final-JPEG product recheck while preserving geometry research."
+      },
+      {
+        "path": "herdr-team/.agent-control/TASK_BOARD.md",
+        "description": "Current external ledger. Lines 295-299 register documentary-only decoupling and state the superseding interpretation."
+      },
+      {
+        "path": "herdr-team/.agent-control/FILE_OWNERSHIP.md",
+        "description": "Lines 213-222 authorize only two documentary outputs; business ownership remains absent and unknown ownership is report-only."
+      },
+      {
+        "path": "herdr-team/.agent-control/BLOCKERS.md",
+        "description": "Lines 188-190 are historical/current geometry execution blockers, applicable to G1-G3 geometry work, not product identification."
+      },
+      {
+        "path": "herdr-team/.agent-control/DECISIONS.md",
+        "description": "Lines 5-9 and PM scope ruling preserve frozen v2, parked v3, historical evidence, and unknown v3 ownership."
+      },
+      {
+        "path": "herdr-team/.agent-control/ROUNDS/20260918T043217Z-meeting.md",
+        "description": "Historical review/acceptance record. Lines 511-512 define geometry-only node boundaries; lines 147-177 preserve QR-PLAN-04 acceptance; must not be rewritten."
+      },
+      {
+        "path": "herdr-team/.agent-control/EVIDENCE/QR-PLAN-04-D01-checks.json",
+        "description": "Historical v1.7 review evidence. Lines 24-50 bind the 72/48h branch and G5/C1 mapping; preserve verbatim."
+      },
+      {
+        "path": "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-report.md",
+        "description": "Historical truthful incomplete geometry evidence. Lines 25, 39, 47, 53 show missing 72-reference inputs and prohibit downstream geometry work; unrelated to product decoding."
+      },
+      {
+        "path": "docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.7_IMPLEMENTATION_BASELINE.md",
+        "description": "Main current revision candidate. Product gate sections are independent; lines 724-733 and 1017-1025 over-couple migration/final release to geometry."
+      },
+      {
+        "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/04_TASK_BOARD_QR_TEMPLATE_ROI_SIGNAL_v1.0.md",
+        "description": "Old package dependency graph. Lines 9-27 contain the direct G5 -> C1 transitive coupling."
+      },
+      {
+        "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/09_MANUAL_QR_CONTROLLED_ROI_PLAN_REVISION_v1.0.md",
+        "description": "Geometry revision. Lines 69-84 preserve the valid geometry DAG; lines 116-125 inventory future API/App/Core migration ownership."
+      },
+      {
+        "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/10_SINGLE_ANNOTATOR_DEVELOPMENT_REFERENCE_PLAN_v1.0.md",
+        "description": "Single-annotator geometry-only branch. Lines 15-29 define 72/48h; lines 74-86 stop at G3-D and exclude App/API/Core."
+      },
+      {
+        "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/05_AUTHORITATIVE_CONTRACT_SYNC_CHECKLIST_v1.0.md",
+        "description": "Old contract migration plan. Lines 18-23 park App Product Gate/declaration/ROI together; lines 85-97 route C1 through geometry."
+      },
+      {
+        "path": "docs/api/dhea-v3-product-gate.md",
+        "description": "Product API contract index. Lines 1-31 define declaration preacceptance without any 72/48h/G5 prerequisite; implementation is parked."
+      },
+      {
+        "path": "docs/requirements/INDEX.md",
+        "description": "Current index still presents QR-PLAN-04 and geometry-oriented QR implementation as the navigation surface; candidate synchronization needed after ownership authorization."
+      },
+      {
+        "path": "docs/specs/INDEX.md",
+        "description": "Lines 15-22 still index v1.7 as a combined product-gate/geometry candidate and retain stale pending labels."
+      }
+    ],
+    "architecture": "Product-only path: Preview QR decode -> first-colon strict v1 parse -> exact QIUQIU/DHEA family match -> attempt/session-bound shutter gate -> immutable JPEG capture -> declaration contract -> Core final-JPEG product-family recheck. Geometry path: G1/G1-D physical references -> G2/G2-D design -> G3E/G3-D tools -> G4/G5 validation -> R/C/A/G6 authoritative ROI. Shared contract semantics may connect the paths; geometry completion must not.",
+    "report": "## CURRENT_REVISION_CANDIDATE\n\n- `herdr-team/.agent-control/MASTER_PLAN.md:325+` (Formal QR product identification scope correction): before, prior plans could be read as one QR program; after, `QR_PRODUCT_IDENTIFICATION_DEPENDENCY=REMOVED` for 72 images, 48-hour relabel, G2/G3E, window ground truth, Homography and ROI thresholds. Recommendation: use this as controlling interpretation; product-only tasks depend on shared QR/declaration semantics and lifecycle evidence, not geometry.\n- `herdr-team/.agent-control/TASK_BOARD.md:295-299`: before, QR-PLAN-04 was the latest combined baseline; after, QR-SCOPE-05 expressly limits G5->C1->A1 and G1-D->G2-D->G3-D to geometry/research scope. Recommendation: candidate/checks should quote this boundary and leave business execution `NO`.\n- `docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.7_IMPLEMENTATION_BASELINE.md:101-140,250-352,366-373`: product family semantics, shutter gate, strict parse and state machine contain no 72/48h/G5 requirement. Classification: `NO_DEPENDENCY`; preserve behavior and explicitly state geometry-independent eligibility.\n- Same file `:444-467,499-518`: declaration and session/attempt binding are product-contract concerns. Classification: `NO_DEPENDENCY`; only migration acceptance/runtime cutover remains separately gated.\n- Same file `:724-733`: old mapping says G5-v2 -> C1 and C1+R4 -> A1 -> A2. Before interpretation: all C1 contract synchronization could transitively wait on G5. After: retain this edge only for full ROI/registry/policy migration; remove it from product declaration and product recheck candidates. Classification: `CURRENT_REVISION_CANDIDATE`.\n- Same file `:873-880`: `PRODUCT_IDENTIFICATION` is final-JPEG QR/protocol/product/Registry binding, separate from `WINDOW_LOCALIZATION`. Classification: `NO_DEPENDENCY` for QR/protocol/product; Registry fields tied to authoritative ROI policy must remain nullable/separately gated.\n- Same file `:941-947`: Lab Upload requires final-JPEG QR recheck and product-family match, with no geometry precondition. Classification: `NO_DEPENDENCY`; preserve.\n- Same file `:1017-1025`: ten-point release conjunction combines G4/G5/G6/C1/R4/A1/A2 with `FINAL_JPEG_QR_PRODUCT_AND_DIRECTION_CONFIRMED`. Before: can imply final-JPEG product confirmation itself requires geometry. After: the conjunction remains valid only for ten-point/full measurement release; split product-family recheck from direction/ROI release. Classification: `CURRENT_REVISION_CANDIDATE`.\n- `docs/requirements/INDEX.md:78-90` and `docs/specs/INDEX.md:15-22`: indexes still expose the combined v1.7 candidate and stale `PENDING_REVIEW` labels despite external acceptance. Classification: `CURRENT_REVISION_CANDIDATE`, but not writable in this assignment; Main should list them for later authorized sync.\n\n## CORRECT_GEOMETRY_INTERNAL\n\n- `docs/.../04_TASK_BOARD_QR_TEMPLATE_ROI_SIGNAL_v1.0.md:12-22`: G0->G1->G2->G3->G4->G5->R1->R2->R3->R4 is correct for physical geometry, candidate Homography, holdout, refinement and policy evidence. Preserve.\n- Same file `:23-27`: G5->C1 is valid only where C1 means authoritative ROI/registry/template/policy migration; A1 requires C1+R4 and A2 requires A1. Preserve with narrowed label, not as a product identification prerequisite.\n- `docs/.../09_MANUAL_QR_CONTROLLED_ROI_PLAN_REVISION_v1.0.md:23-25,61-84`: real layout/JPEG evidence, G1-v2->G5-v2, independent validation and R/C/A distinctions are correct geometry constraints. Product decoding must not inherit them.\n- `docs/.../10_SINGLE_ANNOTATOR_DEVELOPMENT_REFERENCE_PLAN_v1.0.md:15-29`: 12 cards/72 originals/random 18/>=48h are correct for single-annotator development-reference geometry and repeatability only.\n- Same file `:74-82`: G1-D->G2-D->G3-D and explicit stop before G4/G5/R/C/A/App/API/Core is the strongest existing decoupling evidence. Preserve exactly.\n- `docs/.../05_AUTHORITATIVE_CONTRACT_SYNC_CHECKLIST_v1.0.md:85-97`: geometry/refinement/authoritative enablement ordering is correct for ROI. Narrow C1 by contract slice rather than deleting geometry dependencies.\n- `docs/.../01_QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.6.md:45`: geometry G0-G5 independence from refinement and C1+R4 before authoritative policy remain valid geometry statements.\n- v1.7 `:630-710,724-733,983-987`: G2/G3E/G4/G5 design, validation, boundary fitting and final ROI constraints remain valid. Do not weaken these while decoupling product identification.\n\n## HISTORICAL_PRESERVE\n\n- `herdr-team/.agent-control/EVIDENCE/QR-PLAN-04-D01-checks.json:24-50`: records what QR-PLAN-04 reviewed, including 72/48h and G5->C1. Preserve as historical review evidence; new candidate should supersede interpretation prospectively, not rewrite it.\n- `herdr-team/.agent-control/ROUNDS/20260918T043217Z-meeting.md:147-177`: exact six-file review and PM acceptance chronology. Preserve verbatim.\n- `herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-report.md:25,39,47,53` and sibling JSON/checks: truthful G1 incomplete state, zero admitted 72 references, and no QR/H execution. Preserve; it blocks geometry progression only.\n- `herdr-team/.agent-control/BLOCKERS.md:188-190`: G1/G2/G3 dispatch blockers describe geometry implementation eligibility. Preserve chronology; annotate current interpretation externally rather than editing historical wording.\n- `docs/.../10_SINGLE_ANNOTATOR_DEVELOPMENT_REFERENCE_PLAN_v1.0.md:101-103`: explicitly freezes old G1 evidence/checks and old historical statuses. Preserve.\n\n## UNKNOWN_OWNERSHIP\n\n- `herdr-team/.agent-control/DECISIONS.md:8-9` and PM scope ruling: existing v3 work is protected; adoption and authorship were not established. Classification: `UNKNOWN_OWNERSHIP`; product candidates may cite contracts read-only but must not assign existing business files.\n- `docs/.../09_MANUAL_QR_CONTROLLED_ROI_PLAN_REVISION_v1.0.md:116-125`: API/App/Core paths have only future proposed owners. Classification: `UNKNOWN_OWNERSHIP`; Main should report exact paths and propose ownership, never claim grants.\n- `herdr-team/.agent-control/FILE_OWNERSHIP.md:213-222`: only candidate/checks outputs are ACTIVE; no product business file ownership exists. This confirms all three product implementation candidates remain proposal-only.\n\n## NO_DEPENDENCY\n\n- `docs/api/dhea-v3-product-gate.md:1-31`: Schema/SHA/declaration preacceptance has no geometry prerequisite. Its blocker is API-02/runtime adoption, not G5.\n- v1.7 `:272-289`: shutter enablement depends on camera/storage/capture state and matching evidence bound to current session/attempt; geometry quality is explicitly excluded from hard gate.\n- v1.7 `:329-352`: length validation, first-colon split, exact namespace/product and byte hash are pure protocol behavior.\n- v1.7 `:366-373`: Decode->Parse->Product Family Match->shutter transition is direct and geometry-free.\n- Package04 `:27`: explicitly says App gate is outside the geometry minimal slice. This is positive evidence against importing geometry prerequisites.\n- Package10 `:82-86`: App/API/Core are outside G1-D/G2-D/G3-D. This is positive evidence against the 72/48h transitive edge.\n\n## Actual problematic edges\n\n1. `72/48h -> G1-D -> G2-D -> G3-D` was documented for geometry. A broad “QR implementation” reading could incorrectly make preview decode/product match wait on this branch.\n2. `G1-v2 -> G2-v2 -> G3-v2 -> G4-v2 -> G5-v2 -> C1` made the monolithic C1 migration wait on geometry.\n3. C1 bundled Bundle1.6/v3, App Product Gate, declaration binding, final-JPEG QR evidence and authoritative ROI (`05...md:18-23`). That bundling propagated G5 transitively into otherwise geometry-free product contract work.\n4. v1.7’s ten-point conjunction (`:1017-1025`) mixed product-family confirmation with direction/ROI/measurement release. It is valid as a final full-release gate, invalid as the prerequisite list for final-JPEG product recheck itself.\n\nRecommended documentary cut: split C1 by responsibility. Product declaration/API contract and final-JPEG product-family recheck may proceed through separate candidates after their own Review/PM authorization. Keep C1-ROI/registry/policy behind G5/R4/A1/A2/G6. Keep final-JPEG direction/association checks behind the geometry evidence they genuinely consume; do not conflate those with QR decode/protocol/product-family verification.\n\n## Coverage and uncertainty\n\nSearched `docs/` plus control `MASTER_PLAN`, `FILE_OWNERSHIP`, `TASK_BOARD`, `DECISIONS`, `BLOCKERS`, `ROUNDS`, and all historical `EVIDENCE` for `72`, `48h`, geometry/Homography/ROI, G5, Decode, Parse, Product Match/Identification, Shutter, final JPEG, C1, v1.7 and package04/09/10. Read full relevant sections rather than isolated hits. No direct sentence was found saying Decode or Parse requires 72/48h/G5; the defect is transitive through monolithic C1 and combined release wording. Existing business-file ownership for the three proposed product slices remains unknown/ungranted. No files were written and no validation commands were run."
+  },
+  "implementation_inventory": [
+    {
+      "path": "herdr-team/.agent-control/MASTER_PLAN.md:333-337",
+      "description": "Frozen authority requires three independent candidates; product-only semantics are exact: background CameraX QR_CODE, first-colon parsing, exact 1:QIUQIU:DHEA, SHA of actual decoded UTF-8 bytes, shutter blocked before match, session/camera-session/attempt/verification bindings, invalidation boundaries, and separate unreadable/malformed/version/mismatch states. It also forbids geometry/ROI/Homography/measurement/quantification integration."
+    },
+    {
+      "path": "herdr-team/.agent-control/FILE_OWNERSHIP.md:213-222",
+      "description": "Current QR-SCOPE-05 ownership grants only two documentary output paths to lfa-start(w15:p1): candidate.md and checks.json. It explicitly says no business/source edits, no new active business ownership, and all QR decode/parse/match/shutter/final-JPEG permissions remain NO. Therefore every proposed Android/Core/gateway/schema/fixture path below is UNKNOWN for existing WRITE_OWNER unless otherwise registered elsewhere; do not infer an owner from module names."
+    },
+    {
+      "path": "Android_App/app/src/main/java/com/example/camera/NativeCameraManager.kt:149-155",
+      "description": "Existing CameraX fields: Preview, ImageCapture, ImageAnalysis, Camera, PreviewView, camera/torch observers."
+    },
+    {
+      "path": "Android_App/app/src/main/java/com/example/camera/NativeCameraManager.kt:223-318",
+      "description": "startCamera binds Preview, ImageCapture and ImageAnalysis in one UseCaseGroup sharing PreviewView viewport; observes CameraState and calls onCameraReady; generation invalidates stale camera callbacks; initial focus is non-authoritative."
+    },
+    {
+      "path": "Android_App/app/src/main/java/com/example/camera/NativeCameraManager.kt:370-523",
+      "description": "captureRawJpeg uses ImageCapture.takePicture, snapshots session/generation and camera metadata at shutter request, reads immutable JPEG bytes, validates JPEG header, derives geometry evidence, and dispatches success/error only when generation remains current. There is no QR decoder or product gate here."
+    },
+    {
+      "path": "Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt:92-123",
+      "description": "CaptureScreen owns remembered NativeCameraManager, lot sheet, focus UI, saved notice and lifecycle cleanup."
+    },
+    {
+      "path": "Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt:180-195",
+      "description": "Current shutter callback invokes ViewModel.onShutterTriggered, then NativeCameraManager.captureRawJpeg and ViewModel.handleRawCapturedBytes."
+    },
+    {
+      "path": "Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt:345-367",
+      "description": "CameraPreviewContainer creates PreviewView, starts CameraX with PreviewGuidanceAnalyzer, handles tap focus, and has no QR analysis surface."
+    },
+    {
+      "path": "Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt:478-523",
+      "description": "Shutter UI is enabled solely by !isCapturing && isCameraReady; no product-match prerequisite currently exists."
+    },
+    {
+      "path": "Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt:49-70",
+      "description": "Ui state already has currentSessionId, isCameraReady, isCapturing, lastCapturedAttemptId/SHA and activeAttemptId, but no cameraSessionId, product verification record, QR state, or product match state."
+    },
+    {
+      "path": "Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt:205-297",
+      "description": "resetSession rotates currentSessionId; onShutterTriggered rejects busy/reconciling/not-ready/permission-invalid states, creates UUID captureAttemptId and captureBundleId, stores pendingCapture, and sets isCapturing. onCaptureFailed clears pending attempt and isCapturing."
+    },
+    {
+      "path": "Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt:300-343",
+      "description": "handleRawCapturedBytes claims the pending attempt once, attaches camera metadata/geometry, persists original bytes, records attempt/SHA, and clears isCapturing in finally."
+    },
+    {
+      "path": "Android_App/app/src/main/java/com/example/domain/model/Models.kt:105-126",
+      "description": "CaptureBundle currently carries session/attempt/bundle IDs, original media/SHA, timing, lot evidence, camera metadata and optional geometry/focus/preview evidence; no product declaration or verification record."
+    },
+    {
+      "path": "Android_App/app/build.gradle.kts:65-82",
+      "description": "Android has CameraX camera2/core/lifecycle/view dependencies only among camera libraries; no ML Kit barcode/QR or ZXing dependency is present."
+    },
+    {
+      "path": "Android_App/gradle/libs.versions.toml:68-83",
+      "description": "Version catalog confirms CameraX 1.5.0 entries and no barcode/QR decoder entry."
+    },
+    {
+      "path": "python_gateway/dhea_v3_schema.py:118-214",
+      "description": "Generated v3 CAPTURE_V3 schema already defines product_gate_declaration with session/attempt/verification IDs, fixed product constants, qr protocol/mapping states, actual payload SHA field, and lot_id/serial_id null; product declaration is required."
+    },
+    {
+      "path": "python_gateway/dhea_v3_schema.py:216-227",
+      "description": "Generated semantic validator binds declaration session/attempt to capture, shutter times to capture_time_evidence, requires SHA-256 of literal UTF-8 bytes b'1:QIUQIU:DHEA', and checks monotonic ordering."
+    },
+    {
+      "path": "docs/api/generate_dhea_v3.py:64-105",
+      "description": "Generator source defines DECLARATION and CAPTURE structures, including required product fields and null LOT/Serial; this is the source of truth for generated v3 schema."
+    },
+    {
+      "path": "docs/api/generate_dhea_v3.py:385-476",
+      "description": "Generator maps outputs to openapi-dhea-v3.json, six schema files, positive/negative fixtures, qr-cases, generated python_gateway/dhea_v3_schema.py, JCS declaration/metadata/result fixtures, and baseline hashes. Generator is the minimum contract edit point; generated outputs are protected until a future contract task is authorized."
+    },
+    {
+      "path": "docs/api/schemas/capture-bundle-1.6.schema.json:1-190",
+      "description": "Exported bundle schema already carries capture session/attempt/bundle/original SHA and product_gate_evidence with verification ID, payload SHA, fixed product constants, and null LOT/Serial."
+    },
+    {
+      "path": "fixtures/dhea-v3/positive/capture.json:20-70",
+      "description": "Positive v3 capture fixture demonstrates the current declaration shape and values: session/attempt bindings, verification_record_id, qr_payload_sha256 for 1:QIUQIU:DHEA, lot_id null and serial_id null."
+    },
+    {
+      "path": "fixtures/dhea-v3/positive/bundle.json:1-40",
+      "description": "Positive bundle fixture exports the same product gate evidence and identity bindings with null LOT/Serial."
+    },
+    {
+      "path": "fixtures/dhea-v3/qr-cases.json:1-80",
+      "description": "QR fixture cases cover supported payload, unsupported version, URL-not-opened, empty, length boundaries, first-colon-only behavior, and invalid UTF-8; supported hash is the literal 1:QIUQIU:DHEA byte sequence."
+    },
+    {
+      "path": "fixtures/dhea-v3/jcs/product-gate-declaration.jcs:1",
+      "description": "Canonical declaration fixture exists and is tied to JCS/hash checks."
+    },
+    {
+      "path": "fixtures/dhea-v3/jcs/sha256.json:1",
+      "description": "JCS fixture hash manifest exists."
+    },
+    {
+      "path": "python_gateway/dhea_input.py:44-75",
+      "description": "Gateway input combines v2 METADATA and CAPTURE_V3, validates v3 declaration semantics, and maps semantic failures to INVALID_PRODUCT_GATE_DECLARATION."
+    },
+    {
+      "path": "python_gateway/dhea_input.py:285-310",
+      "description": "Upload parser validates selected capture schema, idempotency key, original image SHA and JPEG framing."
+    },
+    {
+      "path": "python_gateway/dhea.py:430-434",
+      "description": "Active /api/v2/lfa/measure explicitly rejects schema_version dhea-capture/3.0 with V3_ACCEPTANCE_NOT_IMPLEMENTED. Thus the v3 declaration is implemented as generated/documentary validation surface, not accepted runtime behavior."
+    },
+    {
+      "path": "core/dhea.py:371-410",
+      "description": "DheaRuntime.analyze initializes result with product identity gap evidence and marks implementation_status NOT_IMPLEMENTATION_BASELINE; it accepts image bytes and expected SHA only, with no product declaration input."
+    },
+    {
+      "path": "core/dhea.py:414-469",
+      "description": "Core validates byte SHA/JPEG framing, decodes with Pillow and applies EXIF orientation, then starts WINDOW_LOCALIZATION. There is no final-JPEG QR recheck or product-only recheck."
+    },
+    {
+      "path": "core/dhea.py:474-507",
+      "description": "After decode Core enters geometry localization, perspective transform and ROI support validation. This is precisely the path FINAL_JPEG_QR_PRODUCT_RECHECK must not expand into; no QR product check exists before it."
+    },
+    {
+      "path": "core/dhea_diagnostics.py:15-79",
+      "description": "Diagnostics includes PRODUCT_IDENTIFICATION stage but setup marks PRODUCT_IDENTIFICATION NOT_IMPLEMENTED, alongside other deferred stages."
+    },
+    {
+      "path": "python_gateway/dhea.py:109-178",
+      "description": "The active v2 gateway freezes metadata/image, invokes runtime.analyze on the original stored bytes, and persists the result; no declaration/product recheck input is passed to Core."
+    },
+    {
+      "path": "python_gateway/dhea_export.py:1-115",
+      "description": "This is v2 schema/OpenAPI export logic, not the v3 declaration generator. It exports v2 metadata/result/validation/diagnostic contracts and explicitly says Core owns measurement/4PL."
+    }
+  ],
+  "candidates": [
+    {
+      "name": "ANDROID_QR_PRODUCT_IDENTIFICATION_MINIMAL_SLICE",
+      "PLAN_ID": "QR-PRODUCT-CAND-01",
+      "DELIVERABLE_ID": "QR-PRODUCT-CAND-01-D01",
+      "TASK_ID": "PROPOSED-QR-PRODUCT-01",
+      "candidate_owner": "ANDROID_IMPLEMENTER",
+      "candidate_WRITE_OWNER": "ANDROID_IMPLEMENTER",
+      "existing_WRITE_OWNER": "UNKNOWN",
+      "status": "CANDIDATE_NOT_AUTHORIZED",
+      "files": [
+        "Android_App/app/src/main/java/com/example/camera/NativeCameraManager.kt",
+        "Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt",
+        "Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt",
+        "Android_App/app/src/main/java/com/example/domain/model/Models.kt",
+        "Android_App/app/build.gradle.kts",
+        "Android_App/gradle/libs.versions.toml"
+      ],
+      "dependencies": "Accepted product declaration semantics; separate authorization and ownership; real device/card evidence",
+      "exits": [
+        "E01",
+        "E02",
+        "E03",
+        "E04",
+        "E05",
+        "E06",
+        "E07",
+        "E13",
+        "E14",
+        "E15"
+      ],
+      "evidence_path": "herdr-team/.agent-control/EVIDENCE/QR-PRODUCT-CAND-01-D01.json"
+    },
+    {
+      "name": "QR_PRODUCT_DECLARATION_CONTRACT",
+      "PLAN_ID": "QR-PRODUCT-CAND-02",
+      "DELIVERABLE_ID": "QR-PRODUCT-CAND-02-D01",
+      "TASK_ID": "PROPOSED-QR-PRODUCT-02",
+      "candidate_owner": "CONTRACT_IMPLEMENTER",
+      "candidate_WRITE_OWNER": "CONTRACT_IMPLEMENTER",
+      "existing_WRITE_OWNER": "UNKNOWN",
+      "status": "CANDIDATE_NOT_AUTHORIZED",
+      "files": [
+        "docs/api/generate_dhea_v3.py",
+        "docs/api/openapi-dhea-v3.json",
+        "docs/api/schemas/capture-bundle-1.6.schema.json",
+        "docs/api/schemas/dhea-capture-v3.schema.json",
+        "docs/api/schemas/dhea-diagnostics-v2.schema.json",
+        "docs/api/schemas/dhea-error-v3.schema.json",
+        "docs/api/schemas/dhea-result-v3.schema.json",
+        "docs/api/schemas/dhea-validation-v3.schema.json",
+        "fixtures/dhea-v3/http-cases.json",
+        "fixtures/dhea-v3/jcs/metadata.jcs",
+        "fixtures/dhea-v3/jcs/product-gate-declaration.jcs",
+        "fixtures/dhea-v3/jcs/result-snapshot.jcs",
+        "fixtures/dhea-v3/jcs/sha256.json",
+        "fixtures/dhea-v3/legacy-v2-post-cases.json",
+        "fixtures/dhea-v3/negative/schema-cases.json",
+        "fixtures/dhea-v3/negative/transport-cases.json",
+        "fixtures/dhea-v3/positive/bundle.json",
+        "fixtures/dhea-v3/positive/capture.json",
+        "fixtures/dhea-v3/positive/diagnostics.json",
+        "fixtures/dhea-v3/positive/error-conflict.json",
+        "fixtures/dhea-v3/positive/error.json",
+        "fixtures/dhea-v3/positive/qr.json",
+        "fixtures/dhea-v3/positive/result-failed.json",
+        "fixtures/dhea-v3/positive/result-measured.json",
+        "fixtures/dhea-v3/positive/result-processing.json",
+        "fixtures/dhea-v3/positive/result-rejected.json",
+        "fixtures/dhea-v3/positive/validation.json",
+        "fixtures/dhea-v3/qr-cases.json",
+        "fixtures/dhea-v3/v2-baseline-sha256.json",
+        "python_gateway/dhea_v3_schema.py"
+      ],
+      "dependencies": "Separate authorization, ownership and explicit resolution of declaration naming/hash byte boundary and geometry-free statuses",
+      "exits": [
+        "E03",
+        "E04",
+        "E05",
+        "E07",
+        "E08",
+        "E10",
+        "E11",
+        "E13",
+        "E14",
+        "E15"
+      ],
+      "evidence_path": "herdr-team/.agent-control/EVIDENCE/QR-PRODUCT-CAND-02-D01.json"
+    },
+    {
+      "name": "FINAL_JPEG_QR_PRODUCT_RECHECK",
+      "PLAN_ID": "QR-PRODUCT-CAND-03",
+      "DELIVERABLE_ID": "QR-PRODUCT-CAND-03-D01",
+      "TASK_ID": "PROPOSED-QR-PRODUCT-03",
+      "candidate_owner": "CORE_IMPLEMENTER",
+      "candidate_WRITE_OWNER": "CORE_IMPLEMENTER",
+      "existing_WRITE_OWNER": "UNKNOWN",
+      "status": "CANDIDATE_NOT_AUTHORIZED",
+      "files": [
+        "core/dhea.py",
+        "core/dhea_diagnostics.py"
+      ],
+      "dependencies": "Accepted declaration semantics and genuine final-JPEG QR inputs; separate authorization and ownership",
+      "exits": [
+        "E03",
+        "E06",
+        "E07",
+        "E08",
+        "E09",
+        "E10",
+        "E11",
+        "E12",
+        "E13",
+        "E14",
+        "E15"
+      ],
+      "evidence_path": "herdr-team/.agent-control/EVIDENCE/QR-PRODUCT-CAND-03-D01.json"
+    }
+  ],
+  "exits": [
+    {
+      "id": "E01",
+      "criterion": "Correct 1:QIUQIU:DHEA reaches PRODUCT_FAMILY_MATCHED",
+      "slice": "ANDROID",
+      "evidence": "Real card/device preview plus positive fixtures",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E02",
+      "criterion": "Shutter disabled before match and enabled only after valid current-session/current-attempt match, retaining existing camera/storage guards",
+      "slice": "ANDROID",
+      "evidence": "Device interaction and state-machine transitions",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E03",
+      "criterion": "Unreadable / malformed / unsupported version / product mismatch are four distinct outcomes; unreadable never counterfeit claim",
+      "slice": "ANDROID+CONTRACT+CORE",
+      "evidence": "Four negative fixture classes and unreadable real-card scenario",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E04",
+      "criterion": "A successful verification permits only one capture attempt",
+      "slice": "ANDROID+CONTRACT",
+      "evidence": "Attempt consumption transition check",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E05",
+      "criterion": "Old verification cannot cross attempt or session; exit/capture completion/camera rebuild/different product/new attempt invalidate",
+      "slice": "ANDROID+CONTRACT",
+      "evidence": "Lifecycle and delayed callback/attempt binding checks",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E06",
+      "criterion": "Final complete JPEG contains readable product QR and remains immutable; inability to recheck is explicit refusal",
+      "slice": "ANDROID+CORE",
+      "evidence": "True-card original JPEG and refusal example",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E07",
+      "criterion": "original_sha256 and original bytes unchanged through persistence/upload/Core read",
+      "slice": "ANDROID+CONTRACT+CORE",
+      "evidence": "Original-byte/hash chain evidence",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E08",
+      "criterion": "Core independently redecodes final JPEG and matches the App product declaration and identity bindings",
+      "slice": "CORE+CONTRACT",
+      "evidence": "Actual Core execution with matching/mismatched/unreadable final JPEG",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E09",
+      "criterion": "QR never supplies formal observation-window ROI",
+      "slice": "CORE",
+      "evidence": "Independent source/behavior review of measurement isolation",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E10",
+      "criterion": "No measurement authority granted by product matching",
+      "slice": "ALL",
+      "evidence": "Declaration/result semantics and independent review",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E11",
+      "criterion": "No Homography computed or applied in product-only tasks",
+      "slice": "ALL",
+      "evidence": "Scoped source review and behavior evidence",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E12",
+      "criterion": "T/C and research 4PL behavior remains unchanged",
+      "slice": "CORE",
+      "evidence": "Applicable existing measurement regression evidence after future authorization",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E13",
+      "criterion": "Incomplete72-image set and48-hour relabel do not prevent product determination",
+      "slice": "ALL",
+      "evidence": "Dependency/state checks with geometry absent, not fake dataset completion",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E14",
+      "criterion": "Real-device/card, positive/negative fixtures, state-machine/Attempt tests and independent non-author Review are separately evidenced",
+      "slice": "ALL",
+      "evidence": "Revision-bound evidence bundle; synthetic fixtures cannot replace all true-card checks",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    },
+    {
+      "id": "E15",
+      "criterion": "No anti-counterfeit, LOT, Serial, unique-card identity or formal ROI claims",
+      "slice": "ALL",
+      "evidence": "UI/contract/Core independent review; LOT/Serial null",
+      "status": "CANDIDATE_NOT_EXECUTED"
+    }
+  ],
+  "protected_files": {
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/Contents.json": {
+      "sha256": "7fb5369f5879e979074e13f3432ce688932fd7e4446aee8237902e972e59da44",
+      "bytes": 1747
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/icon-1024.png": {
+      "sha256": "66c8cb6728b92207cf517158d219cd35bd41819e9de7e2ec2babe346f3e08d3b",
+      "bytes": 205322
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/user@example.com": {
+      "sha256": "29ec8640e9de544163310b6fe9ba2a0ee5ede3b7648c27a45decf36e3d535ff5",
+      "bytes": 2060
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/icon-20.png": {
+      "sha256": "41d08084682ec86e9bd04b9e7133598bb89760d2902f7a2d749685e60e84f292",
+      "bytes": 780
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/user@example.com": {
+      "sha256": "29ec8640e9de544163310b6fe9ba2a0ee5ede3b7648c27a45decf36e3d535ff5",
+      "bytes": 2060
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/user@example.com": {
+      "sha256": "1ae0073fbf8e44423daba456ba1e5ea424a78b85193e72a96f90ad7883639c93",
+      "bytes": 3457
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/user@example.com": {
+      "sha256": "6c7f44627970d9369baacad2f648f8df313f05cf3a6a16bc6c91e0597cb86491",
+      "bytes": 3350
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/icon-29.png": {
+      "sha256": "0539cf0801dd177d50eac35824f703ce30a3e581dcc02f3fc53de7c5a6454471",
+      "bytes": 1321
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/user@example.com": {
+      "sha256": "6c7f44627970d9369baacad2f648f8df313f05cf3a6a16bc6c91e0597cb86491",
+      "bytes": 3350
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/user@example.com": {
+      "sha256": "c11ea12b716124ce4ea3c418611a510327c7ac5d13cf7175761bf2e23a05e316",
+      "bytes": 6051
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/user@example.com": {
+      "sha256": "d99bdde8733d7a26cd167f09f9262eeb2e9c8ab75ec2ffe6c667490e3b42030f",
+      "bytes": 5349
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/icon-40.png": {
+      "sha256": "29ec8640e9de544163310b6fe9ba2a0ee5ede3b7648c27a45decf36e3d535ff5",
+      "bytes": 2060
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/user@example.com": {
+      "sha256": "d99bdde8733d7a26cd167f09f9262eeb2e9c8ab75ec2ffe6c667490e3b42030f",
+      "bytes": 5349
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/user@example.com": {
+      "sha256": "afe7509ca1779b26d371a5860d96649d2ebfb7da91c90aaad35073c941ef3d3b",
+      "bytes": 9530
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/user@example.com": {
+      "sha256": "afe7509ca1779b26d371a5860d96649d2ebfb7da91c90aaad35073c941ef3d3b",
+      "bytes": 9530
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/user@example.com": {
+      "sha256": "18b9cca95ef7f40eee378d7b4747326c75e8598ebe4d2fd547daefd83fd01e80",
+      "bytes": 16457
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/icon-76.png": {
+      "sha256": "da0d809499cb69efbe6b6f22242903f8e7b97ebf08466509faee701f27252f3f",
+      "bytes": 4905
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/user@example.com": {
+      "sha256": "12106d235b12a371f16ddeb6399e7e628d854dcb20f4b7020a5c1c824f2b1d3c",
+      "bytes": 12917
+    },
+    "IOS_App/Assets.xcassets/AppIcon.appiconset/user@example.com": {
+      "sha256": "ae05cf4611c6de8549a555da51dc3ea1b63528dd191f51c20d8865c1237c43f8",
+      "bytes": 14819
+    },
+    "IOS_App/Assets.xcassets/qiuqiu.imageset/Contents.json": {
+      "sha256": "ab21abd09fde1a841936d3b0e7b241e42775e4f9d75d6ecca76cf5d1c14a1455",
+      "bytes": 146
+    },
+    "IOS_App/Assets.xcassets/qiuqiu.imageset/qiuqiu.png": {
+      "sha256": "8d8f96706a4c7709cd2adda717476d02055fcadc8eb4b563103555dbde476727",
+      "bytes": 1183309
+    },
+    "IOS_App/CameraSession.swift": {
+      "sha256": "2047328235ba93652be08e29dc7bada5c9eb85888ca2af63907ccae539270870",
+      "bytes": 6172
+    },
+    "IOS_App/DheaApiClient.swift": {
+      "sha256": "40a05260089162baa8b7a608cd41ebc3cf99b5e05ff75f09fcf93f930e462fbf",
+      "bytes": 1284
+    },
+    "IOS_App/Info.plist": {
+      "sha256": "d4c502b030bae9feecf918774a6ca32087e6fcdf31d708de215b8b3691a4d2c8",
+      "bytes": 1268
+    },
+    "IOS_App/LFAReader.xcodeproj/project.pbxproj": {
+      "sha256": "8d6ecc1b6f7a2ef9522a64960e7ff0b204569e081a3192b03dbf5596c63c59f1",
+      "bytes": 6762
+    },
+    "IOS_App/LFAReaderApp.swift": {
+      "sha256": "2861304f2ae026ec23f227af20a5a16a3e64f11c19203a866e2a9df73cd31f46",
+      "bytes": 11358
+    },
+    "IOS_App/LFAStore.swift": {
+      "sha256": "8562a958abbe2209fe9987e95e411f406fbf694c7eaabad898738ba2e7e57b08",
+      "bytes": 1554
+    },
+    "IOS_App/build-and-install.sh": {
+      "sha256": "90d13d7a1b346a32f662e6da6ac9c5bcc0e566aa374e711f5c5f969d638a76fb",
+      "bytes": 4974
+    },
+    "docs/DOCUMENT_LIFECYCLE.md": {
+      "sha256": "87969a36029dbb322b78dc7fb5e3cc37838961854eb84cd888fa7d27e1119023",
+      "bytes": 4193
+    },
+    "docs/MAC-SSH连接信息.md": {
+      "sha256": "86583788086bf66a543a1bfe958fa6fdc4dbb6ebfc86f9002d23f7c4bd6d4132",
+      "bytes": 4479
+    },
+    "docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.2.md": {
+      "sha256": "d9eb522a8e0afa7caf508e5e00eabd0e187cfde00e42400c9f7b5fbe9083b668",
+      "bytes": 37544
+    },
+    "docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.3_IMPLEMENTATION_READY.md": {
+      "sha256": "e3b986f753dd44ba8ec0f914fb2383a0f2825bfccce072c3c18e9c3395eb5fc7",
+      "bytes": 45976
+    },
+    "docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.4_IMPLEMENTATION_READY.md": {
+      "sha256": "145a471bfe2f55de02511ae47fd18014665cd3b0a0c8715469cbf57214e08b0c",
+      "bytes": 29766
+    },
+    "docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.5_IMPLEMENTATION_READY_AFTER_TEMPLATE_VALIDATION.md": {
+      "sha256": "2d621ee4f506658fe5b630f22606190e7474544fe09c853297d29f64819f6e31",
+      "bytes": 36384
+    },
+    "docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.6.md": {
+      "sha256": "e5a27bead730bee65495bd8b191599188f383989b735323bdb917c84fa77e523",
+      "bytes": 73728
+    },
+    "docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.6_MANUAL_QR_CONTROLLED_ROI_REVISED.md": {
+      "sha256": "53779b91fc342304218eeacd59dec8d2aaa9fc812e72b03c4ea7959886047281",
+      "bytes": 70659
+    },
+    "docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.7_IMPLEMENTATION_BASELINE.md": {
+      "sha256": "d716475b633b91191dcbe729ecddb189549e6c04aa1c827493e077ef41ec83a4",
+      "bytes": 34271
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6.zip": {
+      "sha256": "6acd677e3a04af81ec72d4aea844329154d38905447713ca38c22602a6ebb7e3",
+      "bytes": 20020
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/01_QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.6.md": {
+      "sha256": "91b053dc10c3bff8bb5eb037317b3ca6075c3958269c132c915eb814aec5ac82",
+      "bytes": 4806
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/02_MASTER_PLAN_v1.1.md": {
+      "sha256": "e91c0e0fcd4436fb226285dc7c24cb87c25ca380629a66e4eb2d6e7574b45051",
+      "bytes": 1502
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/03_DECISIONS_QR_MVP_VERTICAL_SLICE_v1.0.md": {
+      "sha256": "62b6ba06cda8d0debb0b4d40d3244b3e65547ebe6ee8fbfd7e4a88d2fe122add",
+      "bytes": 1411
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/04_TASK_BOARD_QR_TEMPLATE_ROI_SIGNAL_v1.0.md": {
+      "sha256": "75b5679d0afd79b7c1e835be9a2b84e1d8f7528224fc6cb9e3dc2a86ab244620",
+      "bytes": 2681
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/05_AUTHORITATIVE_CONTRACT_SYNC_CHECKLIST_v1.0.md": {
+      "sha256": "342f3e41c37fb2ed86c3baf366d3909b1f5f1effdf991483e1b04638428cdcf4",
+      "bytes": 17326
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/06_TEMPLATE_ESTABLISHMENT_AND_VALIDATION_PLAN_v1.0.md": {
+      "sha256": "4cdde5ce2efff9d032504762d591f0706df3bd605a198e37ff4bdd46a3fbc430",
+      "bytes": 10577
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/07_HERDR_RECENT_THREE_FAILURES_INVESTIGATION_v1.0.md": {
+      "sha256": "dd35aac3678515c2e06f6a799c66d17db3716ccc3539dbc63c8051855367e7ce",
+      "bytes": 1443
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/08_TEN_POINT_CAPTURE_RELEASE_AND_EXECUTION_PLAN_v1.0.md": {
+      "sha256": "2b5279ff45ac0f3916f8135b3e607f05d296e8a04dcdc9f7d6e8485058df91f6",
+      "bytes": 10848
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/09_MANUAL_QR_CONTROLLED_ROI_PLAN_REVISION_v1.0.md": {
+      "sha256": "a86c9c79ed2227dc80e0b6ea64dff178cd735d63889d528b01d0daffd6bdd58b",
+      "bytes": 19716
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/10_SINGLE_ANNOTATOR_DEVELOPMENT_REFERENCE_PLAN_v1.0.md": {
+      "sha256": "0d9bf1205478290101c86f19d36cc683a8493cb11b6bf114c3f886b854d3b500",
+      "bytes": 14452
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/MANIFEST.sha256": {
+      "sha256": "90c5b32869f6a9f04d914ec3acb2c535b638da0fc84d88eedfc64c467ecbe2d2",
+      "bytes": 987
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/README.md": {
+      "sha256": "883fc0e326563fc3ccd8fc809a537db815ad56408773ff0f81cbc4bcd5361e18",
+      "bytes": 2979
+    },
+    "docs/api/dhea-v3-product-gate.md": {
+      "sha256": "c4dabe2504df0291035a241b732705f18cd9b59c4c2e8cfea6d55560980beea5",
+      "bytes": 3590
+    },
+    "docs/api/generate_dhea_v3.py": {
+      "sha256": "2978a244c25ca7018b25eabceb815eca8fb53065be729978d37031365e7b8949",
+      "bytes": 34975
+    },
+    "docs/api/openapi-dhea-v3.json": {
+      "sha256": "624892bdbf32ec67525aded2a38e13fad437bab1a1b575b72bb1d05f022fd4c8",
+      "bytes": 5179
+    },
+    "docs/api/schemas/capture-bundle-1.6.schema.json": {
+      "sha256": "9b37acb82c652f8358d6f08c6c9202f118400b1a7e598a893ccbf7b5a19b89e5",
+      "bytes": 5184
+    },
+    "docs/api/schemas/dhea-capture-v3.schema.json": {
+      "sha256": "beead8999f86eadae0e94988f29e15bd0d8dd03f79d1b2fd5e16bf7b628384b2",
+      "bytes": 10438
+    },
+    "docs/api/schemas/dhea-diagnostics-v2.schema.json": {
+      "sha256": "acc9b39869e71070ea1a929e3f6968a5341489a7f454d95cb776d50ad6aedc20",
+      "bytes": 27700
+    },
+    "docs/api/schemas/dhea-error-v3.schema.json": {
+      "sha256": "2daf0a664531c3ef6d9fe5078432a3c251fec4a7281acf14a0a7552f874b5130",
+      "bytes": 771
+    },
+    "docs/api/schemas/dhea-result-v3.schema.json": {
+      "sha256": "0d6773ec80f55cfbe1eae9c485f5b39a937fb77462db6e903c902252e6e6e5de",
+      "bytes": 30618
+    },
+    "docs/api/schemas/dhea-validation-v3.schema.json": {
+      "sha256": "5d2e09d34eab2e568dfcaa0d09ee9c2ed68a0055400634b1225e2b99d5eda59a",
+      "bytes": 38362
+    },
+    "docs/requirements/AGENTS.md": {
+      "sha256": "1c923a8fa5126a34a0e181fb8010c04a64cf266707c42316c4497c1ce1b759a5",
+      "bytes": 592
+    },
+    "docs/requirements/INDEX.md": {
+      "sha256": "2b84287e8da075c831bcee464b33d04722a2b9494669c15a5f2492325543a799",
+      "bytes": 18126
+    },
+    "docs/specs/AGENTS.md": {
+      "sha256": "cc16ca17b0fd94d6ee780ac5214af8e4033ca8043a3003a1d72929827e1a3235",
+      "bytes": 583
+    },
+    "docs/specs/INDEX.md": {
+      "sha256": "907470af6831a2fdbd2eefa36d2c21f187cd2686ce4222fa662cba15500fc5c7",
+      "bytes": 2430
+    },
+    "docs/technical/AGENTS.md": {
+      "sha256": "7e2083fe03b5f8b42045ee0175db46cf346656ed39e7d3567925b842ac4631fe",
+      "bytes": 593
+    },
+    "docs/technical/INDEX.md": {
+      "sha256": "a25a172695196264cdb0fd10b23ab3be67b472f9fc4b24e70cebaea6d57e55e2",
+      "bytes": 1510
+    },
+    "docs/www.huijg.cn.crt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "fixtures/dhea-v3/http-cases.json": {
+      "sha256": "de49893f442e6340a832ca09ac425f75dc3bf6ccbb44d09fcc6a272c6321e173",
+      "bytes": 1166
+    },
+    "fixtures/dhea-v3/jcs/metadata.jcs": {
+      "sha256": "1d5f159de1ff0194234ccd98f14f9c03278fb8474ef47e647155d086e758c3c2",
+      "bytes": 2156
+    },
+    "fixtures/dhea-v3/jcs/product-gate-declaration.jcs": {
+      "sha256": "6dc106a5260f5d045ff599939cf43302e65dcece78b0b361423ca5172d352db1",
+      "bytes": 1125
+    },
+    "fixtures/dhea-v3/jcs/result-snapshot.jcs": {
+      "sha256": "8bff858242767df04ac3cbcbe3c90c6f7df51a3c95d7c6be5f06211e71c587c4",
+      "bytes": 1330
+    },
+    "fixtures/dhea-v3/jcs/sha256.json": {
+      "sha256": "5465e7938a1b3da806f8c3003b17f16147aecbf936daae8914714c45858da7d6",
+      "bytes": 511
+    },
+    "fixtures/dhea-v3/legacy-v2-post-cases.json": {
+      "sha256": "5e0094239c9253ce2d29b32cabc08ff86f7180d0f5e4e19f3dd9199d56f3f277",
+      "bytes": 1168
+    },
+    "fixtures/dhea-v3/negative/schema-cases.json": {
+      "sha256": "60b9c334fb5c6bd2eefdad761bf1b373cb5f31c3deb6d12a81b996fc3c77eea7",
+      "bytes": 32309
+    },
+    "fixtures/dhea-v3/negative/transport-cases.json": {
+      "sha256": "6be50b01fa0ecd5cfc3ded359f4c84a86662f0e20987024455552d1a1f641d31",
+      "bytes": 356
+    },
+    "fixtures/dhea-v3/positive/bundle.json": {
+      "sha256": "ee8248fb0463d3f8867f66288104d26ff0aaea3fbd524474dd633b3553b24ee4",
+      "bytes": 1635
+    },
+    "fixtures/dhea-v3/positive/capture.json": {
+      "sha256": "ab055a0e407f16f772b8e788b1446d27da8a988e6d1c7921c627050e6387d42c",
+      "bytes": 2504
+    },
+    "fixtures/dhea-v3/positive/diagnostics.json": {
+      "sha256": "2fddfe4474a2e720faff46a18d870ff18c9c28b99942a10effac778e718330fa",
+      "bytes": 3094
+    },
+    "fixtures/dhea-v3/positive/error-conflict.json": {
+      "sha256": "201ee9e0cdef1dd525dcb94966b5d2914a372ad1615d8a030a9c9c76fae61c26",
+      "bytes": 216
+    },
+    "fixtures/dhea-v3/positive/error.json": {
+      "sha256": "8955bf1f2c1e4f3f6cbfbb7d92c2fcbe784b3ee5c3cf2788ecf729c581237b09",
+      "bytes": 212
+    },
+    "fixtures/dhea-v3/positive/qr.json": {
+      "sha256": "44d3af5c256e23f8a4e7f299a0c4b3b0a096ed30a18a11c82707a994ab0643c2",
+      "bytes": 438
+    },
+    "fixtures/dhea-v3/positive/result-failed.json": {
+      "sha256": "2457eebfe5f89435f1bb19e56c8bdb58db73987e74ae7569f175e85c6e17e3dc",
+      "bytes": 734
+    },
+    "fixtures/dhea-v3/positive/result-measured.json": {
+      "sha256": "5bb1b443eb7c2db1fbd858542690fb3270836bf83267ac1decf5211e35535660",
+      "bytes": 1548
+    },
+    "fixtures/dhea-v3/positive/result-processing.json": {
+      "sha256": "1d58f94aefb6d19b4b92d3518c9df69be3318ed0e14cb239ced50c67049b75f8",
+      "bytes": 728
+    },
+    "fixtures/dhea-v3/positive/result-rejected.json": {
+      "sha256": "dc6279c1119c21355ea65c2e9248992b7d4e713eb7b6698ae0236298893de759",
+      "bytes": 1603
+    },
+    "fixtures/dhea-v3/positive/validation.json": {
+      "sha256": "0a47ec536c66bdb5b17ce58ab682e9622330b238f80e521440852276b6de9c92",
+      "bytes": 2422
+    },
+    "fixtures/dhea-v3/qr-cases.json": {
+      "sha256": "17829f1039190cf8e9aacad9d0ae2db3ba1c13ec65c6c79ecee3fc90061a56a3",
+      "bytes": 2252
+    },
+    "fixtures/dhea-v3/v2-baseline-sha256.json": {
+      "sha256": "1af9cae8e2dfb2ec69212e04089a754650995ebe3d25d5291655f9bbb38ecca2",
+      "bytes": 1262
+    },
+    "herdr-team/.agent-control/AGENT_STATUS/lfa-android.json": {
+      "sha256": "b1191b3cda35c0b815910d7b36c5da4eca9f35bcf9205f8522398a9ced11532b",
+      "bytes": 121
+    },
+    "herdr-team/.agent-control/AGENT_STATUS/lfa-api.json": {
+      "sha256": "906df0219888c80134731447553b93738e3cfcb82e380ab2f50734f5d8e427d9",
+      "bytes": 117
+    },
+    "herdr-team/.agent-control/AGENT_STATUS/lfa-ios.json": {
+      "sha256": "ccf4e364d08b5facf395b6d31d9ed292f378507385fbf53d2f70aa22c9690a34",
+      "bytes": 670
+    },
+    "herdr-team/.agent-control/AGENT_STATUS/lfa-pm.json": {
+      "sha256": "f966fb741e7a4279d786b6b4861e1b08dad795fcbbde7c17d45cbe485b776595",
+      "bytes": 545
+    },
+    "herdr-team/.agent-control/AGENT_STATUS/lfa-review.json": {
+      "sha256": "0a3c1dd4f4ce6658a60fd49721c7f904aa0d30b2e2c3d7b67feb390d0a5dee96",
+      "bytes": 1108
+    },
+    "herdr-team/.agent-control/AGENT_STATUS/lfa-start.json": {
+      "sha256": "543902c2297d33f24913db401c601fd3091d085895f6f04352cd0d63ca5959b4",
+      "bytes": 1878
+    },
+    "herdr-team/.agent-control/DECISIONS.md": {
+      "sha256": "5861ed72db8a5935759d543d02364eee730cc9e3eb8f8357ad44faf024846d90",
+      "bytes": 7299
+    },
+    "herdr-team/.agent-control/EVIDENCE/MASTER-PLAN-RECONSTRUCTION-20260918.md": {
+      "sha256": "933e0b7a6f46f62b61bd7495528f351f37d16812dd1cb403fee20e3df8d5d3c3",
+      "bytes": 5337
+    },
+    "herdr-team/.agent-control/EVIDENCE/PM-ONBOARD-20260918T043217Z.json": {
+      "sha256": "ff55056fb602870f2f7b2c7c901f4bf2b7cc40e1e5d55348eb0bfb45f28ff75d",
+      "bytes": 5192
+    },
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-checks.json": {
+      "sha256": "dd3ba181b8cb4b3a155b996e7b5ac2d0cedfa82b95cf89b4c132b0f764a7327d",
+      "bytes": 3650
+    },
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-dataset.json": {
+      "sha256": "017b6b155518e0c311bedcec35e90f0d1c2c624e65cfa09ca469dc2c03341578",
+      "bytes": 2107
+    },
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-geometry.json": {
+      "sha256": "b525cd0844a786910bb177329225db06b2c6ab13cb1769cbd13293c9b8f1f35a",
+      "bytes": 2137
+    },
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-report.md": {
+      "sha256": "21f2be67f5e5953ac82f6d24abf78400ad8ceed41622b51629cd207c81b5938f",
+      "bytes": 4440
+    },
+    "herdr-team/.agent-control/EVIDENCE/QR-PLAN-02-D01-checks.json": {
+      "sha256": "b4904a7d6484c9946518380d5492407257a9c4c4fbdb145929fb25ffee11fcfe",
+      "bytes": 13510
+    },
+    "herdr-team/.agent-control/EVIDENCE/QR-PLAN-03-D01-checks.json": {
+      "sha256": "b1f3c35e7685c261cec29532ec86931ffe0935163d49a68fb65f5cea2e97ce56",
+      "bytes": 11096
+    },
+    "herdr-team/.agent-control/EVIDENCE/QR-PLAN-04-D01-checks.json": {
+      "sha256": "ff427ebae45163e9fee06e64e956563049978b000d28019afdc0b1e1daca1e2d",
+      "bytes": 12497
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-AND-AUDIT.md": {
+      "sha256": "f21c13ab6359b558ac17c05ba136b66a451f68c1597d247d577c3fc221124c3d",
+      "bytes": 18907
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-API-AUDIT.md": {
+      "sha256": "75384511fe2867d60cd13f46355c860f37fb9eecd4c67854e60293b926f450af",
+      "bytes": 30058
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-PM-SCOPE.json": {
+      "sha256": "85b29c23582033cc8dcab130fb76639f8694ee50a6c75ea95c105d338a5bfe44",
+      "bytes": 19514
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-PM-SCOPE.md": {
+      "sha256": "874df3b246fae6c50c123a356efab9b4daee1ca9572c5b6692f0d04e82a9daee",
+      "bytes": 79466
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REPAIR-BOUNDARY-manifest.json": {
+      "sha256": "df8d648f3c5f0c94304ea01d2b27136efc2ea5ef94333bf58f0cbfa693462222",
+      "bytes": 175020
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REPAIR-BOUNDARY-old-tracked.patch": {
+      "sha256": "c80055a2da264496b2998bc971f74afc07af69d6b9349da9c5ca79f657907325",
+      "bytes": 11368
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REPAIR-BOUNDARY.md": {
+      "sha256": "ba739478b15a3f46e7a1eedb73db155fe011cb38828358b99a95755260ceed5d",
+      "bytes": 54623
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REVIEW-BASELINE-checks.json": {
+      "sha256": "cd90e959d47dae2f4e3f889b56bdaf26542447a1b74d49b5764731b54aef7e01",
+      "bytes": 8878
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REVIEW-BASELINE.md": {
+      "sha256": "ee93848c89c0ede8157c2d9e9766d78fc02307aa36ec4c4197d37f94bb49c89b",
+      "bytes": 57154
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T075255Z-QRP-G0-AUTH-checks.json": {
+      "sha256": "b2ddcd6bef2243d64aec70a877ae59620e2ec2404021ae15dd1c817350e91856",
+      "bytes": 31021
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T075255Z-QRP-G0-AUTH.md": {
+      "sha256": "71b8522a9f24308cb89abf1c294f603e297e6c3119a7b56265cf17d0536f447d",
+      "bytes": 23493
+    },
+    "herdr-team/.agent-control/EVIDENCE/TEAM-OWNERSHIP-DASHBOARD-20260918.md": {
+      "sha256": "f94364bdcaed90b499aeae8443d15a997b6aa9bf549f571489dbb02d12f5cef8",
+      "bytes": 6016
+    },
+    "herdr-team/.agent-control/EVIDENCE/activate-lfa-android.log": {
+      "sha256": "6e377827fa028bd4590c9c864464a6577c3448c25e4ae5a2008adfd643b1b27d",
+      "bytes": 1487
+    },
+    "herdr-team/.agent-control/EVIDENCE/activate-lfa-api.log": {
+      "sha256": "0c0da8e5a42a860554196445edf703ff7b3d8d1233a543b17a159504181a6bdb",
+      "bytes": 1479
+    },
+    "herdr-team/.agent-control/EVIDENCE/activate-lfa-ios.log": {
+      "sha256": "ffb6e381005fd34d0c32e849e13a24df9e447d6fce957119fdd4da9c8a3f6c54",
+      "bytes": 1255
+    },
+    "herdr-team/.agent-control/EVIDENCE/activate-lfa-pm.log": {
+      "sha256": "86df8d76fd267e217031386c0c095bd38a4bc6c9ea84ab866cb2d3e11c11621d",
+      "bytes": 1477
+    },
+    "herdr-team/.agent-control/EVIDENCE/activate-lfa-review.log": {
+      "sha256": "1ce5b0ece960f7a4e2b493edb1bacc2ed691847f77babe802de4aedf6d3db123",
+      "bytes": 1485
+    },
+    "herdr-team/.agent-control/EVIDENCE/activate-lfa-start.log": {
+      "sha256": "d502012792575e31cbadf8f00b40b4cc1ce0889cd55335094a2f97028fb75ad5",
+      "bytes": 1483
+    },
+    "herdr-team/.agent-control/FILE_OWNERSHIP.md": {
+      "sha256": "4e767f51af25da70c3b04ce549ccd319f8b741548316b9df7935c91a1218b93f",
+      "bytes": 42739
+    },
+    "herdr-team/.agent-control/INTERFACE_CONTRACT.md": {
+      "sha256": "68844891326fe778577fc5964d036d986c73a9f13a3b5adcef36bafa36ceb5cb",
+      "bytes": 857
+    },
+    "herdr-team/.agent-control/MASTER_PLAN.md": {
+      "sha256": "67f455400f22565be86379398bc78f806e238f824e7a9803e84018cf08b4d6cf",
+      "bytes": 56808
+    },
+    "herdr-team/.agent-control/PM_GATE": {
+      "sha256": "d155369bf6f8e164933d20f77f1641ecb14218a18b43c94a61356c568069ae65",
+      "bytes": 140
+    },
+    "herdr-team/.agent-control/PROJECT_SCOPE.md": {
+      "sha256": "130f66da0f5a55e10cc4b88b05e7da96722e47e0e20f3f0e2522d66a50644a7f",
+      "bytes": 856
+    },
+    "herdr-team/.agent-control/PROJECT_SNAPSHOT.md": {
+      "sha256": "b8a6237b5cf6f63217ceb3f6c21e35620f757786b8a132b3c098ad04c7e31f0a",
+      "bytes": 13507
+    },
+    "herdr-team/.agent-control/REVIEW_QUEUE.md": {
+      "sha256": "e291cd41229c7559eb52284ee042a17cdb165c397bac380ac71450c0fe357657",
+      "bytes": 41895
+    },
+    "herdr-team/.agent-control/ROUNDS/20260918T042918382640886Z.md": {
+      "sha256": "60fc945538d32562aa6659c668c764222a64ffdd156836027e7a68a914577770",
+      "bytes": 1246
+    },
+    "herdr-team/.agent-control/ROUNDS/20260918T042918382640886Z.panes": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "herdr-team/.agent-control/ROUNDS/20260918T043217Z-meeting.md": {
+      "sha256": "a9ff37d574cc8bf9337581c5d500c60eaa1361d318be9186f2e759a40628e0c1",
+      "bytes": 98337
+    },
+    "herdr-team/.agent-control/TASKS/TASK_TEMPLATE.md": {
+      "sha256": "4ac0b2abb4f88904bd03edfdfcf1bd93e0f3b20887db12928742849f3ee39e12",
+      "bytes": 470
+    },
+    "herdr-team/.agent-control/dashboard.log": {
+      "sha256": "d90a559e93aba800877eee0f3514f7733c9f85358a74ff7c8ffe546ae442848b",
+      "bytes": 40
+    },
+    "herdr-team/README.md": {
+      "sha256": "5df378c6cb7964f69a43fad905f011b303027988c0cef234b9b2f884a1b0af11",
+      "bytes": 5271
+    },
+    "herdr-team/SHA256SUMS.txt": {
+      "sha256": "332b67212722c3acdc3151334e250c93f5698dfa24127003b2942495aac0d3be",
+      "bytes": 1243
+    },
+    "herdr-team/activate.sh": {
+      "sha256": "87a9ae9f5c5b585bf050a5cb537b0698ea54954a7565dd54a335c64bd4ea7e21",
+      "bytes": 4525
+    },
+    "herdr-team/config.env": {
+      "sha256": "62c0b49bdd9e16081644e5db50386107246a9f8041dbb0a7d49b4dc73790d729",
+      "bytes": 347
+    },
+    "herdr-team/dashboard.py": {
+      "sha256": "f2a076d5436b77abe13bf845ddb2c7489c4fb9f994145927dc6caec1b715e583",
+      "bytes": 23053
+    },
+    "herdr-team/lfa-team.sh": {
+      "sha256": "9fbbc27cbd65bc09464d12887d877a8123c07a3f2deacb82984e38f3e6a0b510",
+      "bytes": 6729
+    },
+    "herdr-team/preflight.sh": {
+      "sha256": "857c7d742ed99161af818bd13c9cbc542024a4bbe3fed000b9e1a884a98bc2a2",
+      "bytes": 268
+    },
+    "herdr-team/prompts/COMMON.md": {
+      "sha256": "3a92267fbea7024f2c45183898e12d58de95549a100bb9205cdb6e18e122b3a9",
+      "bytes": 3321
+    },
+    "herdr-team/prompts/api.md": {
+      "sha256": "50777e193fe2546303d8bd8f8bc09d8e92488cc4ddfdebd39da62744565169c9",
+      "bytes": 422
+    },
+    "herdr-team/prompts/app-apk.md": {
+      "sha256": "9d90b811514b75d85cf12f9911c4f4b05ab083710450bb9bdc20ca4ab277d26c",
+      "bytes": 460
+    },
+    "herdr-team/prompts/app-ios.md": {
+      "sha256": "894236d351029591ca6f11d822c8c304dc8385187a90c82748e13bd20b0366eb",
+      "bytes": 395
+    },
+    "herdr-team/prompts/pm.md": {
+      "sha256": "41dc8b07af87b0e4ed9780e6e52e6c85c5260c0d0ccc5b530cc2fbaaa76b98a5",
+      "bytes": 7019
+    },
+    "herdr-team/prompts/review-code.md": {
+      "sha256": "4b37f8663566c77eea99f648f33342656777bdd99dca55dd9abef6cb7438808f",
+      "bytes": 774
+    },
+    "herdr-team/prompts/start.md": {
+      "sha256": "98fde16b18638e7b56456c9f64999f6a2d7eee4809da6fdce821c47a907d5fda",
+      "bytes": 3643
+    },
+    "herdr-team/review_dispatch.py": {
+      "sha256": "ae08ff4205aa0e1180117f15b650dd071ee7e466c5d9338ef60bc7d05b28ad76",
+      "bytes": 28901
+    },
+    "python_gateway/dhea_v3_schema.py": {
+      "sha256": "5b24b5370f3de8cba5353e18f027f5a07cdcfd792a24e3c06d112eac2c839933",
+      "bytes": 20027
+    },
+    "python_gateway/tests/test_dhea_v3_api.py": {
+      "sha256": "093627ffa2279d495fd30b860efc01e416d901e2a74716f59a41c24213cbb1f7",
+      "bytes": 4825
+    },
+    "python_gateway/tests/test_dhea_v3_contract.py": {
+      "sha256": "82cadab5c6406f95a70a1ed88c3d71d74ed17345f0a6e0091dfc32ed0f16befc",
+      "bytes": 5051
+    },
+    "qiuqiu.png": {
+      "sha256": "8d8f96706a4c7709cd2adda717476d02055fcadc8eb4b563103555dbde476727",
+      "bytes": 1183309
+    },
+    ".gitignore": {
+      "sha256": "e3a4bfb49d3c602ce388b924f447465da5c57ae530c4cc3f4dce4b7cebc22234",
+      "bytes": 397
+    },
+    "AGENTS.md": {
+      "sha256": "4fd5d2b866954e64d3f92bf3a731eae5377c80e020f08f4be7de0bf6841aa7e5",
+      "bytes": 29608
+    },
+    "Android_App/.env.example": {
+      "sha256": "ad3ed5a69c9b1e2c5d92ed5e01b9bd2bfdecf1545924144d11d94aaf2ea9c2b3",
+      "bytes": 388
+    },
+    "Android_App/.gitignore": {
+      "sha256": "da91b936c6f9f6050067712ab64aa13281d90717f8d1b9a596ef09170f1afdd6",
+      "bytes": 253
+    },
+    "Android_App/README.md": {
+      "sha256": "c7f759bd3c839831f07d001cf5493ef99e7514980460065d4e07c06f432e6fbe",
+      "bytes": 5445
+    },
+    "Android_App/app/.gitignore": {
+      "sha256": "5b46eb48d96e8571e8c93e4ef4f6ffbe6807b6d7350664a36a064e1167a32718",
+      "bytes": 7
+    },
+    "Android_App/app/build.gradle.kts": {
+      "sha256": "b3fd05ec7a68066046376115249aefb214b34e54189ac7d7da946bf473adc015",
+      "bytes": 5185
+    },
+    "Android_App/app/proguard-rules.pro": {
+      "sha256": "1cf8c57e8f79c250b0af9c1a5a4edad71a5c348a79ab70243b6bae086c150ad2",
+      "bytes": 751
+    },
+    "Android_App/app/src/androidTest/java/com/example/ExampleInstrumentedTest.kt": {
+      "sha256": "c6ef958cafb00dbec798a71f5be604e9cf56189676312bea40f63dd07ca0d674",
+      "bytes": 643
+    },
+    "Android_App/app/src/main/AndroidManifest.xml": {
+      "sha256": "a453dfcbb421d381664a7649b753128bd48dbd2a216fe257d87dafbaf16ff9e0",
+      "bytes": 1279
+    },
+    "Android_App/app/src/main/java/com/example/MainActivity.kt": {
+      "sha256": "04c64d24f3225db27650fd423ba340607a6151de191ccf9e017b143e70047988",
+      "bytes": 6102
+    },
+    "Android_App/app/src/main/java/com/example/camera/NativeCameraManager.kt": {
+      "sha256": "68d29a2fd961c7ce31044f0f289f065b36df245676662257f7dd3f894b23fa40",
+      "bytes": 25049
+    },
+    "Android_App/app/src/main/java/com/example/camera/PreviewGuidanceAnalyzer.kt": {
+      "sha256": "3ed1ff4321379da978a76eebd5fb17107ab83922d44f987fe2b2aec539deb056",
+      "bytes": 10977
+    },
+    "Android_App/app/src/main/java/com/example/data/local/JournaledArtifactStore.kt": {
+      "sha256": "44299c39cf4410593c647bb040221f568b03c69240256ab453146f3d778bf34c",
+      "bytes": 30935
+    },
+    "Android_App/app/src/main/java/com/example/data/local/ReconciliationEngine.kt": {
+      "sha256": "03499208346524a4bbdbc98740ac4a59d5f4e0fbe64bf0d1f8d434938da6d980",
+      "bytes": 8531
+    },
+    "Android_App/app/src/main/java/com/example/data/local/db/Daos.kt": {
+      "sha256": "555f016475f0bc33119a249d6c7f68adc5b3dd9f8be998266101551ca6d3604e",
+      "bytes": 2488
+    },
+    "Android_App/app/src/main/java/com/example/data/local/db/Entities.kt": {
+      "sha256": "d7e128c6fc2bd98e414055e7af31e69e909776a1f0a71393d7c81096eadbf388",
+      "bytes": 2283
+    },
+    "Android_App/app/src/main/java/com/example/data/local/db/LfaDatabase.kt": {
+      "sha256": "5faf0958622ab4f6cd35df0283f317ff97cf9ed71dd64085a4ecd278172fc776",
+      "bytes": 987
+    },
+    "Android_App/app/src/main/java/com/example/device/DeviceCapabilities.kt": {
+      "sha256": "06605278dc933908a51c9b27bf488f1dae964af45283c0b806645b2f51e9e749",
+      "bytes": 3240
+    },
+    "Android_App/app/src/main/java/com/example/domain/model/Models.kt": {
+      "sha256": "f1514736ea102ab9f2db74b6104758d248c31b4a53f1d8b0e03d691530388864",
+      "bytes": 4787
+    },
+    "Android_App/app/src/main/java/com/example/network/DheaClient.kt": {
+      "sha256": "413a7dfa06ce6625d8fce391a46490869bd474ec521fc2534f33e164a33694bb",
+      "bytes": 28254
+    },
+    "Android_App/app/src/main/java/com/example/network/DheaJson.kt": {
+      "sha256": "0cf26ed743d14ecd7a07c065f04a4e90b5b84815db696ffae27458bb4cf3f6ae",
+      "bytes": 8996
+    },
+    "Android_App/app/src/main/java/com/example/network/DheaStrictJson.kt": {
+      "sha256": "4f19aeab80f6a869bf704d09e39a628a397a1e7cf341e65ebde231705961fb41",
+      "bytes": 4383
+    },
+    "Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt": {
+      "sha256": "28b65ed04d5c0846e0a755439533b58aed879e4f184274740e3f1fd76b6515f6",
+      "bytes": 25621
+    },
+    "Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt": {
+      "sha256": "258f4da400d78484fa65a8b366e178681bec69810de48cb52327b6cea4168621",
+      "bytes": 23773
+    },
+    "Android_App/app/src/main/java/com/example/ui/screens/DiagnosticsScreen.kt": {
+      "sha256": "891378ef7f35153e3b3701d64bf8d5a96025c5825a4b0df8fd3c9beca78ad8d1",
+      "bytes": 13833
+    },
+    "Android_App/app/src/main/java/com/example/ui/screens/QuarantineScreen.kt": {
+      "sha256": "bc45307be01e9bef707de7e61933487209051a5c4d0d2e3baa1e7d6a364856fa",
+      "bytes": 8995
+    },
+    "Android_App/app/src/main/java/com/example/ui/screens/QueueScreen.kt": {
+      "sha256": "612ef05a07bc869e111f8b6b29fc04b0d50128f058f0a2bd994381eec5fbd2bb",
+      "bytes": 16531
+    },
+    "Android_App/app/src/main/java/com/example/ui/screens/ReconciliationScreen.kt": {
+      "sha256": "0b9fa1a3d40aa95c88569a7ff1cd035dfb660fb24e65947b398ab13345cbbe96",
+      "bytes": 8795
+    },
+    "Android_App/app/src/main/java/com/example/ui/screens/ResearchResultPanel.kt": {
+      "sha256": "978a85b095f9f68c0b7c9f7785d278adb6a171706d1792048d7b79c40fc9fb76",
+      "bytes": 10658
+    },
+    "Android_App/app/src/main/java/com/example/ui/screens/SettingsScreen.kt": {
+      "sha256": "7b94e28dcd4de4652ebda10ad8b5820882ddf3bd49707eaa4a121337db2a8e08",
+      "bytes": 7698
+    },
+    "Android_App/app/src/main/java/com/example/ui/theme/Color.kt": {
+      "sha256": "112c2d9386250657912d78bcd2096c196d85b38a9d53a85aa17d9c4a5b7c1fa1",
+      "bytes": 1054
+    },
+    "Android_App/app/src/main/java/com/example/ui/theme/Theme.kt": {
+      "sha256": "cc86e5b1d2af03a715416f81fef5c62df90d0401e5d9a58e8a8633ea7545bea7",
+      "bytes": 2111
+    },
+    "Android_App/app/src/main/java/com/example/ui/theme/Type.kt": {
+      "sha256": "4d1ed9437091dd4506aa51c0e040b7e0168bf90f3b0a1e7c266ac362e6c89d69",
+      "bytes": 994
+    },
+    "Android_App/app/src/main/res/drawable/ic_launcher_background.xml": {
+      "sha256": "1ba22a1032f3095fbdfb5af7b11fc5210003737d6fb1ef5949c2227a3fc27837",
+      "bytes": 598
+    },
+    "Android_App/app/src/main/res/drawable/ic_launcher_foreground.xml": {
+      "sha256": "675b3caecf2df68c89b0e9e9dc593d4ce1a8c15df86230d07a3e9b29cb53b6b1",
+      "bytes": 2027
+    },
+    "Android_App/app/src/main/res/drawable/qiuqiu.png": {
+      "sha256": "8d8f96706a4c7709cd2adda717476d02055fcadc8eb4b563103555dbde476727",
+      "bytes": 1183309
+    },
+    "Android_App/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml": {
+      "sha256": "6d0988175971f41bdc83eadb144af3d84c40052fa125e90edbe7d89227be4b25",
+      "bytes": 344
+    },
+    "Android_App/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml": {
+      "sha256": "6d0988175971f41bdc83eadb144af3d84c40052fa125e90edbe7d89227be4b25",
+      "bytes": 344
+    },
+    "Android_App/app/src/main/res/mipmap-hdpi/ic_launcher.webp": {
+      "sha256": "99221f2905af79868986b0dd1701ea91a5387146ba701c18b2ee2252a67be481",
+      "bytes": 2096
+    },
+    "Android_App/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp": {
+      "sha256": "7c93f81de792b7216b0db55c1471abe5fccbbcde8278a25264d83ebf8464f498",
+      "bytes": 4305
+    },
+    "Android_App/app/src/main/res/mipmap-mdpi/ic_launcher.webp": {
+      "sha256": "b9089fe59f9049e993f92646161e0723496224a44436a2500087e2d05409e8f7",
+      "bytes": 1485
+    },
+    "Android_App/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp": {
+      "sha256": "943bd647827e0e7f0fa51be8164f9f1835202d90af6d95ffae44dbb094f44060",
+      "bytes": 2634
+    },
+    "Android_App/app/src/main/res/mipmap-xhdpi/ic_launcher.webp": {
+      "sha256": "b3a0802c4fc82b3fd796cc2d57c0c1ea93e64fdfc46aab1e74a0bfa45fcef4f4",
+      "bytes": 2854
+    },
+    "Android_App/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp": {
+      "sha256": "2df674233ecc4e9fe6c8d4dfceb6c3257995e6613b0447b93c4a4893ff61c675",
+      "bytes": 5934
+    },
+    "Android_App/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp": {
+      "sha256": "b479b07551ee8fd8ba4f96dc0e5d34ae675d485d8a341c369443b397a2defdbf",
+      "bytes": 4360
+    },
+    "Android_App/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp": {
+      "sha256": "cb1b8197fa5009f511a5e9aea71e2eff952355cadaf776a83ab99db28fadb24f",
+      "bytes": 8887
+    },
+    "Android_App/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp": {
+      "sha256": "fe039e8aff6718652748d5d2daa5743cbf38759392a7feb723e7c032349b6e81",
+      "bytes": 5743
+    },
+    "Android_App/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp": {
+      "sha256": "4d95c8cb035a1827eef9c0cf065e4be0f8fc0b86d6c420e9f3bccc366fba921d",
+      "bytes": 11709
+    },
+    "Android_App/app/src/main/res/values/colors.xml": {
+      "sha256": "57681038afd005dcd260eabdd6d16619709c4a3fe20324362ea00e093e85b5fd",
+      "bytes": 379
+    },
+    "Android_App/app/src/main/res/values/strings.xml": {
+      "sha256": "bda3e2c7467af5fdff6273ac62f8afb719c344943562f07910f02e430b65a582",
+      "bytes": 69
+    },
+    "Android_App/app/src/main/res/values/themes.xml": {
+      "sha256": "e8288b65767f4f28854d168c7b19c308579d3703bdf3fc26c2b266e19148f465",
+      "bytes": 155
+    },
+    "Android_App/app/src/main/res/xml/backup_rules.xml": {
+      "sha256": "173c90cbeb773e6a65b430581a85720dc5c7ddba17d543cfefe3d2aed9b9a7a4",
+      "bytes": 479
+    },
+    "Android_App/app/src/main/res/xml/data_extraction_rules.xml": {
+      "sha256": "30ae995624fd57d839bf0d638900f8d2c17c703d6e7d6c8640708a8a7cac2402",
+      "bytes": 552
+    },
+    "Android_App/app/src/test/java/com/example/ExampleRobolectricTest.kt": {
+      "sha256": "56318ddc3afeaa13e79acab3b0de7700a11574682b961c9596dc15d81f87da9a",
+      "bytes": 15661
+    },
+    "Android_App/app/src/test/java/com/example/GreetingScreenshotTest.kt": {
+      "sha256": "b3146cf6d27a2a90fdad62bb2c8db68f4e65c49eed41833ca2cc9cf35036dd88",
+      "bytes": 1747
+    },
+    "Android_App/app/src/test/java/com/example/camera/CameraEvidenceTest.kt": {
+      "sha256": "a38d67012c06d3e691f7ed3dd60a680926a24674c561c2ea5fcad5885ae40a0a",
+      "bytes": 4064
+    },
+    "Android_App/app/src/test/java/com/example/camera/PreviewGuidanceAnalyzerTest.kt": {
+      "sha256": "842127ed2bec8e29dd28ef3992220bb6769ce82bdc4dbfc974e97798ef9d3099",
+      "bytes": 2863
+    },
+    "Android_App/app/src/test/java/com/example/network/DheaContractTest.kt": {
+      "sha256": "6a1e839c654b7f1b1d1a74a57926861edcf871385b3f654db09aae54cd70310a",
+      "bytes": 11009
+    },
+    "Android_App/app/src/test/java/com/example/ui/ResearchResultPanelTest.kt": {
+      "sha256": "4e1cd6ac0221f50941a137c0ad38845ff8fcdbf4a51bc78eb457a5d124cd75ba",
+      "bytes": 6520
+    },
+    "Android_App/app/src/test/screenshots/greeting.png": {
+      "sha256": "08b77a026d9f6bc52b9404021e164eaf16d033701ddc0cdb1caabe6f5e7ed01b",
+      "bytes": 2868
+    },
+    "Android_App/build.gradle.kts": {
+      "sha256": "2d3c2b9e7e2cf6a7eede8c67899769ff7d5c1810d29797b74d584f0253df851a",
+      "bytes": 405
+    },
+    "Android_App/gradle.properties": {
+      "sha256": "f46953b0506c51c9af9d2bba4e41d36a11f6b2e4e76cc064b73a794a61b248a5",
+      "bytes": 1546
+    },
+    "Android_App/gradle/libs.versions.toml": {
+      "sha256": "132d3ede28ca5007bfde76138946452f5f9d934ebde76259bcca7f4d0b5ca3cd",
+      "bytes": 7427
+    },
+    "Android_App/gradle/wrapper/gradle-wrapper.properties": {
+      "sha256": "a180163249c7252412ddaee1c7adcf59f6494b1183136f690fbd9a3b8aaed00e",
+      "bytes": 252
+    },
+    "Android_App/metadata.json": {
+      "sha256": "893e64cfb78bca75d6656cb64ba226192a1b0d569c9ca7dfd59292cd47d58a32",
+      "bytes": 265
+    },
+    "Android_App/settings.gradle.kts": {
+      "sha256": "de86c7db362d4017503a9ba57678c67cc35d1cdab4d5630bf790ff5ad573f1eb",
+      "bytes": 549
+    },
+    "Android_App/tools/capture-device-evidence.sh": {
+      "sha256": "41506941948056f3d222ee5c973ceadc509105f8a10abad48c22aa97fa36f7aa",
+      "bytes": 5984
+    },
+    "CONTEXT.md": {
+      "sha256": "04095c0c35ce1b9e2f3795feb19911f10cdbb9f5a5077d12c77aa1fcc7295497",
+      "bytes": 1089
+    },
+    "LFA_工作周报_2026-09-12.md": {
+      "sha256": "eaf868bb23ff13c522e55ff0b682792689452d65a7677aa4d62cc3bf996cc472",
+      "bytes": 10174
+    },
+    "LFA定量算法验证与验收报告.docx": {
+      "sha256": "38a8e485015572f048a85fa0b223337057417a20b80f230134d627698b4f55e9",
+      "bytes": 64871
+    },
+    "LFA算法10浓度点复孔验证与验收报告_V1.1.docx": {
+      "sha256": "7d5ad53c810f8c824b0446859fed9b3128d51a9d2f25c5bc04a416b064a5f816",
+      "bytes": 51176
+    },
+    "WORK-PROGRESS.md": {
+      "sha256": "ff091ff70dee18a63426f97d442b7f6f3154b7ec6f66fcb9d524199ee1a53f92",
+      "bytes": 7210
+    },
+    "baseline-manifest.yaml": {
+      "sha256": "e6b953b541fee99ac6d4ae17bcad98e4190ee43847888898c52f4027b4b737f6",
+      "bytes": 1309
+    },
+    "core/__init__.py": {
+      "sha256": "70107edaf9aec75a796b83fe600539e8df2ad1594d64f6de4619a09258bda0d2",
+      "bytes": 69
+    },
+    "core/artifacts.py": {
+      "sha256": "f39415892a6a3b7fb8b3242bf96bd7522aad6176f57b762b6f98157f281dcfb9",
+      "bytes": 3492
+    },
+    "core/calibration.py": {
+      "sha256": "805c6cc88f13bf65934242eb85ad8fc59108496a2188f9b6a8981b9d408442f7",
+      "bytes": 13888
+    },
+    "core/cli.py": {
+      "sha256": "114771683c9cfb9a3bd9a31a62548758d3977686c126645ffd16c0b376a72612",
+      "bytes": 9341
+    },
+    "core/contracts.py": {
+      "sha256": "9c07942581fd1beb2c9397efa8a91fd6460086ab2ca059ab228c64a600e23136",
+      "bytes": 4877
+    },
+    "core/dhea.py": {
+      "sha256": "73e69f20ee20cf83f89456e2d50b6e86477ced02da393313196c5d36e776fe1b",
+      "bytes": 37715
+    },
+    "core/dhea_diagnostics.py": {
+      "sha256": "45ee6fc492cc71719d9c308609147a679299ab83a7d986e429154453afa64664",
+      "bytes": 31414
+    },
+    "core/dhea_research_candidate.v1.json": {
+      "sha256": "c276c69498302b7589a4c199025147842fc2718330f05e2e16afa68300acdf55",
+      "bytes": 1782
+    },
+    "core/geometry.py": {
+      "sha256": "cab53c37cfc0b7f239cf1a8bc213dcf6d655a107bdfd5087e5d53c745c3fd0de",
+      "bytes": 22682
+    },
+    "core/pipeline.py": {
+      "sha256": "152fc58f66d3e5411ef05533580d523ec98fd6dedae660add665a454ee56e79a",
+      "bytes": 18061
+    },
+    "core/service.py": {
+      "sha256": "b2b638a24f7069a86cecd74d4a32e4cf14036baa95c1a229a2eb683772fd502c",
+      "bytes": 4068
+    },
+    "core/signal.py": {
+      "sha256": "728cfba1e7718673885f602ea3549817dd8cbe54335d892c927e08dff05555d2",
+      "bytes": 4121
+    },
+    "docs/ANDROID_GATE_CLOSEOUT_2026-09-16.md": {
+      "sha256": "374be0f799d32aefbef5ec1661aa8445177d24058f620d4bc49e7e7b97536134",
+      "bytes": 4408
+    },
+    "docs/DHEA_NATIVE_APPS_API_RECOGNITION_TODO_2026-09-15.md": {
+      "sha256": "14034d062b99d543c12649840f9c9c0a337b693d4adc8bd7c6efc1c1e71a6996",
+      "bytes": 20263
+    },
+    "docs/DHEA_PROGRAM_ROADMAP_v1.3_CONTROLLED_MVP_AND_FUTURE_PRODUCT.md": {
+      "sha256": "d6770fcdb2aab28ae8ccc5bd409fa29b1cf264873a0815935910fa33f1116478",
+      "bytes": 23641
+    },
+    "docs/LFA_最新完整文档集合/00_README.md": {
+      "sha256": "5b6c95ab4aafe8c154bf00f50ff927f7b350c8152f50963ee87c5be41a449dba",
+      "bytes": 3617
+    },
+    "docs/LFA_最新完整文档集合/01_DHEA_Android_App拍摄与上传整改规范_v1.0_MVP.md": {
+      "sha256": "3b848fbd861768aeb4aec48cd4f73292f59783fc5d184049bdca6e002c60167c",
+      "bytes": 13799
+    },
+    "docs/LFA_最新完整文档集合/01_LFA观察窗口目标识别与测量方案_v4.7_DHEA_MVP.md": {
+      "sha256": "a35d0e603a75c5e01e30d8d385be3834800d474fcb81dfb35948d8071084d055",
+      "bytes": 9159
+    },
+    "docs/LFA_最新完整文档集合/02_DHEA_API_WebUI_PythonCore联合整改规范_v1.0_MVP.md": {
+      "sha256": "7ec6f3de8d86cbd1c9063a615b200f04dbbde461174c6c8d0fd2cc7dedf5bd9f",
+      "bytes": 16358
+    },
+    "docs/LFA_最新完整文档集合/02_LFA端到端处理流程_v1.4_DHEA_MVP.md": {
+      "sha256": "2c3e8d3dfee346ab9beaa0fb65580115eaf0d5a5043849a0cbcd45ee9bf65cb3",
+      "bytes": 26852
+    },
+    "docs/LFA_最新完整文档集合/03_LFA_App端原生详细设计规范_v1.4_DHEA_MVP.md": {
+      "sha256": "14dd5d491cb90966054184572cebdf845e6acd8f9e6778286f9d52fe0971a11c",
+      "bytes": 15016
+    },
+    "docs/LFA_最新完整文档集合/04_LFA_API接口与幂等契约_v1.4_DHEA_MVP.md": {
+      "sha256": "33d6de845f3c697d70ba155d42faaf6c5d3b403f922efce22094b4962bd24791",
+      "bytes": 8856
+    },
+    "docs/LFA_最新完整文档集合/05_LFA_本地队列与恢复状态机_v1.1.md": {
+      "sha256": "bcf0be314bbcbdd0c3b098f0a72b6ee3aa19aa974da45488c7e2308cff0aa48d",
+      "bytes": 12098
+    },
+    "docs/LFA_最新完整文档集合/06_ADR_MOB_CAMERA_ANDROID_v1.3_DHEA_MVP.md": {
+      "sha256": "b156c094247b1acfce84abc68d0c759beb4293cfb9ada9d5473d62ddcbfed09e",
+      "bytes": 3155
+    },
+    "docs/LFA_最新完整文档集合/07_ADR_MOB_CAMERA_IOS_v1.3_DHEA_MVP.md": {
+      "sha256": "af93bee4baab929ad96507eae812c66b8e309866315d39f74179e56f75b03cb1",
+      "bytes": 3611
+    },
+    "docs/LFA_最新完整文档集合/08_LFA移动端设备能力与Quirk治理_v1.1.md": {
+      "sha256": "0d919e155f26f186e6d45955d3d29b7dbfc66d179d5215263aaf8b99eb780f9b",
+      "bytes": 3155
+    },
+    "docs/LFA_最新完整文档集合/09_P0移动端与接口实施清单_v1.4_DHEA_MVP.md": {
+      "sha256": "a350df5348ad8e35b87fa6f24f49e330dd6b621f1c84463135acaf599240f81b",
+      "bytes": 6101
+    },
+    "docs/LFA_最新完整文档集合/10_DHEA后台曲线配置与加载规范_v1.2_MVP.md": {
+      "sha256": "1ad06af23dffab38a001d97063ca230edfdfe50714af1abc5478b7251ea58e73",
+      "bytes": 7824
+    },
+    "docs/LFA_最新完整文档集合/11_DHEA原生Android研究v2公开契约.md": {
+      "sha256": "1c648f525aa41bf2fc27e2bff762df00a8f52a53ae09f70a9ca319bc0e53720d",
+      "bytes": 21818
+    },
+    "docs/LFA_最新完整文档集合/ARTIFACT_MANIFEST.sha256": {
+      "sha256": "708de823613babfddac1dc4518f600b9b3ba61e58ed1440d2a45750d44b5d96e",
+      "bytes": 1696
+    },
+    "docs/LFA_最新完整文档集合/DHEA图像处理逐阶段可视化诊断规范_v1.0_MVP.md": {
+      "sha256": "070d8e2187ec390945038ededd9ecc9f0f8b2f1f89ca8ab35667f43bf757a94d",
+      "bytes": 26802
+    },
+    "docs/LFA_最新完整文档集合/config/dhea_curve_config.schema.v2.json": {
+      "sha256": "2999ec7ef33bdf27ed49df9b991b6971ed0571a962b38e7a7dffbabb6ac4cc07",
+      "bytes": 8479
+    },
+    "docs/LFA_最新完整文档集合/config/dhea_instrument_curve_15min.lab-verified.v2.json": {
+      "sha256": "33a7ad90927eb3ae97baa228e11fa1518b8db64de135e3f81e69f2dabd7dacae",
+      "bytes": 5612
+    },
+    "docs/LFA_最新完整文档集合/config/dhea_template.v1.json": {
+      "sha256": "43da6a0322d94269a729e9715923b5eb7284fdc930bdd9f74d606727c9d21172",
+      "bytes": 1496
+    },
+    "docs/QA.md": {
+      "sha256": "9bb8c7a2298c5d510c96a84799d47f56269f5372194f49822a4e239f52496c1b",
+      "bytes": 5319
+    },
+    "docs/algorithms/P0-parameter-and-evidence-baseline.md": {
+      "sha256": "f7be4748e20c2c2049f73b014bf22b1fe44d1c92c54806c0dcbe4b59a62d24e2",
+      "bytes": 21716
+    },
+    "docs/algorithms/problem-register-and-remediation.md": {
+      "sha256": "4907817953467592da9ff7a25610934d65392d58e51cdaade6f1140fef4f6ad1",
+      "bytes": 29650
+    },
+    "docs/api/api-reference.md": {
+      "sha256": "4c8d7d96a354c6aae5786ad516aa6ffa2ac3cc5699ed8b749a10c09b35681c76",
+      "bytes": 43250
+    },
+    "docs/api/dhea-v2-app-integration.md": {
+      "sha256": "16a9a6d3c3d13e1279f4d98426043e9712f3852c8ed3ca98bf29fbac6bdee23b",
+      "bytes": 35538
+    },
+    "docs/api/openapi-dhea-v2.json": {
+      "sha256": "a82e8c1e1c167b4ae78edc89cb773dbc5c43e4dbaa793a0d7e91a5723ca9dd98",
+      "bytes": 37313
+    },
+    "docs/api/openapi-internal.json": {
+      "sha256": "1e0f0dcb6aa6cbee7cd4395ff58b4a82e35e3af3620ee7a61150b13afd7510ec",
+      "bytes": 2997
+    },
+    "docs/api/openapi.json": {
+      "sha256": "689e4be917590656b4e16e64bec960d89e560a76887f63f569515615c2e61678",
+      "bytes": 18713
+    },
+    "docs/api/schemas/capture-contract.schema.json": {
+      "sha256": "120d74c7850d846b6635df7b8f7e288f45420dbf1f297773528fb0d1ef98ac13",
+      "bytes": 34966
+    },
+    "docs/api/schemas/dhea-v2.schema.json": {
+      "sha256": "c1b006e3b826448821ab2b15337d4e99de5302cad8a7e6004c1ca64d04596747",
+      "bytes": 80454
+    },
+    "docs/cap-20260908-114639-c4a0.zip": {
+      "sha256": "50fd34e7576345949cab71c26733bfb72a00f124cec7d48ac29d50ce0709cb12",
+      "bytes": 7405766
+    },
+    "docs/design/app-android-ios-detail.md": {
+      "sha256": "8d46afe6518f962ee151e8d054b70c7e3b5cd9eddcf442d8013c281cbc5296ca",
+      "bytes": 67133
+    },
+    "docs/design/app-page-detail.md": {
+      "sha256": "656e8c9fe6b80d35c2fd88f75debc1c2d65d9ced81c8bf00d1053d3749ccde57",
+      "bytes": 50835
+    },
+    "docs/design/python-core-detail.md": {
+      "sha256": "da8fab895f400983bf40e45ccd98ecc1fc4b0c3244efd4df3b23c5f56e8d727a",
+      "bytes": 34831
+    },
+    "docs/design/python-gateway-compat-detail.md": {
+      "sha256": "0814ff8488bbf9b087c0f1ae61e865e642b6d514a76a761c5ef7b3a70b4d1b31",
+      "bytes": 20102
+    },
+    "docs/design/server-detail.md": {
+      "sha256": "ab770350e3cc51197a57513309c912b28d28ea36f36f7163f1a45b30e5825c38",
+      "bytes": 31208
+    },
+    "experiments/core-v02/annotations/ScreenShot_2026-09-08_230152_146.png.json": {
+      "sha256": "e48e0881840f88d53ab9a4cd72442a25d4bdae548a7cf8a4dc1b66d4eab4efaf",
+      "bytes": 321
+    },
+    "experiments/core-v02/annotations/ScreenShot_2026-09-08_230214_002.png.json": {
+      "sha256": "c300a6840ff76ae1f4eae7e27ca7e9bc5a7a10c5e2d22f961fb54056db2317da",
+      "bytes": 321
+    },
+    "experiments/core-v02/annotations/ScreenShot_2026-09-08_230223_734.png.json": {
+      "sha256": "f2eca2bf76aee527b0127b090bfe1a64101f451508345430e31f8da25844ee46",
+      "bytes": 321
+    },
+    "experiments/core-v02/annotations/ScreenShot_2026-09-08_230229_418.png.json": {
+      "sha256": "ad40a5bef5a96e39e99d3fb7997a448abe5b4e0472725b5f823edb769ec58533",
+      "bytes": 321
+    },
+    "experiments/core-v02/annotations/ScreenShot_2026-09-08_230235_362.png.json": {
+      "sha256": "bacf46034ed899f41f64ff4382138b2ab74201ccbf63763e5e9d24d09111898c",
+      "bytes": 321
+    },
+    "experiments/core-v02/synthetic-annotation.json": {
+      "sha256": "0a41605b2b4f31bd044231a157c0aa6d59e4a344aa624da0b77813ba742ee767",
+      "bytes": 316
+    },
+    "experiments/core-v02/synthetic-context.json": {
+      "sha256": "ef7f0863ff2c98931d749fc271f7990ead8700186667930af90eddadd070cbd3",
+      "bytes": 473
+    },
+    "experiments/core-v02/synthetic-template.json": {
+      "sha256": "c2e8016475afaef500ae264230d0913dca6e52fa2a3e6828ac31702c87af0949",
+      "bytes": 1438
+    },
+    "experiments/core-v02/synthetic.jpg": {
+      "sha256": "f2a70a74c4e3a7056328e284b740fc0dd74dcbdfd5130b3a9c411f2e5d8fe82d",
+      "bytes": 1192
+    },
+    "experiments/core-v02/template.json": {
+      "sha256": "47533b9ad2376384a861424eb3f5c47058cc384c980aea2b171dd922260ab0cb",
+      "bytes": 1427
+    },
+    "experiments/dhea-mvp/candidate-v1.json": {
+      "sha256": "5dea19dec5de77fea49e0f41c20b6a8926910aa8682aff2893ae5f138fc58179",
+      "bytes": 2598
+    },
+    "fixtures/api/artifact-negative.json": {
+      "sha256": "de2bfc09d81c7c53e5217ba93917b967722eabd2238de06c7c05b5178f6d88e6",
+      "bytes": 5404
+    },
+    "fixtures/api/assets/baseline.csv": {
+      "sha256": "e6b4e51136073f51395f867534eb7794a83a947b7304f1d1f65065794320c73e",
+      "bytes": 58
+    },
+    "fixtures/api/assets/crop.png": {
+      "sha256": "4ce49453549075b4245eb8bde5d350ca060d69571627dd7f798d150cfec07bfb",
+      "bytes": 79
+    },
+    "fixtures/api/assets/exif-1.jpg": {
+      "sha256": "ed0cef05f99000cb3bc89ead7e987dd1df9e4be455aaf05f7405f5d6350c4aa2",
+      "bytes": 718
+    },
+    "fixtures/api/assets/exif-2.jpg": {
+      "sha256": "45be1054e2cabc9504c004536d8b35ea410f05bf9126e805ca3f0cdf1c1e89ac",
+      "bytes": 718
+    },
+    "fixtures/api/assets/exif-3.jpg": {
+      "sha256": "c130588d8a948af52a32ffb41b95439b4cd83f18c19de58f5c8e36c731ed5adf",
+      "bytes": 718
+    },
+    "fixtures/api/assets/exif-4.jpg": {
+      "sha256": "7338bc2473ace9bf72339d689c6ef42d886b7e7a6d443a689b1cdd9df517e845",
+      "bytes": 718
+    },
+    "fixtures/api/assets/exif-5.jpg": {
+      "sha256": "81743d44ac24503384807dd0b29223e94b1fd6f88f25cb4b7e254c39e1908a34",
+      "bytes": 718
+    },
+    "fixtures/api/assets/exif-6.jpg": {
+      "sha256": "371ba2e24f01fed3fbe13b0e797fed890ef7a314a9d2e2dfbbc56b13b4bf5850",
+      "bytes": 718
+    },
+    "fixtures/api/assets/exif-7.jpg": {
+      "sha256": "a978e5d3451dcabf8fcec3b12c4ce5444ed2283ddd517025706b95a871a95d55",
+      "bytes": 718
+    },
+    "fixtures/api/assets/exif-8.jpg": {
+      "sha256": "80373f27ae99aea193a607954aecf4d7e76cc9b3eb50993a1eda15fc2d06223e",
+      "bytes": 718
+    },
+    "fixtures/api/assets/feature-result.json": {
+      "sha256": "a491308a51485736ddf4589cb7470bee06a7e7185d7c8b7bb2eeaf9466b17c4b",
+      "bytes": 3253
+    },
+    "fixtures/api/assets/partial-feature-result.json": {
+      "sha256": "2ca5616708c639b43cf3c25464daa42c5770f3d733066b6ba837260cd33de735",
+      "bytes": 1189
+    },
+    "fixtures/api/assets/preview.png": {
+      "sha256": "77a6139e212317cf7797908a303d5d0d7ba5880ed322cd003f2660a9e6e17113",
+      "bytes": 75
+    },
+    "fixtures/api/assets/profile_overlay.csv": {
+      "sha256": "1683f3809df0591df50e24289ec8e05de5e0bd78ba58f89370ed0b047e6a5359",
+      "bytes": 267
+    },
+    "fixtures/api/assets/profile_raw.csv": {
+      "sha256": "592c69ab0cb7a2976460091c039d955a57abc839b608a9177c9212484148e430",
+      "bytes": 96
+    },
+    "fixtures/api/assets/profile_smoothed.csv": {
+      "sha256": "2303b70cc78ceea6feb8b0c0b6141dfd8c99ede39d0ce59cadee283178e48b63",
+      "bytes": 29
+    },
+    "fixtures/api/assets/rectified.png": {
+      "sha256": "77a6139e212317cf7797908a303d5d0d7ba5880ed322cd003f2660a9e6e17113",
+      "bytes": 75
+    },
+    "fixtures/api/assets/synthetic.jpg": {
+      "sha256": "512608f82d48a3197ea112145f845171201cd8fe79f9c83d6acb18dd3478c1b8",
+      "bytes": 706
+    },
+    "fixtures/api/cases.json": {
+      "sha256": "16a393a7f38d158ecf28675bbf9c4ae271f039c214a8fe3e4c9242256a60cfa8",
+      "bytes": 86341
+    },
+    "fixtures/api/generate.py": {
+      "sha256": "04c5838b60834663cbf6beb13980468ebe9ac5b05a77aae9a0fa1e8ac10e21ef",
+      "bytes": 17155
+    },
+    "fixtures/api/model-cases.json": {
+      "sha256": "f5f030338a1ac2e16d4837fa602468883b35d11b3d75131bb12bfd7af21e6b5f",
+      "bytes": 17870
+    },
+    "fixtures/api/numeric-cases.json": {
+      "sha256": "bb9ec80aa24d29afa386cbe7949d2447e3dcff30406c8b9657ff0a51126e934d",
+      "bytes": 3512
+    },
+    "fixtures/api/scenarios.json": {
+      "sha256": "cceb643bb82fa2366eb5cd58062b84e78cabe7b91d7888e738986eab867e0c77",
+      "bytes": 27871
+    },
+    "fixtures/api/schema-negative.json": {
+      "sha256": "f0179d42cbbc918e692de1d2f19f765b3a2502c0e1a5b88dde0931cc7adfa06c",
+      "bytes": 8102
+    },
+    "fixtures/dhea-v2/calculated/metadata.json": {
+      "sha256": "878ed0bafc8687fb117f261cf0f80bfba8ab5d847490b89b15d6f519d862530f",
+      "bytes": 1068
+    },
+    "fixtures/dhea-v2/calculated/result.json": {
+      "sha256": "9407aed4e15754311ba115766a421c05eab8b8fd0a25503ff602a6937b267e5a",
+      "bytes": 30103
+    },
+    "fixtures/dhea-v2/calculated/synthetic.jpg": {
+      "sha256": "4081b19939da82a7f998fa71fde39ff54e763bc07c3f6574c557cea2496d3ae8",
+      "bytes": 14477
+    },
+    "fixtures/dhea-v2/calculated/validation.json": {
+      "sha256": "b2410c3d02ba9b89d687a627f387c93242c3aaf3336435689f4f99522aa9fa05",
+      "bytes": 32967
+    },
+    "fixtures/dhea-v2/inverse-refused/metadata.json": {
+      "sha256": "ad3a62583af21cfed706f633de88192bb927ec773703b4a05875bbd75383a9d9",
+      "bytes": 1068
+    },
+    "fixtures/dhea-v2/inverse-refused/result.json": {
+      "sha256": "f5d5871a0298fbf40002af1336b7ccebd53c63c09875c5ef38c8cbfddeacd246",
+      "bytes": 30179
+    },
+    "fixtures/dhea-v2/inverse-refused/synthetic.jpg": {
+      "sha256": "d33e89972dfc6cf076df059c53c1db6d4c4bdf757a9ac72c8877c283be048815",
+      "bytes": 14817
+    },
+    "fixtures/dhea-v2/inverse-refused/validation.json": {
+      "sha256": "6668cacb148a8f91073b9388391e2657afa67836c540e183b4dece6ba17286db",
+      "bytes": 33043
+    },
+    "fixtures/dhea-v2/provenance.json": {
+      "sha256": "9be1aaaa1a39eb1ee61a2367bda85744422a4b8771f438dad28376cf36368fb2",
+      "bytes": 1364
+    },
+    "lab_workbench/app.py": {
+      "sha256": "1a5337663df0ba2c5593ce2522455679b2425e86f96f707c87dd7c3fee9daf19",
+      "bytes": 17532
+    },
+    "lab_workbench/index.html": {
+      "sha256": "5c111d9e519f39d624b55b541681c3ae613df71d5cea4b44159ceaa98afa4891",
+      "bytes": 32538
+    },
+    "lab_workbench/template.json": {
+      "sha256": "16cb4dbe53fe0807c633338ecf9baddb34a9449d5ad3395bbc0ecf0278f79603",
+      "bytes": 1424
+    },
+    "pyproject.toml": {
+      "sha256": "d8115c1105865eb2f28556dfce04a96c03df3cc5aa26a6aa2a16e89beb62d07b",
+      "bytes": 619
+    },
+    "python_gateway/.gitignore": {
+      "sha256": "748c95f1bd3fd3278c488f34349afbfef309256a6ddaae0bbde3e5d106a5530b",
+      "bytes": 61
+    },
+    "python_gateway/app.py": {
+      "sha256": "d83aeb24849864b4de3bd9b582ed67ad890646a42e0aa4a1551ac007a006d469",
+      "bytes": 3515
+    },
+    "python_gateway/blobstore.py": {
+      "sha256": "df95d5b16d9596289e91536feefbe36c63dcc82b93ff5cc3ecef1c8c25cbc84a",
+      "bytes": 5594
+    },
+    "python_gateway/core_client.py": {
+      "sha256": "94cc26ef8f8ce1334dcd1e5b47b26667a806fff914fa9b066e140250ef86249a",
+      "bytes": 3542
+    },
+    "python_gateway/dhea.py": {
+      "sha256": "5adb3aba52effa0ae9795cd662713af0d715fe1457328eff2de2fd9cee1fc4b5",
+      "bytes": 27975
+    },
+    "python_gateway/dhea_diagnostics.py": {
+      "sha256": "e8ecb6cae0633307ef50ce432e0ca3cb0c9ad27ba1d40ad811604b8f9fb7cec1",
+      "bytes": 15037
+    },
+    "python_gateway/dhea_export.py": {
+      "sha256": "a3bfe119ec611fc64485417bf11e371a090e9860c03a46c432c52206208a5a69",
+      "bytes": 7321
+    },
+    "python_gateway/dhea_input.py": {
+      "sha256": "0d0a6118e093e026c0bfbf9b230fa16156ce9bbb6ca7217454186c3035cecc47",
+      "bytes": 15359
+    },
+    "python_gateway/errors.py": {
+      "sha256": "9b2e12d4627f8462375c2022686e34c0197f3f77414e2877b97fd6e35b2d1979",
+      "bytes": 1850
+    },
+    "python_gateway/manifest.py": {
+      "sha256": "ec85f702fcf0fbb950fc6bac5ff78877f84bf00ca88ebcbe3b1b73b2a60cae71",
+      "bytes": 5715
+    },
+    "python_gateway/mapping.py": {
+      "sha256": "be1a8144fd843e8b96323c931f175ff44b1520515f1abf8d1fd58e6377fd5bce",
+      "bytes": 19318
+    },
+    "python_gateway/multipart.py": {
+      "sha256": "15dac4d16cc10e02a760a5db4b4c4c70a2e73b678c889eb3efe2bd62b60f1c48",
+      "bytes": 9374
+    },
+    "python_gateway/photo_guide.html": {
+      "sha256": "648a280d0a1580e8cadbe0cbb7d30fb050ab94ece6814ebd25d3f0e33501a915",
+      "bytes": 20740
+    },
+    "python_gateway/profiles.py": {
+      "sha256": "290c9a8e47c6dcee9073ac7cb8d8507f44e4deecbe48759fecb1a80d7a4f197e",
+      "bytes": 884
+    },
+    "python_gateway/pyproject.toml": {
+      "sha256": "59e2f94665f09bea47d2755739c0b8ec1828d364e22af282ecbdb4126d246e7d",
+      "bytes": 431
+    },
+    "python_gateway/repository.py": {
+      "sha256": "beca21f3261e148e8edb6a419304088907571bc3d2a553deb630fe4317f3a595",
+      "bytes": 22672
+    },
+    "python_gateway/service.py": {
+      "sha256": "57bb6f9ecdff1e552d39a3f9af877e88ed6082c83746a5cd0bb2fcb9e640760f",
+      "bytes": 9327
+    },
+    "python_gateway/tests/test_core_client.py": {
+      "sha256": "860f50eb99289a19cfd51ede4858914c0dae24c663a97cadd218e5b370cb3f17",
+      "bytes": 2218
+    },
+    "python_gateway/tests/test_dhea.py": {
+      "sha256": "c936b4a14c247c4fc6c2bed6096288c239b0c5fe28af3fb15993e7e9ce67e331",
+      "bytes": 16335
+    },
+    "python_gateway/tests/test_dhea_diagnostics.py": {
+      "sha256": "9bf1e8e63f4f9b81efa40d73e530f4b9f0672026b76bdb42e25513458318ab33",
+      "bytes": 9135
+    },
+    "python_gateway/tests/test_http.py": {
+      "sha256": "31a67460326cb2351f2cdf19d8aac20b7617bf0efdf2e232b380d9507883d9ea",
+      "bytes": 14857
+    },
+    "python_gateway/tests/test_input.py": {
+      "sha256": "7f01d67131289e7422ea2ccb6fd5a79aa8e5fcf2be209beadf5455ad2dde25a3",
+      "bytes": 7489
+    },
+    "python_gateway/tests/test_mapping.py": {
+      "sha256": "879821d5fa2b043d7162d3ed353406c7c0ac8e0791ff23043df851ca025f218f",
+      "bytes": 4257
+    },
+    "python_gateway/tests/test_repository.py": {
+      "sha256": "96d1491e23911a4fb7c144de2971806bdc461e5a254b9a19dd6d355df79aed9f",
+      "bytes": 9970
+    },
+    "python_gateway/tests/test_workbench_page.py": {
+      "sha256": "067de7d0bfc15f6cb481e62a673d7b710a19c7a094e9bfe8e988602d1331fca1",
+      "bytes": 2073
+    },
+    "python_gateway/uv.lock": {
+      "sha256": "79c7926c0ca3381f4db78c9810a2ecd9e276fd3324bf66084ce07d1bd9dd86c5",
+      "bytes": 197063
+    },
+    "python_gateway/workbench.html": {
+      "sha256": "594b5737bf1d53a78f150c5032f5bf0c45c25347f660adbce6fa03288cb36d1a",
+      "bytes": 56338
+    },
+    "research/dhea_candidate.py": {
+      "sha256": "c03cbfa22ee15cf12a7a10c7d6813c0ff1e63c41d3fe6bed2930ea5b1d07345e",
+      "bytes": 20122
+    },
+    "research/dhea_pairing.py": {
+      "sha256": "74089c658df90d5ea30ff4a9d6409571626e3dfb187a9f27056be809de1fa094",
+      "bytes": 15232
+    },
+    "start_dhea_api.sh": {
+      "sha256": "284e12875cc6fc44664c8f5f41de23181cfeadafbc0cb8ff7266ae780c06e19e",
+      "bytes": 3840
+    },
+    "start_lab_workbench.sh": {
+      "sha256": "6e392689c577278e04c537604aba37e4b74f9590391791eb2066461617c200c1",
+      "bytes": 238
+    },
+    "tests/api_contract_support.py": {
+      "sha256": "2642ed0d35c5ce9ea70637d02705af532376b673b28e5b988bbf09fc51439749",
+      "bytes": 18438
+    },
+    "tests/test_api_contract.py": {
+      "sha256": "160286a271b3ac0878f71ffe08ded9f08648cd62f6bf09a7907e9e0d1c1cf80e",
+      "bytes": 14143
+    },
+    "tests/test_calibration.py": {
+      "sha256": "9d69472ef3e1aec69bd6e7b96361aeeb755f85ec31ca6f410676b7d05fc436ef",
+      "bytes": 9971
+    },
+    "tests/test_dhea.py": {
+      "sha256": "2b1ec5ace6f2f47beead9ec7f52c81fbc965e85a80bc3db0acdfa2e6e6fd3022",
+      "bytes": 26180
+    },
+    "tests/test_dhea_candidate.py": {
+      "sha256": "b2c7329ef04ba837348e27cda6c64fd6477f95c24c244149a32d4fb1df8f7d9b",
+      "bytes": 4965
+    },
+    "tests/test_dhea_pairing.py": {
+      "sha256": "1150afceb3e48ab2a89b81e9e4594aa4483325c5d783fd2ada61bf8029fae83b",
+      "bytes": 9090
+    },
+    "tests/test_geometry.py": {
+      "sha256": "138e86597163a829da3a7f3b65fca38b5ae8f806e8ba501f7b142b6194520238",
+      "bytes": 16119
+    },
+    "tests/test_lab_workbench.py": {
+      "sha256": "a809b3d574205efa164fcb0f9e027f4ffa8db6611b1f641851d68dd2190ac31b",
+      "bytes": 5113
+    },
+    "tests/test_pipeline.py": {
+      "sha256": "fe821276b96bb6131b3745274401686db8ebdd887050d57b7ba31d287a330948",
+      "bytes": 7598
+    },
+    "uv.lock": {
+      "sha256": "617b3a44ac113157290bb8fe9cd3861b5ee9acb371a480b92da301081708a618",
+      "bytes": 227035
+    },
+    "光学五态检测器/.env.example": {
+      "sha256": "ad3ed5a69c9b1e2c5d92ed5e01b9bd2bfdecf1545924144d11d94aaf2ea9c2b3",
+      "bytes": 388
+    },
+    "光学五态检测器/.gitignore": {
+      "sha256": "da91b936c6f9f6050067712ab64aa13281d90717f8d1b9a596ef09170f1afdd6",
+      "bytes": 253
+    },
+    "光学五态检测器/.idea/.gitignore": {
+      "sha256": "e2e37ed60c50d8e41c42aa9f3505642a5f1689e67fb6bc7fe8a06dab09a0fa96",
+      "bytes": 50
+    },
+    "光学五态检测器/.idea/.name": {
+      "sha256": "846a089287729b091afcef9ad294ba826ab5f2f7269c27e80e0abfb859ed4abc",
+      "bytes": 13
+    },
+    "光学五态检测器/.idea/AndroidProjectSystem.xml": {
+      "sha256": "2554dcd4cf39576ef664ed9813181dc0991445ae282578655e874b3a0aa4a0a5",
+      "bytes": 217
+    },
+    "光学五态检测器/.idea/codeStyles/Project.xml": {
+      "sha256": "d00356ed05bf29db84201d100b467650d4cb6bfb2b7514fa18a8dd899a19ed37",
+      "bytes": 3744
+    },
+    "光学五态检测器/.idea/codeStyles/codeStyleConfig.xml": {
+      "sha256": "d8e8720a8dd48f11d9c361a208d80dbecaa3922428da2b84323488a009e9700b",
+      "bytes": 146
+    },
+    "光学五态检测器/.idea/compiler.xml": {
+      "sha256": "0d901544110aa2858a07aab160a0f6534c00e815b61ce8145a89b4e4a17c9933",
+      "bytes": 174
+    },
+    "光学五态检测器/.idea/deploymentTargetSelector.xml": {
+      "sha256": "40f6e1076d4c7a498494e680339cde6b4c9d52033ef4e45f6d1e5c62d6e71644",
+      "bytes": 339
+    },
+    "光学五态检测器/.idea/gradle.xml": {
+      "sha256": "9de899ce80cc6ef258a025594945d81b5a72045127efafb04ec649f92c19da31",
+      "bytes": 570
+    },
+    "光学五态检测器/.idea/markdown.xml": {
+      "sha256": "2b12098ca617f0c69d32662d0245090c4692e24391262523169e94d3593104cf",
+      "bytes": 314
+    },
+    "光学五态检测器/.idea/misc.xml": {
+      "sha256": "8a2579c97c38bbafdb8e29ff2f858522044f99d60bbfe8b1494613acdd8af627",
+      "bytes": 442
+    },
+    "光学五态检测器/.idea/runConfigurations.xml": {
+      "sha256": "e2320a40fad164ac31f7a7afd9765fd1608235d0b904b148ed243c573c94cb69",
+      "bytes": 980
+    },
+    "光学五态检测器/README.md": {
+      "sha256": "990c14e7e50c81e8f44bfabc7dd4dd8486d9b87ee89c43a7aef0718e41a5d282",
+      "bytes": 1148
+    },
+    "光学五态检测器/app/.gitignore": {
+      "sha256": "5b46eb48d96e8571e8c93e4ef4f6ffbe6807b6d7350664a36a064e1167a32718",
+      "bytes": 7
+    },
+    "光学五态检测器/app/build.gradle.kts": {
+      "sha256": "483283a835a9f3b6ada08c0f0ee598f4a3d2b0683c7b0d2900ed361447affbd7",
+      "bytes": 5192
+    },
+    "光学五态检测器/app/proguard-rules.pro": {
+      "sha256": "1cf8c57e8f79c250b0af9c1a5a4edad71a5c348a79ab70243b6bae086c150ad2",
+      "bytes": 751
+    },
+    "光学五态检测器/app/src/androidTest/java/com/example/ExampleInstrumentedTest.kt": {
+      "sha256": "c6ef958cafb00dbec798a71f5be604e9cf56189676312bea40f63dd07ca0d674",
+      "bytes": 643
+    },
+    "光学五态检测器/app/src/main/AndroidManifest.xml": {
+      "sha256": "b495a92dcc68d547fb7b5822543efbdb13d20dc476081046a060d6047e54d7ba",
+      "bytes": 1649
+    },
+    "光学五态检测器/app/src/main/java/com/example/MainActivity.kt": {
+      "sha256": "916882eb320ee1280576265291fdcc5cdd723eea9e0a1b295572062666f6c3c5",
+      "bytes": 8949
+    },
+    "光学五态检测器/app/src/main/java/com/example/engine/BundleSelfCheckEngine.kt": {
+      "sha256": "ca5d182efa0f0053c2d0efbd07df686a9620693bf3c923e6dfe7bd8b95ea35a8",
+      "bytes": 6350
+    },
+    "光学五态检测器/app/src/main/java/com/example/engine/CaptureJsonGenerator.kt": {
+      "sha256": "bd72aff27c3f254525ce43f58a9a4db9a1203e424def66187a845ae2934a8ae9",
+      "bytes": 9509
+    },
+    "光学五态检测器/app/src/main/java/com/example/engine/OpticalEvaluationEngine.kt": {
+      "sha256": "aa9702a3f56a0499c54be0bc1dcbafaa181be95dbfb7dbf3a4aef656ccc72ad3",
+      "bytes": 7243
+    },
+    "光学五态检测器/app/src/main/java/com/example/hardware/CameraCapabilityDetector.kt": {
+      "sha256": "07181db34e59fa071a1a7ea9b16fd9651ba2549f02874de135b979c4a5b184f1",
+      "bytes": 13480
+    },
+    "光学五态检测器/app/src/main/java/com/example/hardware/CameraCaptureHelper.kt": {
+      "sha256": "4de1b73cd5ef4a7bdfe8e7d18f1c3695d7e15a2e2e8a185f632a370036f45635",
+      "bytes": 3825
+    },
+    "光学五态检测器/app/src/main/java/com/example/model/CaptureModels.kt": {
+      "sha256": "2a2c48b3a262e0c4032c028b4fc7ce51e63e08aab2f7c8abbe62853903ede70c",
+      "bytes": 3166
+    },
+    "光学五态检测器/app/src/main/java/com/example/model/OpticalState.kt": {
+      "sha256": "49e980b37ecf8d98ac1c78412f3b99b5fa5934b394d08c950d76e95cf71478ec",
+      "bytes": 3515
+    },
+    "光学五态检测器/app/src/main/java/com/example/qc/DevicePoseTracker.kt": {
+      "sha256": "8dbe650c59c8f7cec6a404f633b71fba3635648af65b0fa15c4642c4e6e36ccf",
+      "bytes": 1991
+    },
+    "光学五态检测器/app/src/main/java/com/example/qc/FinalFrameValidator.kt": {
+      "sha256": "35f6e12fcc9a0af3c6c90db4d60b7abd7e9407531fce6ca7033b5ad5206dc1ff",
+      "bytes": 1976
+    },
+    "光学五态检测器/app/src/main/java/com/example/qc/FrameQualityAnalyzer.kt": {
+      "sha256": "615717ccbfa8ba847820a02eca3d085ad2f1265b4d4f8434409c23628e66a787",
+      "bytes": 12652
+    },
+    "光学五态检测器/app/src/main/java/com/example/qc/LiveQcProfile.kt": {
+      "sha256": "58563e7c2827b089e062b91fe27c6fbe1ac35ae0e66a0e7148c35d4c97e06ba8",
+      "bytes": 1847
+    },
+    "光学五态检测器/app/src/main/java/com/example/qc/LiveQualityModels.kt": {
+      "sha256": "05dc969df30421603be95100a725cbb21dff1e306e132500c46e20a262f38df1",
+      "bytes": 3198
+    },
+    "光学五态检测器/app/src/main/java/com/example/repository/CaptureRepository.kt": {
+      "sha256": "81826485ca0550041a7c72871d87e39b2da9db4a180fb2b9faee2ca2d8339b79",
+      "bytes": 6144
+    },
+    "光学五态检测器/app/src/main/java/com/example/scenario/ScenarioRepository.kt": {
+      "sha256": "d816bb3534010361ebba0fcf1aa702bf56cbaa79c9ecb6cce53e1c937c3d222a",
+      "bytes": 12934
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/components/AvailabilityBadge.kt": {
+      "sha256": "df1fc71f5f441dbaa0224b4fc4b217ca2042491fdbf34b13d7f1134f44084117",
+      "bytes": 2253
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/components/ParameterCard.kt": {
+      "sha256": "eef2f7edac6f44e21778edc4bd327284c6ee0d9b849c8f8598926c0a435331aa",
+      "bytes": 8662
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/components/VerdictBannerCard.kt": {
+      "sha256": "b231eea3e16b9fbb4f72c68e309c419487ca64dc42840354ccf33695be25e016",
+      "bytes": 8578
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/screens/AssaySetupScreen.kt": {
+      "sha256": "1e1534bbc1a82179a5f68477d2fe31915096d5b50f192070d08f174a36783660",
+      "bytes": 15398
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/screens/CameraCaptureScreen.kt": {
+      "sha256": "f71601ac801d76805e86f5233ea0e653c9046e3d543b006b489542f73fd289e5",
+      "bytes": 33571
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/screens/CaptureConfirmScreen.kt": {
+      "sha256": "a4a1389b7957c87e971165613b6f522114d9edb53f058bc8c7e6a7a39d1dc0e1",
+      "bytes": 27683
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/screens/CollectFlowScreen.kt": {
+      "sha256": "1bc606cb35891df5409980b671292ee6bd834398b71ed437654a5a73045753ee",
+      "bytes": 2568
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/screens/HardwareScreen.kt": {
+      "sha256": "158f040eb83332cede53f8771e5a402db7785a51a907fd81cf1bd1de839f4698",
+      "bytes": 11450
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/screens/JsonManifestScreen.kt": {
+      "sha256": "c1d5004a58e01b679e7df01b9e75af7c673a606bc950b0e539b7f7253cf3fc25",
+      "bytes": 5976
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/screens/PhilosophyScreen.kt": {
+      "sha256": "3205cc058023bcda7c9e945ece5cbd969b5e007663111f4065d9b44d16a87e37",
+      "bytes": 11541
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/screens/RecordsScreen.kt": {
+      "sha256": "2c369e2b7436108b41164a8569985372405f886e57aa5c7a0864f862b70a3779",
+      "bytes": 23786
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/screens/ScenariosScreen.kt": {
+      "sha256": "0be36c40b7f1c7d8a0eaa364058e6a97f21a40c8c42b0fa21c4edbee7b3551bf",
+      "bytes": 10380
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/screens/TimerScreen.kt": {
+      "sha256": "90b67cd1305501cda3477c88b5f92498fea1812bb08db5018a8683afdb53d24e",
+      "bytes": 10791
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/theme/Color.kt": {
+      "sha256": "4a3a4013a2d2be20d6e106866b46ab552d0caf73dafbb63455b6fa64d487fc91",
+      "bytes": 1292
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/theme/Theme.kt": {
+      "sha256": "6a64f6ccb3189307d265728e56ee46afe902e7ee9c395f09d67c6f63e7bc256b",
+      "bytes": 2117
+    },
+    "光学五态检测器/app/src/main/java/com/example/ui/theme/Type.kt": {
+      "sha256": "4d1ed9437091dd4506aa51c0e040b7e0168bf90f3b0a1e7c266ac362e6c89d69",
+      "bytes": 994
+    },
+    "光学五态检测器/app/src/main/java/com/example/util/BundleIdUtils.kt": {
+      "sha256": "68ef95823a6588a130ffabfc5e6bd63479ada573b9d28fb8c279719709357011",
+      "bytes": 861
+    },
+    "光学五态检测器/app/src/main/java/com/example/util/HashUtils.kt": {
+      "sha256": "4afd25b80262b75796f76660a075fde0c8313cbed5e84f3080bf94cda7a46df0",
+      "bytes": 933
+    },
+    "光学五态检测器/app/src/main/java/com/example/util/ShareUtils.kt": {
+      "sha256": "f0afd88de1270a0fa6141ee6ae057c39347fa6dd3cf2d3053548b87a52b416ad",
+      "bytes": 1687
+    },
+    "光学五态检测器/app/src/main/java/com/example/util/ZipUtils.kt": {
+      "sha256": "610abee5a8574bd64fb9b2e5609072292968f439adc4dd697b1c64e6dc9c5195",
+      "bytes": 1822
+    },
+    "光学五态检测器/app/src/main/java/com/example/viewmodel/OpticalViewModel.kt": {
+      "sha256": "5df048d5315a3874f225342216c17e4595be7ef875f9f55f3b0438b9ad727d12",
+      "bytes": 13143
+    },
+    "光学五态检测器/app/src/main/res/drawable/ic_launcher_background.xml": {
+      "sha256": "fcee2d0a820200af7bc9b307776e769fba126ec2a481b4157447f4e31d004d4b",
+      "bytes": 1256
+    },
+    "光学五态检测器/app/src/main/res/drawable/ic_launcher_foreground.xml": {
+      "sha256": "4a292f4a877895c8dcbe34c0110135ba5d52c6aa64009deadc7a2327ce7ca950",
+      "bytes": 2445
+    },
+    "光学五态检测器/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml": {
+      "sha256": "6d0988175971f41bdc83eadb144af3d84c40052fa125e90edbe7d89227be4b25",
+      "bytes": 344
+    },
+    "光学五态检测器/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml": {
+      "sha256": "6d0988175971f41bdc83eadb144af3d84c40052fa125e90edbe7d89227be4b25",
+      "bytes": 344
+    },
+    "光学五态检测器/app/src/main/res/mipmap-hdpi/ic_launcher.webp": {
+      "sha256": "99221f2905af79868986b0dd1701ea91a5387146ba701c18b2ee2252a67be481",
+      "bytes": 2096
+    },
+    "光学五态检测器/app/src/main/res/mipmap-hdpi/ic_launcher_round.webp": {
+      "sha256": "7c93f81de792b7216b0db55c1471abe5fccbbcde8278a25264d83ebf8464f498",
+      "bytes": 4305
+    },
+    "光学五态检测器/app/src/main/res/mipmap-mdpi/ic_launcher.webp": {
+      "sha256": "b9089fe59f9049e993f92646161e0723496224a44436a2500087e2d05409e8f7",
+      "bytes": 1485
+    },
+    "光学五态检测器/app/src/main/res/mipmap-mdpi/ic_launcher_round.webp": {
+      "sha256": "943bd647827e0e7f0fa51be8164f9f1835202d90af6d95ffae44dbb094f44060",
+      "bytes": 2634
+    },
+    "光学五态检测器/app/src/main/res/mipmap-xhdpi/ic_launcher.webp": {
+      "sha256": "b3a0802c4fc82b3fd796cc2d57c0c1ea93e64fdfc46aab1e74a0bfa45fcef4f4",
+      "bytes": 2854
+    },
+    "光学五态检测器/app/src/main/res/mipmap-xhdpi/ic_launcher_round.webp": {
+      "sha256": "2df674233ecc4e9fe6c8d4dfceb6c3257995e6613b0447b93c4a4893ff61c675",
+      "bytes": 5934
+    },
+    "光学五态检测器/app/src/main/res/mipmap-xxhdpi/ic_launcher.webp": {
+      "sha256": "b479b07551ee8fd8ba4f96dc0e5d34ae675d485d8a341c369443b397a2defdbf",
+      "bytes": 4360
+    },
+    "光学五态检测器/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.webp": {
+      "sha256": "cb1b8197fa5009f511a5e9aea71e2eff952355cadaf776a83ab99db28fadb24f",
+      "bytes": 8887
+    },
+    "光学五态检测器/app/src/main/res/mipmap-xxxhdpi/ic_launcher.webp": {
+      "sha256": "fe039e8aff6718652748d5d2daa5743cbf38759392a7feb723e7c032349b6e81",
+      "bytes": 5743
+    },
+    "光学五态检测器/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp": {
+      "sha256": "4d95c8cb035a1827eef9c0cf065e4be0f8fc0b86d6c420e9f3bccc366fba921d",
+      "bytes": 11709
+    },
+    "光学五态检测器/app/src/main/res/values/colors.xml": {
+      "sha256": "57681038afd005dcd260eabdd6d16619709c4a3fe20324362ea00e093e85b5fd",
+      "bytes": 379
+    },
+    "光学五态检测器/app/src/main/res/values/strings.xml": {
+      "sha256": "3c0a3147b498d27d533c1c75f432c46e64eb67f01a8ccd9e81d1f5eb56c475d6",
+      "bytes": 75
+    },
+    "光学五态检测器/app/src/main/res/values/themes.xml": {
+      "sha256": "e8288b65767f4f28854d168c7b19c308579d3703bdf3fc26c2b266e19148f465",
+      "bytes": 155
+    },
+    "光学五态检测器/app/src/main/res/xml/backup_rules.xml": {
+      "sha256": "173c90cbeb773e6a65b430581a85720dc5c7ddba17d543cfefe3d2aed9b9a7a4",
+      "bytes": 479
+    },
+    "光学五态检测器/app/src/main/res/xml/data_extraction_rules.xml": {
+      "sha256": "30ae995624fd57d839bf0d638900f8d2c17c703d6e7d6c8640708a8a7cac2402",
+      "bytes": 552
+    },
+    "光学五态检测器/app/src/main/res/xml/file_paths.xml": {
+      "sha256": "cc19675abfbebc4e3b0dc515767cdcdfe473a609ca9f71a5db723c15e18bf5a2",
+      "bytes": 333
+    },
+    "光学五态检测器/app/src/test/java/com/example/ExampleRobolectricTest.kt": {
+      "sha256": "c56284208ed9525237ed55651956e0de375cef0831977454b8432dc5597fb669",
+      "bytes": 6578
+    },
+    "光学五态检测器/app/src/test/java/com/example/ExampleUnitTest.kt": {
+      "sha256": "23f42e47e120caa28734bae3302e7277bbd805e597302f7cb79354641d441cdb",
+      "bytes": 325
+    },
+    "光学五态检测器/app/src/test/java/com/example/GreetingScreenshotTest.kt": {
+      "sha256": "db5a73b04775df02b93dc3cf49bb016c18439e9564541ce8deb29bcf4cd750b1",
+      "bytes": 951
+    },
+    "光学五态检测器/app/src/test/java/com/example/qc/FrameQualityAnalyzerTest.kt": {
+      "sha256": "0a8616711f0cade3bacb205226d1b0d6d1590d047a280c900daea9f448461cca",
+      "bytes": 3046
+    },
+    "光学五态检测器/app/src/test/screenshots/greeting.png": {
+      "sha256": "08b77a026d9f6bc52b9404021e164eaf16d033701ddc0cdb1caabe6f5e7ed01b",
+      "bytes": 2868
+    },
+    "光学五态检测器/build.gradle.kts": {
+      "sha256": "2d3c2b9e7e2cf6a7eede8c67899769ff7d5c1810d29797b74d584f0253df851a",
+      "bytes": 405
+    },
+    "光学五态检测器/docs/TECHNICAL-STANDARD-REVIEW.md": {
+      "sha256": "acc6c1808a694e7f30a9a369191e3e0d8dc6d8439c7b7a6dbecdcc56b7354a38",
+      "bytes": 63156
+    },
+    "光学五态检测器/gradle.properties": {
+      "sha256": "c93ab2cfe918a106aca0b2cadae68d9ec433a0c7ee817ec5c0b3640b0e5788d4",
+      "bytes": 1651
+    },
+    "光学五态检测器/gradle/gradle-daemon-jvm.properties": {
+      "sha256": "6c13aa5ba36690ccfbbb25a8807d01d98c15833e446d7ae82ddc726472cb8ef7",
+      "bytes": 1138
+    },
+    "光学五态检测器/gradle/libs.versions.toml": {
+      "sha256": "132d3ede28ca5007bfde76138946452f5f9d934ebde76259bcca7f4d0b5ca3cd",
+      "bytes": 7427
+    },
+    "光学五态检测器/gradle/wrapper/gradle-wrapper.properties": {
+      "sha256": "a180163249c7252412ddaee1c7adcf59f6494b1183136f690fbd9a3b8aaed00e",
+      "bytes": 252
+    },
+    "光学五态检测器/metadata.json": {
+      "sha256": "73dd32418f5a1949734bb9220c39c1decc8c9971d55943a0f6c01012149d5c9f",
+      "bytes": 301
+    },
+    "光学五态检测器/settings.gradle.kts": {
+      "sha256": "bb0ae634a90cf8f6dd2515f6e451e5f136027107ab4c0b1f8659052fa4cdd065",
+      "bytes": 553
+    },
+    "当前工作进展_任务完成度清单.md": {
+      "sha256": "61b2ca25cc26797c6e9b85537e15dcd7e3c945f0c6474115c697d23434f4fc38",
+      "bytes": 12609
+    }
+  },
+  "protection_exceptions": [
+    {
+      "path": "herdr-team/.agent-control/REVIEW_QUEUE.md",
+      "before": {
+        "sha256": "e291cd41229c7559eb52284ee042a17cdb165c397bac380ac71450c0fe357657",
+        "bytes": 41895
+      },
+      "after": {
+        "sha256": "84b1933d372cf7223378b3e64944861fb36f807a1cc8dea673a1c0321a78b0e1",
+        "bytes": 41895
+      },
+      "disposition": "EXTERNAL_CHANGE_NOT_WRITTEN_BY_THIS_TASK; cause unconfirmed; baseline preserved"
+    }
+  ],
+  "document_assertions": {
+    "protected_comparison": "454 MATCH; REVIEW_QUEUE external difference disclosed",
+    "authority_prefixes_unchanged": "PASS",
+    "58_unique_active_paths": "PASS",
+    "three_distinct_candidates": "PASS",
+    "15_future_exits": "PASS",
+    "proposed_existing_files_exist_and_ownership_UNKNOWN": "PASS"
+  },
+  "permissions": {
+    "decode": "NO",
+    "parse": "NO",
+    "match": "NO",
+    "shutter": "NO",
+    "final_jpeg_recheck": "NO",
+    "qr_roi": "NO",
+    "homography": "NO",
+    "measurement": "NO",
+    "quantification": "NO",
+    "ten_point_capture": "NO"
+  },
+  "authorized_business_files": [],
+  "product_evidence": {
+    "real_card": "NOT_EXECUTED",
+    "fixture_execution": "NOT_EXECUTED",
+    "attempt_binding": "NOT_EXECUTED",
+    "original_jpeg_chain": "NOT_EXECUTED"
+  },
+  "build": "NOT_RUN_DOCUMENTARY_ONLY",
+  "tests": "DOCUMENT_ASSERTIONS_ONLY",
+  "review": "PENDING_ACTUAL_NON_AUTHOR_REVIEW; external TASK_BOARD owns result",
+  "pm_gate": "NOT_REQUESTED",
+  "target_status": "WAITING_SEPARATE_PM_GATE",
+  "limitations": [
+    "Notice summary is not a verbatim transcript; formal source is frozen authority",
+    "Protected baseline excludes ignored artifacts/imgtest and four allowed paths",
+    "No product runtime validation; future transport adoption separately scoped"
+  ]
+}

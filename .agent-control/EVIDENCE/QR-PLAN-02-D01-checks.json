@@ -1,0 +1,269 @@
+{
+  "task_id": "RUN-20260918-QR-MANUAL-PLACEMENT-REVISION",
+  "plan_id": "QR-PLAN-02",
+  "deliverable_id": "QR-PLAN-02-D01",
+  "writer": "lfa-start(w15:p1)",
+  "execution": "PLAN_REVISION_DOCUMENT_ONLY",
+  "write_scope": [
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/09_MANUAL_QR_CONTROLLED_ROI_PLAN_REVISION_v1.0.md",
+    "herdr-team/.agent-control/EVIDENCE/QR-PLAN-02-D01-checks.json"
+  ],
+  "coordination_updates": [
+    "herdr-team/.agent-control/TASK_BOARD.md",
+    "docs/requirements/INDEX.md"
+  ],
+  "plan": {
+    "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/09_MANUAL_QR_CONTROLLED_ROI_PLAN_REVISION_v1.0.md",
+    "sha256": "a86c9c79ed2227dc80e0b6ea64dff178cd735d63889d528b01d0daffd6bdd58b",
+    "bytes": 19716
+  },
+  "source_sha256": {
+    "herdr-team/.agent-control/FILE_OWNERSHIP.md": "0d92b27054041b4976dcf5455ab3a493352c14d8c418c4cd3d957b128e99bd62",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/04_TASK_BOARD_QR_TEMPLATE_ROI_SIGNAL_v1.0.md": "75b5679d0afd79b7c1e835be9a2b84e1d8f7528224fc6cb9e3dc2a86ab244620",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/05_AUTHORITATIVE_CONTRACT_SYNC_CHECKLIST_v1.0.md": "342f3e41c37fb2ed86c3baf366d3909b1f5f1effdf991483e1b04638428cdcf4",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/06_TEMPLATE_ESTABLISHMENT_AND_VALIDATION_PLAN_v1.0.md": "4cdde5ce2efff9d032504762d591f0706df3bd605a198e37ff4bdd46a3fbc430",
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T075255Z-QRP-G0-AUTH.md": "71b8522a9f24308cb89abf1c294f603e297e6c3119a7b56265cf17d0536f447d"
+  },
+  "protected_inputs": {
+    "herdr-team/.agent-control/MASTER_PLAN.md": {
+      "before": "0775b2f70e68e6476a8dd5e4b07c73b263622e0a3e246a80fc3bfd03f11aa1c3",
+      "after": "0775b2f70e68e6476a8dd5e4b07c73b263622e0a3e246a80fc3bfd03f11aa1c3",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/PM_GATE": {
+      "before": "d155369bf6f8e164933d20f77f1641ecb14218a18b43c94a61356c568069ae65",
+      "after": "d155369bf6f8e164933d20f77f1641ecb14218a18b43c94a61356c568069ae65",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/FILE_OWNERSHIP.md": {
+      "before": "0d92b27054041b4976dcf5455ab3a493352c14d8c418c4cd3d957b128e99bd62",
+      "after": "0d92b27054041b4976dcf5455ab3a493352c14d8c418c4cd3d957b128e99bd62",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-AND-AUDIT.md": {
+      "before": "f21c13ab6359b558ac17c05ba136b66a451f68c1597d247d577c3fc221124c3d",
+      "after": "f21c13ab6359b558ac17c05ba136b66a451f68c1597d247d577c3fc221124c3d",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-API-AUDIT.md": {
+      "before": "75384511fe2867d60cd13f46355c860f37fb9eecd4c67854e60293b926f450af",
+      "after": "75384511fe2867d60cd13f46355c860f37fb9eecd4c67854e60293b926f450af",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-PM-SCOPE.json": {
+      "before": "85b29c23582033cc8dcab130fb76639f8694ee50a6c75ea95c105d338a5bfe44",
+      "after": "85b29c23582033cc8dcab130fb76639f8694ee50a6c75ea95c105d338a5bfe44",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-PM-SCOPE.md": {
+      "before": "874df3b246fae6c50c123a356efab9b4daee1ca9572c5b6692f0d04e82a9daee",
+      "after": "874df3b246fae6c50c123a356efab9b4daee1ca9572c5b6692f0d04e82a9daee",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REPAIR-BOUNDARY-manifest.json": {
+      "before": "df8d648f3c5f0c94304ea01d2b27136efc2ea5ef94333bf58f0cbfa693462222",
+      "after": "df8d648f3c5f0c94304ea01d2b27136efc2ea5ef94333bf58f0cbfa693462222",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REPAIR-BOUNDARY-old-tracked.patch": {
+      "before": "c80055a2da264496b2998bc971f74afc07af69d6b9349da9c5ca79f657907325",
+      "after": "c80055a2da264496b2998bc971f74afc07af69d6b9349da9c5ca79f657907325",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REPAIR-BOUNDARY.md": {
+      "before": "ba739478b15a3f46e7a1eedb73db155fe011cb38828358b99a95755260ceed5d",
+      "after": "ba739478b15a3f46e7a1eedb73db155fe011cb38828358b99a95755260ceed5d",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REVIEW-BASELINE-checks.json": {
+      "before": "cd90e959d47dae2f4e3f889b56bdaf26542447a1b74d49b5764731b54aef7e01",
+      "after": "cd90e959d47dae2f4e3f889b56bdaf26542447a1b74d49b5764731b54aef7e01",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REVIEW-BASELINE.md": {
+      "before": "ee93848c89c0ede8157c2d9e9766d78fc02307aa36ec4c4197d37f94bb49c89b",
+      "after": "ee93848c89c0ede8157c2d9e9766d78fc02307aa36ec4c4197d37f94bb49c89b",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T075255Z-QRP-G0-AUTH-checks.json": {
+      "before": "b2ddcd6bef2243d64aec70a877ae59620e2ec2404021ae15dd1c817350e91856",
+      "after": "b2ddcd6bef2243d64aec70a877ae59620e2ec2404021ae15dd1c817350e91856",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T075255Z-QRP-G0-AUTH.md": {
+      "before": "71b8522a9f24308cb89abf1c294f603e297e6c3119a7b56265cf17d0536f447d",
+      "after": "71b8522a9f24308cb89abf1c294f603e297e6c3119a7b56265cf17d0536f447d",
+      "unchanged": true
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/README.md": {
+      "before": "883fc0e326563fc3ccd8fc809a537db815ad56408773ff0f81cbc4bcd5361e18",
+      "after": "883fc0e326563fc3ccd8fc809a537db815ad56408773ff0f81cbc4bcd5361e18",
+      "unchanged": true
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/01_QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.6.md": {
+      "before": "91b053dc10c3bff8bb5eb037317b3ca6075c3958269c132c915eb814aec5ac82",
+      "after": "91b053dc10c3bff8bb5eb037317b3ca6075c3958269c132c915eb814aec5ac82",
+      "unchanged": true
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/02_MASTER_PLAN_v1.1.md": {
+      "before": "e91c0e0fcd4436fb226285dc7c24cb87c25ca380629a66e4eb2d6e7574b45051",
+      "after": "e91c0e0fcd4436fb226285dc7c24cb87c25ca380629a66e4eb2d6e7574b45051",
+      "unchanged": true
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/03_DECISIONS_QR_MVP_VERTICAL_SLICE_v1.0.md": {
+      "before": "62b6ba06cda8d0debb0b4d40d3244b3e65547ebe6ee8fbfd7e4a88d2fe122add",
+      "after": "62b6ba06cda8d0debb0b4d40d3244b3e65547ebe6ee8fbfd7e4a88d2fe122add",
+      "unchanged": true
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/04_TASK_BOARD_QR_TEMPLATE_ROI_SIGNAL_v1.0.md": {
+      "before": "75b5679d0afd79b7c1e835be9a2b84e1d8f7528224fc6cb9e3dc2a86ab244620",
+      "after": "75b5679d0afd79b7c1e835be9a2b84e1d8f7528224fc6cb9e3dc2a86ab244620",
+      "unchanged": true
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/05_AUTHORITATIVE_CONTRACT_SYNC_CHECKLIST_v1.0.md": {
+      "before": "342f3e41c37fb2ed86c3baf366d3909b1f5f1effdf991483e1b04638428cdcf4",
+      "after": "342f3e41c37fb2ed86c3baf366d3909b1f5f1effdf991483e1b04638428cdcf4",
+      "unchanged": true
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/06_TEMPLATE_ESTABLISHMENT_AND_VALIDATION_PLAN_v1.0.md": {
+      "before": "4cdde5ce2efff9d032504762d591f0706df3bd605a198e37ff4bdd46a3fbc430",
+      "after": "4cdde5ce2efff9d032504762d591f0706df3bd605a198e37ff4bdd46a3fbc430",
+      "unchanged": true
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/07_HERDR_RECENT_THREE_FAILURES_INVESTIGATION_v1.0.md": {
+      "before": "dd35aac3678515c2e06f6a799c66d17db3716ccc3539dbc63c8051855367e7ce",
+      "after": "dd35aac3678515c2e06f6a799c66d17db3716ccc3539dbc63c8051855367e7ce",
+      "unchanged": true
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/08_TEN_POINT_CAPTURE_RELEASE_AND_EXECUTION_PLAN_v1.0.md": {
+      "before": "2b5279ff45ac0f3916f8135b3e607f05d296e8a04dcdc9f7d6e8485058df91f6",
+      "after": "2b5279ff45ac0f3916f8135b3e607f05d296e8a04dcdc9f7d6e8485058df91f6",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-report.md": {
+      "before": "21f2be67f5e5953ac82f6d24abf78400ad8ceed41622b51629cd207c81b5938f",
+      "after": "21f2be67f5e5953ac82f6d24abf78400ad8ceed41622b51629cd207c81b5938f",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-dataset.json": {
+      "before": "017b6b155518e0c311bedcec35e90f0d1c2c624e65cfa09ca469dc2c03341578",
+      "after": "017b6b155518e0c311bedcec35e90f0d1c2c624e65cfa09ca469dc2c03341578",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-geometry.json": {
+      "before": "b525cd0844a786910bb177329225db06b2c6ab13cb1769cbd13293c9b8f1f35a",
+      "after": "b525cd0844a786910bb177329225db06b2c6ab13cb1769cbd13293c9b8f1f35a",
+      "unchanged": true
+    },
+    "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-checks.json": {
+      "before": "dd3ba181b8cb4b3a155b996e7b5ac2d0cedfa82b95cf89b4c132b0f764a7327d",
+      "after": "dd3ba181b8cb4b3a155b996e7b5ac2d0cedfa82b95cf89b4c132b0f764a7327d",
+      "unchanged": true
+    },
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/MANIFEST.sha256": {
+      "before": "90c5b32869f6a9f04d914ec3acb2c535b638da0fc84d88eedfc64c467ecbe2d2",
+      "after": "90c5b32869f6a9f04d914ec3acb2c535b638da0fc84d88eedfc64c467ecbe2d2",
+      "unchanged": true
+    }
+  },
+  "requirement_documentary_checks": {
+    "QR-REV2-REQ-01": {
+      "section_present": true,
+      "index_registered": true
+    },
+    "QR-REV2-REQ-02": {
+      "section_present": true,
+      "index_registered": true
+    },
+    "QR-REV2-REQ-03": {
+      "section_present": true,
+      "index_registered": true
+    },
+    "QR-REV2-REQ-04": {
+      "section_present": true,
+      "index_registered": true
+    },
+    "QR-REV2-REQ-05": {
+      "section_present": true,
+      "index_registered": true
+    },
+    "QR-REV2-REQ-06": {
+      "section_present": true,
+      "index_registered": true
+    },
+    "QR-REV2-REQ-07": {
+      "section_present": true,
+      "index_registered": true
+    }
+  },
+  "required_boundary_tokens": [
+    "PHYSICAL_LAYOUT_AND_MANUAL_QR_PLACEMENT_ASSESSMENT",
+    "CONTROLLED ROI LOCALIZATION AND QR COARSE-GUIDANCE COMPARISON",
+    "CONTROLLED_DEVICE_PRIOR_ONLY",
+    "QR_COARSE_ABOVE_REGION",
+    "QR_HOMOGRAPHY_DIAGNOSTIC_ONLY",
+    "measurement_authority=false",
+    "quantification_allowed=false",
+    "formal_reporting_allowed=false",
+    "G1_EXIT=NOT_MET",
+    "NOT_EVALUABLE",
+    "IMPLEMENTATION_NOT_AUTHORIZED"
+  ],
+  "explicit_full_paths_checked": [
+    "Android_App/app/src/main/java/com/example/data/local/JournaledArtifactStore.kt",
+    "Android_App/app/src/main/java/com/example/network/DheaClient.kt",
+    "Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt",
+    "core/dhea.py",
+    "core/dhea_diagnostics.py",
+    "docs/DHEA_NATIVE_APPS_API_RECOGNITION_TODO_2026-09-15.md",
+    "docs/LFA_最新完整文档集合/09_P0移动端与接口实施清单_v1.4_DHEA_MVP.md",
+    "docs/LFA_最新完整文档集合/11_DHEA原生Android研究v2公开契约.md",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/README.md",
+    "docs/api/api-reference.md",
+    "docs/api/dhea-v2-app-integration.md",
+    "docs/api/dhea-v3-product-gate.md",
+    "docs/api/generate_dhea_v3.py",
+    "docs/api/openapi-dhea-v2.json",
+    "docs/api/openapi-dhea-v3.json",
+    "docs/api/schemas/capture-bundle-1.6.schema.json",
+    "docs/api/schemas/dhea-capture-v3.schema.json",
+    "docs/api/schemas/dhea-diagnostics-v2.schema.json",
+    "docs/api/schemas/dhea-error-v3.schema.json",
+    "docs/api/schemas/dhea-result-v3.schema.json",
+    "docs/api/schemas/dhea-v2.schema.json",
+    "docs/api/schemas/dhea-validation-v3.schema.json",
+    "fixtures/dhea-v2/provenance.json",
+    "fixtures/dhea-v3/http-cases.json",
+    "fixtures/dhea-v3/jcs/sha256.json",
+    "fixtures/dhea-v3/legacy-v2-post-cases.json",
+    "fixtures/dhea-v3/negative/schema-cases.json",
+    "fixtures/dhea-v3/v2-baseline-sha256.json",
+    "herdr-team/.agent-control/FILE_OWNERSHIP.md",
+    "herdr-team/.agent-control/MASTER_PLAN.md",
+    "python_gateway/dhea.py",
+    "python_gateway/dhea_diagnostics.py",
+    "python_gateway/dhea_input.py",
+    "python_gateway/dhea_v3_schema.py",
+    "python_gateway/workbench.html"
+  ],
+  "checks": {
+    "runner": "Python stdlib pathlib/hashlib/re/json inline assertions",
+    "ownership": "PASS exact two ACTIVE unique START outputs checked before drafting",
+    "old_manifest": "PASS nine entries",
+    "protected_inputs": "PASS 28 before/after digests",
+    "requirement_headings_and_index": "PASS seven",
+    "boundary_tokens": "PASS",
+    "explicit_full_paths_exist": "PASS",
+    "scientific_validation": "NOT_EXECUTED",
+    "product_tests": "NOT_EXECUTED document-only scope",
+    "review": "PENDING",
+    "pm_gate": "PENDING"
+  },
+  "limits": [
+    "Presence and digest checks are documentary checks, not semantic or scientific proof.",
+    "Abbreviated inherited inventory references are resolved by source05, not independently audited code.",
+    "No capture, QR, homography, ROI, runtime, App/API/Core/Schema/fixture actions.",
+    "Old G1 remains NOT_MET; plan acceptance does not authorize implementation.",
+    "Checks self hash is bound externally to avoid self-reference."
+  ]
+}

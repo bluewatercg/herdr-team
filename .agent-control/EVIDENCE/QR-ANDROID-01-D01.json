@@ -1,0 +1,206 @@
+{
+  "schema": "qr-android-01-evidence/1.0",
+  "plan_id": "QR-ANDROID-01",
+  "deliverable_id": "QR-ANDROID-01-D01",
+  "task_id": "RUN-20260918-QR-ANDROID",
+  "write_owner": "lfa-android",
+  "status": "IMPLEMENTED_DEVICE_EVIDENCE_PENDING",
+  "stage": "CONTROLLED_CAPTURE_INVESTOR_MVP",
+  "formal_reporting_allowed": false,
+  "generated_at_utc": "2026-09-20T01:40:31Z",
+  "revision": {
+    "git_head": "410b17a00b63374f5d28a5531c478db8b30e8427",
+    "node2_worktree_manifest_sha256": "5571eda92c58867cfd32acbcdbc71045dbf87d103523a4a3532bca0453ce12f0",
+    "manifest_method": "sha256sum of the 15 ordered implementation-file digest lines below, then sha256sum of that output",
+    "metadata_schema_version": "dhea-capture/2.1-product",
+    "declaration_schema_version": "qiuqiu-product-gate/1.0",
+    "capture_bundle_schema_version": "1.6"
+  },
+  "authority": {
+    "source_receipt": {
+      "path": "herdr-team/.agent-control/ROUNDS/20260918T043217Z-meeting.md",
+      "node2_lines": "3001-3164",
+      "bytes": 252569,
+      "sha256": "1af124957e354d689f01dd09f071d5d8100b8ff3324ca407dd0d649ce53fce36"
+    },
+    "master_plan": {
+      "path": "herdr-team/.agent-control/MASTER_PLAN.md",
+      "bytes": 73108,
+      "sha256": "9aa171caadc16ba10cfcba58e9ddef1111186a244615a6f707ff3a87251e6619"
+    },
+    "ownership": {
+      "path": "herdr-team/.agent-control/FILE_OWNERSHIP.md",
+      "bytes": 52307,
+      "sha256": "4b43393753ea21ec091e83fd296014290f2e27afafe54263d290d44b670da62c"
+    },
+    "frozen_node1": {
+      "path": "herdr-team/.agent-control/EVIDENCE/QR-PC-01-D01.json",
+      "bytes": 22762,
+      "sha256": "129730595d1bc42ef226df6a50a60e6e03793abb07a7a64e250e11dcc90491db",
+      "modified_by_node2": false
+    }
+  },
+  "protected_baseline": [
+    {
+      "path": "Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt",
+      "starting_bytes": 25621,
+      "starting_sha256": "28b65ed04d5c0846e0a755439533b58aed879e4f184274740e3f1fd76b6515f6",
+      "preserved_behavior": "processing/unknown-upload lookup and Retry-After behavior retained"
+    },
+    {
+      "path": "Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt",
+      "starting_bytes": 23773,
+      "starting_sha256": "258f4da400d78484fa65a8b366e178681bec69810de48cb52327b6cea4168621",
+      "preserved_behavior": "top-positioned three-second saved notice retained"
+    }
+  ],
+  "implementation_files": [
+    {"path":"Android_App/README.md","bytes":5987,"sha256":"c8bcc49b071959a7bd6d3657a8e44e03d2636bf28c1011d3aed7ff313b70ca55"},
+    {"path":"Android_App/app/build.gradle.kts","bytes":5231,"sha256":"d5b8955fb8ba32d69615aebb1f47541e629c50e93a674ce7fd36a16b7be27271"},
+    {"path":"Android_App/gradle/libs.versions.toml","bytes":7580,"sha256":"269476d707186070f04890a653672a05ff7c8f6a9ff64745f49d7b3e837abce2"},
+    {"path":"Android_App/app/src/main/java/com/example/camera/NativeCameraManager.kt","bytes":25402,"sha256":"3daba7f3de7e00f6b86980040fd83cc8ff5316bbf238cb9061b1cd545f26532f"},
+    {"path":"Android_App/app/src/main/java/com/example/camera/PreviewGuidanceAnalyzer.kt","bytes":13344,"sha256":"b5795431e894568bc8cc7de142f62cf9a67920e5aef945cd286a6d9478d33ce8"},
+    {"path":"Android_App/app/src/main/java/com/example/camera/ProductGate.kt","bytes":6470,"sha256":"49fa7d65c092d2f65276f9126f5086ccb7f47e4dd858652534b4d2ea8c7e1f4f"},
+    {"path":"Android_App/app/src/main/java/com/example/data/local/JournaledArtifactStore.kt","bytes":35822,"sha256":"cd4f1ecf6e4b79a2a8daad34f20c7e77aaa3220025abf48a0c584bf4c18e3bb2"},
+    {"path":"Android_App/app/src/main/java/com/example/domain/model/Models.kt","bytes":5669,"sha256":"23429513ff04654e3d516ba1094d8c567d53fb8aba6179fbe9a91c69827d2c42"},
+    {"path":"Android_App/app/src/main/java/com/example/network/DheaClient.kt","bytes":28676,"sha256":"1655f2cc6660bd87f23caffe58a8088ce597d516645959813fb0da3927863325"},
+    {"path":"Android_App/app/src/main/java/com/example/network/DheaJson.kt","bytes":11217,"sha256":"fdb3a7ab390d38dd47ee87291726890ebb471dddc599b227775a098107d31dd1"},
+    {"path":"Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt","bytes":29465,"sha256":"4e06b5836433a2c7f9825277a9b8100d60d15a5f809affafd5b5561a2794d163"},
+    {"path":"Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt","bytes":25010,"sha256":"ff1ec1178bf00235471065e21080bc09b7f11965885ed4c9e7f20c43fa7158ba"},
+    {"path":"Android_App/app/src/test/java/com/example/camera/ProductGateTest.kt","bytes":7665,"sha256":"8faba7befab6d5fac423ef1b7619004c7cf51c5f0a648af6233d7cd4d4359e76"},
+    {"path":"Android_App/app/src/test/java/com/example/camera/PreviewGuidanceAnalyzerTest.kt","bytes":2863,"sha256":"842127ed2bec8e29dd28ef3992220bb6769ce82bdc4dbfc974e97798ef9d3099"},
+    {"path":"Android_App/app/src/test/java/com/example/network/DheaContractTest.kt","bytes":14851,"sha256":"d26c02ef739c02825d3e291f76114c5355d2e587de988a65d6b7a43795c74715"}
+  ],
+  "focused_checks": {
+    "command": "cmd.exe /d /c set JAVA_HOME=... && gradle.bat :app:testDebugUnitTest --tests com.example.camera.ProductGateTest --tests com.example.camera.PreviewGuidanceAnalyzerTest --tests com.example.network.DheaContractTest :app:assembleDebug --no-configuration-cache --console=plain",
+    "native_exit_code": 0,
+    "result": "BUILD SUCCESSFUL in 10s; 49 actionable tasks: 3 executed, 46 up-to-date",
+    "tests": [
+      {"suite":"com.example.camera.ProductGateTest","tests":7,"failures":0,"errors":0},
+      {"suite":"com.example.camera.PreviewGuidanceAnalyzerTest","tests":3,"failures":0,"errors":0},
+      {"suite":"com.example.network.DheaContractTest","tests":10,"failures":0,"errors":0}
+    ],
+    "smoke_path": "Exact payload parser -> current binding match -> one-time consume -> strict persisted declaration -> dhea-capture/2.1-product metadata preservation",
+    "warnings": [
+      "Existing deprecated fallbackToDestructiveMigration warning during earlier compile; unrelated to Node2.",
+      "Existing deprecated ResponseBody.create use in DheaContractTest.",
+      "Robolectric native-access warning; tests completed successfully."
+    ]
+  },
+  "debug_apk": {
+    "path": "Android_App/app/build/outputs/apk/debug/app-debug.apk",
+    "bytes": 48118038,
+    "sha256": "df8937a7c9b2c42ec36e426a743126ea029876984edf797a0c7df4f42a21e6c7",
+    "build_result": "PASS"
+  },
+  "behavior_evidence": {
+    "accepted_payload": "1:QIUQIU:DHEA",
+    "accepted_payload_utf8_sha256": "a5c42b99a1aa1c91482b3d4d795e4663d3a203818376dbc0e2383da6e64c10b6",
+    "independent_non_ascii_fixture_sha256": "849090ca0a9e3913a4907af0a9d31eb02aa990685d61d8aca73a55c8215cbaab",
+    "states": ["QR_NOT_READABLE","QR_FORMAT_UNSUPPORTED","QR_VERSION_UNSUPPORTED","PRODUCT_NAMESPACE_UNSUPPORTED","PRODUCT_CODE_UNSUPPORTED","PRODUCT_FAMILY_NOT_MATCHED","PRODUCT_FAMILY_MATCHED"],
+    "bindings": ["capture_session_id","camera_session_id","capture_attempt_id","verification_record_id"],
+    "lifecycle": "Tests cover stale capture/camera/attempt callbacks, expiry, page exit, camera recreation, capture completion, next card, different product, multiple cards, operator reset, new attempt and one-time consumption.",
+    "composed_shutter_gate": "Test covers camera permission/readiness, capture-in-progress, storage warning and current attempt binding in addition to product match.",
+    "analyzer_close_audit": "PreviewGuidanceAnalyzer closes ImageProxy on inactive/busy, missing media, synchronous exception and ML Kit completion paths; NativeCameraManager closes scanner on release, shutdown and synchronous/asynchronous camera bind failure.",
+    "immutable_jpeg_audit": "NativeCameraManager.captureRawJpeg still copies the first ImageCapture JPEG plane bytes once; QR uses preview ImageAnalysis only. JournaledArtifactStore calculates original_sha256 from and persists the same ByteArray. No re-encode, PNG conversion, crop or analyzer-frame substitution was added."
+  },
+  "device_evidence": {
+    "status": "IMPLEMENTED_DEVICE_EVIDENCE_PENDING",
+    "executed": false,
+    "pending_scenarios": [
+      "shutter disabled before recognition",
+      "real 1:QIUQIU:DHEA enables shutter",
+      "QR removal invalidates",
+      "different QR remains disabled",
+      "capture completion requires re-recognition",
+      "first-generation JPEG persists and uploads",
+      "capture SHA equals upload SHA"
+    ]
+  },
+  "scope_limits": {
+    "identity_level": "PRODUCT_FAMILY_ONLY",
+    "unsupported_claims": ["counterfeit","authenticity","LOT","Serial","unique-card identity","concentration","ROI","clinical","regulatory","production"],
+    "node3_dependency": "NONE; server Node3 is outside Node2 ownership and was not modified or rerun.",
+    "rollback": "Revert only the 15 implementation files in this manifest and rebuild; do not delete capture records, queue state, Node1 evidence or Node3 files."
+  },
+  "requirement_btw_checks": [
+    {
+      "TODO_ID":"QR-ANDROID-STATE",
+      "Goal":"Continuously identify the exact QIUQIU DHEA product family on the existing preview analyzer.",
+      "Files Changed":["ProductGate.kt","PreviewGuidanceAnalyzer.kt","CaptureScreen.kt"],
+      "Build Result":"Bundled ML Kit QR scanning integrated into existing ImageAnalysis; seven exact internal states retained.",
+      "Requirement Trace":"ROUNDS 3001-3039.",
+      "Test Result":"PASS ProductGateTest 7/7 and PreviewGuidanceAnalyzerTest 3/3.",
+      "Artifact Evidence":"Exact payload/hash and negative-state XML results; source manifest above.",
+      "Known Limitations":"No real-device decoder run yet.",
+      "Open Post-Funding Gates":[],
+      "Current MVP Blocker Remaining":"Device evidence pending; source and automation complete."
+    },
+    {
+      "TODO_ID":"QR-ANDROID-SHUTTER",
+      "Goal":"Hard-gate one shutter attempt on one current product verification without replacing camera/storage/capture checks.",
+      "Files Changed":["ProductGate.kt","LfaViewModel.kt","CaptureScreen.kt","ProductGateTest.kt"],
+      "Build Result":"Reserved attempt identity is consumed once; stale/expired evidence becomes terminal for that attempt.",
+      "Requirement Trace":"ROUNDS 3041-3097.",
+      "Test Result":"PASS current consumption, stale binding, expiry and composed shutter prerequisites.",
+      "Artifact Evidence":"ProductGateTest tests currentAttemptConsumesOneFreshVerification, staleDelayedAndExpiredObservationsNeverAuthorize and productMatchNeverBypassesCameraStorageOrCaptureChecks.",
+      "Known Limitations":"UI behavior not observed on hardware.",
+      "Open Post-Funding Gates":[],
+      "Current MVP Blocker Remaining":"Device evidence pending."
+    },
+    {
+      "TODO_ID":"QR-ANDROID-PERSIST",
+      "Goal":"Persist and upload the frozen product declaration with all four identities and monotonic ordering.",
+      "Files Changed":["Models.kt","JournaledArtifactStore.kt","DheaJson.kt","DheaClient.kt","DheaContractTest.kt"],
+      "Build Result":"Bundle 1.6 strictly validates and serializes declaration; upload emits dhea-capture/2.1-product from persisted JSON.",
+      "Requirement Trace":"ROUNDS 3051-3067 and frozen Node1 schema.",
+      "Test Result":"PASS strict declaration rejection and persisted declaration metadata preservation.",
+      "Artifact Evidence":"DheaContractTest 10/10 including productGateDeclarationIsExactAndIdentityBound and persistedProductDeclarationIsPreservedInUploadMetadata.",
+      "Known Limitations":"No live gateway request in Node2 verification.",
+      "Open Post-Funding Gates":[],
+      "Current MVP Blocker Remaining":"None for source contract."
+    },
+    {
+      "TODO_ID":"QR-ANDROID-LIFECYCLE",
+      "Goal":"Invalidate across lifecycle/generation boundaries and close analyzer resources.",
+      "Files Changed":["NativeCameraManager.kt","PreviewGuidanceAnalyzer.kt","ProductGate.kt","LfaViewModel.kt","CaptureScreen.kt"],
+      "Build Result":"Frame binding captured before async ML Kit call; stale callbacks rejected; release and failure close scanner/analyzer; page exit remains terminal reason.",
+      "Requirement Trace":"ROUNDS 3069-3091.",
+      "Test Result":"PASS lifecycle, camera recreation, delayed callback and new-attempt cases.",
+      "Artifact Evidence":"ProductGateTest lifecycle and recreation tests plus analyzer close-path source audit.",
+      "Known Limitations":"CameraX/ML Kit close timing requires device observation.",
+      "Open Post-Funding Gates":[],
+      "Current MVP Blocker Remaining":"Device evidence pending."
+    },
+    {
+      "TODO_ID":"QR-ANDROID-JPEG",
+      "Goal":"Preserve the first complete CameraX JPEG bytes and SHA while scanning preview frames.",
+      "Files Changed":["NativeCameraManager.kt","PreviewGuidanceAnalyzer.kt","JournaledArtifactStore.kt"],
+      "Build Result":"Preview QR analysis is separate from ImageCapture; capture byte-copy and hash/persist path remain unchanged.",
+      "Requirement Trace":"ROUNDS 3099-3106.",
+      "Test Result":"Compile/focused checks pass; immutable path source audit complete.",
+      "Artifact Evidence":"No JPEG encoder, PNG conversion, crop, analyzer-frame persistence or byte mutation in Node2 diff.",
+      "Known Limitations":"Capture/upload SHA equality awaits real-device run.",
+      "Open Post-Funding Gates":[],
+      "Current MVP Blocker Remaining":"Device evidence pending."
+    },
+    {
+      "TODO_ID":"QR-ANDROID-VERIFY",
+      "Goal":"Complete focused automation, debug APK and revision-bound evidence.",
+      "Files Changed":["ProductGateTest.kt","PreviewGuidanceAnalyzerTest.kt","DheaContractTest.kt","README.md","QR-ANDROID-01-D01.json"],
+      "Build Result":"Gradle native exit 0; debug APK produced.",
+      "Requirement Trace":"ROUNDS 3108-3164.",
+      "Test Result":"PASS 20/20 focused tests; assembleDebug PASS.",
+      "Artifact Evidence":"APK df8937a7... / 48118038 bytes; worktree manifest 5571eda9....",
+      "Known Limitations":"IMPLEMENTED_DEVICE_EVIDENCE_PENDING.",
+      "Open Post-Funding Gates":["Production authenticity, arbitrary-device support, clinical/regulatory claims require separate future evidence and roles."],
+      "Current MVP Blocker Remaining":"Existing Review and PM gates for this exact Node2 revision."
+    }
+  ],
+  "self_binding": {
+    "path": "herdr-team/.agent-control/EVIDENCE/QR-ANDROID-01-D01.json",
+    "sha256": null,
+    "bytes": null,
+    "binding": "START must record the exact post-write SHA-256 and byte size externally; this JSON cannot contain its own stable whole-file digest."
+  }
+}

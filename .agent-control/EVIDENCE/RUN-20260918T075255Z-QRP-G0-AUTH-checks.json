@@ -1,0 +1,456 @@
+{
+  "task_id": "RUN-20260918T075255Z-QRP-G0-AUTH",
+  "plan_id": "QR-GEOMETRY-01",
+  "deliverable_id": "QR-GEOMETRY-01-G0",
+  "author": "lfa-review(w11:p1)",
+  "status": "EVIDENCE_READY_FOR_INDEPENDENT_REVIEW",
+  "package_root": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6",
+  "accepted_package_manifest_sha256": "90c5b32869f6a9f04d914ec3acb2c535b638da0fc84d88eedfc64c467ecbe2d2",
+  "input_sha256": {
+    "docs/api/api-reference.md": "4c8d7d96a354c6aae5786ad516aa6ffa2ac3cc5699ed8b749a10c09b35681c76",
+    "docs/LFA_最新完整文档集合/11_DHEA原生Android研究v2公开契约.md": "1c648f525aa41bf2fc27e2bff762df00a8f52a53ae09f70a9ca319bc0e53720d",
+    "docs/api/dhea-v2-app-integration.md": "16a9a6d3c3d13e1279f4d98426043e9712f3852c8ed3ca98bf29fbac6bdee23b",
+    "docs/api/dhea-v3-product-gate.md": "c4dabe2504df0291035a241b732705f18cd9b59c4c2e8cfea6d55560980beea5",
+    "docs/api/openapi-dhea-v2.json": "a82e8c1e1c167b4ae78edc89cb773dbc5c43e4dbaa793a0d7e91a5723ca9dd98",
+    "docs/api/openapi-dhea-v3.json": "624892bdbf32ec67525aded2a38e13fad437bab1a1b575b72bb1d05f022fd4c8",
+    "python_gateway/dhea_input.py": "0d0a6118e093e026c0bfbf9b230fa16156ce9bbb6ca7217454186c3035cecc47",
+    "docs/api/schemas/dhea-v2.schema.json": "c1b006e3b826448821ab2b15337d4e99de5302cad8a7e6004c1ca64d04596747",
+    "docs/api/generate_dhea_v3.py": "2978a244c25ca7018b25eabceb815eca8fb53065be729978d37031365e7b8949",
+    "python_gateway/dhea_v3_schema.py": "5b24b5370f3de8cba5353e18f027f5a07cdcfd792a24e3c06d112eac2c839933",
+    "docs/api/schemas/capture-bundle-1.6.schema.json": "9b37acb82c652f8358d6f08c6c9202f118400b1a7e598a893ccbf7b5a19b89e5",
+    "docs/api/schemas/dhea-capture-v3.schema.json": "beead8999f86eadae0e94988f29e15bd0d8dd03f79d1b2fd5e16bf7b628384b2",
+    "docs/api/schemas/dhea-result-v3.schema.json": "0d6773ec80f55cfbe1eae9c485f5b39a937fb77462db6e903c902252e6e6e5de",
+    "docs/api/schemas/dhea-validation-v3.schema.json": "5d2e09d34eab2e568dfcaa0d09ee9c2ed68a0055400634b1225e2b99d5eda59a",
+    "docs/api/schemas/dhea-diagnostics-v2.schema.json": "acc9b39869e71070ea1a929e3f6968a5341489a7f454d95cb776d50ad6aedc20",
+    "docs/api/schemas/dhea-error-v3.schema.json": "2daf0a664531c3ef6d9fe5078432a3c251fec4a7281acf14a0a7552f874b5130",
+    "fixtures/dhea-v2/calculated/metadata.json": "878ed0bafc8687fb117f261cf0f80bfba8ab5d847490b89b15d6f519d862530f",
+    "fixtures/dhea-v2/calculated/result.json": "9407aed4e15754311ba115766a421c05eab8b8fd0a25503ff602a6937b267e5a",
+    "fixtures/dhea-v2/calculated/validation.json": "b2410c3d02ba9b89d687a627f387c93242c3aaf3336435689f4f99522aa9fa05",
+    "fixtures/dhea-v2/calculated/synthetic.jpg": "4081b19939da82a7f998fa71fde39ff54e763bc07c3f6574c557cea2496d3ae8",
+    "fixtures/dhea-v2/inverse-refused/metadata.json": "ad3a62583af21cfed706f633de88192bb927ec773703b4a05875bbd75383a9d9",
+    "fixtures/dhea-v2/inverse-refused/result.json": "f5d5871a0298fbf40002af1336b7ccebd53c63c09875c5ef38c8cbfddeacd246",
+    "fixtures/dhea-v2/inverse-refused/validation.json": "6668cacb148a8f91073b9388391e2657afa67836c540e183b4dece6ba17286db",
+    "fixtures/dhea-v2/inverse-refused/synthetic.jpg": "d33e89972dfc6cf076df059c53c1db6d4c4bdf757a9ac72c8877c283be048815",
+    "fixtures/dhea-v2/provenance.json": "9be1aaaa1a39eb1ee61a2367bda85744422a4b8771f438dad28376cf36368fb2",
+    "fixtures/dhea-v3/positive/result-measured.json": "5bb1b443eb7c2db1fbd858542690fb3270836bf83267ac1decf5211e35535660",
+    "fixtures/dhea-v3/positive/result-rejected.json": "dc6279c1119c21355ea65c2e9248992b7d4e713eb7b6698ae0236298893de759",
+    "fixtures/dhea-v3/positive/result-processing.json": "1d58f94aefb6d19b4b92d3518c9df69be3318ed0e14cb239ced50c67049b75f8",
+    "fixtures/dhea-v3/positive/result-failed.json": "2457eebfe5f89435f1bb19e56c8bdb58db73987e74ae7569f175e85c6e17e3dc",
+    "fixtures/dhea-v3/positive/validation.json": "0a47ec536c66bdb5b17ce58ab682e9622330b238f80e521440852276b6de9c92",
+    "fixtures/dhea-v3/negative/schema-cases.json": "60b9c334fb5c6bd2eefdad761bf1b373cb5f31c3deb6d12a81b996fc3c77eea7",
+    "fixtures/dhea-v3/legacy-v2-post-cases.json": "5e0094239c9253ce2d29b32cabc08ff86f7180d0f5e4e19f3dd9199d56f3f277",
+    "fixtures/dhea-v3/http-cases.json": "de49893f442e6340a832ca09ac425f75dc3bf6ccbb44d09fcc6a272c6321e173",
+    "fixtures/dhea-v3/v2-baseline-sha256.json": "1af9cae8e2dfb2ec69212e04089a754650995ebe3d25d5291655f9bbb38ecca2",
+    "fixtures/dhea-v3/jcs/sha256.json": "5465e7938a1b3da806f8c3003b17f16147aecbf936daae8914714c45858da7d6",
+    "Android_App/app/src/main/java/com/example/network/DheaClient.kt": "413a7dfa06ce6625d8fce391a46490869bd474ec521fc2534f33e164a33694bb",
+    "Android_App/app/src/main/java/com/example/network/DheaJson.kt": "0cf26ed743d14ecd7a07c065f04a4e90b5b84815db696ffae27458bb4cf3f6ae",
+    "Android_App/app/src/main/java/com/example/data/local/JournaledArtifactStore.kt": "44299c39cf4410593c647bb040221f568b03c69240256ab453146f3d778bf34c",
+    "Android_App/app/src/main/java/com/example/data/local/ReconciliationEngine.kt": "03499208346524a4bbdbc98740ac4a59d5f4e0fbe64bf0d1f8d434938da6d980",
+    "Android_App/app/src/main/java/com/example/data/local/db/Entities.kt": "d7e128c6fc2bd98e414055e7af31e69e909776a1f0a71393d7c81096eadbf388",
+    "Android_App/app/src/main/java/com/example/ui/screens/ResearchResultPanel.kt": "978a85b095f9f68c0b7c9f7785d278adb6a171706d1792048d7b79c40fc9fb76",
+    "python_gateway/dhea.py": "5adb3aba52effa0ae9795cd662713af0d715fe1457328eff2de2fd9cee1fc4b5",
+    "core/dhea.py": "73e69f20ee20cf83f89456e2d50b6e86477ced02da393313196c5d36e776fe1b",
+    "core/dhea_diagnostics.py": "45ee6fc492cc71719d9c308609147a679299ab83a7d986e429154453afa64664",
+    "python_gateway/workbench.html": "594b5737bf1d53a78f150c5032f5bf0c45c25347f660adbce6fa03288cb36d1a",
+    "python_gateway/dhea_diagnostics.py": "e8ecb6cae0633307ef50ce432e0ca3cb0c9ad27ba1d40ad811604b8f9fb7cec1",
+    "docs/LFA_最新完整文档集合/09_P0移动端与接口实施清单_v1.4_DHEA_MVP.md": "a350df5348ad8e35b87fa6f24f49e330dd6b621f1c84463135acaf599240f81b",
+    "docs/DHEA_NATIVE_APPS_API_RECOGNITION_TODO_2026-09-15.md": "14034d062b99d543c12649840f9c9c0a337b693d4adc8bd7c6efc1c1e71a6996",
+    "python_gateway/tests/test_dhea_v3_contract.py": "82cadab5c6406f95a70a1ed88c3d71d74ed17345f0a6e0091dfc32ed0f16befc",
+    "python_gateway/tests/test_dhea_v3_api.py": "093627ffa2279d495fd30b860efc01e416d901e2a74716f59a41c24213cbb1f7",
+    "python_gateway/tests/test_dhea.py": "c936b4a14c247c4fc6c2bed6096288c239b0c5fe28af3fb15993e7e9ce67e331",
+    "tests/test_dhea.py": "2b1ec5ace6f2f47beead9ec7f52c81fbc965e85a80bc3db0acdfa2e6e6fd3022",
+    "Android_App/app/src/test/java/com/example/network/DheaContractTest.kt": "6a1e839c654b7f1b1d1a74a57926861edcf871385b3f654db09aae54cd70310a",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/MANIFEST.sha256": "90c5b32869f6a9f04d914ec3acb2c535b638da0fc84d88eedfc64c467ecbe2d2",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/README.md": "883fc0e326563fc3ccd8fc809a537db815ad56408773ff0f81cbc4bcd5361e18",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/01_QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.6.md": "91b053dc10c3bff8bb5eb037317b3ca6075c3958269c132c915eb814aec5ac82",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/02_MASTER_PLAN_v1.1.md": "e91c0e0fcd4436fb226285dc7c24cb87c25ca380629a66e4eb2d6e7574b45051",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/03_DECISIONS_QR_MVP_VERTICAL_SLICE_v1.0.md": "62b6ba06cda8d0debb0b4d40d3244b3e65547ebe6ee8fbfd7e4a88d2fe122add",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/04_TASK_BOARD_QR_TEMPLATE_ROI_SIGNAL_v1.0.md": "75b5679d0afd79b7c1e835be9a2b84e1d8f7528224fc6cb9e3dc2a86ab244620",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/05_AUTHORITATIVE_CONTRACT_SYNC_CHECKLIST_v1.0.md": "342f3e41c37fb2ed86c3baf366d3909b1f5f1effdf991483e1b04638428cdcf4",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/06_TEMPLATE_ESTABLISHMENT_AND_VALIDATION_PLAN_v1.0.md": "4cdde5ce2efff9d032504762d591f0706df3bd605a198e37ff4bdd46a3fbc430",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/07_HERDR_RECENT_THREE_FAILURES_INVESTIGATION_v1.0.md": "dd35aac3678515c2e06f6a799c66d17db3716ccc3539dbc63c8051855367e7ce",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/08_TEN_POINT_CAPTURE_RELEASE_AND_EXECUTION_PLAN_v1.0.md": "2b5279ff45ac0f3916f8135b3e607f05d296e8a04dcdc9f7d6e8485058df91f6"
+  },
+  "control_source_sha256": {
+    "herdr-team/.agent-control/MASTER_PLAN.md": "2d40b5bdc1999b44c4f893e98036f674a84b503fe8aaecd2212568d264e915c1",
+    "herdr-team/.agent-control/FILE_OWNERSHIP.md": "d71f90aa9f5f444f13c0d80048946084d005a475b70d8b0470cdeaf9e0705891",
+    "herdr-team/.agent-control/TASK_BOARD.md": "7fa5d734bef9ce6f550733dd37d7e2b8f8981ce9507d8d4a472f610bee7f880c",
+    "herdr-team/.agent-control/ROUNDS/20260918T043217Z-meeting.md": "1a8d50e32ab7791cb96d0f101f319df7be3d0dd15d5efd9328832e5eec91b7e0",
+    "docs/requirements/INDEX.md": "d0ad568cc7ed173747eb8547b0ec476175037b2e2b339700b150f1d321bc4761"
+  },
+  "symbol_checks": {
+    "Android_App/app/src/main/java/com/example/network/DheaClient.kt": [
+      "suspend fun submit",
+      "suspend fun lookup",
+      "private fun freeze",
+      "private fun existing",
+      "private fun metadata",
+      "private fun persistResult"
+    ],
+    "Android_App/app/src/main/java/com/example/network/DheaJson.kt": [
+      "fun result",
+      "fun replay"
+    ],
+    "Android_App/app/src/main/java/com/example/data/local/JournaledArtifactStore.kt": [
+      "suspend fun persistFirstGenerationBytes",
+      "internal fun validateBundle",
+      "suspend fun verifyUploadCandidate"
+    ],
+    "Android_App/app/src/main/java/com/example/data/local/ReconciliationEngine.kt": [
+      "performStartupReconciliation"
+    ],
+    "Android_App/app/src/main/java/com/example/data/local/db/Entities.kt": [
+      "data class QueueRecordEntity"
+    ],
+    "Android_App/app/src/main/java/com/example/ui/screens/ResearchResultPanel.kt": [
+      "fun ResearchResultPanel"
+    ],
+    "python_gateway/workbench.html": [
+      "function checkBinding",
+      "function loadBundle",
+      "function fields"
+    ],
+    "core/dhea_diagnostics.py": [
+      "STAGES =",
+      "class Diagnostics"
+    ],
+    "python_gateway/dhea_input.py": [
+      "METADATA =",
+      "CORE_RESULT =",
+      "RESULT =",
+      "VALIDATION =",
+      "VALIDATION_RESULT =",
+      "class Upload",
+      "def validate_capture_v3"
+    ],
+    "docs/api/generate_dhea_v3.py": [
+      "CAPTURE =",
+      "MEASUREMENT =",
+      "RESULT =",
+      "VALIDATION =",
+      "def validate_capture_semantics",
+      "def validate_validation_semantics"
+    ]
+  },
+  "offline_artifact_contract": {
+    "measurement_authority": false,
+    "quantification_allowed": false,
+    "formal_reporting_allowed": false,
+    "status": "DOCUMENTARY_CONTRACT_ONLY",
+    "coordinate_convention": "Original encoded JPEG pixel coordinates; record EXIF and explicit card-to-image transform; card-facing TL_TR_BR_BL symbol boundary excludes quiet zone; never screen-sort corners. H maps card mm homogeneous coordinates into declared image pixels; any upright conversion records its transform separately.",
+    "required_fields": {
+      "source_jpeg_path_sha": "path and SHA256 of immutable original bytes; absent input path/SHA null with reason; mismatch refuses candidate",
+      "identity": "sample_id, physical_card_id, lot_id, slot_id, dataset_partition, capture_bundle_id/session_id/attempt_id if genuinely available; no fabricated IDs or v2 upload fields",
+      "candidate_geometry": "detected_qr_quad 4x2; H_card_to_image 3x3; predicted_window_quad 4x2; each null until executed successfully; keep upstream evidence on downstream failure",
+      "manual_comparison": "independent annotations, annotator/correction/adjudication provenance; per-corner, center, width, height, rotation errors with units; null when reference or prediction absent",
+      "status_reason": "per-stage NOT_EXECUTED/FAILED/SUCCEEDED documentary vocabulary with reason; missing slot retained; no numerical zero-fill",
+      "configuration": "template/tool/threshold version, path and raw-byte SHA256; unknown null; no current/latest fallback",
+      "artifacts": "original-coordinate overlay path/SHA or null; derived artifacts never replace source; diagnostic QR reprojection not window correctness"
+    },
+    "not_executed_example": {
+      "source_jpeg_path": null,
+      "source_jpeg_sha256": null,
+      "sample_id": null,
+      "physical_card_id": null,
+      "slot_id": null,
+      "capture_bundle_id": null,
+      "detected_qr_quad": null,
+      "H_card_to_image": null,
+      "predicted_window_quad": null,
+      "manual_comparison": null,
+      "overlay_path": null,
+      "config_sha256": null,
+      "T": null,
+      "C": null,
+      "T_C_ratio": null,
+      "concentration": null
+    },
+    "missing_reason": "G0 is documentary only; no sample supplied or geometry/measurement executed. Example defines missing fields, not an actual sample record.",
+    "measurement_stage": "NOT_EXECUTED",
+    "publication": "Report-local future offline contract, not a public API/schema or executable implementation."
+  },
+  "acceptance": {
+    "independent_reviewer": "lfa-api(w13:p1)",
+    "independent_review": "PENDING",
+    "pm_gate": "PENDING",
+    "G1": "NOT_AUTHORIZED",
+    "integration": "NOT_AUTHORIZED"
+  },
+  "reproduction": {
+    "command": "python3 -B - < inline script in companion report",
+    "script": "import ast, hashlib, json\nfrom pathlib import Path\nr=Path.cwd()\nc=json.loads((r/\"herdr-team/.agent-control/EVIDENCE/RUN-20260918T075255Z-QRP-G0-AUTH-checks.json\").read_text())\nfor p,h in c[\"input_sha256\"].items():\n    assert hashlib.sha256((r/p).read_bytes()).hexdigest()==h,p\nfor p in c[\"input_sha256\"]:\n    if p.endswith(\".json\"): json.loads((r/p).read_text())\n    if p.endswith(\".py\"): ast.parse((r/p).read_text())\npkg=c[\"package_root\"]\nfor line in (r/pkg/\"MANIFEST.sha256\").read_text().splitlines():\n    h,p=line.split(maxsplit=1)\n    assert hashlib.sha256((r/pkg/p).read_bytes()).hexdigest()==h,p\nfor p,symbols in c[\"symbol_checks\"].items():\n    text=(r/p).read_text()\n    for symbol in symbols: assert symbol in text,(p,symbol)\nv=json.loads((r/\"fixtures/dhea-v2/inverse-refused/result.json\").read_text())\nassert v[\"business_status\"]==\"completed\"\nd=v[\"data\"]\nassert all(d[k] is not None for k in (\"core_t_response\",\"core_c_response\",\"core_tc_ratio\"))\nassert d[\"dhea_research_concentration\"] is None and d[\"quantification_status\"]==\"not_calculable\"\nfor p,h in json.loads((r/\"fixtures/dhea-v3/v2-baseline-sha256.json\").read_text()).items():\n    assert hashlib.sha256((r/p).read_bytes()).hexdigest()==h,p\nfor version in (\"v2\",\"v3\"):\n    paths=json.loads((r/(\"docs/api/openapi-dhea-\"+version+\".json\")).read_text())[\"paths\"]\n    assert \"post\" in paths[\"/api/v2/lfa/measure\"]\n    assert \"get\" in paths[\"/api/v2/lfa/measurements/{capture_bundle_id}\"]\na=c[\"offline_artifact_contract\"]\nassert a[\"measurement_authority\"] is False and a[\"quantification_allowed\"] is False\nassert all(v is None for v in a[\"not_executed_example\"].values())\nassert c[\"acceptance\"][\"independent_review\"]==\"PENDING\" and c[\"acceptance\"][\"pm_gate\"]==\"PENDING\"\nprint(json.dumps({\"documentary_checks\":\"PASS\",\"input_count\":len(c[\"input_sha256\"]),\"runtime_executed\":False}))\n"
+  },
+  "runtime_executed": false,
+  "write_scope": [
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T075255Z-QRP-G0-AUTH.md",
+    "herdr-team/.agent-control/EVIDENCE/RUN-20260918T075255Z-QRP-G0-AUTH-checks.json"
+  ],
+  "requirements": {
+    "QR-G0-REQ-01": {
+      "expected": "v2/runtime unchanged",
+      "observed": "63 protected input digests unchanged; Android Bundle<=1.5 journal and strict v2 GET-first client; Gateway v2 accept/frozen retry/final replay; common Core measurement; Web diagnostics1.0. Existing gaps recorded, not repaired.",
+      "status": "PASS_DOCUMENTARY",
+      "reason": "Bounded documentary requirement only; independent acceptance pending."
+    },
+    "QR-G0-REQ-02": {
+      "expected": "Offline artifact contract",
+      "observed": "Documentary-only candidate fields, original coordinate convention, explicit nulls/reasons, real identity only; measurement_authority/quantification_allowed/formal_reporting_allowed false. No candidate computed.",
+      "status": "PASS_DOCUMENTARY",
+      "reason": "Bounded documentary requirement only; independent acceptance pending."
+    },
+    "QR-G0-REQ-03": {
+      "expected": "Exact read/write isolation",
+      "observed": "63 exact package/downstream inputs hashed before/after; 9 package manifest entries and 11 frozen-v2 hashes match. Only two ACTIVE evidence outputs written. Control-file concurrent chronology separately recorded.",
+      "status": "PASS_DOCUMENTARY",
+      "reason": "Bounded documentary requirement only; independent acceptance pending."
+    },
+    "QR-G0-REQ-04": {
+      "expected": "Prohibitions and actual actions",
+      "observed": "Only read/text/JSON/AST/hash/field checks and coordination. No source/schema/fixture/package changes, runtime imports, build/tests, QR/homography, capture, API/device/credential or migration actions.",
+      "status": "PASS_DOCUMENTARY",
+      "reason": "Bounded documentary requirement only; independent acceptance pending."
+    },
+    "QR-G0-REQ-05": {
+      "expected": "Executable documentary evidence",
+      "observed": "Stdlib-only inline checker executed successfully; asserts input hashes, JSON/AST parsing, manifest, symbols, fixture null behavior and version paths. Not scientific or behavioral proof.",
+      "status": "PASS_DOCUMENTARY",
+      "reason": "Bounded documentary requirement only; independent acceptance pending."
+    },
+    "QR-G0-REQ-06": {
+      "expected": "Dependencies and separate gates",
+      "observed": "G0 review by lfa-api(w13:p1), then PM pending; G1 requires separate assignment/ownership/authorization. G5->R1->R2->R3->R4; G5->C1; R4+C1->A1->A2. Integration NOT_AUTHORIZED.",
+      "status": "PASS_DOCUMENTARY",
+      "reason": "Bounded documentary requirement only; independent acceptance pending."
+    }
+  },
+  "checked_revision": {
+    "base_head": "410b17a00b63374f5d28a5531c478db8b30e8427",
+    "working_tree": "DIRTY; exact input_sha256 is reviewed revision, not a clean commit claim"
+  },
+  "input_after_sha256": {
+    "docs/api/api-reference.md": "4c8d7d96a354c6aae5786ad516aa6ffa2ac3cc5699ed8b749a10c09b35681c76",
+    "docs/LFA_最新完整文档集合/11_DHEA原生Android研究v2公开契约.md": "1c648f525aa41bf2fc27e2bff762df00a8f52a53ae09f70a9ca319bc0e53720d",
+    "docs/api/dhea-v2-app-integration.md": "16a9a6d3c3d13e1279f4d98426043e9712f3852c8ed3ca98bf29fbac6bdee23b",
+    "docs/api/dhea-v3-product-gate.md": "c4dabe2504df0291035a241b732705f18cd9b59c4c2e8cfea6d55560980beea5",
+    "docs/api/openapi-dhea-v2.json": "a82e8c1e1c167b4ae78edc89cb773dbc5c43e4dbaa793a0d7e91a5723ca9dd98",
+    "docs/api/openapi-dhea-v3.json": "624892bdbf32ec67525aded2a38e13fad437bab1a1b575b72bb1d05f022fd4c8",
+    "python_gateway/dhea_input.py": "0d0a6118e093e026c0bfbf9b230fa16156ce9bbb6ca7217454186c3035cecc47",
+    "docs/api/schemas/dhea-v2.schema.json": "c1b006e3b826448821ab2b15337d4e99de5302cad8a7e6004c1ca64d04596747",
+    "docs/api/generate_dhea_v3.py": "2978a244c25ca7018b25eabceb815eca8fb53065be729978d37031365e7b8949",
+    "python_gateway/dhea_v3_schema.py": "5b24b5370f3de8cba5353e18f027f5a07cdcfd792a24e3c06d112eac2c839933",
+    "docs/api/schemas/capture-bundle-1.6.schema.json": "9b37acb82c652f8358d6f08c6c9202f118400b1a7e598a893ccbf7b5a19b89e5",
+    "docs/api/schemas/dhea-capture-v3.schema.json": "beead8999f86eadae0e94988f29e15bd0d8dd03f79d1b2fd5e16bf7b628384b2",
+    "docs/api/schemas/dhea-result-v3.schema.json": "0d6773ec80f55cfbe1eae9c485f5b39a937fb77462db6e903c902252e6e6e5de",
+    "docs/api/schemas/dhea-validation-v3.schema.json": "5d2e09d34eab2e568dfcaa0d09ee9c2ed68a0055400634b1225e2b99d5eda59a",
+    "docs/api/schemas/dhea-diagnostics-v2.schema.json": "acc9b39869e71070ea1a929e3f6968a5341489a7f454d95cb776d50ad6aedc20",
+    "docs/api/schemas/dhea-error-v3.schema.json": "2daf0a664531c3ef6d9fe5078432a3c251fec4a7281acf14a0a7552f874b5130",
+    "fixtures/dhea-v2/calculated/metadata.json": "878ed0bafc8687fb117f261cf0f80bfba8ab5d847490b89b15d6f519d862530f",
+    "fixtures/dhea-v2/calculated/result.json": "9407aed4e15754311ba115766a421c05eab8b8fd0a25503ff602a6937b267e5a",
+    "fixtures/dhea-v2/calculated/validation.json": "b2410c3d02ba9b89d687a627f387c93242c3aaf3336435689f4f99522aa9fa05",
+    "fixtures/dhea-v2/calculated/synthetic.jpg": "4081b19939da82a7f998fa71fde39ff54e763bc07c3f6574c557cea2496d3ae8",
+    "fixtures/dhea-v2/inverse-refused/metadata.json": "ad3a62583af21cfed706f633de88192bb927ec773703b4a05875bbd75383a9d9",
+    "fixtures/dhea-v2/inverse-refused/result.json": "f5d5871a0298fbf40002af1336b7ccebd53c63c09875c5ef38c8cbfddeacd246",
+    "fixtures/dhea-v2/inverse-refused/validation.json": "6668cacb148a8f91073b9388391e2657afa67836c540e183b4dece6ba17286db",
+    "fixtures/dhea-v2/inverse-refused/synthetic.jpg": "d33e89972dfc6cf076df059c53c1db6d4c4bdf757a9ac72c8877c283be048815",
+    "fixtures/dhea-v2/provenance.json": "9be1aaaa1a39eb1ee61a2367bda85744422a4b8771f438dad28376cf36368fb2",
+    "fixtures/dhea-v3/positive/result-measured.json": "5bb1b443eb7c2db1fbd858542690fb3270836bf83267ac1decf5211e35535660",
+    "fixtures/dhea-v3/positive/result-rejected.json": "dc6279c1119c21355ea65c2e9248992b7d4e713eb7b6698ae0236298893de759",
+    "fixtures/dhea-v3/positive/result-processing.json": "1d58f94aefb6d19b4b92d3518c9df69be3318ed0e14cb239ced50c67049b75f8",
+    "fixtures/dhea-v3/positive/result-failed.json": "2457eebfe5f89435f1bb19e56c8bdb58db73987e74ae7569f175e85c6e17e3dc",
+    "fixtures/dhea-v3/positive/validation.json": "0a47ec536c66bdb5b17ce58ab682e9622330b238f80e521440852276b6de9c92",
+    "fixtures/dhea-v3/negative/schema-cases.json": "60b9c334fb5c6bd2eefdad761bf1b373cb5f31c3deb6d12a81b996fc3c77eea7",
+    "fixtures/dhea-v3/legacy-v2-post-cases.json": "5e0094239c9253ce2d29b32cabc08ff86f7180d0f5e4e19f3dd9199d56f3f277",
+    "fixtures/dhea-v3/http-cases.json": "de49893f442e6340a832ca09ac425f75dc3bf6ccbb44d09fcc6a272c6321e173",
+    "fixtures/dhea-v3/v2-baseline-sha256.json": "1af9cae8e2dfb2ec69212e04089a754650995ebe3d25d5291655f9bbb38ecca2",
+    "fixtures/dhea-v3/jcs/sha256.json": "5465e7938a1b3da806f8c3003b17f16147aecbf936daae8914714c45858da7d6",
+    "Android_App/app/src/main/java/com/example/network/DheaClient.kt": "413a7dfa06ce6625d8fce391a46490869bd474ec521fc2534f33e164a33694bb",
+    "Android_App/app/src/main/java/com/example/network/DheaJson.kt": "0cf26ed743d14ecd7a07c065f04a4e90b5b84815db696ffae27458bb4cf3f6ae",
+    "Android_App/app/src/main/java/com/example/data/local/JournaledArtifactStore.kt": "44299c39cf4410593c647bb040221f568b03c69240256ab453146f3d778bf34c",
+    "Android_App/app/src/main/java/com/example/data/local/ReconciliationEngine.kt": "03499208346524a4bbdbc98740ac4a59d5f4e0fbe64bf0d1f8d434938da6d980",
+    "Android_App/app/src/main/java/com/example/data/local/db/Entities.kt": "d7e128c6fc2bd98e414055e7af31e69e909776a1f0a71393d7c81096eadbf388",
+    "Android_App/app/src/main/java/com/example/ui/screens/ResearchResultPanel.kt": "978a85b095f9f68c0b7c9f7785d278adb6a171706d1792048d7b79c40fc9fb76",
+    "python_gateway/dhea.py": "5adb3aba52effa0ae9795cd662713af0d715fe1457328eff2de2fd9cee1fc4b5",
+    "core/dhea.py": "73e69f20ee20cf83f89456e2d50b6e86477ced02da393313196c5d36e776fe1b",
+    "core/dhea_diagnostics.py": "45ee6fc492cc71719d9c308609147a679299ab83a7d986e429154453afa64664",
+    "python_gateway/workbench.html": "594b5737bf1d53a78f150c5032f5bf0c45c25347f660adbce6fa03288cb36d1a",
+    "python_gateway/dhea_diagnostics.py": "e8ecb6cae0633307ef50ce432e0ca3cb0c9ad27ba1d40ad811604b8f9fb7cec1",
+    "docs/LFA_最新完整文档集合/09_P0移动端与接口实施清单_v1.4_DHEA_MVP.md": "a350df5348ad8e35b87fa6f24f49e330dd6b621f1c84463135acaf599240f81b",
+    "docs/DHEA_NATIVE_APPS_API_RECOGNITION_TODO_2026-09-15.md": "14034d062b99d543c12649840f9c9c0a337b693d4adc8bd7c6efc1c1e71a6996",
+    "python_gateway/tests/test_dhea_v3_contract.py": "82cadab5c6406f95a70a1ed88c3d71d74ed17345f0a6e0091dfc32ed0f16befc",
+    "python_gateway/tests/test_dhea_v3_api.py": "093627ffa2279d495fd30b860efc01e416d901e2a74716f59a41c24213cbb1f7",
+    "python_gateway/tests/test_dhea.py": "c936b4a14c247c4fc6c2bed6096288c239b0c5fe28af3fb15993e7e9ce67e331",
+    "tests/test_dhea.py": "2b1ec5ace6f2f47beead9ec7f52c81fbc965e85a80bc3db0acdfa2e6e6fd3022",
+    "Android_App/app/src/test/java/com/example/network/DheaContractTest.kt": "6a1e839c654b7f1b1d1a74a57926861edcf871385b3f654db09aae54cd70310a",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/MANIFEST.sha256": "90c5b32869f6a9f04d914ec3acb2c535b638da0fc84d88eedfc64c467ecbe2d2",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/README.md": "883fc0e326563fc3ccd8fc809a537db815ad56408773ff0f81cbc4bcd5361e18",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/01_QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.6.md": "91b053dc10c3bff8bb5eb037317b3ca6075c3958269c132c915eb814aec5ac82",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/02_MASTER_PLAN_v1.1.md": "e91c0e0fcd4436fb226285dc7c24cb87c25ca380629a66e4eb2d6e7574b45051",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/03_DECISIONS_QR_MVP_VERTICAL_SLICE_v1.0.md": "62b6ba06cda8d0debb0b4d40d3244b3e65547ebe6ee8fbfd7e4a88d2fe122add",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/04_TASK_BOARD_QR_TEMPLATE_ROI_SIGNAL_v1.0.md": "75b5679d0afd79b7c1e835be9a2b84e1d8f7528224fc6cb9e3dc2a86ab244620",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/05_AUTHORITATIVE_CONTRACT_SYNC_CHECKLIST_v1.0.md": "342f3e41c37fb2ed86c3baf366d3909b1f5f1effdf991483e1b04638428cdcf4",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/06_TEMPLATE_ESTABLISHMENT_AND_VALIDATION_PLAN_v1.0.md": "4cdde5ce2efff9d032504762d591f0706df3bd605a198e37ff4bdd46a3fbc430",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/07_HERDR_RECENT_THREE_FAILURES_INVESTIGATION_v1.0.md": "dd35aac3678515c2e06f6a799c66d17db3716ccc3539dbc63c8051855367e7ce",
+    "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/08_TEN_POINT_CAPTURE_RELEASE_AND_EXECUTION_PLAN_v1.0.md": "2b5279ff45ac0f3916f8135b3e607f05d296e8a04dcdc9f7d6e8485058df91f6"
+  },
+  "control_source_after_sha256": {
+    "herdr-team/.agent-control/MASTER_PLAN.md": "0775b2f70e68e6476a8dd5e4b07c73b263622e0a3e246a80fc3bfd03f11aa1c3",
+    "herdr-team/.agent-control/FILE_OWNERSHIP.md": "d71f90aa9f5f444f13c0d80048946084d005a475b70d8b0470cdeaf9e0705891",
+    "herdr-team/.agent-control/TASK_BOARD.md": "dc837e4f17808eaf78b8eadaa73d441822b30c06fd940dfa080f26d98f8ee5da",
+    "herdr-team/.agent-control/ROUNDS/20260918T043217Z-meeting.md": "b5943f51b34a05bdd5faadc0b813945f4e40f4bef0bdc3263ed7bb2000e641f2",
+    "docs/requirements/INDEX.md": "66e914deb196938abecc2025c16934d98f713b4473afacde660b89930de718e2"
+  },
+  "control_chronology": "Four control files changed during review; latest authorization/requirements/dispatch inspected. FILE_OWNERSHIP unchanged. These are concurrent owner-managed records, not G0 writes.",
+  "actual_actions": [
+    "read exact inventory",
+    "parse JSON and Python AST without repository imports",
+    "SHA256 before/after",
+    "inspect symbols without printing credential bootstrap values",
+    "write two authorized evidence outputs",
+    "run inline stdlib documentary checker",
+    "submit hashes through Herdr"
+  ],
+  "not_evaluated": [
+    "QR/homography computation",
+    "geometry or signal accuracy",
+    "runtime behavior",
+    "build and product tests",
+    "live service/API/device",
+    "laboratory/repeatability",
+    "credential deployment",
+    "G1 or Integration acceptance"
+  ],
+  "conflicts": [
+    "v3 recovery-only vs current new-v2 acceptance/frozen failed retry",
+    "v3 measured requires concentration and rejected clears all signals vs v2 stage-preserving nulls",
+    "v3-only GET response vs legacy v2 query",
+    "future Bundle1.6/diagnostics2.0/declaration vs current1.5/diagnostics1.0",
+    "embedded Android bootstrap, missing independent request and ICC evidence remain mainline repairs"
+  ],
+  "symbol_locations": {
+    "Android_App/app/src/main/java/com/example/network/DheaClient.kt": {
+      "suspend fun submit": [
+        78
+      ],
+      "suspend fun lookup": [
+        128,
+        163
+      ],
+      "private fun freeze": [
+        189
+      ],
+      "private fun existing": [
+        198
+      ],
+      "private fun metadata": [
+        211
+      ],
+      "private fun persistResult": [
+        281
+      ]
+    },
+    "Android_App/app/src/main/java/com/example/network/DheaJson.kt": {
+      "fun result": [
+        96
+      ],
+      "fun replay": [
+        22
+      ]
+    },
+    "Android_App/app/src/main/java/com/example/data/local/JournaledArtifactStore.kt": {
+      "suspend fun persistFirstGenerationBytes": [
+        62
+      ],
+      "internal fun validateBundle": [
+        284
+      ],
+      "suspend fun verifyUploadCandidate": [
+        414
+      ]
+    },
+    "Android_App/app/src/main/java/com/example/data/local/ReconciliationEngine.kt": {
+      "performStartupReconciliation": [
+        20
+      ]
+    },
+    "Android_App/app/src/main/java/com/example/data/local/db/Entities.kt": {
+      "data class QueueRecordEntity": [
+        8
+      ]
+    },
+    "Android_App/app/src/main/java/com/example/ui/screens/ResearchResultPanel.kt": {
+      "fun ResearchResultPanel": [
+        50
+      ]
+    },
+    "python_gateway/workbench.html": {
+      "function checkBinding": [
+        164
+      ],
+      "function loadBundle": [
+        171
+      ],
+      "function fields": [
+        75
+      ]
+    },
+    "core/dhea_diagnostics.py": {
+      "STAGES =": [
+        16
+      ],
+      "class Diagnostics": [
+        29
+      ]
+    },
+    "python_gateway/dhea_input.py": {
+      "METADATA =": [
+        43
+      ],
+      "CORE_RESULT =": [
+        97
+      ],
+      "RESULT =": [
+        97,
+        124,
+        147
+      ],
+      "VALIDATION =": [
+        80
+      ],
+      "VALIDATION_RESULT =": [
+        147
+      ],
+      "class Upload": [
+        213
+      ],
+      "def validate_capture_v3": [
+        69
+      ]
+    },
+    "docs/api/generate_dhea_v3.py": {
+      "CAPTURE =": [
+        91
+      ],
+      "MEASUREMENT =": [
+        124
+      ],
+      "RESULT =": [
+        150
+      ],
+      "VALIDATION =": [
+        168
+      ],
+      "def validate_capture_semantics": [
+        208
+      ],
+      "def validate_validation_semantics": [
+        222
+      ]
+    }
+  },
+  "verification_observed": {
+    "documentary_checks": "PASS",
+    "input_count": 63,
+    "runtime_executed": false,
+    "scope": "pre-write checker on same prepared content; final file checker executed before submission"
+  }
+}

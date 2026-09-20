@@ -1,0 +1,255 @@
+{
+  "plan_id": "QR-PLAN-03",
+  "deliverable_id": "QR-PLAN-03-D01",
+  "task_id": "RUN-20260918-QR-SINGLE-ANNOTATOR-REVISION",
+  "status": "DOCUMENTARY_CHECKS_PASS_REVIEW_AND_PM_PENDING",
+  "scope": "AUTHORIZED_DOCUMENTARY_REVISION_ONLY",
+  "annotation_mode": "SINGLE_ANNOTATOR_DEVELOPMENT_REFERENCE",
+  "independent_annotation": false,
+  "measurement_authority": false,
+  "quantification_allowed": false,
+  "formal_reporting_allowed": false,
+  "plan": {
+    "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/10_SINGLE_ANNOTATOR_DEVELOPMENT_REFERENCE_PLAN_v1.0.md",
+    "sha256": "0d9bf1205478290101c86f19d36cc683a8493cb11b6bf114c3f886b854d3b500",
+    "bytes": 14452
+  },
+  "authority_sources": [
+    {
+      "path": "herdr-team/.agent-control/MASTER_PLAN.md",
+      "sha256": "2f2ae1ebb02352e3a9ccdb792cfe1c62a28d68e2f4ab3cb0bba339e1e3bace64",
+      "bytes": 47066
+    },
+    {
+      "path": "herdr-team/.agent-control/FILE_OWNERSHIP.md",
+      "sha256": "7abc9c9c5428500f6a7cb3f4b28d8114a73c1f09dea17569f91b9994b427296d",
+      "bytes": 36179
+    }
+  ],
+  "protected_files": [
+    {
+      "path": "herdr-team/.agent-control/MASTER_PLAN.md",
+      "sha256": "2f2ae1ebb02352e3a9ccdb792cfe1c62a28d68e2f4ab3cb0bba339e1e3bace64",
+      "bytes": 47066
+    },
+    {
+      "path": "herdr-team/.agent-control/PM_GATE",
+      "sha256": "d155369bf6f8e164933d20f77f1641ecb14218a18b43c94a61356c568069ae65",
+      "bytes": 140
+    },
+    {
+      "path": "herdr-team/.agent-control/FILE_OWNERSHIP.md",
+      "sha256": "7abc9c9c5428500f6a7cb3f4b28d8114a73c1f09dea17569f91b9994b427296d",
+      "bytes": 36179
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-AND-AUDIT.md",
+      "sha256": "f21c13ab6359b558ac17c05ba136b66a451f68c1597d247d577c3fc221124c3d",
+      "bytes": 18907
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-API-AUDIT.md",
+      "sha256": "75384511fe2867d60cd13f46355c860f37fb9eecd4c67854e60293b926f450af",
+      "bytes": 30058
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-PM-SCOPE.json",
+      "sha256": "85b29c23582033cc8dcab130fb76639f8694ee50a6c75ea95c105d338a5bfe44",
+      "bytes": 19514
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-PM-SCOPE.md",
+      "sha256": "874df3b246fae6c50c123a356efab9b4daee1ca9572c5b6692f0d04e82a9daee",
+      "bytes": 79466
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REPAIR-BOUNDARY-manifest.json",
+      "sha256": "df8d648f3c5f0c94304ea01d2b27136efc2ea5ef94333bf58f0cbfa693462222",
+      "bytes": 175020
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REPAIR-BOUNDARY-old-tracked.patch",
+      "sha256": "c80055a2da264496b2998bc971f74afc07af69d6b9349da9c5ca79f657907325",
+      "bytes": 11368
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REPAIR-BOUNDARY.md",
+      "sha256": "ba739478b15a3f46e7a1eedb73db155fe011cb38828358b99a95755260ceed5d",
+      "bytes": 54623
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REVIEW-BASELINE-checks.json",
+      "sha256": "cd90e959d47dae2f4e3f889b56bdaf26542447a1b74d49b5764731b54aef7e01",
+      "bytes": 8878
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/RUN-20260918T043217Z-REVIEW-BASELINE.md",
+      "sha256": "ee93848c89c0ede8157c2d9e9766d78fc02307aa36ec4c4197d37f94bb49c89b",
+      "bytes": 57154
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/RUN-20260918T075255Z-QRP-G0-AUTH-checks.json",
+      "sha256": "b2ddcd6bef2243d64aec70a877ae59620e2ec2404021ae15dd1c817350e91856",
+      "bytes": 31021
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/RUN-20260918T075255Z-QRP-G0-AUTH.md",
+      "sha256": "71b8522a9f24308cb89abf1c294f603e297e6c3119a7b56265cf17d0536f447d",
+      "bytes": 23493
+    },
+    {
+      "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/README.md",
+      "sha256": "883fc0e326563fc3ccd8fc809a537db815ad56408773ff0f81cbc4bcd5361e18",
+      "bytes": 2979
+    },
+    {
+      "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/01_QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.6.md",
+      "sha256": "91b053dc10c3bff8bb5eb037317b3ca6075c3958269c132c915eb814aec5ac82",
+      "bytes": 4806
+    },
+    {
+      "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/02_MASTER_PLAN_v1.1.md",
+      "sha256": "e91c0e0fcd4436fb226285dc7c24cb87c25ca380629a66e4eb2d6e7574b45051",
+      "bytes": 1502
+    },
+    {
+      "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/03_DECISIONS_QR_MVP_VERTICAL_SLICE_v1.0.md",
+      "sha256": "62b6ba06cda8d0debb0b4d40d3244b3e65547ebe6ee8fbfd7e4a88d2fe122add",
+      "bytes": 1411
+    },
+    {
+      "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/04_TASK_BOARD_QR_TEMPLATE_ROI_SIGNAL_v1.0.md",
+      "sha256": "75b5679d0afd79b7c1e835be9a2b84e1d8f7528224fc6cb9e3dc2a86ab244620",
+      "bytes": 2681
+    },
+    {
+      "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/05_AUTHORITATIVE_CONTRACT_SYNC_CHECKLIST_v1.0.md",
+      "sha256": "342f3e41c37fb2ed86c3baf366d3909b1f5f1effdf991483e1b04638428cdcf4",
+      "bytes": 17326
+    },
+    {
+      "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/06_TEMPLATE_ESTABLISHMENT_AND_VALIDATION_PLAN_v1.0.md",
+      "sha256": "4cdde5ce2efff9d032504762d591f0706df3bd605a198e37ff4bdd46a3fbc430",
+      "bytes": 10577
+    },
+    {
+      "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/07_HERDR_RECENT_THREE_FAILURES_INVESTIGATION_v1.0.md",
+      "sha256": "dd35aac3678515c2e06f6a799c66d17db3716ccc3539dbc63c8051855367e7ce",
+      "bytes": 1443
+    },
+    {
+      "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/08_TEN_POINT_CAPTURE_RELEASE_AND_EXECUTION_PLAN_v1.0.md",
+      "sha256": "2b5279ff45ac0f3916f8135b3e607f05d296e8a04dcdc9f7d6e8485058df91f6",
+      "bytes": 10848
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-report.md",
+      "sha256": "21f2be67f5e5953ac82f6d24abf78400ad8ceed41622b51629cd207c81b5938f",
+      "bytes": 4440
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-dataset.json",
+      "sha256": "017b6b155518e0c311bedcec35e90f0d1c2c624e65cfa09ca469dc2c03341578",
+      "bytes": 2107
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-geometry.json",
+      "sha256": "b525cd0844a786910bb177329225db06b2c6ab13cb1769cbd13293c9b8f1f35a",
+      "bytes": 2137
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/QR-GEOMETRY-01-G1-checks.json",
+      "sha256": "dd3ba181b8cb4b3a155b996e7b5ac2d0cedfa82b95cf89b4c132b0f764a7327d",
+      "bytes": 3650
+    },
+    {
+      "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/MANIFEST.sha256",
+      "sha256": "90c5b32869f6a9f04d914ec3acb2c535b638da0fc84d88eedfc64c467ecbe2d2",
+      "bytes": 987
+    },
+    {
+      "path": "docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/09_MANUAL_QR_CONTROLLED_ROI_PLAN_REVISION_v1.0.md",
+      "sha256": "a86c9c79ed2227dc80e0b6ea64dff178cd735d63889d528b01d0daffd6bdd58b",
+      "bytes": 19716
+    },
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/QR-PLAN-02-D01-checks.json",
+      "sha256": "b4904a7d6484c9946518380d5492407257a9c4c4fbdb145929fb25ffee11fcfe",
+      "bytes": 13510
+    }
+  ],
+  "requirements": [
+    {
+      "id": "QR-SINGLE-REQ-01",
+      "expected": "Dedicated supplement section and INDEX/TASK_BOARD trace",
+      "observed": "Present in all three documents",
+      "documentary_check": "PASS",
+      "semantic_acceptance": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "QR-SINGLE-REQ-02",
+      "expected": "Dedicated supplement section and INDEX/TASK_BOARD trace",
+      "observed": "Present in all three documents",
+      "documentary_check": "PASS",
+      "semantic_acceptance": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "QR-SINGLE-REQ-03",
+      "expected": "Dedicated supplement section and INDEX/TASK_BOARD trace",
+      "observed": "Present in all three documents",
+      "documentary_check": "PASS",
+      "semantic_acceptance": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "QR-SINGLE-REQ-04",
+      "expected": "Dedicated supplement section and INDEX/TASK_BOARD trace",
+      "observed": "Present in all three documents",
+      "documentary_check": "PASS",
+      "semantic_acceptance": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "QR-SINGLE-REQ-05",
+      "expected": "Dedicated supplement section and INDEX/TASK_BOARD trace",
+      "observed": "Present in all three documents",
+      "documentary_check": "PASS",
+      "semantic_acceptance": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "QR-SINGLE-REQ-06",
+      "expected": "Dedicated supplement section and INDEX/TASK_BOARD trace",
+      "observed": "Present in all three documents",
+      "documentary_check": "PASS",
+      "semantic_acceptance": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "QR-SINGLE-REQ-07",
+      "expected": "Dedicated supplement section and INDEX/TASK_BOARD trace",
+      "observed": "Present in all three documents",
+      "documentary_check": "PASS",
+      "semantic_acceptance": "PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "id": "QR-SINGLE-REQ-08",
+      "expected": "Dedicated supplement section and INDEX/TASK_BOARD trace",
+      "observed": "Present in all three documents",
+      "documentary_check": "PASS",
+      "semantic_acceptance": "PENDING_INDEPENDENT_REVIEW"
+    }
+  ],
+  "executed_checks": [
+    "Unique exact ACTIVE ownership for two absent outputs verified before drafting",
+    "All 30 frozen inputs/evidence unchanged since baseline",
+    "Prior QR-PLAN-02 protected baseline unchanged except explicitly PM-authorized MASTER_PLAN/FILE_OWNERSHIP revisions",
+    "Eight IDs present in plan, INDEX and TASK_BOARD",
+    "Five markers and short-side formula, 1% trigger, 12/72/18/48h, original G1 FALSE and retained dependency strings present"
+  ],
+  "reproduction": "Load this JSON using json.loads; for each entry in [plan]+authority_sources+protected_files assert hashlib.sha256(Path(entry[path]).read_bytes()).hexdigest()==entry[sha256] and Path(entry[path]).stat().st_size==entry[bytes]; assert all requirement IDs in plan, docs/requirements/INDEX.md and herdr-team/.agent-control/TASK_BOARD.md; assert five marker literals in plan. Read FILE_OWNERSHIP table and assert exactly one ACTIVE row per new output owned by lfa-start(w15:p1). These are document checks, not scientific evidence.",
+  "limitations": [
+    "No capture, measurement, JPEG read, randomization execution, annotation, research tool, code or runtime test",
+    "No scientific pass rate or independent annotation evidence",
+    "Digest preservation proves checked bytes, not historical-write forensics",
+    "Checks own digest bound externally; later Gate records do not rewrite pending snapshot"
+  ],
+  "original_g1_exit": false,
+  "future_execution_authorized": false
+}
