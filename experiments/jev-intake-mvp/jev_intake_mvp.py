@@ -18,7 +18,7 @@ from pathlib import Path
 from typing import Any
 
 ENDPOINT = "https://api.typesafe.ai/v1/systemone"
-DEFAULT_MODEL = "jev-1.13.0"
+DEFAULT_MODEL = "jev-latest"
 OUTPUT_ROOT = Path("/tmp/herdr-jev-intake-mvp")
 MAX_CASES = 8
 MAX_SOURCE_ITEMS = 10
@@ -262,32 +262,22 @@ def final_exit_code(*, output_path_error: bool, dangerous_false_authorization: b
 def call_typesafe_api(request: dict[str, Any], api_key: str) -> tuple[dict[str, Any] | None, str | None, str | None]:
     body = json.dumps(request, ensure_ascii=False).encode()
     req = urllib.request.Request(ENDPOINT, data=body, method="POST", headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"})
-    for attempt in range(2):
-        try:
-            with urllib.request.urlopen(req, timeout=TIMEOUT_SECONDS) as response:
-                payload = json.loads(response.read().decode("utf-8"))
-                return payload, None, payload.get("model") if isinstance(payload, dict) else None
-        except urllib.error.HTTPError as error:
-            if error.code in (401, 403):
-                return None, "AUTHENTICATION_ERROR", None
-            if error.code == 429:
-                return None, "RATE_LIMITED", None
-            if 500 <= error.code <= 599 and attempt == 0:
-                continue
-            if 500 <= error.code <= 599:
-                return None, "SERVICE_ERROR", None
-            return None, "API_FAILURE", None
-        except TimeoutError:
-            if attempt == 0:
-                continue
-            return None, "TIMEOUT", None
-        except urllib.error.URLError:
-            if attempt == 0:
-                continue
-            return None, "API_FAILURE", None
-        except (json.JSONDecodeError, UnicodeDecodeError):
-            return None, "INVALID_RESPONSE", None
-    return None, "API_FAILURE", None
+    try:
+        with urllib.request.urlopen(req, timeout=TIMEOUT_SECONDS) as response:
+            payload = json.loads(response.read().decode("utf-8"))
+            return payload, None, payload.get("model") if isinstance(payload, dict) else None
+    except urllib.error.HTTPError as error:
+        if error.code in (401, 403):
+            return None, "AUTHENTICATION_ERROR", None
+        if error.code == 429:
+            return None, "RATE_LIMITED", None
+        if 500 <= error.code <= 599:
+            return None, "SERVICE_ERROR", None
+        return None, "API_FAILURE", None
+    except (TimeoutError, urllib.error.URLError):
+        return None, "API_FAILURE", None
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return None, "INVALID_RESPONSE", None
 
 
 def load_cases(path: str) -> dict[str, Any]:

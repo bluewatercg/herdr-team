@@ -3,7 +3,7 @@
 ```yaml
 status: EXPERIMENT_ONLY
 authority_effect: NONE
-model: jev-1.13.0
+model: jev-latest
 ```
 
 Read-only semantic experiment for `lfa-pm`. This directory does not modify Herdr
@@ -47,10 +47,10 @@ python3 herdr-team/experiments/jev-intake-mvp/jev_intake_mvp.py \
   --output /tmp/herdr-jev-intake-mvp/results.json
 ```
 
-The online path makes at most one sequential `POST /v1/systemone` request per case,
-uses one Choice and four Noul questions in one `questions` map, applies bounded
-retry only to transient failures, and records no raw request, response, header, or
-key. Jev failures remain fail-safe and do not affect Herdr.
+The online path makes exactly one `POST /v1/systemone` request per case,
+uses one Choice and four Noul questions in one `questions` map, applies no retry,
+and records no raw request, response, header, or key. Jev failures remain fail-safe
+and do not affect Herdr.
 
 ## Single quick check
 

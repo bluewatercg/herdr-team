@@ -505,3 +505,17 @@ Three-node preparation sequence under the same existing task (no new TASK_ID or 
 | NODE-03-INDEPENDENT-ENTRY-ORACLE | independent geometry entry and executable oracle binding | PLANNED | lfa-api | path/digest not yet produced; no write permission |
 
 Activation boundary: lfa-api is the sole active writer only for NODE-01's two registered paths. NODE-02 and NODE-03 are registered as pending preparation nodes without invented paths, hashes, or ownership claims; they activate only after their exact output paths and conflict-free ownership are truthfully identified by PM. Runtime, schema, gateway, device, Room, archive and implementation release remain unauthorized.
+
+## R04 minimum single-QR direction implementation release
+
+RUN-20260920-DHEA-MAINLINE-REPLAN-R01, original sole writer=lfa-api. Separate PM gate in MASTER_PLAN follows original Review R02, SHA256=8831cdce826260d16a07ae3000601275786fa55cfd97aeca57f3679d2e1e6efb, against exact TASK_BOARD SHA256=71a2e7ef6fe53b5164dc25e8ce2f561809241625d420addae2262af499c60140. This amendment supersedes the preparation-only restriction solely for the bounded minimum contract. Existing same-owner claims are consolidated, not assigned a second writer.
+
+| path | TASK_ID | SUBTASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|
+| core/dhea.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | R04-MINIMUM-DIRECTION | lfa-api | all roles | ACTIVE |
+| core/geometry.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | R04-MINIMUM-DIRECTION | lfa-api | all roles | ACTIVE |
+| core/dhea_diagnostics.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | R04-MINIMUM-DIRECTION | lfa-api | all roles | ACTIVE |
+| tests/test_dhea.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | R04-MINIMUM-DIRECTION | lfa-api | all roles | ACTIVE |
+| tests/test_geometry.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | R04-MINIMUM-DIRECTION | lfa-api | all roles | ACTIVE |
+
+Conflict determination: four paths already belong to lfa-api; tests/test_dhea.py had no competing ACTIVE writer in the recovered ledger. IMPLEMENTATION_AUTHORIZED=YES within these five paths only. No new agent or task, no other path promotion, and no deployment/device/gateway/schema/Room/archive permission. Preserve prior edits as an unaccepted incoming baseline; original owner supplies focused executable evidence and fresh independent implementation review. Existing broader historical acceptance is not inherited.
