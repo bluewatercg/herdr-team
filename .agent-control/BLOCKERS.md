@@ -236,3 +236,85 @@ Existing RUN-20260920-DHEA-MAINLINE-REPLAN-R01. PM incremental notification and 
 FILE_OWNERSHIP523-535 records five Android paths after an earlier PM implementation instruction whose immediate ownership entry was omitted. This sequencing defect is recorded honestly, not backdated or converted into acceptance. Android clear failure may leave partially deleted files; retained database rows do not imply filesystem rollback. Independent Review must inspect task/quarantine layout, path rejection, operation exclusion and configuration retention.
 
 Remaining conditions are independent implementation Review at exact source revisions, separate PM implementation disposition and separately scoped real execution. Current-round no install/clear/capture/upload is owner-reported through PM; earlier main-session install history remains intact. Host/synthetic successes do not satisfy device acceptance. No device operation or integration authorization is granted by this progress receipt; implementation and real-loop acceptance remain pending.
+
+## A provenance correction remains; B code gate accepted
+
+Existing RUN-20260920-DHEA-MAINLINE-REPLAN-R01; MASTER_PLAN1046-1052 and PM notification. A=CODE_REVIEW_CHANGES_REQUIRED for A-01 P2: emitted direction_method names obsolete unique_nominal_two_band_topology instead of executed single_qr_geometry. PM already assigned original lfa-api the minimum correction and focused coverage within its existing scope, excluding immutable candidate configuration. Correction completion and affected-revision Review/PM acceptance remain pending. START does not issue another dispatch.
+
+B independent CODE_REVIEW_ACCEPTED and separate PM_CODE_GATE=ACCEPTED apply only to the exact five-file receipt revision. B code review is no longer a remaining blocker for that revision. PM verified five source hashes/bytes, XML16/0/0/0 and APK binding; START verified receipt identity and records PM evidence without rerunning it. Later source changes require fresh affected-revision review.
+
+Seven original business TODOs remain unchanged: first three COMPLETED, last four NOT_COMPLETED. Device clearing and installation remain unexecuted in this round; historical installation is not erased. Remaining conditions are A-01 correction and acceptance plus separately scoped real/device execution. Partial deletion on failure, retained exchange caches and the late ownership entry remain explicit. No configuration/credential/server deletion, full-app clear or uninstall is authorized by B code acceptance. Device/real-loop and overall Integration=NOT_ACCEPTED; integration authorization remains NOT_AUTHORIZED.
+
+## Physical card placement blocks new capture and binding
+
+Existing RUN-20260920-DHEA-MAINLINE-REPLAN-R01; MASTER_PLAN1056-1068 and PM notification supersede the preceding open A-01 and unexecuted device/smoke conditions. A R02 Review and separate PM code gate are ACCEPTED; A-01=CLOSED and is not a blocker. Archived-real-JPEG smoke execution and Android install-r/App clearing are complete as reported by owners through PM. UI records0/quarantine0/service configured is observed-scenario evidence, not private DB inspection or exchange-cache erasure.
+
+Five existing TODOs COMPLETED: QR tests, fixture, focused tests, real smoke execution, device limitations record. Two existing TODOs BLOCKED: K30 new capture; new hash/request_id/stage-diagnostic binding. Required external prerequisite is a real operator positioning and confirming the complete C-T-QR card. Vision service401 left physical placement unconfirmed; owner did not press shutter or upload. Do not infer card absence, damage or operator fault.
+
+Archived smoke artifacts/k30-dhea-runtime-smoke-20260921T090808Z records QR_CONTRACT_INVALID with T, C, T/C and concentration null and original hash unchanged. Refusal root cause remains unestablished; this is not a new API request or end-to-end acceptance. Remaining evidence is fresh capture and its actual hash/request_id/Core stages/App/Web binding. Overall Integration=NOT_ACCEPTED. Prior receipts and late ownership-registration history are preserved; no repeated clearing/install, source edits or duplicate dispatch by START.
+
+## User placement confirmed; remaining live evidence conditions
+
+Existing RUN-20260920-DHEA-MAINLINE-REPLAN-R01; MASTER_PLAN1070-1074 and PM notification. Physical placement blocker=RESOLVED_BY_USER_REPORT 已摆好. No repeat placement proof or vision-service recovery is required to accept this user report. Earlier unconfirmed placement and vision401 remain historical. A-01=CLOSED.
+
+Original Android resumes the authorized single complete-JPEG capture IN_PROGRESS without repeat clearing/reinstall; original API checks actual running gateway/Core revision before standard upload coordination. Readiness remains awaiting evidence. Seven original TODOs preserved: five COMPLETED, capture IN_PROGRESS, new hash/request_id/stage-diagnostic binding PENDING_ACTUAL_EVIDENCE. Remaining evidence includes fresh capture identity/original SHA, request_id, PRODUCT_IDENTIFICATION stage, App result and Web diagnostics. No completion inferred from authorization; no agent action attributed to a human operator.
+
+Product identification remains decoupled from geometry research under MASTER_PLAN1074. Geometry dataset/48-hour relabel are NOT_COMPLETED_OR_UNCHANGED; research track DEFERRED_SEPARATE_RESEARCH_TRACK; QR product-identification dependency REMOVED. Geometry refusal alone does not fail identification, and Core-only NOT_IMPLEMENTED does not accept final-JPEG recheck. Goal=OPEN; Integration=NOT_ACCEPTED. START does not redispatch source work, create a team or repeat device actions; all historical receipts remain preserved.
+
+## QIUQIU registration visible; exact scope reconciliation pending
+
+MASTER_PLAN1075-1085 and FILE_OWNERSHIP536-548 register TASK-QIUQIU-01 contract/lfa-api, TASK-QIUQIU-02 Android/lfa-android and TASK-QIUQIU-03 final-JPEG recheck/lfa-api. The earlier missing-registration condition is resolved. Target is explicitly1:QIUQIU:DHEA; historical QLI evidence remains unchanged.
+
+Dispatch condition not yet satisfied: rows543-546 use category scopes; new concrete ownership omits python_gateway/dhea.py named in MASTER_PLAN1083. Three concrete NODE1 paths overlap historical same-owner ACTIVE claims; no competing writer found on those three, but full-scope conflict clearance is not established. Line548 reserves PM conflict resolution. NODE1/NODE3 product_identity.py use needs sequential binding. START sent original PM the exact reconciliation gaps, not an implementation dispatch. NODE2 waits NODE1 contract freeze; NODE3 waits NODE1 acceptance. No source implementation may infer clearance from AUTHORIZED_ACTIVE labels alone.
+
+Original seven TODOs and prior live-capture records remain historical/current within their existing scope, without new success claims. Placement is resolved and A-01 closed. Goal remains OPEN, Integration NOT_ACCEPTED; geometry research remains separate. No new team, source edits or device actions.
+
+## PM reconciliation disposition received; no source dispatch
+
+Supersedes the preceding pending-PM-reconciliation status. User reports ownership reconciliation completed. Observed MASTER_PLAN1081-1084 and FILE_OWNERSHIP540-557 resolve NODE1 same-owner historical/serialized conflicts, enumerate NODE1/NODE3 paths, include python_gateway/dhea.py and serialize shared core/product_identity.py. NODE2 waits NODE1 contract freeze; NODE3 waits NODE1 exact-revision independent Review and PM Gate. No source dispatch is authorized by this governance update; all three implementation dispatches remain NOT_SENT.
+
+Visibility caveat: user reports exact Android registration completed; the inspected MASTER_PLAN1082 and FILE_OWNERSHIP546-547 still show Android category descriptions. Preserve the reported reconciliation and this observed documentary discrepancy separately; no invented paths or automatic scope expansion. No request for repeated confirmation or source action follows. Goal OPEN; Integration NOT_ACCEPTED; historical evidence and separate geometry track unchanged.
+
+## Corrected exact-path receipt resolves documentary discrepancy
+
+The earlier report that Android exact paths were already registered was incorrect. FILE_OWNERSHIP546-559 now lists all 14 exact Android source/test/README paths under original lfa-android, each BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE. This resolves the prior visibility discrepancy; historical receipts remain intact.
+
+FILE_OWNERSHIP571 resolves the three named NODE1 overlaps as sole TASK-QIUQIU-01 successor scope for lfa-api. Old QR-PC/QLI-CUTOVER/EXIF claims preserve evidence without concurrent write authority for core/product_identity.py, python_gateway/dhea_input.py and docs/api/api-reference.md. Other historical claims remain protected. NODE3 still requires NODE1 exact-revision Review, PM Gate and explicit file release. Governance only, no implementation dispatch or acceptance; NODE2 freeze and NODE3 dependencies remain pending. Goal OPEN; Integration NOT_ACCEPTED; geometry track unchanged.
+
+## MGMT-20260921-001 missing immutable Jev authorization event
+
+- issue_id: MGMT-20260921-001
+- facts: START read `herdr-team/prompts/start.md` Jev Authorization Handoff. No `herdr-team/.agent-control/JEV_DECISIONS.jsonl` exists in the control directory, and no real Jev event was supplied for the QIUQIU nodes. User text and existing PM/ownership ledger registration do not substitute for an immutable Jev recommendation or PM authorization event.
+- evidence_refs: `herdr-team/prompts/start.md:68-82`; control-directory file listing; `herdr-team/.agent-control/PM_GATE` (`STATUS: READY`, which is dispatch readiness only); existing QIUQIU registration in `MASTER_PLAN.md` and `FILE_OWNERSHIP.md`.
+- impact: START cannot verify a real `decision_id`, event hash, valid JSONL record, supersession state, approved or explicitly modified `decision.result`, exact `PLAN_ID`/`DELIVERABLE_ID`/`TASK_ID`, exact `FILE_SCOPE`, or one active `WRITE_OWNER`. No implementation or Review dispatch is eligible.
+- severity: HIGH for the requested dispatch; PM assessment required.
+- root_cause_status: UNKNOWN
+- hypotheses: NONE_PROVIDED
+- containment: Keep all QIUQIU implementation and Review dispatches unissued. Do not modify business ledgers, source files, ownership records or Jev records. Preserve existing historical registrations and evidence.
+- improvement_candidate: PM must submit the real Jev JSONL event through the existing authorization flow, then START will validate it and run the normal Master Plan, requirements, dependency, ownership and PM Gate checks.
+- owner: PM
+- status: OPEN
+- recurrence_count: 0
+- related_task_ids: TASK-QIUQIU-01, TASK-QIUQIU-02, TASK-QIUQIU-03
+- release_conditions: PM provides an existing immutable Jev event reference in `JEV_DECISIONS.jsonl`; START verifies valid JSONL, real `decision_id`, event hash, no superseding event, approved/explicitly modified result, exact PLAN/DELIVERABLE/TASK binding, exact FILE_SCOPE and one ACTIVE WRITE_OWNER. PM records its assessment and authorization. All dependencies remain satisfied, including NODE2 after NODE1 contract freeze and NODE3 after NODE1 Review/PM Gate/file release.
+- pm_assessment_ref: PENDING_PM_ASSESSMENT
+- management_summary: As of 2026-09-21T110334Z, no real Jev authorization event was found or validated. This is a management blocker record, not a dispatch, acceptance or business-state change.
+
+## R04 atomic disconnect recovery receipt
+
+- issue_id: R04-20260921-RECOVERY-HEAD-MISMATCH
+- facts: 断线恢复按既有 `RUN-20260918T043217Z-START / CONTROL-LEDGERS` 执行。一次批量读取 `MASTER_PLAN.md`、`FILE_OWNERSHIP.md`、`PM_GATE`、`PROJECT_SNAPSHOT.md`、`TASK_BOARD.md`、`DECISIONS.md`、`BLOCKERS.md`、`REVIEW_QUEUE.md` 及全部 `AGENT_STATUS`；二次读取字节一致，读取前后 Git HEAD 均为 `ed79a64fa771974a6634945435caf2b88c693b46`。`PM_GATE=READY`，控制 RUN_ID 为 `20260918T043217Z`，所有已读 AGENT_STATUS 的 RUN_ID 与其一致，但 PM_GATE 和 PROJECT_SNAPSHOT 仍绑定 `410b17a00b63374f5d28a5531c478db8b30e8427`。
+- evidence_refs: `herdr-team/.agent-control/PM_GATE`; `herdr-team/.agent-control/PROJECT_SNAPSHOT.md`; 本次原子批量读取的九类控制文件及 AGENT_STATUS；现有 `BLOCKERS.md` R04 recovery 条目；当前 ROUNDS 的断线恢复 receipt。
+- impact: Gate/Snapshot 与当前 HEAD 不匹配，无法证明恢复后读取的是已授权同一修订；不得重新评估下一动作，不得派发、Review、通知、集成或修改业务源码/业务账本。
+- severity: HIGH for recovery progression; PM assessment not requested for a new business task.
+- root_cause_status: UNKNOWN
+- hypotheses: stale PM_GATE/PROJECT_SNAPSHOT binding or intervening repository revision; no attribution made.
+- containment: 保留已有业务 TODO 和现有所有权；不重跑启动会议，不重建或拆分读取类 TODO，不重建团队，不修改旧快照来制造匹配；恢复、完成和通知均不授予业务执行或集成权限。
+- improvement_candidate: PM must publish a new authoritative snapshot/Gate binding the current HEAD through the existing recovery flow, or record an explicit resolution of the revision mismatch. START then repeats only the required atomic recovery check.
+- owner: lfa-pm
+- status: OPEN
+- recurrence_count: 0
+- related_task_ids: RUN-20260918T043217Z-START, RUN-20260920-DHEA-MAINLINE-REPLAN-R01
+- release_conditions: PM_GATE=READY; PM_GATE RUN_ID and PROJECT_SNAPSHOT RUN_ID match the active run; PM_GATE GIT_HEAD, PROJECT_SNAPSHOT GIT_HEAD and current Git HEAD match exactly; required control files and AGENT_STATUS remain byte-stable across the atomic reread; only then assess the next existing authorized action and its dependency/ownership gates.
+- pm_assessment_ref: Existing R04 recovery record; no new PM business authorization inferred.
+- management_summary: Recovery check completed, progression refused solely because the authoritative snapshot/Gate HEAD is stale relative to the current repository HEAD.

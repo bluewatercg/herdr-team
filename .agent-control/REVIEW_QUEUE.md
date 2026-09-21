@@ -605,7 +605,7 @@ Later implementation review requires exact changed-file/hunk baseline, actual co
       }
     }
   },
-  "last_reconcile": 1789980782.0958893
+  "last_reconcile": 1789988998.3463204
 }
 <!-- /review-state -->
 
@@ -670,3 +670,43 @@ Existing RUN-20260920-DHEA-MAINLINE-REPLAN-R01, two slices=IMPLEMENTED_PENDING_R
 API slice: five original lfa-api paths registered at FILE_OWNERSHIP515-519; geometry18/18 and DHEA30/30 PASS are original-owner results. PM records current five-file source digests at MASTER_PLAN1036; independent review must bind its actual examined revision. Android slice: five original lfa-android paths at FILE_OWNERSHIP529-533; ExampleRobolectricTest PASS59s and assembleDebug PASS2s are original-owner results; PM reports XML16 tests with zero failures/errors/skips and APK240a08b45b7b1ddbcf70b7c435882022a785761c45f80cb36cd4c2f57e954843. No unprovided Android source digest is inferred from the APK identity. Later source edits invalidate submitted review bindings.
 
 Review boundaries from MASTER_PLAN1032: local clear may delete some files before failure; retaining database rows is not filesystem rollback. Check legitimate task/quarantine paths, rejection boundaries, operation exclusion and configuration preservation. Android ownership registration was late after PM's earlier instruction; retain this sequencing defect without backdating. Current implementation round had no device installation, clearing, capture or upload. CODE_REVIEW_ACCEPTED=PENDING; separate PM implementation acceptance=PENDING; device/real-loop acceptance=NOT_ACCEPTED; integration=NOT_AUTHORIZED. Seven original business TODOs remain unchanged.
+
+## Implementation Review R01 dispositions and separate B PM code gate
+
+Existing RUN-20260920-DHEA-MAINLINE-REPLAN-R01; MASTER_PLAN1046-1052 supersedes the preceding pending-Review receipt only for the reviewed revisions. A=/tmp/r04-single-qr-implementation-review-r01.txt, SHA25696051a3c72910d2cb032f9a7496593dbdcaf0a8c89bc825d20e120020e64a400, bytes3068, CODE_REVIEW_CHANGES_REQUIRED. A-01 P2 requires the emitted direction_method to report single_qr_geometry and focused observable-value coverage, without changing immutable candidate configuration. PM already routed the bounded correction to original lfa-api. A affected-change review and implementation acceptance remain pending; no duplicate START dispatch.
+
+B=/tmp/local-detection-data-clear-implementation-review-r01.txt, SHA2565ce351fc7eea8fda5e32db3dc723d160a05d09714e9b344385f0d8a09576a9ab, bytes3616, CODE_REVIEW_ACCEPTED. PM_CODE_GATE=ACCEPTED separately at MASTER_PLAN1050 for exactly the receipt's five source revisions. Five source hash/byte matches and XML16/0/0/0/APK binding are PM verification, not START verification. START verified both receipt identities only. Review B is static implementation review, not a new executable or device result. Changed source requires fresh digest binding and affected-change review.
+
+Seven original business TODOs: items1-3 COMPLETED, items4-7 NOT_COMPLETED per PM notification. B code review is no longer pending for its exact revision; device clearing/installation remain unexecuted for this round. Partial deletion, retained exchange caches and late ownership registration remain recorded. Device/real-loop acceptance=NOT_ACCEPTED; Integration=NOT_ACCEPTED and NOT_AUTHORIZED. No new tasks, agents, controller submissions or redispatch.
+
+## A R02 accepted and actual execution evidence recorded
+
+Existing RUN-20260920-DHEA-MAINLINE-REPLAN-R01; MASTER_PLAN1056-1068. A R02=CODE_REVIEW_ACCEPTED and separate PM_CODE_GATE=ACCEPTED; A-01=CLOSED, no longer awaiting correction or review. Receipt=/tmp/r04-single-qr-implementation-review-r02.txt, SHA256d1e539b84c5e7422c7bcdf2a65de1cbe5cafe12503da0d194fdf6e08b0f4fe0f, bytes2729; exact five-file matching attributed to PM and focused2/2 tests to owner. Prior R01 rejection is retained as historical. B exact-revision Review and PM code acceptance remain recorded; changed source still requires affected-revision review.
+
+PM records completed archived-real-JPEG Core smoke at artifacts/k30-dhea-runtime-smoke-20260921T090808Z: original hash unchanged, QR_CONTRACT_INVALID, T/C/concentration null, direction_method=single_qr_geometry, no new capture or API request_id. This is executed refusal evidence, not a successful new API loop. Android owner reports install-r and App clearing completed, actual UI records0/quarantine0/service configured. No private DB inspection, exchange-cache erasure or whole-device acceptance inferred. Six screenshot references and evidence attribution are in MASTER_PLAN1064.
+
+Existing seven TODOs now have five completed items: QR tests, fixture, focused tests, real smoke execution and device limitations record. K30 new capture and fresh hash/request_id/stage-diagnostic binding remain BLOCKED on real-operator confirmation of complete C-T-QR placement. Vision401 prevented visual confirmation; no shutter/upload occurred. A-01 is not a remaining condition. New API/App/Web loop and overall Integration remain NOT_ACCEPTED. No START redispatch, new task or agent.
+
+## Placement resolved; capture and live evidence pending
+
+Existing RUN-20260920-DHEA-MAINLINE-REPLAN-R01; MASTER_PLAN1070-1074. User 已摆好 resolves placement without repeat proof. Original Android single complete-JPEG capture=IN_PROGRESS; original API checks actual running gateway/Core revision before coordinating standard upload. Owner increments already sent; no START redispatch, new team, source implementation, repeated clearing or reinstall. A-01 remains CLOSED; previous receipts retained.
+
+Five original TODOs remain COMPLETED; K30 new capture=IN_PROGRESS; fresh hash/request_id/stage-diagnostic binding=PENDING_ACTUAL_EVIDENCE. Capture identity, original SHA, PRODUCT_IDENTIFICATION stage, App result and Web diagnostics are not yet established by this authorization increment. Agent execution is not human physical-operator identity. QR_PRODUCT_IDENTIFICATION_DEPENDENCY=REMOVED; geometry dataset and 48-hour relabel status=NOT_COMPLETED_OR_UNCHANGED; geometry research=DEFERRED_SEPARATE_RESEARCH_TRACK. Geometry refusal alone does not reject product identification; Core-only NOT_IMPLEMENTED does not accept final-JPEG product recheck. Goal=OPEN; Integration=NOT_ACCEPTED.
+
+## QIUQIU three-node reviews awaiting conflict-free implementation
+
+Authority=MASTER_PLAN1075-1085 and FILE_OWNERSHIP536-548. TASK-QIUQIU-01 / PLAN-QIUQIU-01 / DELIVERABLE-QIUQIU-01 owner=lfa-api; TASK-QIUQIU-02 / PLAN-QIUQIU-02 / DELIVERABLE-QIUQIU-02 owner=lfa-android; TASK-QIUQIU-03 / PLAN-QIUQIU-03 / DELIVERABLE-QIUQIU-03 owner=lfa-api. Each requires its own exact revision evidence, independent lfa-review and separate PM Gate. No new implementation submission or acceptance exists in this receipt; historical gates do not transfer.
+
+Implementation dispatch held after ownership check: concrete NODE1 overlaps are same-owner, category rows543-546 do not enumerate full scope, python_gateway/dhea.py lacks a new concrete row, and line548 requires PM resolution. Original PM reconciliation prompt submitted. NODE2 waits NODE1 contract freeze; NODE3 waits NODE1 accepted and sequential shared-file ownership. Review routing remains pending actual deliverables; no duplicate Review dispatch. Preserve all history, original seven TODOs and product/geometry separation. Goal OPEN; Integration NOT_ACCEPTED.
+
+## PM reconciliation recorded; review gates remain unsubmitted
+
+Supersedes the preceding unresolved ownership status only. Latest user notification reports reconciliation completed; MASTER_PLAN1081-1084 and FILE_OWNERSHIP540-557 bind NODE1/NODE3 exact scope, historical/serialized same-owner conflicts, python_gateway/dhea.py inclusion and sequential core/product_identity.py access. NODE2 depends on NODE1 contract freeze; NODE3 remains BLOCKED_UNTIL_NODE1_PM_GATE. Existing TASK/PLAN/DELIVERABLE-QIUQIU-01/02/03 and original owners are preserved.
+
+Exact Android scope is user-reported, while this inspected ledger revision still displays category wording at MASTER_PLAN1082 and FILE_OWNERSHIP546-547; no exact paths are fabricated. SOURCE_DISPATCH_AUTHORIZED=false for this governance notification; no implementation or Review dispatch occurred. Each node still needs actual revision digests, focused executable evidence, independent lfa-review and separate PM Gate. No new implementation, device or Integration acceptance. Goal OPEN; FORMAL_REPORTING_ALLOWED=false; geometry research remains separate.
+
+## Corrected ownership receipt without acceptance
+
+The earlier assertion that Android exact paths were already registered was incorrect. FILE_OWNERSHIP546-559 now supplies 14 exact original lfa-android paths, all BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE; the documentary discrepancy is resolved prospectively. FILE_OWNERSHIP571 explicitly makes TASK-QIUQIU-01 the sole lfa-api successor scope on the three named NODE1 overlaps. Prior claims preserve historical evidence, not concurrent write permission; unrelated claims remain protected.
+
+NODE1 review bytes remain frozen until review disposition. NODE3 sequential shared-file access requires NODE1 exact-revision independent Review, separate PM Gate and explicit file release. Original PLAN/DELIVERABLE/TASK-QIUQIU-01/02/03 routing remains unchanged. This governance correction dispatches neither implementation nor Review and grants no acceptance, contract freeze, file release or inherited gate. Actual revision evidence and node-specific reviews remain required. Goal OPEN; Integration NOT_ACCEPTED; FORMAL_REPORTING_ALLOWED=false; geometry research separate.

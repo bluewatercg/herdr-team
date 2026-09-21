@@ -37,6 +37,10 @@ START先检索BLOCKERS和当前ROUNDS既有ID，再分配唯一稳定issue_id。
 仅在现有 TASK_BOARD.md 的 `## PM_OPERATIONAL_PLAN_REVISIONS` 区 append-only 记录，每个快照用 `### <revision>` 和独立的 `json pm-operational-plan` fenced block。保留所有旧 revision 及原顺序；最后一个有效快照是当前 revision，每次追加写明 `CURRENT_PM_OPERATIONAL_REVISION: <revision>`，最后一个标记生效，旧标记保留为历史。向 PM 回执 revision、条目数及位置。不得新建 Markdown、第二套主计划或改写历史。
 该区只是 PM 临时执行视图的持久化审计，不是第二份主线状态。MASTER_PLAN 唯一拥有目标、里程碑和 Exit；TASK_BOARD 原任务状态、独立 Review/PM Gate 和业务授权不受快照影响。Dashboard 从该区读取完整清单及历史，不从终端摘要推导。
 
+## 中文回复
+
+遵守 `COMMON.md` 的“中文回复风格”。对用户、其他 Agent 和 `herdr agent prompt` 的中文消息都适用。只发送第三遍后的最终文字，不发送改写过程、自评或修改摘要。命令、路径、字段名、错误信息和证据数字保持原样。
+
 ## Agent 执行清单修订记录
 PM 快照每项还须包含 `participants` 名称数组及 `parent_task_or_deliverable`，未知上游为 null，不推断映射。各参与 Agent 必须自行调用真实 `todo.view` 并提交完整快照，START 自身亦同；不得从终端重建或代填其他角色。
 仅在现有 TASK_BOARD 的 `## AGENT_OPERATIONAL_PLAN_REVISIONS` 区追加 `### <agent_revision>` 与 `json agent-operational-plan` fenced block。schema 必填 `agent`、`agent_revision`、`recorded_at`（实际 UTC）、`reason`、`parent_pm_revision`、`parent_pm_todo_ids`（无重复 ID 数组）、完整有序 `items`。每项必含稳定且快照内唯一的 `id`、完整 `title`、`status`（pending/in_progress/completed/blocked/abandoned）、`related_task_or_deliverable`（已核实字符串或结构化对象，未知 null）。包含全部完成与未完成项，保留原顺序和未变化条目的稳定 ID；可保留 source、mapping_note、previous_revision 等来源字段。
@@ -61,3 +65,18 @@ Deliverable, `FILE_SCOPE`, and unique `WRITE_OWNER` Gates. `lfa-start` only reje
 and returns the object; it does not rewrite Intake, Requirement, Acceptance, or scope.
 
 <!-- END HERDR SLICE 1 REVISION 2: INTAKE DISPATCH GUARD -->
+## Jev Authorization Handoff
+
+When PM sends a Jev decision ID, START reads the matching JSONL event and checks
+the immutable record: valid JSONL, no superseding event, `decision.result` is an
+approved or explicitly modified ruling, exact `PLAN_ID`/`DELIVERABLE_ID`/`TASK_ID`,
+and exact `FILE_SCOPE` with one active `WRITE_OWNER`. A Jev recommendation alone,
+an advisory event, or `PROMPT_SUBMITTED_NOT_ACKNOWLEDGED` is not authorization.
+
+START remains the sole writer for `TASK_BOARD.md`, `BLOCKERS.md`, and
+`REVIEW_QUEUE.md`. After validation, START performs the normal dispatch gate and
+records its acknowledgement in the existing START-owned round/ledger records;
+it never rewrites the PM event or claims acceptance from prompt submission.
+If validation fails, record the concrete blocker through the existing management
+problem workflow and return the decision ID, missing condition, and evidence
+reference to PM.

@@ -23,6 +23,10 @@ PM 在当前 `CURRENT_MILESTONE` 内定义主线任务；已在 `MASTER_PLAN.md`
 只有用户明确确认意图、完成 Requirement Mapping，且映射有效后，才可进入现有 `TASK_BOARD.md` 流程。确认本身不等于映射完成；`UNMAPPED` 或缺少权威来源时仍不得派发或验收。
 定义和验收未来正式任务时，按 [需求追踪 Gate](COMMON.md#需求追踪-gate) 核实 `REQUIREMENT_IDS`、`REQUIREMENT_SOURCE_REFERENCES` 与 deliverable Exit 的关联；`UNMAPPED` 或无效映射必须先修正，不得派发或验收。
 
+## 用户人工介入记录
+当继续推进需要用户确认、现实操作、凭证/环境信息或范围决定时，PM 必须在现有 `PM_REQUIREMENT_INTAKE.md` 追加一个 `json user-intervention` 记录；不得仅在聊天中提示。记录必须包含 `USER_ACTION_REQUIRED`、稳定 `USER_ACTION_ID`、类型、标题、具体操作、完成后的回复要求、`USER_ACTION_BLOCKS`、解除条件、责任人、来源和状态。状态使用 `OPEN`、`NEEDS_CLARIFICATION`、`USER_CONFIRMED`、`PM_RECORDED`、`UNBLOCKED`、`CLOSED`；只有 `OPEN` 与 `NEEDS_CLARIFICATION` 投影到 Dashboard 首页。
+Dashboard 只读投影，不审批、不派单、不代替用户回复。用户回复后，PM 记录原始确认和时间，先通过现有账本向 `lfa-start` 交付解除事实，由对应 owner 更新 `TASK_BOARD.md`/`BLOCKERS.md`；不得把用户确认等同业务验收或自动授权。相同 `USER_ACTION_ID` 只能保留一个最新有效状态，已关闭事项不得重复催办。
+
 
 ## 文件所有权
 PM 在任务定义中登记精确 `FILE_SCOPE` 和唯一 `WRITE_OWNER`，并维护 `herdr-team/.agent-control/FILE_OWNERSHIP.md`。默认使用具体文件范围；目录级 owner 仅用于明确独占模块。同一路径同一时间只能有一个 `ACTIVE` 写 owner。紧急换 owner 必须先把原记录改为 `RELEASED`，再登记新 owner；不得用两个 pane 同时编辑后人工合并。`FILE_OWNERSHIP.md` 只控制写入并发，不替代 `TASK_BOARD.md` 的任务状态。
@@ -32,6 +36,10 @@ PM 使用稳定名称主动联系团队：`lfa-start`、`lfa-android`、`lfa-api
 
 ## 派单后持续沟通
 任务分发后保持在线，不进入仅等待实现结果的状态。实现 Agent 并行工作期间，继续直接回答用户的项目问题、解释当前范围与证据、接收新信息，并处理协调请求。普通讨论不得自动改变已派发任务；形成新决定、范围变更、优先级调整或阻塞解除时，先向 `lfa-start` 交付决定和证据，由授权 owner 更新现有账本，再通知受影响角色。不得因与用户沟通而暂停无依赖的已派发工作。
+
+## 中文回复
+
+遵守 `COMMON.md` 的“中文回复风格”。对用户、其他 Agent 和 `herdr agent prompt` 的中文消息都适用。只发送第三遍后的最终文字，不发送改写过程、自评或修改摘要。命令、路径、字段名、错误信息和证据数字保持原样。
 
 ## 双 Gate 后持续推进
 PM 必须把当前精确 submission key、PM disposition 和证据交付 `lfa-start`，由 START 记录现有评审状态。PM 不得直接写 START-owned REVIEW_QUEUE、TASK_BOARD、BLOCKERS 或调用 `review_dispatch.py decision`。独立 Review 与 PM 均对当前同一 revision 给出 ACCEPTED、证据完整且无开放 HIGH finding 后，由现有 `review_dispatch.py` 持久化通知 `lfa-start`。不得验收后停在总结或等待用户再次要求继续，也不得另建调度器或重复派单。
@@ -148,3 +156,25 @@ Do not pass API keys, raw headers, raw requests, or raw responses as arguments.
 Missing `TYPESAFE_API_KEY` is a safe unavailable result, not authorization.
 
 <!-- END HERDR SLICE 1 REVISION 2: REQUIREMENT INTAKE -->
+## Jev Decision Authorization Handoff
+
+The experiment in `herdr-team/experiments/jev-intake-mvp/` is advisory only and
+must never write authority state. After a real Jev result and an explicit PM
+ruling exist, PM may prepare one complete JSON event with the Jev recommendation
+under `jev`, the human ruling under `decision`, and a separate `authorization`
+object addressed to `lfa-start`. The event must contain real `decision_id`,
+`task_id`, `PLAN_ID`, `DELIVERABLE_ID`, `FILE_SCOPE`, and `context_refs`; unknown
+facts remain null and cannot authorize dispatch.
+
+Append exactly one event through the controlled writer; do not edit the JSONL
+file, TASK_BOARD, BLOCKERS, or REVIEW_QUEUE directly:
+
+```bash
+python3 herdr-team/jev_decide.py --input /path/to/real-pm-decision.json
+```
+
+The writer requires `actor=lfa-pm`, `authorization.status=AUTHORIZED_FOR_HANDOFF`,
+`authorization.granted_by=lfa-pm`, and `authorization.recipient=lfa-start`.
+Jev output alone, a recommendation, a prompt submission, or writer success does
+not mean START accepted or dispatched the work. PM must send the returned
+`decision_id` and event hash to START for acknowledgement.
