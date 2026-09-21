@@ -80,3 +80,64 @@ it never rewrites the PM event or claims acceptance from prompt submission.
 If validation fails, record the concrete blocker through the existing management
 problem workflow and return the decision ID, missing condition, and evidence
 reference to PM.
+
+## Jev 任务深度评估 Gate
+
+派单前先评估任务需要的处理深度，避免简单任务过度设计或复杂任务研究不足。
+
+### 评估流程
+
+1. 调用 `jev_task_depth.py` 评估任务：
+   ```bash
+   python jev_task_depth.py "任务描述" --files N --risk low/medium/high --uncertainty none/partial/unknown [--dependencies] [--coordination]
+   ```
+
+2. 根据返回的 `depth` 字段选择处理路径：
+   - `quick`: 简化流程（置信度 > 0.9 时）
+   - `normal`: 标准流程
+   - `deep`: 完整流程
+
+### 分级处理策略
+
+#### Quick 路径（简单任务）
+适用：单文件、无依赖、低风险、无不确定性的任务
+
+简化步骤：
+- 跳过详细需求分析，直接派发
+- 跳过文件冲突检查（单文件场景）
+- 简化 Review：只需代码审查，跳过 PM Gate
+- 简单测试验证即可
+
+示例：删除备份文件、修改配置、添加日志
+
+#### Normal 路径（标准任务）
+适用：多文件但无复杂依赖、中等风险的任务
+
+标准步骤：
+- 标准需求分析
+- 文件冲突检查
+- 标准 Review + PM Gate
+- 适度验证
+
+#### Deep 路径（复杂任务）
+适用：多文件、有依赖、高风险、高不确定性、需要多 Agent 协调的任务
+
+完整步骤：
+- 详细需求分析和依赖分析
+- 文件冲突检查 + 所有权协调
+- 完整 Review + PM Gate
+- 集成测试 + 回滚方案
+- 完整验证
+
+### 评估参数说明
+
+- `--files N`: 涉及文件数量。1=简单，2-3=中等，>3=复杂
+- `--risk`: 风险等级。low=配置/日志，medium=业务逻辑，high=核心/安全
+- `--uncertainty`: 不确定性。none=已知实现，partial=部分未知，unknown=完全未知
+- `--dependencies`: 是否有依赖其他任务
+- `--coordination`: 是否需要多 Agent 协调
+
+### 降级策略
+
+如果 `jev_task_depth.py` 不可用或 API 调用失败，模块会自动降级到基于规则的评估。
+START 应继续使用返回的建议，但记录降级事件到 ROUNDS。

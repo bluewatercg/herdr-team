@@ -1,5 +1,26 @@
 # TASK_BOARD
 
+## 2026-09-21 关机交接：Android 实拍上传与历史回放
+
+本节仅更新用户直接要求的操作任务，不改写下方历史 Review/PM 决策，不代表产品验收。明日入口：[恢复步骤](../../.planning/.continue-here.md)；机器状态：[HANDOFF.json](../../.planning/HANDOFF.json)。
+
+| 操作任务 | 当前状态 | 实际证据 / 明日动作 |
+|---|---|---|
+| 确认指定 Android 设备在线 | DONE_AT_SESSION_TIME | Redmi K30 Pro；关机后须重新连接，不能沿用历史在线状态 |
+| 构建并安装当前 debug APK | DONE | assembleDebug 成功；adb install -r 成功；未卸载或清数据 |
+| 执行手动拍照并保存原始 JPEG | BLOCKED_DEVICE_POWER_AND_QR | 用户报告手机没电；此前快门因二维码未识别而禁用。充电、重连后查实际预览和产品门禁 |
+| 触发 App 上传并读取回执 | BLOCKED_ON_NEW_CAPTURE | 尚无本轮新照片；不得用 host API 回放替代 App 上传 |
+| 核对设备记录与服务器结果 | BLOCKED_ON_APP_UPLOAD | 待核对新 attempt/bundle、原图 SHA、request_id/analysis_id 和 App 结果 |
+| 保存真实设备链路证据 | DONE_OBSERVATIONS_ONLY | artifacts/real-device-followup/android-live-20260921/；保存的是阻塞证据，不是闭环成功证据 |
+| 分析历史原图并保存测量诊断证据 | DONE | 3 张原图哈希不变；shot4: T/C=0.73161511079224、研究浓度=8.63907326982822 ng/mL；另外两张 QR_CONTRACT_INVALID、测量值 null |
+| 比较历史二维码缩放检出与结论 | DONE | shot4 长边640未检出、1200只定位、1600/4000解码 LOT球球2026；另两张所有尺寸未检出。不能等同 Android ML Kit 实时表现 |
+
+证据目录：`artifacts/real-device-followup/historical-analysis-20260921/`；`summary.json`、`qr-scale-comparison.json`、`checks.json`。26 个诊断产物哈希已验证。当前门禁唯一产品码 `1:QLI:DHEA:1234567890`；旧码不满足该门禁。当前观察到分析流640×480，但尚未证明分辨率是扫码失败根因，不可直接宣布修复方案。
+
+BTW-CHECK: TODO_ID=更新持久化任务状态与暂停原因; Goal=关机前保存真实完成度与明日入口; Files Changed=本任务板、.planning/HANDOFF.json、.planning/.continue-here.md; Build Result=文档更新，无程序构建; Requirement Trace=用户要求更新任务并写清明天开始方式、AGENTS.md 原图与证据规则; Test Result=PASS：JSON可解析、所列证据路径存在、任务板恢复链接有效，18个stage_id及4 PASS/11 WARN/3 SKIPPED与保存结果一致; Artifact Evidence=上述两个证据目录; Known Limitations=手机没电、未完成新拍摄/App上传、扫码根因未定; Open Post-Funding Gates=多设备/多批次/临床验证继续后置，不阻塞当前受控MVP; Current MVP Blocker Remaining=设备供电恢复、产品门禁和真实App上传结果验证。
+
+## 历史任务记录
+
 | PLAN_ID | DELIVERABLE_ID | TASK_ID | REQUIREMENT_IDS | Owner | Status | Evidence | Next |
 |---|---|---|---|---|---|---|---|
 | M1 | M1-D03 | PM-ONBOARD | UNMAPPED | lfa-pm | READY_FOR_BOUNDED_DISPATCH | EVIDENCE/PM-ONBOARD-20260918T043217Z.json; PROJECT_SNAPSHOT.md | No delivery acceptance implied |
