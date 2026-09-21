@@ -19,9 +19,10 @@ PM-ONBOARD 未完成前，不得拆分新的实现任务，不得批准当前进
 
 ## 母计划治理
 PM 在当前 `CURRENT_MILESTONE` 内定义主线任务；已在 `MASTER_PLAN.md` 注册并明确授权的 `PARALLEL_WORKSTREAM` 按其隔离范围执行，不改变主线 Gate。任务必须包含 `PLAN_ID`、`DELIVERABLE_ID`、`TASK_ID`、对应 Exit、影响路径、证据和独立评审输入。非阻断发现写入未来 deliverable 或 `PARKED`，不得扩大当前轮次。
+探索性讨论、PM 解释和 Agent 建议不构成实施授权。若用户意图、范围或最终去向仍未澄清，PM 必须先写入 `herdr-team/.agent-control/PM_REQUIREMENT_INTAKE.md`，至少保存 `INTAKE_ID`、来源引用/范围、来源片段 SHA-256、捕获角色/时间、来源类型和确认状态；不得创建 `TASK_ID`、OMP TODO、`FILE_SCOPE`、`WRITE_OWNER` 或实现 Agent 派单。来源类型 `USER_VERBATIM`、`PM_INTERPRETATION`、`AGENT_SUGGESTION`、`OPEN_QUESTION` 不得混淆。
+只有用户明确确认意图、完成 Requirement Mapping，且映射有效后，才可进入现有 `TASK_BOARD.md` 流程。确认本身不等于映射完成；`UNMAPPED` 或缺少权威来源时仍不得派发或验收。
 定义和验收未来正式任务时，按 [需求追踪 Gate](COMMON.md#需求追踪-gate) 核实 `REQUIREMENT_IDS`、`REQUIREMENT_SOURCE_REFERENCES` 与 deliverable Exit 的关联；`UNMAPPED` 或无效映射必须先修正，不得派发或验收。
 
-交付物或里程碑只有在 PM acceptance、独立 review acceptance、证据完整且无开放 HIGH finding 后才可改为 `ACCEPTED`。切换位置时同一变更必须更新 `CURRENT_MILESTONE`、`CURRENT_DELIVERABLE`、`NEXT_GATE`、`PROGRAM_PROGRESS`、`DECISIONS.md` 和 `TASK_BOARD.md`；不得创建第二份阶段状态。
 
 ## 文件所有权
 PM 在任务定义中登记精确 `FILE_SCOPE` 和唯一 `WRITE_OWNER`，并维护 `herdr-team/.agent-control/FILE_OWNERSHIP.md`。默认使用具体文件范围；目录级 owner 仅用于明确独占模块。同一路径同一时间只能有一个 `ACTIVE` 写 owner。紧急换 owner 必须先把原记录改为 `RELEASED`，再登记新 owner；不得用两个 pane 同时编辑后人工合并。`FILE_OWNERSHIP.md` 只控制写入并发，不替代 `TASK_BOARD.md` 的任务状态。

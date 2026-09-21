@@ -486,3 +486,22 @@ Explicit user authorization: TASK_ID=RUN-20260920-PM-PATROL-R01; PLAN_ID=PM-PATR
 Implementation scope: minimal repair of the existing watchdog's idle/done handling; one-time PM_PENDING recovery; one-time ACTIVE-owner and PM recovery with independent keys; protection of working agents; and the corresponding self-test. No expansion beyond these behaviors or exact paths. START records TASK_BOARD/DECISIONS under its existing governance permissions; those permissions are not new implementation FILE_SCOPE. This registration does not change MASTER_PLAN conclusions or Gates and grants no product runtime, device, deployment or archive-move authority.
 
 Administrative release receipt — ROLE=lfa-pm; TASK_ID=RUN-20260920-PM-PATROL-R01; PLAN_ID=PM-PATROL-01; DELIVERABLE_ID=PM-PATROL-01-D01. Under the user's explicit final release authorization and reported CLOSED queue with sequential lfa-review CODE_REVIEW_ACCEPTED and lfa-pm PM_ACCEPTED, the three exact claims above transition ACTIVE → RELEASED. Accepted submission key remains RUN-20260920-PM-PATROL-R01:663322c28c65f93b4907e028737b3d7315e829275f8d38736045ad744337f0ce:46794:REVIEW. This is a subsequent authorized ownership-ledger change, not an artifact revision or a new acceptance. Preserve historical accepted source_hashes and artifact digests without rewriting the queue. No business Gate, MASTER_PLAN conclusion or unrelated claim changes; no new execution authority. Original task administrative ownership release is complete; START retains responsibility for the final TASK_BOARD BTW receipt.
+## DHEA QR Window independent preparation R04
+
+RUN-20260920-DHEA-MAINLINE-REPLAN-R01 / NODE-01-QR-WINDOW-PREP binds only the first executable preparation node after R04 bounded acceptance. Sole writer is lfa-api. The node may prepare and bind the independent geometry-policy artifact, asymmetric synthetic fixture identity, and independent geometry entry/oracle required by R04; it MUST NOT alter the frozen R04/predecessor receipts, select the legacy candidate as authorization, change runtime/default/gateway behavior, or execute device/schema/Room/archive work. The policy artifact path and digest remain unknown until the node produces them truthfully; no nonexistent artifact is registered here.
+
+| path | TASK_ID | SUBTASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|
+| core/geometry.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | NODE-01-QR-WINDOW-PREP | lfa-api | all roles | ACTIVE |
+| tests/test_geometry.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | NODE-01-QR-WINDOW-PREP | lfa-api | all roles | ACTIVE |
+
+Conflict result: these two paths had no existing ACTIVE writer. core/dhea.py, core/dhea_diagnostics.py, and tests/test_dhea_product.py already have ACTIVE lfa-api ownership under existing tasks and are not duplicated. tests/test_dhea.py has no competing ACTIVE writer and remains outside NODE-01 until the independent entry/oracle is bound. This is preparation-node ownership only; implementation authorization remains NO until the policy artifact, fixture, executable entry/oracle and future implementation gate are all satisfied.
+Three-node preparation sequence under the same existing task (no new TASK_ID or agent):
+
+| node | deliverable | status | WRITE_OWNER | exact path status |
+|---|---|---|---|---|
+| NODE-01-QR-WINDOW-PREP | geometry-policy artifact preparation and binding | ACTIVE | lfa-api | concrete paths already registered at rows 495-496 |
+| NODE-02-ASYMMETRIC-FIXTURE-BINDING | asymmetric non-quarter-turn synthetic fixture identity | PLANNED | lfa-api | path/digest not yet produced; no write permission |
+| NODE-03-INDEPENDENT-ENTRY-ORACLE | independent geometry entry and executable oracle binding | PLANNED | lfa-api | path/digest not yet produced; no write permission |
+
+Activation boundary: lfa-api is the sole active writer only for NODE-01's two registered paths. NODE-02 and NODE-03 are registered as pending preparation nodes without invented paths, hashes, or ownership claims; they activate only after their exact output paths and conflict-free ownership are truthfully identified by PM. Runtime, schema, gateway, device, Room, archive and implementation release remain unauthorized.

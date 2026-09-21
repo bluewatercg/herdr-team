@@ -53,7 +53,7 @@ function renderPM(p,agents){
   const counts=current?.items.reduce((out,i)=>(out[i.status]=(out[i.status]||0)+1,out),{})||{},actionable=current?.items.filter(i=>!['completed','abandoned'].includes(i.status))||[];
   const item=i=>`<li><details data-key="${esc(i.id)}" ${opened.has(i.id)?'open':''}><summary><code>${esc(i.id)}</code> ${badge(i.status)} ${esc(i.title)}</summary><p>parent: ${describe(i.parent_task_or_deliverable)} · 关联 ${describe(i.related_task_or_deliverable)}</p>${current.blocked_reason?.[i.id]?`<p>${esc(current.blocked_reason[i.id])}</p>`:''}<p>participants: ${esc((i.participants||[]).join(', ')||'未登记')}</p>${(i.participants||[]).map(a=>agentView(a,i.id)).join('')}</details></li>`;
   root.innerHTML=current?`<div class="pm-focus"><b>${esc(h.current_plan_section??'当前计划未登记')}</b>${Object.entries(counts).map(([status,count])=>badge(`${status}: ${count}`,status)).join('')}</div><p>当前任务：${esc((h.registered_tasks||[]).join(' / ')||'未登记')}</p><ol class="pm-actions">${actionable.length?actionable.map(i=>`<li><code>${esc(i.id)}</code> ${badge(i.status)} ${esc(i.title)}</li>`).join(''):'<li class="muted">无未完成行动项</li>'}</ol><details class="pm-complete" data-key="pm-complete" ${opened.has('pm-complete')?'open':''}><summary>完整 PM 执行清单 · ${current.items.length} 项</summary><p>整体大计划：${esc(h.overall_goal??'未登记')}</p><p>当前计划：${describe(h.current_plan_reference??current.base_plan_version)}<br>${esc((h.registered_plans||[]).join(' → '))}</p>${revision(current)}<ol class="pm-items">${current.items.map(item).join('')}</ol></details>`:'尚无 PM 完整快照';
-  let history=document.querySelector('#pmHistory');if(!history){history=document.createElement('section');history.id='pmHistory';document.querySelector('.diagnostics').append(history)}
+  let history=document.querySelector('#pmHistory');if(!history){history=document.createElement('section');history.id='pmHistory';document.querySelector('#view-diagnostics').append(history)}
   history.innerHTML=`<h3>PM 执行清单 revision 历史</h3>${p.history.map(revision).join('')}<h3>Agent 完整快照历史</h3>${agents.history.map(revision).join('')}<p>缺失快照：${esc(agents.missing.join(', ')||'无')}</p><p class="error">${esc([...p.errors,...agents.errors].join('; '))}</p><p class="muted">发送原文摘要不是账本hash，不代表防篡改。TODO完成不等于业务Gate通过。</p>`;
 }
 function renderShadow(state){
@@ -461,12 +461,13 @@ def status_payload() -> dict:
       except (OSError, subprocess.SubprocessError) as error:
         errors.append(f"{name}: {error}")
     snapshot = agent_plans["current"].get(name, {})
+    snapshot_registered = name in agent_plans["current"]
     active_items = [item for item in snapshot.get("items", []) if item.get("status") == "in_progress"]
     linked_task_id = next((item.get("related_task_or_deliverable") for item in active_items if isinstance(item.get("related_task_or_deliverable"), str) and item["related_task_or_deliverable"] in task_by_id), None)
     task = task_by_id.get(linked_task_id)
     mapping_status = "REGISTERED_MATCH" if task else "UNMAPPED"
     ownership_chain = f"{task['plan_id']} → {task['deliverable_id']} → {task['id']}" if task else "UNMAPPED"
-    agents.append({"name": name, "status": row.get("agent_status", "not_running"), "pane": row.get("pane_id", ""), "title": row.get("terminal_title_stripped", ""), "output": output, "linked_task_id": linked_task_id, "mapping_status": mapping_status, "snapshot_status": "REGISTERED_MATCH" if task else "CURRENT_SNAPSHOT_UNREGISTERED", "ownership_chain": ownership_chain, "subtasks": snapshot.get("items", []) if task else [], "observed_at": time.time()})
+    agents.append({"name": name, "status": row.get("agent_status", "not_running"), "pane": row.get("pane_id", ""), "title": row.get("terminal_title_stripped", ""), "output": output, "linked_task_id": linked_task_id, "mapping_status": mapping_status, "snapshot_status": "CURRENT_SNAPSHOT_REGISTERED" if snapshot_registered else "CURRENT_SNAPSHOT_UNREGISTERED", "ownership_chain": ownership_chain, "subtasks": snapshot.get("items", []) if snapshot_registered else [], "observed_at": time.time()})
   registered = registered_projection()
   return {"generated_at": time.time(), "gate": parse_gate(), "plan": parse_plan(), "pm_operational_plan": pm, "agent_operational_plans": agent_plans, "tasks": tasks, "execution": live_execution(agents), "registered_execution": registered, "review": review_payload(), "shadow_projection": load_shadow_projection(), "blockers": read_text("BLOCKERS.md"), "agents": agents, "source_health": [source_health(name) for name in ("MASTER_PLAN.md", "TASK_BOARD.md", "REVIEW_QUEUE.md", "BLOCKERS.md")], "errors": errors}
 
@@ -574,8 +575,8 @@ def main() -> None:
     assert all(f'data-view="{view}"' in PAGE and f'data-panel="{view}"' in PAGE for view in ("current", "plan", "diagnostics"))
     assert "ArrowLeft" in PAGE and "aria-selected" in PAGE
     assert "n.gates?.length?" in PAGE and "无独立 Gate 记录" not in PAGE
-    assert all(agent["mapping_status"] == "REGISTERED_MATCH" or not agent["subtasks"] for agent in payload["agents"])
-    assert all(agent["snapshot_status"] == "REGISTERED_MATCH" or not agent["subtasks"] for agent in payload["agents"])
+    assert all(agent["snapshot_status"] == "CURRENT_SNAPSHOT_REGISTERED" or not agent["subtasks"] for agent in payload["agents"])
+    assert all(agent["snapshot_status"] != "CURRENT_SNAPSHOT_REGISTERED" or agent["name"] in payload["agent_operational_plans"]["current"] for agent in payload["agents"])
     assert "CURRENT_SNAPSHOT_UNREGISTERED" in PAGE
     assert "当前 TODO 快照未登记" in PAGE
     print(json.dumps(payload, ensure_ascii=False, indent=2))
