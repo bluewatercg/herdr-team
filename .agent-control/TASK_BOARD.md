@@ -1394,3 +1394,18 @@ Scope is narrowed to direction disambiguation only: QR confirms flow direction; 
 | `tests/test_geometry.py` | geometry/QR-window signed-association checks, including slight rotation and refusal cases | lfa-api | PLANNED | already lfa-api ACTIVE under this R01/NODE-01; amendment remains gated and does not expand writer |
 
 Promotion rule: all five exact paths remain `PLANNED` until same-version independent Review and PM gate acceptance of this amendment. The prior complete-policy, asymmetric-fixture, and independent-refinement three-node preparation remains post-gate work and is downgraded to a later dependency; it does not authorize QR perspective correction, well detection, arbitrary-device adaptation, runtime/schema/gateway/device/Room/archive changes, or implementation. `IMPLEMENTATION_AUTHORIZED=NO` remains in force.
+### RUN-20260920-DHEA-MAINLINE-REPLAN-R01 — R04 minimum contract resubmission
+
+This resubmits the R04 contract with a narrower controlled boundary. App owns pre-capture and post-capture single-QR QC. Core input is contractually guaranteed to contain exactly one QR. The controlled physical layout is `C-T-QR`; QR is on the flow-origin side, and the expected 2–3 mm lateral error does not affect direction. Core owns only single-QR geometry reading, association with the existing Window long axis, and deterministic flow-direction determination.
+
+Core explicitly does not perform complete QR perspective correction, well detection, arbitrary-device adaptation, bidirectional scoring, score-tie handling, QR/Window distance thresholds, or a QR conflict matrix. If the single-QR precondition is violated, Core returns an explicit deterministic contract refusal and does not guess direction. Missing/multiple QR are not normal-path Core business-matrix cases. Existing `locate_roi`, rectification, Green extraction, profile, T/C, and guarded research 4PL inversion remain reused.
+
+| exact path | bounded responsibility | writer | status |
+|---|---|---|---|
+| `core/dhea.py` | replace the dual-direction topology-selection entry point with the single-QR direction contract | lfa-api | PLANNED |
+| `core/geometry.py` | single-QR geometry read and deterministic association to the existing Window long axis | lfa-api | PLANNED |
+| `core/dhea_diagnostics.py` | selected direction, QR basis, and explicit contract-refusal reason | lfa-api | PLANNED |
+| `tests/test_dhea.py` | contract-bound normal direction paths and explicit refusal boundary | lfa-api | PLANNED |
+| `tests/test_geometry.py` | single-QR geometry/window-axis association and deterministic direction checks | lfa-api | PLANNED |
+
+Existing lfa-api ownership is retained without expansion: `core/dhea.py` and `core/dhea_diagnostics.py` are already owned under prior tasks; `core/geometry.py` and `tests/test_geometry.py` are already within R01/NODE-01; `tests/test_dhea.py` is the only previously unregistered requested path and remains PLANNED. The prior Review blocking items are narrowed by this product constraint and require a fresh same-version independent Review determination; no prior acceptance is inferred. All five paths remain PLANNED pending that Review and a separate PM gate. No ACTIVE registration, implementation release, source/test edit, runtime/schema/gateway/device/Room/archive change, or arbitrary-device claim is authorized. `IMPLEMENTATION_AUTHORIZED=NO`.
