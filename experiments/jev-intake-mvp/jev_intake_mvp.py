@@ -383,10 +383,11 @@ def run_self_test() -> int:
         assert deterministic["classification"] == expected_classes[case["case_id"]]
         if case["case_id"] in {"CASE-002", "CASE-008"}:
             assert deterministic["task_definition_preconditions_satisfied"] is False
-    assert all(value is False for field in AUTHORITY_FIELDS for value in ({field: False for field in AUTHORITY_FIELDS}.values()))
-    assert len(cases) == 8
-    assert len(build_jev_request(cases[0])["questions"]) == 5
-    assert all(value is False for field in AUTHORITY_FIELDS for value in ({field: False for field in AUTHORITY_FIELDS}.values()))
+    quick = quick_case(argparse.Namespace(user_verbatim="这个以后再搞", candidate_action="实现多端同步", pm_interpretation=None, agent_suggestions=None))
+    quick_deterministic = run_deterministic_checks(quick)
+    assert quick_deterministic["classification"] == "FUTURE_SCOPE"
+    assert quick_deterministic["explicit_user_authorization_status"] == "NEGATIVE"
+    assert len(build_jev_request(quick)["questions"]) == 5
     with tempfile.TemporaryDirectory() as directory:
         try:
             validate_output_path(directory + "/bad.json")
@@ -396,6 +397,69 @@ def run_self_test() -> int:
             raise AssertionError("unsafe output path accepted")
     print("self-test passed: offline, security, request, response, evaluation, and exit-code checks")
     return 0
+
+
+def quick_case(args: argparse.Namespace) -> dict[str, Any]:
+    def items(value: str | None) -> list[str]:
+        return [value] if isinstance(value, str) and value.strip() else []
+
+    return {
+        "case_id": "QUICK-CHECK",
+        "state": {
+            "intake": {"intake_id": "QUICK-CHECK", "intake_state": "INTAKE_OPEN", "user_confirmed": True},
+            "sources": {
+                "user_verbatim": items(args.user_verbatim),
+                "pm_interpretation": items(args.pm_interpretation),
+                "agent_suggestions": items(args.agent_suggestions),
+                "open_questions": [],
+            },
+            "governance": {"requirement_mapping_status": "UNMAPPED", "task_id": None, "omp_todo": None, "file_scope": None, "write_owner": None},
+            "references": {"role_matrix": {"status": "DRAFT", "implementation_allowed": False, "authority_effect": "NON_AUTHORING"}},
+            "candidate_action": args.candidate_action,
+        },
+        "expected": {},
+    }
+
+
+def run_quick_check(args: argparse.Namespace) -> int:
+    try:
+        case = quick_case(args)
+        deterministic = run_deterministic_checks(case)
+        case["expected"] = {
+            "classification": deterministic["classification"],
+            "explicit_user_authorization": deterministic["explicit_user_authorization_status"] == "POSITIVE",
+            "source_authority_confusion": deterministic["source_authority_confusion"],
+            "scope_expansion": deterministic["scope_expansion"],
+            "draft_authorization_misuse": deterministic["draft_authorization_misuse"],
+        }
+        api_key = os.environ.get("TYPESAFE_API_KEY")
+        if not api_key:
+            result = base_result(case, deterministic, evaluate_case(case, deterministic, None), "MISSING_API_KEY")
+            report = {"schema_version": "herdr-jev-intake-mvp-quick-result/1.0", "requested_model": DEFAULT_MODEL, "resolved_model": None, "authority_effect": "NONE", "result": result}
+            print(json.dumps(report, ensure_ascii=False, sort_keys=True))
+            return 3
+        response, error, returned_model = call_typesafe_api(build_jev_request(case), api_key)
+        if error:
+            result = base_result(case, deterministic, evaluate_case(case, deterministic, None), error)
+            report = {"schema_version": "herdr-jev-intake-mvp-quick-result/1.0", "requested_model": DEFAULT_MODEL, "resolved_model": None, "authority_effect": "NONE", "result": result}
+            print(json.dumps(report, ensure_ascii=False, sort_keys=True))
+            return 5 if error == "INVALID_RESPONSE" else 4
+        try:
+            checked = validate_jev_response(response)
+        except ValueError as validation_error:
+            result = base_result(case, deterministic, evaluate_case(case, deterministic, None), str(validation_error))
+            report = {"schema_version": "herdr-jev-intake-mvp-quick-result/1.0", "requested_model": DEFAULT_MODEL, "resolved_model": returned_model, "authority_effect": "NONE", "result": result}
+            print(json.dumps(report, ensure_ascii=False, sort_keys=True))
+            return 5
+        evaluation = evaluate_case(case, deterministic, checked)
+        result = base_result(case, deterministic, evaluation)
+        report = {"schema_version": "herdr-jev-intake-mvp-quick-result/1.0", "requested_model": DEFAULT_MODEL, "resolved_model": returned_model or DEFAULT_MODEL, "authority_effect": "NONE", "result": result}
+        print(json.dumps(report, ensure_ascii=False, sort_keys=True))
+        return 6 if result["evaluation"]["dangerous_false_authorization"] else 0
+    except (OSError, ValueError, KeyError) as error:
+        print(json.dumps({"schema_version": "herdr-jev-intake-mvp-quick-result/1.0", "authority_effect": "NONE", "error": str(error)}, ensure_ascii=False, sort_keys=True))
+        print(f"quick-check failed: {error}", file=sys.stderr)
+        return 2
 
 
 def run_online(cases_path: str, output: str, model: str) -> int:
@@ -439,19 +503,28 @@ def run_online(cases_path: str, output: str, model: str) -> int:
         return 7
     return final_exit_code(output_path_error=False, dangerous_false_authorization=dangerous, invalid_response=invalid_response, api_failure=api_failure, missing_api_key=False, input_error=False)
 
-
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Read-only Jev Intake Precheck MVP")
     parser.add_argument("--self-test", action="store_true")
     parser.add_argument("--offline-validate", action="store_true")
+    parser.add_argument("--quick-check", action="store_true")
     parser.add_argument("--cases", default=str(Path(__file__).with_name("cases.json")))
     parser.add_argument("--output", default=str(OUTPUT_ROOT / "results.json"))
     parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument("--user-verbatim")
+    parser.add_argument("--candidate-action")
+    parser.add_argument("--pm-interpretation")
+    parser.add_argument("--agent-suggestions")
     args = parser.parse_args(argv)
     if args.self_test:
         return run_self_test()
     if args.offline_validate:
         return run_offline(args.cases, args.output)
+    if args.quick_check:
+        if not isinstance(args.user_verbatim, str) or not args.user_verbatim.strip() or not isinstance(args.candidate_action, str) or not args.candidate_action.strip():
+            print(json.dumps({"schema_version": "herdr-jev-intake-mvp-quick-result/1.0", "authority_effect": "NONE", "error": "--user-verbatim and --candidate-action are required"}, ensure_ascii=False, sort_keys=True))
+            return 2
+        return run_quick_check(args)
     return run_online(args.cases, args.output, args.model)
 
 
