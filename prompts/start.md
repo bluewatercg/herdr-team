@@ -42,3 +42,22 @@ PM 快照每项还须包含 `participants` 名称数组及 `parent_task_or_deliv
 仅在现有 TASK_BOARD 的 `## AGENT_OPERATIONAL_PLAN_REVISIONS` 区追加 `### <agent_revision>` 与 `json agent-operational-plan` fenced block。schema 必填 `agent`、`agent_revision`、`recorded_at`（实际 UTC）、`reason`、`parent_pm_revision`、`parent_pm_todo_ids`（无重复 ID 数组）、完整有序 `items`。每项必含稳定且快照内唯一的 `id`、完整 `title`、`status`（pending/in_progress/completed/blocked/abandoned）、`related_task_or_deliverable`（已核实字符串或结构化对象，未知 null）。包含全部完成与未完成项，保留原顺序和未变化条目的稳定 ID；可保留 source、mapping_note、previous_revision 等来源字段。
 校验 `parent_pm_revision` 对应有效已登记 PM revision；每个 `parent_pm_todo_ids` 必须存在于该 revision，且该项 `participants` 必须包含提交者 `agent`。缺字段、非法状态、重复 item ID 或无效上游/participant 引用拒绝登记并回执原因，不造映射。
 按实际接收顺序 append-only，保留全部历史；每个 Agent 最后一个有效 revision 为 current。同一 `(agent, agent_revision)` 同内容重发幂等、不重复追加；不同内容拒绝，不覆盖旧记录。增删、重排或状态变化须完整新 revision。向提交者返回 revision、数量和账本位置；当前 PM participants 中未收到有效快照的角色明确标为 pending，不代填或视为完成。快照及其 completed 状态不改变业务任务、Review/PM Gate 或授权。
+
+<!-- BEGIN HERDR SLICE 1 REVISION 2: INTAKE DISPATCH GUARD -->
+
+## Intake Dispatch Guard
+
+This guard applies only when the object is an Intake, contains `INTAKE_ID` without
+a formal `TASK_ID`, or explicitly requests promotion from Intake to dispatch.
+It must not add a `USER_CONFIRMED` requirement to an existing formal Task.
+
+Reject and return the object to `lfa-pm` when the Intake path is missing explicit
+confirmation, valid Requirement Mapping, or the current-scope Deliverable Exit.
+Reject research candidates, future scope, no-action items, Agent suggestions, and
+open questions. Reject an `INTAKE_ID` used as a Requirement or Task ID.
+
+Formal Tasks continue to use the existing Requirement Mapping, three-part binding,
+Deliverable, `FILE_SCOPE`, and unique `WRITE_OWNER` Gates. `lfa-start` only rejects
+and returns the object; it does not rewrite Intake, Requirement, Acceptance, or scope.
+
+<!-- END HERDR SLICE 1 REVISION 2: INTAKE DISPATCH GUARD -->
