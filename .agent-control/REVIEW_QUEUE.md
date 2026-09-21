@@ -605,7 +605,7 @@ Later implementation review requires exact changed-file/hunk baseline, actual co
       }
     }
   },
-  "last_reconcile": 1789976717.6111708
+  "last_reconcile": 1789980782.0958893
 }
 <!-- /review-state -->
 
@@ -656,3 +656,17 @@ Actual existing lfa-pm PM_ACCEPTED and MASTER_PLAN383 bind only Evidence c99cfa6
 ## QR-ANDROID-01 exact revision submitted to existing reviewer
 
 QR-ANDROID-01 / QR-ANDROID-01-D01 / RUN-20260918-QR-ANDROID, writer=lfa-android. Evidence e50b66feec89c065800a70950f909456e60be4dca76e1fb62b9a8ea4b6343803/14455bytes externally bound by START in ROUNDS. Actual HEAD, fifteen source bindings, manifest5571eda92c58867cfd32acbcdbc71045dbf87d103523a4a3532bca0453ce12f0, all authorities, frozen Node1 and APKdf8937a7c9b2c42ec36e426a743126ea029876984edf797a0c7df4f42a21e6c7/48118038 MATCH. Existing lfa-review received this exact revision once, delivery exit0; CODE_REVIEW_ACCEPTED pending, no PM submission yet. Author focused20/20 and assemble/smoke PASS are not independent Review evidence. IMPLEMENTED_DEVICE_EVIDENCE_PENDING. Source ROUNDS fixed252569-byte prefix retained; Node1/Node3 frozen and total goal OPEN.
+
+## R04 minimum contract Review R02 and separate PM release
+
+RUN-20260920-DHEA-MAINLINE-REPLAN-R01. Original Review R02 REVIEW_ACCEPTED binds TASK_BOARD1397-1411 at full-file SHA256=71a2e7ef6fe53b5164dc25e8ce2f561809241625d420addae2262af499c60140, bytes=480173. Receipt=/tmp/r04-direction-disambiguation-independent-review-r02.txt, SHA256=8831cdce826260d16a07ae3000601275786fa55cfd97aeca57f3679d2e1e6efb, bytes=3302. START independently matched both identities before appending its incremental receipt. Accepted TASK_BOARD bytes remain an unchanged prefix; no acceptance is claimed for the appended revision.
+
+Review's IMPLEMENTATION_AUTHORIZED=NO is retained as its historical contract-review boundary. Subsequent separate MASTER_PLAN1014-1026 grants PM_ACCEPTED_FOR_BOUNDED_IMPLEMENTATION; FILE_OWNERSHIP509-521 activates exactly five original lfa-api paths. This records actual separate dispositions, without manufacturing a controller submission or replaying a notification. PM already delivered continuation to original API. Implementation review=PENDING, implementation acceptance=NOT_ACCEPTED, real-loop acceptance=NOT_ACCEPTED, integration=NOT_AUTHORIZED. Fresh implementation evidence must obtain its own independent review; no prior implementation acceptance is inherited.
+
+## Original-owner API and Android implementation Review dispatched by PM
+
+Existing RUN-20260920-DHEA-MAINLINE-REPLAN-R01, two slices=IMPLEMENTED_PENDING_REVIEW. PM incremental notification reports both independent implementation Review slices already sent to original lfa-review. This is a dispatch receipt, not Review acceptance; START does not create a controller submission, issue another notification or reuse R02 contract acceptance as implementation acceptance.
+
+API slice: five original lfa-api paths registered at FILE_OWNERSHIP515-519; geometry18/18 and DHEA30/30 PASS are original-owner results. PM records current five-file source digests at MASTER_PLAN1036; independent review must bind its actual examined revision. Android slice: five original lfa-android paths at FILE_OWNERSHIP529-533; ExampleRobolectricTest PASS59s and assembleDebug PASS2s are original-owner results; PM reports XML16 tests with zero failures/errors/skips and APK240a08b45b7b1ddbcf70b7c435882022a785761c45f80cb36cd4c2f57e954843. No unprovided Android source digest is inferred from the APK identity. Later source edits invalidate submitted review bindings.
+
+Review boundaries from MASTER_PLAN1032: local clear may delete some files before failure; retaining database rows is not filesystem rollback. Check legitimate task/quarantine paths, rejection boundaries, operation exclusion and configuration preservation. Android ownership registration was late after PM's earlier instruction; retain this sequencing defect without backdating. Current implementation round had no device installation, clearing, capture or upload. CODE_REVIEW_ACCEPTED=PENDING; separate PM implementation acceptance=PENDING; device/real-loop acceptance=NOT_ACCEPTED; integration=NOT_AUTHORIZED. Seven original business TODOs remain unchanged.

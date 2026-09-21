@@ -519,3 +519,17 @@ RUN-20260920-DHEA-MAINLINE-REPLAN-R01, original sole writer=lfa-api. Separate PM
 | tests/test_geometry.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | R04-MINIMUM-DIRECTION | lfa-api | all roles | ACTIVE |
 
 Conflict determination: four paths already belong to lfa-api; tests/test_dhea.py had no competing ACTIVE writer in the recovered ledger. IMPLEMENTATION_AUTHORIZED=YES within these five paths only. No new agent or task, no other path promotion, and no deployment/device/gateway/schema/Room/archive permission. Preserve prior edits as an unaccepted incoming baseline; original owner supplies focused executable evidence and fresh independent implementation review. Existing broader historical acceptance is not inherited.
+
+## Local detection clear corrective ownership receipt
+
+RUN-20260920-DHEA-MAINLINE-REPLAN-R01 / LOCAL-DETECTION-DATA-CLEAR. Original sole writer=lfa-android. This records the PM implementation instruction already delivered after the original owner's read-only assessment; it is a late ledger entry, not a backdated authorization or implementation acceptance. Existing same-owner claims remain consolidated.
+
+| path | WRITE_OWNER | status |
+|---|---|---|
+| Android_App/app/src/main/java/com/example/data/local/JournaledArtifactStore.kt | lfa-android | IMPLEMENTED_PENDING_REVIEW |
+| Android_App/app/src/main/java/com/example/data/local/db/Daos.kt | lfa-android | IMPLEMENTED_PENDING_REVIEW |
+| Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt | lfa-android | IMPLEMENTED_PENDING_REVIEW |
+| Android_App/app/src/main/java/com/example/ui/screens/SettingsScreen.kt | lfa-android | IMPLEMENTED_PENDING_REVIEW |
+| Android_App/app/src/test/java/com/example/ExampleRobolectricTest.kt | lfa-android | IMPLEMENTED_PENDING_REVIEW |
+
+Scope: local detection clearing only, preserving configuration, credentials and server data; no Room schema migration, uninstall, full-app clear or device action. Subsequent edits invalidate the submitted review digest. Original lfa-review is read-only; no second writer is assigned.
