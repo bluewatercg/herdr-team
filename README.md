@@ -16,6 +16,28 @@ PM 激活后先读取 `herdr-team/.agent-control/MASTER_PLAN.md`，再扫描仓�
 
 未来正式任务还必须填写 `REQUIREMENT_IDS`、`REQUIREMENT_SOURCE_REFERENCES`，遵循 [需求追踪 Gate](prompts/COMMON.md#需求追踪-gate) 的唯一引用链。`UNMAPPED` 阻止派发和验收，直至 PM 核实映射；finding IDs 不得冒充 requirement IDs。模板、任务板、证据和 Dashboard 只引用权威 ID/来源，不复制需求正文。
 
+## Jev 决策与 START 授权回执
+Jev 只提供建议，不能单独改变 Intake、Task、Review、Gate、ownership 或派发状态。只有同时存在真实 Jev 输出、明确的 PM 裁决、完整任务绑定和唯一 `WRITE_OWNER` 时，才允许持久化授权事件。
+
+受控 writer 为 `jev_decide.py`，只接受 `actor=lfa-pm` 且明确授予 `lfa-start` 的事件：
+
+```bash
+python3 herdr-team/jev_decide.py --input /path/to/real-pm-decision.json
+python3 herdr-team/jev_decide.py --self-test
+```
+
+事件追加到 `.agent-control/JEV_DECISIONS.jsonl`，使用排他锁、`fsync` 和相同 `decision_id` 幂等检查；损坏日志、冲突重复 ID、缺少 `PLAN_ID`、`DELIVERABLE_ID`、`TASK_ID`、`FILE_SCOPE` 或授权字段时拒绝追加。不存在真实事件时，不创建示例记录，也不把用户文字、prompt transport ACK 或 Jev 建议当作授权。
+
+`lfa-start` 必须读取原始 JSONL，重新核对精确绑定、文件范围、唯一 active owner 和是否存在 superseding event，然后在自己的控制账本中记录 acknowledgement。writer 成功、prompt 发送成功或 Jev 推荐本身都不等于 START 接受、任务派发、执行开始或 Gate 通过。
+
+控制链路变更后可运行：
+
+```bash
+python3 -B herdr-team/dashboard.py --check
+```
+
+该检查只验证当前真实账本和 Dashboard 投影，不会生成决策、派发任务或修改业务状态。
+
 ## 文件写入所有权
 `FILE_OWNERSHIP.md` 是并发写入控制账本，不是第二套任务状态。PM 为每个任务登记具体 `FILE_SCOPE` 和唯一 `WRITE_OWNER`；`lfa-start` 派单前检查重叠，有冲突就串行或重新切分。一级 Agent 管理本组 pane，只有指定 pane 可写，其他 pane 只读；Review 按实际 diff 检查越界。换 owner 必须先释放原 owner，同一路径禁止两个 `ACTIVE` 写 owner。
 
