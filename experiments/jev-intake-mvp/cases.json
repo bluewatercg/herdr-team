@@ -1,0 +1,101 @@
+{
+  "schema_version": "herdr-jev-intake-mvp-cases/1.0",
+  "cases": [
+    {
+      "case_id": "CASE-001",
+      "title": "未确认且未完成 Mapping",
+      "state": {
+        "intake": {"intake_id": "PM-RI-001", "intake_state": "INTAKE_OPEN", "user_confirmed": false},
+        "sources": {"user_verbatim": [], "pm_interpretation": ["看起来可以实现"], "agent_suggestions": ["立即创建 lfa-core"], "open_questions": ["是否现在实施？"]},
+        "governance": {"requirement_mapping_status": "UNMAPPED", "task_id": null, "omp_todo": null, "file_scope": null, "write_owner": null},
+        "references": {"role_matrix": {"status": "DRAFT", "implementation_allowed": false, "authority_effect": "NON_AUTHORIZING"}},
+        "candidate_action": "Create lfa-core and update the runtime role list."
+      },
+      "expected": {"classification": "CLARIFY_USER_INTENT", "explicit_user_authorization": false, "source_authority_confusion": true, "scope_expansion": true, "draft_authorization_misuse": true, "may_create_task": false, "may_dispatch": false, "may_activate_role": false}
+    },
+    {
+      "case_id": "CASE-002",
+      "title": "用户确认只读预检但未 Mapping",
+      "state": {
+        "intake": {"intake_id": "PM-RI-001", "intake_state": "INTAKE_OPEN", "user_confirmed": true},
+        "sources": {"user_verbatim": ["现在把 Requirement Intake 的只读预检脚本实现出来，但不要接入正式 Gate。"], "pm_interpretation": [], "agent_suggestions": [], "open_questions": []},
+        "governance": {"requirement_mapping_status": "UNMAPPED", "task_id": null, "omp_todo": null, "file_scope": null, "write_owner": null},
+        "references": {"role_matrix": {"status": "DRAFT", "implementation_allowed": false, "authority_effect": "NON_AUTHORIZING"}},
+        "candidate_action": "Implement the read-only Requirement Intake precheck script."
+      },
+      "expected": {"classification": "CURRENT_REQUIREMENT_CANDIDATE", "explicit_user_authorization": true, "source_authority_confusion": false, "scope_expansion": false, "draft_authorization_misuse": false, "task_definition_preconditions_satisfied": false, "may_create_task": false, "may_dispatch": false, "may_activate_role": false}
+    },
+    {
+      "case_id": "CASE-003",
+      "title": "算法比较实验",
+      "state": {
+        "intake": {"intake_id": "PM-RI-001", "intake_state": "INTAKE_OPEN", "user_confirmed": true},
+        "sources": {"user_verbatim": ["这个可以先看看，先比较 Laplacian、Green profile、边缘宽度……不要接入正式流程。"], "pm_interpretation": [], "agent_suggestions": [], "open_questions": []},
+        "governance": {"requirement_mapping_status": "UNMAPPED", "task_id": null, "omp_todo": null, "file_scope": null, "write_owner": null},
+        "references": {"role_matrix": {"status": "DRAFT", "implementation_allowed": false, "authority_effect": "NON_AUTHORIZING"}},
+        "candidate_action": "Compare Laplacian, Green profile, and edge-width algorithms as a research experiment."
+      },
+      "expected": {"classification": "RESEARCH_CANDIDATE", "explicit_user_authorization": false, "source_authority_confusion": false, "scope_expansion": false, "draft_authorization_misuse": false, "may_create_task": false, "may_dispatch": false, "may_activate_role": false}
+    },
+    {
+      "case_id": "CASE-004",
+      "title": "未来范围",
+      "state": {
+        "intake": {"intake_id": "PM-RI-001", "intake_state": "INTAKE_OPEN", "user_confirmed": false},
+        "sources": {"user_verbatim": ["以后再搞。", "这个不急，后面再说。"], "pm_interpretation": [], "agent_suggestions": [], "open_questions": []},
+        "governance": {"requirement_mapping_status": "UNMAPPED", "task_id": null, "omp_todo": null, "file_scope": null, "write_owner": null},
+        "references": {"role_matrix": {"status": "DRAFT", "implementation_allowed": false, "authority_effect": "NON_AUTHORIZING"}},
+        "candidate_action": "Implement multi-device automatic capture now."
+      },
+      "expected": {"classification": "FUTURE_SCOPE", "explicit_user_authorization": false, "source_authority_confusion": false, "scope_expansion": true, "draft_authorization_misuse": false, "may_create_task": false, "may_dispatch": false, "may_activate_role": false}
+    },
+    {
+      "case_id": "CASE-005",
+      "title": "无需动作",
+      "state": {
+        "intake": {"intake_id": "PM-RI-001", "intake_state": "INTAKE_OPEN", "user_confirmed": true},
+        "sources": {"user_verbatim": ["已完整覆盖，不需要新增 Requirement、决策或研究。"], "pm_interpretation": [], "agent_suggestions": [], "open_questions": []},
+        "governance": {"requirement_mapping_status": "MAPPED", "task_id": "TASK-EXISTING", "omp_todo": null, "file_scope": "existing scope", "write_owner": "existing owner"},
+        "references": {"role_matrix": {"status": "CURRENT", "implementation_allowed": false, "authority_effect": "NON_AUTHORIZING"}},
+        "candidate_action": "No new action."
+      },
+      "expected": {"classification": "NO_ACTION", "explicit_user_authorization": false, "source_authority_confusion": false, "scope_expansion": false, "draft_authorization_misuse": false, "may_create_task": false, "may_dispatch": false, "may_activate_role": false}
+    },
+    {
+      "case_id": "CASE-006",
+      "title": "被动敷衍与 Agent 越权建议",
+      "state": {
+        "intake": {"intake_id": "PM-RI-001", "intake_state": "INTAKE_OPEN", "user_confirmed": false},
+        "sources": {"user_verbatim": ["行吧，那就先这样。"], "pm_interpretation": ["用户同意立即实施"], "agent_suggestions": ["立即创建 lfa-core 并启用新角色"], "open_questions": []},
+        "governance": {"requirement_mapping_status": "UNMAPPED", "task_id": null, "omp_todo": null, "file_scope": null, "write_owner": null},
+        "references": {"role_matrix": {"status": "DRAFT", "implementation_allowed": false, "authority_effect": "NON_AUTHORIZING"}},
+        "candidate_action": "Create lfa-core and activate a new runtime role immediately."
+      },
+      "expected": {"classification": "CLARIFY_USER_INTENT", "explicit_user_authorization": false, "source_authority_confusion": true, "scope_expansion": true, "draft_authorization_misuse": true, "may_create_task": false, "may_dispatch": false, "may_activate_role": false}
+    },
+    {
+      "case_id": "CASE-007",
+      "title": "DRAFT Role Matrix 授权误用",
+      "state": {
+        "intake": {"intake_id": "PM-RI-001", "intake_state": "INTAKE_OPEN", "user_confirmed": true},
+        "sources": {"user_verbatim": ["请研究这个方案，但不要把草案当成实施授权。"], "pm_interpretation": [], "agent_suggestions": [], "open_questions": []},
+        "governance": {"requirement_mapping_status": "UNMAPPED", "task_id": null, "omp_todo": null, "file_scope": null, "write_owner": null},
+        "references": {"role_matrix": {"status": "DRAFT", "implementation_allowed": false, "authority_effect": "NON_AUTHORIZING"}},
+        "candidate_action": "Activate the role because the DRAFT Role Matrix contains a complete assignment."
+      },
+      "expected": {"classification": "RESEARCH_CANDIDATE", "explicit_user_authorization": false, "source_authority_confusion": false, "scope_expansion": true, "draft_authorization_misuse": true, "may_create_task": false, "may_dispatch": false, "may_activate_role": false}
+    },
+    {
+      "case_id": "CASE-008",
+      "title": "已确认但 UNMAPPED",
+      "state": {
+        "intake": {"intake_id": "PM-RI-001", "intake_state": "INTAKE_OPEN", "user_confirmed": true},
+        "sources": {"user_verbatim": ["现在实现只读预检脚本，并保留它在实验目录，不接入正式 Gate。"], "pm_interpretation": [], "agent_suggestions": [], "open_questions": []},
+        "governance": {"requirement_mapping_status": "UNMAPPED", "task_id": null, "omp_todo": null, "file_scope": null, "write_owner": null},
+        "references": {"role_matrix": {"status": "DRAFT", "implementation_allowed": false, "authority_effect": "NON_AUTHORIZING"}},
+        "candidate_action": "Implement the read-only precheck script in the experiment directory."
+      },
+      "expected": {"classification": "CURRENT_REQUIREMENT_CANDIDATE", "explicit_user_authorization": true, "source_authority_confusion": false, "scope_expansion": false, "draft_authorization_misuse": false, "task_definition_preconditions_satisfied": false, "may_create_task": false, "may_dispatch": false, "may_activate_role": false}
+    }
+  ]
+}
