@@ -1369,3 +1369,28 @@ R04 acceptance receipt identity: `/tmp/qli-api-exif-window-scope-r04-successor-r
 | NODE-03-INDEPENDENT-ENTRY-ORACLE | PLANNED | none | independent geometry entry/executable oracle; no real path or digest | no write permission |
 
 Four prerequisites remain before any implementation authorization: authorized geometry-policy artifact binding; asymmetric synthetic fixture identity; independent executable geometry entry/oracle; and a later implementation gate. `core/dhea.py`, `core/dhea_diagnostics.py`, and `tests/test_dhea_product.py` retain existing `lfa-api` ACTIVE ownership without duplication; `tests/test_dhea.py` remains unregistered until the entry/oracle is genuinely bound. No fabricated path/hash, ownership expansion, runtime/schema/gateway/device/Room/archive change, or runtime release is authorized; `IMPLEMENTATION_AUTHORIZED=NO`.
+### RUN-20260920-DHEA-MAINLINE-REPLAN-R01 — minimal FILE_SCOPE candidates
+
+Conflict check completed against current `FILE_OWNERSHIP.md`: existing ACTIVE ownership is unchanged for `core/geometry.py` and `tests/test_geometry.py` under NODE-01/lfa-api. No wildcard scope and no new agent. The following are PLANNED candidates only; none is ACTIVE before PM and independent Review gates.
+
+| purpose | exact existing path | status | conflict result | binding limitation |
+|---|---|---|---|---|
+| authorized geometry-policy artifact candidate | `docs/LFA_最新完整文档集合/config/dhea_template.v1.json` | PLANNED | no competing writer found in the checked ownership ledger | real template/config exists; independent geometry-policy artifact identity and digest are not yet established |
+| asymmetric fixture candidate | `experiments/core-v02/synthetic.jpg` | PLANNED | no competing writer found in the checked ownership ledger | real synthetic JPEG exists; asymmetric non-quarter-turn identity is not established |
+| fixture context/manifest candidate | `experiments/core-v02/synthetic-context.json` | PLANNED | no competing writer found in the checked ownership ledger | real context exists; it is not yet an asymmetric-fixture manifest and must not be relabeled |
+| independent geometry entry/oracle | `core/geometry.py` + `tests/test_geometry.py` | PLANNED binding to R04 | already ACTIVE as NODE-01/lfa-api; no additional writer or path requested | reuse only; independent entry/oracle coverage remains to be demonstrated and gated |
+
+Minimum approval required: PM must accept the exact policy-artifact identity and the fixture/context identity; independent Review must accept the asymmetric non-quarter-turn binding and executable oracle; then a later implementation gate may promote only the approved exact paths to ACTIVE. Until then `IMPLEMENTATION_AUTHORIZED=NO`; no runtime, schema, gateway, device, Room, archive, or source change is authorized.
+### RUN-20260920-DHEA-MAINLINE-REPLAN-R01 — R04 bounded direction-disambiguation amendment
+
+Scope is narrowed to direction disambiguation only: QR confirms flow direction; it does not perform QR perspective correction, well detection, or arbitrary-device adaptation. Existing `locate_roi`, rectification, Green extraction, profile, T/C measurement, and guarded research 4PL inversion remain reused. This is an exact non-wildcard scope registration; no source change or implementation release is made.
+
+| exact path | role in amendment | writer | status | conflict result |
+|---|---|---|---|---|
+| `core/dhea.py` | replace the dual-direction topology-selection entry point | lfa-api | PLANNED | existing lfa-api ACTIVE ownership exists under prior tasks; no duplicate ACTIVE claim |
+| `core/geometry.py` | QR geometry detection and signed QR-to-window association | lfa-api | PLANNED | already lfa-api ACTIVE under this R01/NODE-01; amendment remains gated and does not expand writer |
+| `core/dhea_diagnostics.py` | `direction_selected`, QR basis, and refusal reason diagnostics | lfa-api | PLANNED | existing lfa-api ACTIVE ownership exists under prior tasks; no duplicate ACTIVE claim |
+| `tests/test_dhea.py` | forward/reverse direction, slight rotation, missing/duplicate/conflicting QR cases | lfa-api | PLANNED | no competing writer found; previously unregistered pending independent entry/oracle binding |
+| `tests/test_geometry.py` | geometry/QR-window signed-association checks, including slight rotation and refusal cases | lfa-api | PLANNED | already lfa-api ACTIVE under this R01/NODE-01; amendment remains gated and does not expand writer |
+
+Promotion rule: all five exact paths remain `PLANNED` until same-version independent Review and PM gate acceptance of this amendment. The prior complete-policy, asymmetric-fixture, and independent-refinement three-node preparation remains post-gate work and is downgraded to a later dependency; it does not authorize QR perspective correction, well detection, arbitrary-device adaptation, runtime/schema/gateway/device/Room/archive changes, or implementation. `IMPLEMENTATION_AUTHORIZED=NO` remains in force.
