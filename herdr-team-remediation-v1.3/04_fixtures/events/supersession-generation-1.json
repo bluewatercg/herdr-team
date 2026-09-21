@@ -1,0 +1,24 @@
+{
+  "schema_version": "herdr-ledger-event/1.3",
+  "task_id": "TASK-001",
+  "subject_revision": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "occurred_at": "2026-09-20T00:00:00Z",
+  "received_at": "2026-09-20T00:00:01Z",
+  "payload_canonicalization": "JCS",
+  "payload_digest_algorithm": "sha256",
+  "event_id": "EV-090",
+  "event_type": "ACCEPTANCE_RECORDED",
+  "idempotency_key": "K90",
+  "payload_digest": "36ae5d9be399cf96ecb91c1c235b7d24668e93bddbf0edb59e507982e0d7551c",
+  "payload": {
+    "criterion_id": "C01",
+    "generation": 1,
+    "supersedes_event_id": null,
+    "result": "FAIL",
+    "evidence_refs": [
+      "EVIDENCE-12"
+    ],
+    "reason_code": "DEVICE_EVIDENCE_PENDING",
+    "reason": "pending"
+  }
+}

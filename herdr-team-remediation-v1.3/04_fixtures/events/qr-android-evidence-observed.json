@@ -1,0 +1,19 @@
+{
+  "schema_version": "herdr-ledger-event/1.3",
+  "event_id": "EV-QR-ANDROID-01-D01",
+  "event_type": "EVIDENCE_OBSERVED",
+  "task_id": "RUN-20260918-QR-ANDROID",
+  "subject_revision": "sha256:34ff8fac1e19d73225ca0ac395fa82c1504457977de953df0ddeb95cf22f29a3",
+  "idempotency_key": "QR-ANDROID-01-D01@34ff8fac1e19d732",
+  "occurred_at": "2026-09-20T02:42:28Z",
+  "received_at": "2026-09-20T02:42:28Z",
+  "payload_canonicalization": "JCS",
+  "payload_digest_algorithm": "sha256",
+  "payload_digest": "75f4473d5e1281a1400af711c0abe56775b02014fa8d9bd2b29085ef3ecc3c41",
+  "payload": {
+    "evidence_id": "LEGACY:QR-ANDROID-01-D01",
+    "classification": "NOT_READY",
+    "reason_codes": ["DEVICE_EVIDENCE_PENDING"],
+    "source_ref": "herdr-team/.agent-control/EVIDENCE/QR-ANDROID-01-D01.json"
+  }
+}

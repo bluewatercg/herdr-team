@@ -553,9 +553,59 @@ Later implementation review requires exact changed-file/hunk baseline, actual co
         "attempted": 1789724719.8814738,
         "acknowledged": 1789724720.1934762
       }
+    },
+    "RUN-20260920-PM-PATROL-R01:663322c28c65f93b4907e028737b3d7315e829275f8d38736045ad744337f0ce:46794:REVIEW": {
+      "envelope": {
+        "task_id": "RUN-20260920-PM-PATROL-R01",
+        "plan_id": "PM-PATROL-01",
+        "deliverable_id": "PM-PATROL-01-D01",
+        "requirement_ids": [
+          "PM-PATROL-01"
+        ],
+        "source_references": [
+          "herdr-team/.agent-control/FILE_OWNERSHIP.md#pm-patrol-minimal-repair"
+        ],
+        "artifacts": {
+          "herdr-team/SHA256SUMS.txt": "333f7779e0e160bfa41030868daabbcfc57d6ed02a11f8531b60d51acac8362c",
+          "herdr-team/prompts/pm.md": "b51c5370bd261f553d12346066bff5690745679c16afd7d33573d6ee649bbcf1",
+          "herdr-team/review_dispatch.py": "33617947210a2b0fe3406d33f7dc755b8ffe34f6ebf103324730ea184c1d7fa3"
+        },
+        "source_hashes": {
+          "herdr-team/.agent-control/FILE_OWNERSHIP.md": "50cb4121094435dec8b0669f53c9d4f36d4b7cd6df27d5af64ba50b2e9f77011"
+        },
+        "review_role": "lfa-review",
+        "evidence_sha256": "663322c28c65f93b4907e028737b3d7315e829275f8d38736045ad744337f0ce",
+        "evidence_bytes": 46794
+      },
+      "phase": "CLOSED",
+      "status": "STALE",
+      "delivery": {
+        "lfa-review": "SENT",
+        "lfa-pm": "SENT"
+      },
+      "decisions": {
+        "lfa-review": {
+          "action": "CODE_REVIEW_ACCEPTED",
+          "evidence": "Actual original lfa-review disposition supplied by user; /tmp/pm-patrol-r01-independent-review.txt; independently verified three artifacts/source and aggregate 663322c28c65f93b4907e028737b3d7315e829275f8d38736045ad744337f0ce / 46794; no blocking finding, existing execution evidence adopted. No business Gate grant.",
+          "time": 1789905746.5693607
+        },
+        "lfa-pm": {
+          "action": "PM_ACCEPTED",
+          "evidence": "Original PM actual PM_ACCEPTED relayed by user, TASK_BOARD1334; user explicitly directs binding already-received acceptance to same exact three-artifact revision after independent CODE_REVIEW_ACCEPTED. Aggregate 663322c28c65f93b4907e028737b3d7315e829275f8d38736045ad744337f0ce / 46794; controller33617947210a2b0fe3406d33f7dc755b8ffe34f6ebf103324730ea184c1d7fa3; promptb51c5370bd261f553d12346066bff5690745679c16afd7d33573d6ee649bbcf1; manifest333f7779e0e160bfa41030868daabbcfc57d6ed02a11f8531b60d51acac8362c. Bounded patrol repair and authorized original watcher replacement only; all documented limitations retained; no business Gate change.",
+          "time": 1789905782.5383267
+        }
+      },
+      "created": 1789905577.7298956,
+      "phase_changed": 1789905782.9238622,
+      "last_dispatch_attempt": 1789905747.9150498,
+      "continuation": {
+        "status": "SENT",
+        "attempted": 1789905782.6137018,
+        "acknowledged": 1789905782.923856
+      }
     }
   },
-  "last_reconcile": 1789870790.6705856
+  "last_reconcile": 1789953428.4467626
 }
 <!-- /review-state -->
 

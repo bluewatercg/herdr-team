@@ -1,0 +1,21 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"urn:herdr:schema:dispatchable-evidence-envelope:1.1",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","evidence_id","record_kind","task_id","plan_id","deliverable_id","write_owner","submission_status","subject_revision","artifact_set_revision","artifacts","created_at","producer_id"],
+  "properties":{
+    "schema_version":{"const":"herdr-dispatchable-evidence-envelope/1.1"},
+    "evidence_id":{"type":"string","minLength":1},
+    "record_kind":{"const":"DISPATCHABLE_SUBMISSION"},
+    "task_id":{"type":"string","minLength":1},
+    "plan_id":{"type":"string","minLength":1},
+    "deliverable_id":{"type":"string","minLength":1},
+    "write_owner":{"type":"string","minLength":1},
+    "submission_status":{"enum":["AUTHOR_COMPLETE","IMPLEMENTED_PENDING_REVIEW","REVIEW_PENDING","IMPLEMENTED_DEVICE_EVIDENCE_PENDING"]},
+    "subject_revision":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},
+    "artifact_set_revision":{"type":"string","pattern":"^sha256:[0-9a-f]{64}$"},
+    "artifacts":{"type":"array","minItems":1,"items":{"type":"object","additionalProperties":false,"required":["path","sha256","size_bytes","media_type","criterion_ids"],"properties":{"path":{"type":"string","minLength":1,"pattern":"^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"},"sha256":{"type":"string","pattern":"^[0-9a-f]{64}$"},"size_bytes":{"type":"integer","minimum":0},"media_type":{"type":"string","minLength":1},"criterion_ids":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string","minLength":1}}}}},
+    "created_at":{"type":"string","format":"date-time"},
+    "producer_id":{"type":"string","minLength":1}
+  }
+}

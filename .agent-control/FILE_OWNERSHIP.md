@@ -35,7 +35,8 @@
 | docs/technical/INDEX.md | RUN-20260918T043217Z-DOC-GOVERNANCE | GOVERNANCE | lfa-start(w15:p1) | all roles | ACTIVE |
 | docs/DOCUMENT_LIFECYCLE.md | RUN-20260918T043217Z-DOC-GOVERNANCE | GOVERNANCE | lfa-start(w15:p1) | all roles | ACTIVE |
 | herdr-team/review_dispatch.py | RUN-20260918T043217Z-DOC-GOVERNANCE | GOVERNANCE | lfa-start(w15:p1) | all roles | RELEASED |
-| herdr-team/dashboard.py | RUN-20260918T043217Z-DOC-GOVERNANCE | GOVERNANCE | lfa-start(w15:p1) | all roles | ACTIVE |
+| herdr-team/dashboard.py | RUN-20260918T043217Z-DOC-GOVERNANCE | GOVERNANCE | lfa-start(w15:p1) | all roles | RELEASED |
+<!-- Old dashboard governance write is complete; this release grants no HARNESS-SHADOW-01 Slice 7 authority to lfa-start. -->
 | herdr-team/SHA256SUMS.txt | RUN-20260918T043217Z-DOC-GOVERNANCE | GOVERNANCE | lfa-start(w15:p1) | all roles | RELEASED |
 | herdr-team/README.md | RUN-20260918T043217Z-DOC-GOVERNANCE | GOVERNANCE | lfa-start(w15:p1) | all roles | RELEASED |
 | herdr-team/prompts/COMMON.md | RUN-20260918T043217Z-DOC-GOVERNANCE | GOVERNANCE | lfa-start(w15:p1) | all roles | ACTIVE |
@@ -281,3 +282,207 @@ Activation receipt: Node1 Evidence 129730595d1bc42ef226df6a50a60e6e03793abb07a7a
 Node2 pre-edit baseline disposition: existing unstaged LfaViewModel.kt (25621 bytes, SHA256 28b65ed04d5c0846e0a755439533b58aed879e4f184274740e3f1fd76b6515f6) and CaptureScreen.kt (23773 bytes, SHA256 258f4da400d78484fa65a8b366e178681bec69810de48cb52327b6cea4168621), both at their registered Android paths above, are protected adoptable baseline, not Node2-authored changes. Preserve the existing processing/unknown-receipt lookup and retry-after behavior, and the timed top saved-capture notice. No reset, restore, overwrite from HEAD or attribution to Node2. Node2 may incrementally integrate its product gate on these bytes once START confirms no other live writer; all other nonconflicting Node2 paths remain actionable now. Dirty working-tree state alone is not an ownership conflict. If either baseline changes before first edit, re-read and coordinate the actual writer.
 
 QR-FINAL-R3 repair ownership extension: existing sole lfa-api rows for python_gateway/dhea_export.py, docs/api/openapi-dhea-v2.json and python_gateway/tests/test_dhea.py also cover RUN-20260918-QR-FINAL as ACTIVE. Scope is only synchronization of enabled product-only final-JPEG acceptance and migration of the obsolete Node1 disabled-path expectation; preserve legacy v2, complete-v3 refusal, unrelated baseline work and frozen Node1 Evidence. No duplicate writer or new task. Bind the revised files in new Node3 Evidence and obtain existing non-author Review then same-revision PM Gate.
+
+Node2 repair regression ownership correction: Android_App/app/src/test/java/com/example/network/ProductBundlePersistenceTest.kt is now explicitly assigned to RUN-20260918-QR-ANDROID, sole writer lfa-android, ACTIVE. Scope is real Bundle 1.6 product-only persistence/restart and legacy Bundle 1.5 preservation checks requested by the existing Review; no production or wire-schema expansion. The file already appears in submitted Evidence 26abe357bcd1ca527830e0da78d4f7f943718ead05769f3564d5578220d5ede0 / 16194 bytes before this explicit registration; this append corrects the missing path prospectively and does not claim prior registration. Preserve that submitted revision as historical. Author must bind this updated authority in the next exact Evidence revision; existing non-author Review and PM Gate must identify the resulting revision. Frozen Node1/3 Evidence remains unchanged.
+
+## Android-origin integration ownership
+
+All following paths are ACTIVE only for RUN-20260920-QR-E2E, QR-E2E-01-D01, after START dispatch. Existing accepted implementation files and frozen Node1/2/3 Evidence are read-only dependencies. Additional source changes require prior PM registration.
+
+| Path | Task | Scope | Sole writer | Readers | Status |
+|---|---|---|---|---|---|
+| Android_App/app/src/test/java/com/example/network/ProductEndToEndTest.kt | RUN-20260920-QR-E2E | INTEGRATION | lfa-android | all roles | ACTIVE |
+| experiments/qr-product-e2e/gateway.py | RUN-20260920-QR-E2E | INTEGRATION | lfa-api | all roles | ACTIVE |
+| herdr-team/.agent-control/EVIDENCE/QR-E2E-01-D01.json | RUN-20260920-QR-E2E | INTEGRATION | lfa-android | all roles | ACTIVE |
+
+Temporary certificates, isolated storage, fixtures, receipts and executable logs are generated artifacts outside tracked source; no real secrets or production storage. API owner supplies its exact source and execution digests to Android integration evidence owner. Do not create documentation or change business source merely to support the harness. Existing roles coordinate launch parameters directly; START alone formally dispatches.
+
+## Live-device capture layout increment
+
+ANDROID-UI-010-R01 is authorized by explicit user feedback recorded at MASTER_PLAN.md:411-417 and START dispatch. Existing sole writer lfa-android owns the bounded updates to `Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt`, `docs/design/app-android-ios-detail.md`, and `Android_App/README.md`; ACTIVE for this increment. Source baseline reported by owner: `410b17a00b63374f5d28a5531c478db8b30e8427`; preserve all pre-existing dirty content. Any affected existing Android UI test must be named before modification. Frozen Node and integration Evidence remains unchanged; generated revision digests/build/display evidence may live under Android_App/build. Original lfa-review provides non-author exact-revision Review, followed by PM Gate; only PM operates ADB and performs data-preserving installation and device display checks. API/Core/MLKit/ProductGate/payload/750ms/full-JPEG invariants remain unchanged. Shared guide geometry changes require explicit source-path extension before edit to prevent overlay/evidence divergence.
+
+ANDROID-UI-010-R01 corrected pre-edit exact scope: sole writer lfa-android is ACTIVE for existing `Android_App/app/src/test/java/com/example/camera/CameraEvidenceTest.kt`, limited to observable unchanged-strip/lower-square-QR geometry, white-border spacing, in-bounds and non-overlap checks. The three existing source/document paths above remain assigned to the same owner. Proposed new `CaptureGuidanceLayoutTest.kt` and `herdr-team/.agent-control/EVIDENCE/ANDROID-UI-010-R01.json` are withdrawn before edit; no new process document or herdr Evidence file. Revision/digest/build evidence is generated under `Android_App/build/`. `guideRegion`, `NativeCameraManager`, `PreviewGuidanceAnalyzer`, `ProductGate`, API/Core/wire schema and historical Evidence remain unchanged. PM retains install-r and live display verification; host geometry checks do not establish device validation.
+
+## HARNESS-VERIFICATION-SHADOW exact ownership
+
+PLAN_ID=HARNESS-SHADOW-01; DELIVERABLE_ID=HARNESS-SHADOW-01-D01; TASK_ID=RUN-20260919-HARNESS-SHADOW-S2-S6; WORKSTREAM=HARNESS-VERIFICATION-SHADOW; MAINLINE_IMPACT=NONE. Authority: explicit user governance request and MASTER_PLAN HARNESS-SHADOW-01-GOV-R01, five gates SATISFIED, decision APPROVED, implementation_allowed=true for the three paths only. Unique future writer shadow-core; this registration neither starts an agent nor dispatches work. No lfa product implementer may be reused for this workstream.
+
+| path | TASK_ID | SUBTASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|
+| herdr-team/harness/shadow.py | RUN-20260919-HARNESS-SHADOW-S2-S6 | SHADOW-S2-S6 | shadow-core | all roles | ACTIVE |
+| herdr-team/harness/verify_shadow.py | RUN-20260919-HARNESS-SHADOW-S2-S6 | SHADOW-S2-S6 | shadow-core | all roles | ACTIVE |
+| herdr-team/.agent-control/MACHINE/HARNESS-VERIFICATION-SHADOW/qr-android-projection.json | RUN-20260919-HARNESS-SHADOW-S2-S6 | SHADOW-S2-S6 | shadow-core | all roles | RELEASED |
+
+All three paths were absent at registration; no existing matching or overlapping harness ownership was found. No wildcard, directory-level ownership, package rewrite, additional Evidence or control-ledger write is granted. All other paths remain protected, including dashboard.py, review_dispatch.py, TASK_BOARD.md, BLOCKERS.md, REVIEW_QUEUE.md, ROUNDS, historical EVIDENCE and product code. Existing product owners and records remain effective. ACTIVE grants bounded future ownership only; PM performs governance registration only, with no runtime implementation or role startup in this request.
+
+## HARNESS-SHADOW-01 Slice 7 exact ownership
+
+Authority=explicit user governance-only request and MASTER_PLAN HARNESS-SHADOW-01-S7-GOV-R01. PLAN_ID=HARNESS-SHADOW-01, continuation Slice 7; DELIVERABLE_ID=HARNESS-SHADOW-01-S7-UI; TASK_ID=RUN-20260919-HARNESS-SHADOW-S7-UI; WORKSTREAM=HARNESS-VERIFICATION-SHADOW; MAINLINE_IMPACT=NONE. Slice 2–6 independently verified and CODE_REVIEW_ACCEPTED per user report; technical UI prerequisite=MET. Separate Slice 7 governance approval does not establish UI implementation acceptance.
+
+| path | TASK_ID | SUBTASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|
+| herdr-team/dashboard.py | RUN-20260919-HARNESS-SHADOW-S7-UI | SHADOW-S7-UI | shadow-ui | all roles | RELEASED |
+
+Exact sole writable implementation path for this task is the row above; no wildcard. Permission is limited to read-only consumption/rendering of herdr-team/.agent-control/MACHINE/HARNESS-VERIFICATION-SHADOW/qr-android-projection.json. The projection itself is read-only for shadow-ui. Required display: ingestion/evidence/acceptance statuses, subject revision, criterion required/status/generation/selected/superseded/evidence references/reason codes, diagnostics and reducer digest/version. NOT_READY and UNVERIFIED must never become PASS through display logic.
+
+Existing line 38 grants ACTIVE dashboard.py ownership to lfa-start for RUN-20260918T043217Z-DOC-GOVERNANCE. That record and all lfa-* ownership remain protected and unchanged. ACTIVE here grants the requested bounded Slice 7 authorization only; it does not permit simultaneous writers or silently revoke the prior claim. Before future dispatch/edit, explicitly reconcile/release the prior dashboard file lock through the existing ownership process. Future execution remains blocked by that exact conflict until resolved; shadow-ui is the sole authorized writer for Slice 7, with no role startup, reuse or dispatch in this request.
+
+All other paths are protected from this task, including review_dispatch.py, product code, historical Evidence/Event/Projection/PHASES/Gates, the named projection input and control ledgers. Earlier Slice 2–6 restrictions remain effective for shadow-core. UI acceptance requires its own exact-revision rendering verification, non-author Review and PM Gate; current registration is approval only. No product acceptance or historical state changes are implied.
+
+Slice 7 completion release: HARNESS-SHADOW-01-S7-PM-R01 records PM_ACCEPTED for dashboard.py SHA256=ba1ed40e8a78a8c43551282a3b47bde917bc95b8878929bc98351a642d80a54b, following user-reported independent shadow-ui-review CODE_REVIEW_ACCEPTED after repairs. PM matched the current subject digest and projection SHA256=3cdd0988dd8e1ecbe3ca64858b1336147647389a5f274213f8f6313af0d7b627. The prior lfa-start claim at line 38 is already RELEASED; the registration-time conflict is resolved in the current ledger. The Slice 7 row above is now RELEASED with no successor writer. This ends its write permission; all other ownership and protected paths remain unchanged. Acceptance is limited to the read-only UI and preserves VALID/NOT_READY/UNVERIFIED/DEVICE_EVIDENCE_PENDING; it does not accept product evidence, close the product Goal or claim full --check passes.
+
+## Exact Android evidence revision ingestion
+
+TASK_ID=RUN-20260920-SHADOW-QR-INGEST; PLAN_ID=HARNESS-SHADOW-01; WORKSTREAM=HARNESS-VERIFICATION-SHADOW; MAINLINE_IMPACT=NONE. User authorizes coordinator ingestion of Evidence SHA256=3bfca2be31ab0bd96601a9fc066a5d76009f97e77073e522b11e8a57a36d8b50 / 21574 bytes. Prior shadow-core projection claim released above before this temporary transfer; no live shadow-core in inspected roster. No harness source, dashboard, product source, Evidence or historical event write permitted. lfa-review and lfa-api are read-only for this task. PM-owned governance ledgers retain their existing owner.
+
+| path | TASK_ID | SUBTASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|
+| herdr-team/.agent-control/MACHINE/HARNESS-VERIFICATION-SHADOW/qr-android-projection.json | RUN-20260920-SHADOW-QR-INGEST | REDUCER-OUTPUT | lfa-pm | all roles | RELEASED |
+
+Output must be serialized from existing reducer return value only, never hand-edited. Temporary ownership ends after focused verification and exact outcome receipt; no acceptance of the six unproven device scenarios is authorized.
+
+RUN-20260920-SHADOW-QR-INGEST completion: temporary projection claim RELEASED after focused Shadow verification PASS and reducer-only output SHA256=3909f96aa7f7c1e012604f6ed106535eacc5fd88efe645c2af2c524900b98470 /1178 bytes. Result VALID/NOT_READY/UNVERIFIED with DEVICE_EVIDENCE_PENDING; six unproven scenarios remain. No source ownership transferred, no successor output writer, no product acceptance. Exact inputs and reviewer limitations retained in MASTER_PLAN.md:490 onward.
+
+## Corrected Evidence ingestion R02 temporary ownership
+
+User-authorized RUN-20260920-SHADOW-QR-INGEST-R02, Evidence c2d1185f1a56124dcf49089af239238852ad523f824ffb067e0f781d21ee1474 /21898 bytes. Prior output owners remain RELEASED. Only serialized shadow.project() output is writable; no source, fixture, Evidence or product authority. lfa-review read-only exact-digest review follows generation.
+
+| path | TASK_ID | SUBTASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|
+| herdr-team/.agent-control/MACHINE/HARNESS-VERIFICATION-SHADOW/qr-android-projection.json | RUN-20260920-SHADOW-QR-INGEST-R02 | REDUCER-OUTPUT | lfa-pm | all roles | RELEASED |
+
+R02 output generation completed and temporary ownership RELEASED: Projection SHA256=d41e331c1389ec8df3f7ec797253be5c466e79375eb35a087087e578eb0ac8fa /1178 bytes; subject Evidence=c2d1185f1a56124dcf49089af239238852ad523f824ffb067e0f781d21ee1474 /21898. Focused schema/digest/order/readback PASS. Independent exact-pair review remains read-only. No successor write grant or product acceptance.
+
+## QLI full-text cutover exact scope
+
+RUN-20260920-QLI-CUTOVER; shared contract revision sha256:54da44fd6071410f765c5000efb6191653f9eafb6d68aeda8cb6cf433edfe94e. Explicit user authorization and PM cutover rule in MASTER_PLAN apply. Below extends existing same-owner claims to this new task, superseding old freeze only for editable source bodies. No ownership transfer/concurrent writer. Old Evidence remains frozen. Every path outside table is read-only; additions require PM registration. Generated freeze/check artifacts may be written under artifacts/qli-cutover; no existing Evidence replacement.
+
+| path | TASK_ID | SUBTASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|
+| core/product_identity.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| python_gateway/dhea_input.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| python_gateway/dhea_export.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| python_gateway/dhea.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| core/dhea.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| core/dhea_diagnostics.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| docs/api/api-reference.md | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| docs/api/schemas/dhea-product.schema.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| docs/api/openapi-dhea-v2.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-product/cases.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| python_gateway/tests/test_dhea_product_contract.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| python_gateway/tests/test_dhea.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| python_gateway/tests/test_dhea_product_recheck.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| tests/test_dhea_product.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| python_gateway/tests/test_dhea_diagnostics.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| experiments/qr-product-e2e/gateway.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| docs/api/generate_dhea_v3.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| python_gateway/dhea_v3_schema.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| docs/api/openapi-dhea-v3.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| docs/api/schemas/capture-bundle-1.6.schema.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| docs/api/schemas/dhea-capture-v3.schema.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| docs/api/schemas/dhea-result-v3.schema.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| docs/api/schemas/dhea-validation-v3.schema.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/http-cases.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/v2-baseline-sha256.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/qr-cases.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/jcs/metadata.jcs | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/jcs/product-gate-declaration.jcs | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/jcs/result-snapshot.jcs | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/jcs/sha256.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/negative/schema-cases.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/negative/transport-cases.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/positive/bundle.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/positive/capture.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/positive/diagnostics.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/positive/error-conflict.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/positive/error.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/positive/qr.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/positive/result-failed.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/positive/result-measured.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/positive/result-processing.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/positive/result-rejected.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| fixtures/dhea-v3/positive/validation.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.2.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.3_IMPLEMENTATION_READY.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.4_IMPLEMENTATION_READY.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.5_IMPLEMENTATION_READY_AFTER_TEMPLATE_VALIDATION.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.6.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.6_MANUAL_QR_CONTROLLED_ROI_REVISED.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.7_IMPLEMENTATION_BASELINE.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/DHEA_NATIVE_APPS_API_RECOGNITION_TODO_2026-09-15.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/api/dhea-v3-product-gate.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/01_QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.6.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/02_MASTER_PLAN_v1.1.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/03_DECISIONS_QR_MVP_VERTICAL_SLICE_v1.0.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/04_TASK_BOARD_QR_TEMPLATE_ROI_SIGNAL_v1.0.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/05_AUTHORITATIVE_CONTRACT_SYNC_CHECKLIST_v1.0.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/06_TEMPLATE_ESTABLISHMENT_AND_VALIDATION_PLAN_v1.0.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/07_HERDR_RECENT_THREE_FAILURES_INVESTIGATION_v1.0.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/08_TEN_POINT_CAPTURE_RELEASE_AND_EXECUTION_PLAN_v1.0.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/09_MANUAL_QR_CONTROLLED_ROI_PLAN_REVISION_v1.0.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/10_SINGLE_ANNOTATOR_DEVELOPMENT_REFERENCE_PLAN_v1.0.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/README.md | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+| docs/QiuQiu_DHEA_Project_Document_Update_Package_v1.6/MANIFEST.sha256 | RUN-20260920-QLI-CUTOVER | DOCS | lfa-start | all roles | ACTIVE |
+
+Android existing QLI code/declaration/tests are read-only dependencies for this cutover; lfa-android must freeze relevant current digests and report any actual mismatch before receiving write scope. Reviewer=lfa-review read-only. PM retains only governance ledgers. No historical event/Evidence/Projection edit authorized.
+
+## Bounded Shadow dashboard presentation refinement
+
+TASK_ID=RUN-20260920-SHADOW-DASHBOARD-REFINEMENT. User requested registration only, not implementation. Prior dashboard.py claims for lfa-start and shadow-ui are RELEASED. Herdr discovery returned agent_not_found for shadow-ui and shadow-ui-review; no replacement agent or alternate owner assigned.
+
+| path | TASK_ID | SUBTASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|
+| herdr-team/dashboard.py | RUN-20260920-SHADOW-DASHBOARD-REFINEMENT | PRESENTATION-ONLY | shadow-ui | shadow-ui-review read-only; all roles | RELEASED |
+
+Exact write scope is dashboard.py only. Scope and prohibitions are registered in MASTER_PLAN under this TASK_ID: existing validated v1.3 projection display only, Legacy/Shadow visual separation, collapsed checklists/historical projects and responsive track wrapping. Projection, sources, schemas, dependencies, product behavior, Gates and other files are read-only. ACTIVE assigns sole ownership only; this registration does not dispatch execution or confer review acceptance. shadow-ui-review remains the required read-only reviewer.
+
+Activation receipt: user reports existing shadow-ui live in pane wQ:p19. Conflict check found all three prior dashboard.py claims RELEASED and no competing ACTIVE claim. RESERVED_UNASSIGNED is now shadow-ui ACTIVE for this exact task/path only. All scope/prohibitions and the shadow-ui-review requirement remain unchanged. No implementation, prompt dispatch, role creation or restart performed.
+
+Completion release: PM_GATE=PM_ACCEPTED for exact dashboard.py SHA256=a66743b965e366c6b00ebd7fbf1633fec19a85e5c2f57d64ed360e100b69b886 with read-only projection SHA256=d41e331c1389ec8df3f7ec797253be5c466e79375eb35a087087e578eb0ac8fa. User-reported independent shadow-ui-review CODE_REVIEW_ACCEPTED and focused desktop/mobile checks support presentation-only acceptance; PM matched both digests. Ownership is RELEASED. No product/device PASS, Legacy Phase change, dispatch or projection mutation is authorized.
+
+## EXIF execution repair and device ingestion R03
+
+RUN-20260920-EXIF-ORDER-REPAIR extends existing sole lfa-api ACTIVE ownership, without adding duplicate claims, for exactly core/product_identity.py, core/dhea.py, core/dhea_diagnostics.py, python_gateway/dhea.py, tests/test_dhea_product.py, python_gateway/tests/test_dhea_product_recheck.py, python_gateway/tests/test_dhea_diagnostics.py and docs/api/api-reference.md. Conflict inspection found only the same lfa-api owner for these paths. Prior accepted revisions remain historical, not acceptance of these future changes. No core/signal.py, geometry, Android, schema, original JPEG, stored result or runtime write is granted.
+
+| path | TASK_ID | SUBTASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|
+| artifacts/qli-cutover/exif-order-repair-evidence.json | RUN-20260920-EXIF-ORDER-REPAIR | EXACT-EVIDENCE | lfa-api | all roles | ACTIVE |
+| herdr-team/.agent-control/EVIDENCE/QR-ANDROID-DEVICE-R03.json | RUN-20260920-SHADOW-QR-INGEST-R03 | IMMUTABLE-INTAKE | lfa-start | all roles | RELEASED |
+| herdr-team/.agent-control/MACHINE/HARNESS-VERIFICATION-SHADOW/qr-android-r03-inputs.json | RUN-20260920-SHADOW-QR-INGEST-R03 | REGISTRY-EVENT-INPUTS | lfa-start | all roles | RELEASED |
+| herdr-team/.agent-control/EVIDENCE/QR-ANDROID-DEVICE-R03-checks.json | RUN-20260920-SHADOW-QR-INGEST-R03 | INGESTION-CHECKS | lfa-start | all roles | RELEASED |
+| herdr-team/.agent-control/MACHINE/HARNESS-VERIFICATION-SHADOW/qr-android-projection.json | RUN-20260920-SHADOW-QR-INGEST-R03 | TEMPORARY-REDUCER-OUTPUT | lfa-start | all roles | RELEASED |
+
+R03 prior projection claims340/352 are RELEASED; no competing ACTIVE owner found. The new inputs file records existing-schema registry/events for reproducibility, not a new event-store implementation. Preserve historical Evidence/events. Projection permission is conditional: receive original independent evidence review and Android source-binding disposition first, freeze new exact intake subject, validate through existing ingestion/reducer, then serialize only shadow.project() output. Until then preserve current c2d1185f subject/projection bytes. UNVERIFIED source binding remains explicit if unresolved; it cannot inherit old subject acceptance. No manual PASS, source/schema changes, ADB, uploads, retries or restart. Required independent reviewer=lfa-review; subsequent separate PM Gate and ownership release required.
+
+R03 release receipt: RUN-20260920-SHADOW-QR-INGEST-R03-PM=PM_ACCEPTED for ingestion/projection correctness following original lfa-review CODE_REVIEW_ACCEPTED and independent PM4/4 SHA256/byte checks; exact bindings and limitations recorded in MASTER_PLAN R03 PM Gate. All four claims450–453 RELEASED, no successor writer. Projection50e629198cc08eb36744430e43f212803963de9ec8ba526300c4cdcc70d6b462 remains VALID/NOT_READY/UNVERIFIED under fresh subject216f8f35; no product or overall device acceptance. Immutable submission artifacts including pending-review fields are not rewritten. EXIF ownership is unchanged.
+
+## Auxiliary preview clarity UI
+
+RUN-20260920-ANDROID-CLARITY-UI-R01 extends existing sole lfa-android ownership for Android_App/app/src/main/java/com/example/camera/PreviewGuidanceAnalyzer.kt, Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt, Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt, Android_App/app/src/test/java/com/example/camera/PreviewGuidanceAnalyzerTest.kt and Android_App/README.md. Scope is only non-blocking preview clarity guidance as registered in MASTER_PLAN. Same-owner overlapping product-confirmation work must be serialized by lfa-android; no second writer or authorization of the held product contract.
+
+| path | TASK_ID | SUBTASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|
+| Android_App/app/src/test/java/com/example/ui/PreviewClarityGuidanceTest.kt | RUN-20260920-ANDROID-CLARITY-UI-R01 | AUXILIARY-UI | lfa-android | lfa-review; all roles | ACTIVE |
+
+## Requirements consolidation dedicated pane
+
+RUN-20260920-REQUIREMENTS-CONSOLIDATION-R01 sole writer lfa-docs(w12:p2), configured aliyun/qwen3.7-plus; PM integration owner lfa-pm. Existing live documents remain read-only until exact shared ownership/archive transfer; old no-bulk-migration prohibition is superseded only for the user-authorized reversible documentary task after mapping/review.
+
+| path | TASK_ID | SUBTASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|
+| docs/requirements/DHEA_MVP_完整需求.md | RUN-20260920-REQUIREMENTS-CONSOLIDATION-R01 | COMPLETE-REQUIREMENTS | lfa-docs | all roles | ACTIVE |
+| docs/requirements/DHEA_需求来源与归档映射.md | RUN-20260920-REQUIREMENTS-CONSOLIDATION-R01 | SOURCE-ARCHIVE-MAP | lfa-docs | all roles | ACTIVE |
+
+## PM patrol minimal repair
+
+Explicit user authorization: TASK_ID=RUN-20260920-PM-PATROL-R01; PLAN_ID=PM-PATROL-01; DELIVERABLE_ID=PM-PATROL-01-D01; sole writer=lfa-start(w15:p1). START reports the previous claims for these three paths RELEASED and no overlapping ACTIVE claims. Accept that supplied ownership check without repeating it. Exact FILE_SCOPE is limited to the three rows below.
+
+| path | TASK_ID | SUBTASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|
+| herdr-team/review_dispatch.py | RUN-20260920-PM-PATROL-R01 | PM-PATROL-01-D01 | lfa-start | all roles | RELEASED |
+| herdr-team/prompts/pm.md | RUN-20260920-PM-PATROL-R01 | PM-PATROL-01-D01 | lfa-start | all roles | RELEASED |
+| herdr-team/SHA256SUMS.txt | RUN-20260920-PM-PATROL-R01 | PM-PATROL-01-D01 | lfa-start | all roles | RELEASED |
+
+Implementation scope: minimal repair of the existing watchdog's idle/done handling; one-time PM_PENDING recovery; one-time ACTIVE-owner and PM recovery with independent keys; protection of working agents; and the corresponding self-test. No expansion beyond these behaviors or exact paths. START records TASK_BOARD/DECISIONS under its existing governance permissions; those permissions are not new implementation FILE_SCOPE. This registration does not change MASTER_PLAN conclusions or Gates and grants no product runtime, device, deployment or archive-move authority.
+
+Administrative release receipt — ROLE=lfa-pm; TASK_ID=RUN-20260920-PM-PATROL-R01; PLAN_ID=PM-PATROL-01; DELIVERABLE_ID=PM-PATROL-01-D01. Under the user's explicit final release authorization and reported CLOSED queue with sequential lfa-review CODE_REVIEW_ACCEPTED and lfa-pm PM_ACCEPTED, the three exact claims above transition ACTIVE → RELEASED. Accepted submission key remains RUN-20260920-PM-PATROL-R01:663322c28c65f93b4907e028737b3d7315e829275f8d38736045ad744337f0ce:46794:REVIEW. This is a subsequent authorized ownership-ledger change, not an artifact revision or a new acceptance. Preserve historical accepted source_hashes and artifact digests without rewriting the queue. No business Gate, MASTER_PLAN conclusion or unrelated claim changes; no new execution authority. Original task administrative ownership release is complete; START retains responsibility for the final TASK_BOARD BTW receipt.

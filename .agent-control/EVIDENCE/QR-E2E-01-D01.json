@@ -1,0 +1,207 @@
+{
+  "schema": "qr-e2e-01-evidence/1.0",
+  "task_id": "RUN-20260920-QR-E2E",
+  "plan_id": "QR-E2E-01",
+  "deliverable_id": "QR-E2E-01-D01",
+  "write_owner": "lfa-android",
+  "status": "IMPLEMENTED_PENDING_REVIEW",
+  "stage": "CONTROLLED_CAPTURE_INVESTOR_MVP",
+  "formal_reporting_allowed": false,
+  "authority": {
+    "master_plan": "herdr-team/.agent-control/MASTER_PLAN.md:387",
+    "file_ownership": "herdr-team/.agent-control/FILE_OWNERSHIP.md:287-297",
+    "dispatch": "herdr-team/.agent-control/TASK_BOARD.md:750-758",
+    "parent_agent_revision": "lfa-pm-OP-0004",
+    "parent_pm_todo_ids": ["PM-TODO-009"]
+  },
+  "implementation_files": [
+    {
+      "path": "Android_App/app/src/test/java/com/example/network/ProductEndToEndTest.kt",
+      "sha256": "4d3f1a7d96f9c44540898493cc4191c6a6ffe3413eff3e18507b4643b4e10a01",
+      "bytes": 17357,
+      "owner": "lfa-android"
+    },
+    {
+      "path": "experiments/qr-product-e2e/gateway.py",
+      "sha256": "c0d8f822566866b8cd534295b38cd63cf9b90804b521552c6c71a0dff47519bf",
+      "bytes": 10017,
+      "owner": "lfa-api"
+    }
+  ],
+  "revision_history": [
+    {
+      "sha256": "568ea0e321c3144db4f3253702686285ca59e5eb7d5df4531dda6e4a39194a72",
+      "bytes": 15509,
+      "status": "REJECTED_CHANGES_REQUESTED",
+      "review_gate": "QR-E2E-01-D01-REVIEW-001",
+      "findings": ["QR-E2E-R1", "QR-E2E-R2"]
+    },
+    {
+      "sha256": "a9d621edbcd213a5db035b8763494b6d1c427562206a8f0557a21d81d9478694",
+      "bytes": 15867,
+      "status": "CANDIDATE_SUPERSEDED_BY_R1_REPAIR",
+      "note": "Corrected R2 device-gate classification only; never accepted."
+    }
+  ],
+  "self_binding": {
+    "path": "herdr-team/.agent-control/EVIDENCE/QR-E2E-01-D01.json",
+    "sha256": null,
+    "bytes": null,
+    "binding": "START records the exact post-write SHA-256 and byte size externally."
+  },
+  "execution": {
+    "surface": "ROBOLECTRIC_HOST_FIXTURE",
+    "camera_x_executed": false,
+    "real_device_executed": false,
+    "focused_command": ":app:testDebugUnitTest --tests com.example.network.ProductEndToEndTest --rerun-tasks --no-configuration-cache --console=plain",
+    "opt_in": "E2E_ENABLED=true",
+    "modes": {
+      "default_no_env_isolation": {
+        "classification": "ISOLATION_CHECK_NOT_E2E_PASS",
+        "result": "BUILD SUCCESSFUL",
+        "tests": 1,
+        "skipped": 1,
+        "failures": 0,
+        "errors": 0,
+        "path": "Android_App/build/qr-e2e/no-env-isolation.xml",
+        "sha256": "9559b861c27a93f73e5d09ea622cc83b7e7b3fd5f0b2d17c4b04efcf0acd58d7",
+        "bytes": 6245
+      },
+      "enabled_missing_config": {
+        "classification": "EXPECTED_CONFIGURATION_FAILURE",
+        "result": "BUILD FAILED: Missing E2E_ORIGIN",
+        "tests": 1,
+        "skipped": 0,
+        "failures": 1,
+        "errors": 0,
+        "path": "Android_App/build/qr-e2e/enabled-missing-config.xml",
+        "sha256": "7f07da169f0c4521a8d3ed97f50c4a11ea5fad0b4cdd6f1d7b9a8bf2bc2bc49d",
+        "bytes": 6278
+      },
+      "enabled_live_roundtrip": {
+        "classification": "E2E_PASS",
+        "result": "BUILD SUCCESSFUL",
+        "tests": 1,
+        "skipped": 0,
+        "failures": 0,
+        "errors": 0,
+        "timestamp": "2026-09-20T03:30:25.012Z",
+        "path": "Android_App/build/qr-e2e/enabled-live-roundtrip.xml",
+        "canonical_gradle_path": "Android_App/app/build/test-results/testDebugUnitTest/TEST-com.example.network.ProductEndToEndTest.xml",
+        "sha256": "f7b35c574f8af4ee5153d09fc8d889290926bbf7b74f3ec4fd59192966e39e03",
+        "bytes": 495
+      }
+    },
+    "android_receipt": {
+      "path": "Android_App/build/qr-e2e/android-execution.json",
+      "sha256": "46ca828cafc1baa4483cf05d3d04b96223eb8dc952536d6164d033b9b4440d69",
+      "bytes": 240322
+    },
+    "gateway_receipt": {
+      "path": "/tmp/qr-e2e-api-final.5XsRkh/run/output/gateway-receipt.json",
+      "sha256": "379ae3982cf870da0e1b25673c6f764fa71b007cbb29b46b9c8806300cef2209",
+      "bytes": 1490
+    },
+    "api_handoff": {
+      "path": "/tmp/qr-e2e-api-final.5XsRkh/run/output/api-handoff.json",
+      "sha256": "5260b8ce117420b3b528d52edf131f9c4ac330cc59c7e31c8a35ccfaabec18fc",
+      "bytes": 1627
+    },
+    "gateway_log": {
+      "path": "/tmp/qr-e2e-api-final.5XsRkh/run/output/gateway.jsonl",
+      "sha256": "57e78fcd1448b29749ea2bae89461a27d52f07f534a85fe1977e14e8207cd687",
+      "bytes": 824
+    }
+  },
+  "identity_binding": {
+    "capture_session_id": "11111111-1111-4111-8111-111111111111",
+    "camera_session_id": "22222222-2222-4222-8222-222222222222",
+    "capture_attempt_id": "33333333-3333-4333-8333-333333333333",
+    "capture_bundle_id": "44444444-4444-4444-8444-444444444444",
+    "verification_record_id": "55555555-5555-4555-8555-555555555555",
+    "analysis_id": "b368a029-cce7-413e-bded-ec45617735be",
+    "request_id": "b368a029-cce7-413e-bded-ec45617735be",
+    "execution_id": "af22cc56-c54c-4515-835f-59264417975e",
+    "metadata_sha256": "98cfe11abd29e50a34bb016ad99298cacd2ef304b70c74206097116d3c59dfe1"
+  },
+  "fixture": {
+    "PRODUCT_FAMILY_TEST_FIXTURE": true,
+    "PHYSICAL_DHEA_CARD_ID": null,
+    "AUTHENTICITY_CLAIM": false,
+    "path": "/tmp/qr-e2e-api-final.5XsRkh/run/fixture/qiuqiu-dhea-product-family.jpg",
+    "sha256": "7076099a8e8006d5479cd64f9906588c7db7849f05a6c85b51de4d61ebaaf142",
+    "bytes": 18089,
+    "qr_payload": "1:QIUQIU:DHEA",
+    "qr_payload_sha256": "a5c42b99a1aa1c91482b3d4d795e4663d3a203818376dbc0e2383da6e64c10b6",
+    "identity_level": "PRODUCT_FAMILY_ONLY",
+    "lot_id": null,
+    "serial_id": null,
+    "authenticity_status": "UNSUPPORTED"
+  },
+  "tls": {
+    "debug_ca_sha256": "8e543e736801936781e49c624d1c59f02a7d8e6cc649eddce7736a3096100de2",
+    "debug_ca_bytes": 1127,
+    "server_certificate_sha256": "c5c044553fe0c9634ed34a3188ebd11793774f734dc9e561a60e6b252aec5451",
+    "server_certificate_bytes": 1200,
+    "hostname_verification_preserved": true,
+    "diagnostics_authentication": "separate bearer; API owner independently proved App bearer receives HTTP 403"
+  },
+  "exit_steps": [
+    {"step": 1, "result": "PASS", "evidence": "Android ProductGate constructed and validated controlled payload 1:QIUQIU:DHEA and frozen declaration bindings."},
+    {"step": 2, "result": "PASS", "evidence": "JournaledArtifactStore persisted the complete 18089-byte JPEG; Room closed/reopened; upload candidate retained SHA 7076099a...af142."},
+    {"step": 3, "result": "PASS", "evidence": "Production DheaClient imported strict HTTPS configuration and Gateway accepted structure, original hash, identities and declaration."},
+    {"step": 4, "result": "PASS", "evidence": "Gateway immutable persisted input was 18089 bytes and byte-equal to the fixture."},
+    {"step": 5, "result": "PASS", "evidence": "Gateway observer recorded real Core input from persisted bytes, byte equality true and computed SHA equality true."},
+    {"step": 6, "result": "PASS", "evidence": "Persisted-byte QR decoded to the expected product family; Registry metrics product_id QIUQIU-DHEA-LFA, analyte_id DHEA, template_id DHEA-17X4-V1."},
+    {"step": 7, "result": "PASS", "evidence": "Exactly 18 diagnostics stages; PRODUCT_IDENTIFICATION PASS / PRODUCT_IDENTIFICATION_COMPLETED / exact payload SHA."},
+    {"step": 8, "result": "PASS", "evidence": "The same real DheaRuntime continued once after product PASS and returned the legitimate scientific refusal WINDOW_NOT_FOUND with scientific values null."},
+    {"step": 9, "result": "PASS", "evidence": "submit replay, lookup and loadResult were canonical-equal and identity-bound; diagnostics binding used the same bundle, request, analysis, original and metadata hashes."},
+    {"step": 10, "result": "PASS", "evidence": "Actual ResearchResultPanel rendered the returned WINDOW_NOT_FOUND result and a separate explicit DIRECTION_OR_SIGNAL_UNRESOLVED refusal with research/formal-reporting markers."}
+  ],
+  "runtime_observer": {
+    "call_count": 1,
+    "input_bytes": 18089,
+    "fixture_bytes": 18089,
+    "input_bytes_equal_fixture": true,
+    "computed_sha256_equal_expected": true,
+    "replay_did_not_duplicate_core_execution": true
+  },
+  "scientific_result": {
+    "business_status": "rejected",
+    "wire_code": "WINDOW_NOT_FOUND",
+    "measurement_status": "not_measurable",
+    "quantification_status": "not_calculable",
+    "core_t_response": null,
+    "core_c_response": null,
+    "core_tc_ratio": null,
+    "dhea_research_concentration": null,
+    "formal_reporting_allowed": false,
+    "algorithm_status": "RESEARCH_CANDIDATE",
+    "result_use": "MVP_RESEARCH_RESULT_ONLY",
+    "implementation_status": "NOT_IMPLEMENTATION_BASELINE"
+  },
+  "requirement_btw_checks": [
+    {"TODO_ID":"QR-E2E-TODO-003","Goal":"Construct controlled declaration through ProductGate.","Files Changed":["Android_App/app/src/test/java/com/example/network/ProductEndToEndTest.kt"],"Build Result":"Controlled product-family declaration constructed and bound to bundle identities.","Requirement Trace":"MASTER_PLAN.md:387 Exit 1.","Test Result":"PASS focused E2E.","Artifact Evidence":"Android receipt and PRODUCT_IDENTIFICATION payload hash.","Known Limitations":"Product family only; no lot, serial or authenticity claim.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review, PM Gate, and designated-device seven checks/thirteen-step closure pending."},
+    {"TODO_ID":"QR-E2E-TODO-004","Goal":"Persist complete JPEG and original SHA.","Files Changed":["Android_App/app/src/test/java/com/example/network/ProductEndToEndTest.kt"],"Build Result":"JournaledArtifactStore persistence survived Room restart and upload-candidate verification.","Requirement Trace":"MASTER_PLAN.md:387 Exit 2.","Test Result":"PASS 18089-byte and SHA equality.","Artifact Evidence":"android-execution.json bytes_equal=true.","Known Limitations":"Controlled fixture, not CameraX capture.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review, PM Gate, and designated-device seven checks/thirteen-step closure pending."},
+    {"TODO_ID":"QR-E2E-TODO-005","Goal":"Upload through production DheaClient HTTPS.","Files Changed":["Android_App/app/src/test/java/com/example/network/ProductEndToEndTest.kt"],"Build Result":"Public configuration import, encrypted persistence, strict CA trust and production submit/lookup/loadResult executed.","Requirement Trace":"MASTER_PLAN.md:387 Exit 2-3.","Test Result":"PASS focused E2E.","Artifact Evidence":"Gateway runtime event plus Android receipt.","Known Limitations":"Host-only test provider supplies AndroidKeyStore SPI because Robolectric lacks it; production client code unchanged.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review, PM Gate, and designated-device seven checks/thirteen-step closure pending."},
+    {"TODO_ID":"QR-E2E-TODO-006","Goal":"Verify Gateway structure hash identity declaration.","Files Changed":["experiments/qr-product-e2e/gateway.py"],"Build Result":"Real create_dhea_app accepted strict multipart and declaration identities.","Requirement Trace":"MASTER_PLAN.md:387 Exit 3.","Test Result":"PASS response and diagnostics assertions.","Artifact Evidence":"PRODUCT_IDENTIFICATION PASS with exact payload SHA.","Known Limitations":"Controlled fixture.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-E2E-TODO-007","Goal":"Verify Gateway immutable original persistence.","Files Changed":["experiments/qr-product-e2e/gateway.py"],"Build Result":"Observed persisted input equals uploaded fixture byte-for-byte.","Requirement Trace":"MASTER_PLAN.md:387 Exit 4.","Test Result":"PASS observer equality.","Artifact Evidence":"gateway-receipt.json input_bytes_equal_fixture=true.","Known Limitations":"Isolated temporary Gateway state.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-E2E-TODO-008","Goal":"Verify Core persisted-byte QR recheck.","Files Changed":["experiments/qr-product-e2e/gateway.py"],"Build Result":"ObservedRuntime delegated to real DheaRuntime with persisted bytes and expected SHA.","Requirement Trace":"MASTER_PLAN.md:387 Exit 5-6.","Test Result":"PASS byte/SHA and product metrics.","Artifact Evidence":"gateway log and Android diagnostics receipt.","Known Limitations":"Product-family evidence is not authenticity evidence.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-E2E-TODO-009","Goal":"Verify PRODUCT_IDENTIFICATION stage success.","Files Changed":["Android_App/app/src/test/java/com/example/network/ProductEndToEndTest.kt"],"Build Result":"Diagnostics query asserted exactly 18 stages and exact product stage result.","Requirement Trace":"MASTER_PLAN.md:387 Exit 7.","Test Result":"PASS.","Artifact Evidence":"PRODUCT_IDENTIFICATION PASS / PRODUCT_IDENTIFICATION_COMPLETED.","Known Limitations":"Scientific stage independently refused.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-E2E-TODO-010","Goal":"Verify same DheaRuntime scientific continuation.","Files Changed":["experiments/qr-product-e2e/gateway.py"],"Build Result":"Real runtime called once after product PASS.","Requirement Trace":"MASTER_PLAN.md:387 Exit 8.","Test Result":"PASS legitimate WINDOW_NOT_FOUND refusal with null scientific values.","Artifact Evidence":"call_count=1 and returned research result.","Known Limitations":"Fixture is for product identification, not quantitative measurement.","Open Post-Funding Gates":["REAL_LAB_REFERENCE_COMPARISON"],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-E2E-TODO-011","Goal":"Verify identity-bound result diagnostics lookup.","Files Changed":["Android_App/app/src/test/java/com/example/network/ProductEndToEndTest.kt"],"Build Result":"Repeated submit, lookup, loadResult and diagnostics resolve one identity-bound result.","Requirement Trace":"MASTER_PLAN.md:387 Exit 9.","Test Result":"PASS canonical equality and binding assertions.","Artifact Evidence":"bundle/request/analysis IDs and digest bindings in Android receipt.","Known Limitations":"Isolated host execution.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-E2E-TODO-012","Goal":"Verify Android result and refusal display.","Files Changed":["Android_App/app/src/test/java/com/example/network/ProductEndToEndTest.kt"],"Build Result":"Actual ResearchResultPanel rendered returned result and explicit refusal in separate recompositions.","Requirement Trace":"MASTER_PLAN.md:387 Exit 10.","Test Result":"PASS heading, reason, bundle and formal-reporting assertions.","Artifact Evidence":"android-execution.json panel flags true.","Known Limitations":"Robolectric host rendering, not real device.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review, PM Gate, and designated-device seven checks/thirteen-step closure pending."},
+    {"TODO_ID":"QR-E2E-TODO-013","Goal":"Verify replay without duplicate Core call.","Files Changed":["Android_App/app/src/test/java/com/example/network/ProductEndToEndTest.kt","experiments/qr-product-e2e/gateway.py"],"Build Result":"Replay response remained canonical-equal and lookup stable.","Requirement Trace":"MASTER_PLAN.md:387 replay/idempotency requirement.","Test Result":"PASS call_count=1 after POST/replay.","Artifact Evidence":"gateway-receipt.json and android-execution.json.","Known Limitations":"Single controlled identity.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review and PM Gate pending."},
+    {"TODO_ID":"QR-E2E-TODO-014","Goal":"Collect exact source execution artifact digests.","Files Changed":["herdr-team/.agent-control/EVIDENCE/QR-E2E-01-D01.json"],"Build Result":"Evidence binds both sources, focused test XML, Android receipt, API handoff, Gateway receipt/log and TLS/fixture digests.","Requirement Trace":"FILE_OWNERSHIP.md:287-297.","Test Result":"JSON parse and digest check pending external self-binding.","Artifact Evidence":"This evidence record.","Known Limitations":"Temporary Gateway paths require retained run directory.","Open Post-Funding Gates":[],"Current MVP Blocker Remaining":"Independent Review, PM Gate, and designated-device seven checks/thirteen-step closure pending."}
+  ],
+  "known_limitations": [
+    "No CameraX or real-device execution is claimed.",
+    "The fixture proves product-family identification only; physical card ID is null and authenticity is unsupported.",
+    "The host-only AndroidKeyStore provider exists only because Robolectric lacks the platform provider; production DheaClient code and encrypted configuration flow are unchanged.",
+    "The controlled fixture legitimately reaches science and refuses WINDOW_NOT_FOUND; no T, C, T/C or concentration is fabricated.",
+    "Designated-device seven checks and thirteen-step closure remain pending."
+  ],
+  "open_current_closure_requirements": ["EXACT_REVISION_CODE_REVIEW", "EXACT_REVISION_PM_GATE", "DESIGNATED_DEVICE_SEVEN_CHECKS", "THIRTEEN_STEP_REAL_OPERATOR_OR_USER_EQUIVALENT_CLOSURE"],
+  "open_post_funding_gates": ["GENERAL_DEVICE_AND_CAPTURE_GENERALIZATION", "PRODUCTION_VALIDATION"],
+  "current_mvp_blocker_remaining": "Exact-revision CODE_REVIEW_ACCEPTED, PM Gate, and designated-device or user-equivalent real-result seven checks/thirteen-step closure remain pending."
+}

@@ -1,0 +1,40 @@
+{
+  "schema_version": "herdr-dashboard-projection/1.3",
+  "task_id": "RUN-20260918-QR-ANDROID",
+  "subject_revision": "sha256:216f8f35af950f475b16991ef7685c8617404668dad17e9dbc1a30b920e36aab",
+  "ingestion_status": "VALID",
+  "evidence_status": "NOT_READY",
+  "acceptance_status": "UNVERIFIED",
+  "criteria": [
+    {
+      "criterion_id": "DEVICE_EVIDENCE",
+      "required": true,
+      "status": "UNVERIFIED",
+      "generation": 1,
+      "selected_event_id": "EV-QR-ANDROID-216f8f35af950f475b16991ef7685c8617404668dad17e9dbc1a30b920e36aab-UNVERIFIED",
+      "superseded_event_ids": [],
+      "evidence_refs": [
+        "LEGACY:QR-ANDROID-DEVICE-R03"
+      ],
+      "reason_codes": [
+        "DEVICE_EVIDENCE_PENDING"
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "source_ref": "herdr-team/.agent-control/EVIDENCE/QR-ANDROID-DEVICE-R03.json",
+      "code": "SUBMISSION_NOT_READY"
+    },
+    {
+      "source_ref": "artifacts/qli-cutover/device-inspection-20260920T082256Z/evidence.json",
+      "code": "APK_SOURCE_BINDING_UNVERIFIED"
+    },
+    {
+      "source_ref": "artifacts/qli-cutover/device-inspection-20260920T082256Z/evidence.json",
+      "code": "QR_NOT_READABLE"
+    }
+  ],
+  "generated_from_event_digest": "15ab4e1c3f0fbbbccfb4f00f93fdd8fdb554b634e4c50ae6dd25c13575b42518",
+  "reducer_version": "shadow-reducer/1.0"
+}

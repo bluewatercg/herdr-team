@@ -1,0 +1,20 @@
+{
+  "C01": {"kind": "schema", "schema": "criterion-registry.schema.json", "input": "criterion-registry.json", "expected": "VALID"},
+  "C02": {"kind": "legacy_status", "status": "IMPLEMENTED_DEVICE_EVIDENCE_PENDING", "expected": "NOT_READY"},
+  "C03": {"kind": "legacy_status", "status": "FUTURE_UNKNOWN_STATUS", "expected": "UNKNOWN_STATUS"},
+  "C04": {"kind": "schema", "schema": "task-acceptance.schema.json", "input": "acceptance/unverified-valid.json", "expected": "VALID"},
+  "C05": {"kind": "acceptance", "required": ["C01"], "results": [{"criterion_id": "C01", "result": "PASS", "evidence_refs": []}], "expected": "PASS_EVIDENCE_REQUIRED"},
+  "C06": {"kind": "acceptance", "required": ["C01"], "results": [], "expected": "REQUIRED_CRITERION_MISSING"},
+  "C07": {"kind": "acceptance", "required": ["C01"], "results": [{"criterion_id": "C99", "result": "UNVERIFIED", "evidence_refs": []}], "expected": "UNKNOWN_CRITERION"},
+  "C08": {"kind": "acceptance", "required": ["C01"], "results": [{"criterion_id": "C01", "result": "UNVERIFIED", "evidence_refs": []}, {"criterion_id": "C01", "result": "FAIL", "evidence_refs": ["E1"]}], "expected": "DUPLICATE_CRITERION_RESULT"},
+  "C09": {"kind": "artifact", "path": "../escape.json", "sha256": "b2f61731a22225ee526e5842792b3a42b4a8e9a48bd808786b132bf80bdf3d57", "size_bytes": 31, "criterion_ids": ["C01"], "expected": "ARTIFACT_PATH_ESCAPE"},
+  "C10": {"kind": "artifact", "path": "04_fixtures/artifacts/measurement.json", "sha256": "0000000000000000000000000000000000000000000000000000000000000000", "size_bytes": 30, "criterion_ids": ["C01"], "expected": "ARTIFACT_INTEGRITY_MISMATCH"},
+  "C11": {"kind": "artifact", "path": "04_fixtures/artifacts/measurement.json", "sha256": "b2f61731a22225ee526e5842792b3a42b4a8e9a48bd808786b132bf80bdf3d57", "size_bytes": 31, "criterion_ids": ["C99"], "expected": "CRITERION_BINDING_MISMATCH"},
+  "C12": {"kind": "duplicate_evidence", "left": {"evidence_id": "E1", "producer_id": "worker"}, "right": {"evidence_id": "E1", "producer_id": "worker"}, "expected": "DUPLICATE"},
+  "C13": {"kind": "duplicate_evidence", "left": {"evidence_id": "E1", "producer_id": "worker-a"}, "right": {"evidence_id": "E1", "producer_id": "worker-b"}, "expected": "EVIDENCE_ID_CONFLICT"},
+  "C14": {"kind": "supersession", "events": [{"event_id": "E1", "task_id": "T1", "revision": "R1", "criterion_id": "C1", "generation": 1, "supersedes": null}, {"event_id": "E2", "task_id": "T1", "revision": "R1", "criterion_id": "C1", "generation": 2, "supersedes": "E1"}], "expected": "E2"},
+  "C15": {"kind": "supersession", "events": [{"event_id": "E2", "task_id": "T1", "revision": "R2", "criterion_id": "C1", "generation": 2, "supersedes": "E1"}], "expected": "INVALID_SUPERSESSION"},
+  "C16": {"kind": "supersession", "events": [{"event_id": "E1", "task_id": "T1", "revision": "R1", "criterion_id": "C1", "generation": 1, "supersedes": null}, {"event_id": "E2", "task_id": "T1", "revision": "R1", "criterion_id": "C1", "generation": 2, "supersedes": "E1"}, {"event_id": "E3", "task_id": "T1", "revision": "R1", "criterion_id": "C1", "generation": 2, "supersedes": "E1"}], "expected": "CONCURRENT_RESULT_CONFLICT"},
+  "C17": {"kind": "revision_isolation", "events": [{"event_id": "E1", "task_id": "T1", "revision": "R1", "criterion_id": "C1", "generation": 1, "supersedes": null}, {"event_id": "E2", "task_id": "T1", "revision": "R2", "criterion_id": "C1", "generation": 1, "supersedes": null}], "expected": 2},
+  "C18": {"kind": "idempotency", "events": [{"event_id": "E1", "idempotency_key": "K1", "payload_digest": "aaa"}, {"event_id": "E2", "idempotency_key": "K1", "payload_digest": "bbb"}], "expected": "IDEMPOTENCY_CONFLICT"}
+}

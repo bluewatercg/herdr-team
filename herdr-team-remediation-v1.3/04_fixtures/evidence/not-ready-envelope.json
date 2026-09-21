@@ -1,0 +1,25 @@
+{
+  "schema_version": "herdr-dispatchable-evidence-envelope/1.1",
+  "evidence_id": "EVIDENCE-12",
+  "record_kind": "DISPATCHABLE_SUBMISSION",
+  "task_id": "TASK-001",
+  "plan_id": "PLAN-001",
+  "deliverable_id": "D01",
+  "write_owner": "worker",
+  "submission_status": "IMPLEMENTED_DEVICE_EVIDENCE_PENDING",
+  "subject_revision": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "artifact_set_revision": "sha256:ca99d1239786aeb9b47858a339d7802b42125a58eadccc6c04e304a41e9fce72",
+  "artifacts": [
+    {
+      "path": "04_fixtures/artifacts/measurement.json",
+      "sha256": "b2f61731a22225ee526e5842792b3a42b4a8e9a48bd808786b132bf80bdf3d57",
+      "size_bytes": 31,
+      "media_type": "application/json",
+      "criterion_ids": [
+        "C01"
+      ]
+    }
+  ],
+  "created_at": "2026-09-20T00:00:00Z",
+  "producer_id": "worker"
+}

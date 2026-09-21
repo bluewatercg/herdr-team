@@ -408,32 +408,40 @@ def watchdog(root, state, send, statuses=None, now=None, timeout=WATCHDOG_SECOND
         changed = row.get('phase_changed', row.get('created', now))
         if now - changed < timeout:
             continue
-        reviewer, _ = review_roles(row['envelope'])
-        role = row['envelope'].get('author_role') if phase == 'ACTIVE' else reviewer if phase == 'REVIEW_PENDING' else None
-        if role and statuses.get(role) == 'idle':
+        reviewer, pm = review_roles(row['envelope'])
+        role = (row['envelope'].get('author_role') if phase == 'ACTIVE' else
+                reviewer if phase == 'REVIEW_PENDING' else pm if phase == 'PM_PENDING' else None)
+        if role and statuses.get(role) in ('idle', 'done'):
             watchdog_key = gate_key(row['envelope']['task_id'], row['envelope']['evidence_sha256'],
                                     row['envelope']['evidence_bytes'], f'WATCHDOG:{phase}')
-            previous = row.setdefault('watchdog', {}).get(watchdog_key, 0)
-            if now - previous >= timeout:
+            if watchdog_key not in row.setdefault('watchdog', {}):
                 send(role, f'Watchdog continuation {watchdog_key}. Structured task phase is {phase} and remains open. '
                      'Resume this exact original task/revision; do not create a replacement Agent. '
-                     'Read REVIEW_QUEUE.md and TASK_BOARD.md before acting.')
+                     'Read the bound task, REVIEW_QUEUE.md, TASK_BOARD.md, BLOCKERS.md and FILE_OWNERSHIP.md. '
+                     'For PM_PENDING, perform one bounded delta scan, return one disposition or explicit blocker '
+                     'to lfa-start, then return idle; do not dispatch tasks or change Gates.')
                 row['watchdog'][watchdog_key] = now
     board_age = now - (root / 'herdr-team/.agent-control/TASK_BOARD.md').stat().st_mtime
     if board_age >= timeout:
         for task in task_rows(root):
-            if 'ACTIVE' not in task.get('STATUS', ''):
+            if task.get('STATUS') != 'ACTIVE':
                 continue
             role_match = re.search(r'lfa-[a-z0-9_-]+', task.get('OWNER', ''))
             role = role_match.group() if role_match else None
-            if not role or statuses.get(role) != 'idle':
+            if not role or statuses.get(role) not in ('idle', 'done'):
                 continue
             watchdog_key = gate_key(task['TASK_ID'], 'PENDING_EVIDENCE', 0, 'WATCHDOG:ACTIVE')
-            previous = state.setdefault('watchdog', {}).get(watchdog_key, 0)
-            if now - previous >= timeout:
+            if watchdog_key not in state.setdefault('watchdog', {}):
                 send(role, f'Watchdog continuation {watchdog_key}. TASK_BOARD keeps this original task ACTIVE without fresh structured progress. '
                      'Resume the same task and owner; do not create a replacement Agent.')
                 state['watchdog'][watchdog_key] = now
+            pm_key = gate_key(task['TASK_ID'], 'PENDING_EVIDENCE', 0, 'WATCHDOG:ACTIVE:PM_PATROL')
+            if statuses.get('lfa-pm') in ('idle', 'done') and pm_key not in state['watchdog']:
+                send('lfa-pm', f'PM patrol {pm_key}. Original owner {role} has a stale ACTIVE task. '
+                     'Perform one bounded delta scan of only this task, TASK_BOARD.md, BLOCKERS.md, '
+                     'REVIEW_QUEUE.md and FILE_OWNERSHIP.md. Return one disposition or an explicit blocker '
+                     'to lfa-start, then return idle. Do not dispatch new tasks, change Gates or grant business authority.')
+                state['watchdog'][pm_key] = now
     save(root, state)
     return state
 
@@ -615,13 +623,45 @@ def self_test():
             watchdog(root, load(root), send, {'lfa-api': 'idle'}, now=1001, timeout=10)
             assert len(calls) == count
 
+            patrol_calls = []
+            patrol_send = lambda role, message: patrol_calls.append((role, message))
+            for status in ('idle', 'done'):
+                pending = {'version': 1, 'submissions': {'pm': {
+                    'envelope': envelope, 'phase': 'PM_PENDING', 'phase_changed': 100}},
+                    'last_reconcile': None}
+                watchdog(root, pending, patrol_send, {'lfa-pm': status}, now=109, timeout=10)
+                before = len(patrol_calls)
+                watchdog(root, pending, patrol_send, {'lfa-pm': 'working'}, now=111, timeout=10)
+                assert len(patrol_calls) == before
+                watchdog(root, pending, patrol_send, {'lfa-pm': status}, now=111, timeout=10)
+                assert [r for r, _ in patrol_calls[before:]] == ['lfa-pm']
+                watchdog(root, load(root), patrol_send, {'lfa-pm': status}, now=1000, timeout=10)
+                assert len(patrol_calls) == before + 1
+
+            (control / 'TASK_BOARD.md').write_text(
+                'PLAN_ID=P; DELIVERABLE_ID=D; TASK_ID=T; OWNER=lfa-api; STATUS=ACTIVE\n')
+            os.utime(control / 'TASK_BOARD.md', (100, 100))
+            for status in ('idle', 'done'):
+                active = {'version': 1, 'submissions': {}, 'last_reconcile': None}
+                before = len(patrol_calls)
+                watchdog(root, active, patrol_send, {'lfa-api': status, 'lfa-pm': status}, now=109, timeout=10)
+                assert len(patrol_calls) == before
+                watchdog(root, active, patrol_send, {'lfa-api': 'working', 'lfa-pm': status}, now=111, timeout=10)
+                assert len(patrol_calls) == before
+                watchdog(root, active, patrol_send, {'lfa-api': status, 'lfa-pm': 'working'}, now=111, timeout=10)
+                assert [r for r, _ in patrol_calls[before:]] == ['lfa-api']
+                watchdog(root, load(root), patrol_send, {'lfa-api': status, 'lfa-pm': status}, now=112, timeout=10)
+                assert [r for r, _ in patrol_calls[before:]] == ['lfa-api', 'lfa-pm']
+                watchdog(root, load(root), patrol_send, {'lfa-api': status, 'lfa-pm': status}, now=1000, timeout=10)
+                assert len(patrol_calls) == before + 2
+
             evidence['task_id'] = 'UNKNOWN'
             evidence_path.write_text(json.dumps(evidence))
             save(root, {'version': 1, 'submissions': {}, 'last_reconcile': None})
             reconcile(root, send)
             assert not load(root)['submissions']
     return {'self_test': 'PASS',
-            'scenarios': 'structured Evidence discovery; explicit seven-state lifecycle; sequential Review then PM then START; revision gate key; forbidden skips; restart deduplication; idle original-owner watchdog deduplication; unregistered Evidence rejection'}
+            'scenarios': 'structured Evidence discovery; explicit seven-state lifecycle; sequential Review then PM then START; revision gate key; forbidden skips; restart deduplication; idle/done PM_PENDING once; stale ACTIVE owner and PM once with independent keys; repeated polling beyond threshold and reload do not resend; working PM/owner protected; pre-threshold silence; unregistered Evidence rejection'}
 
 
 def main():

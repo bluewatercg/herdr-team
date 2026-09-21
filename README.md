@@ -1,5 +1,5 @@
-# Herdr OMP 多 Agent 自动激活包
-默认六个窗口全部使用 OMP，并优先使用 OMP 内置 todo_write。
+# Herdr 多 Agent 自动激活包
+默认团队包含六个 OMP 主角色，以及 Grok、Claude 两个只读交叉评审角色。
 
 ```bash
 cd /你的项目
@@ -7,7 +7,7 @@ cd /你的项目
 ./herdr-team/lfa-team.sh
 ```
 
-查看实时状态时仍运行同一入口，选择 `6) 打开团队 Web 面板`，然后访问 `http://127.0.0.1:8765`。面板每 3 秒只读刷新 Herdr Agent、母计划位置、PM Gate、任务板、阻塞项和最近终端输出；不提供命令发送、审批或文件修改能力。
+查看实时状态时仍运行同一入口，选择 `6) 打开团队 Web 面板`，然后访问 `http://127.0.0.1:8765`。面板每 5 秒只读刷新 Herdr Agent、母计划位置、PM Gate、任务板、阻塞项和最近终端输出；支持只读筛选、节点深链接和证据定位，不提供命令发送、审批或文件修改能力。
 
 三层状态：`MASTER_PLAN.md` 是项目阶段、依赖、下一 Gate 和停放工作的唯一权威；`TASK_BOARD.md` 是当前可执行任务权威；OMP TODO 是每个 Agent 会话执行权威。不会绕过登录、授权或审批。iOS 真构建仍需 macOS/Xcode。
 
@@ -20,7 +20,7 @@ PM 激活后先读取 `herdr-team/.agent-control/MASTER_PLAN.md`，再扫描仓�
 `FILE_OWNERSHIP.md` 是并发写入控制账本，不是第二套任务状态。PM 为每个任务登记具体 `FILE_SCOPE` 和唯一 `WRITE_OWNER`；`lfa-start` 派单前检查重叠，有冲突就串行或重新切分。一级 Agent 管理本组 pane，只有指定 pane 可写，其他 pane 只读；Review 按实际 diff 检查越界。换 owner 必须先释放原 owner，同一路径禁止两个 `ACTIVE` 写 owner。
 
 ## 稳定名称与断线恢复
-团队名称固定为 `lfa-start`、`lfa-pm`、`lfa-android`、`lfa-api`、`lfa-ios`、`lfa-review`。Herdr server 保存 pane 和 Agent 进程；`herdr-team/.agent-control/` 保存项目事实。TUI、SSH 或当前 pane 断开后，重新进入 Herdr，在项目目录运行 `./herdr-team/lfa-team.sh` 并选择“恢复 PM 协调”。不要再次启动新一轮覆盖现有状态。
+稳定主角色为 `lfa-start`、`lfa-pm`、`lfa-android`、`lfa-api`、`lfa-ios`、`lfa-review`；辅助交叉评审角色为 `lfa-grok-review`、`lfa-claude-review`。后两者不替代 `lfa-review`，不形成正式 Review Gate，也不写源码或控制账本。Herdr server 保存 pane 和 Agent 进程；`herdr-team/.agent-control/` 保存项目事实。TUI、SSH 或当前 pane 断开后，重新进入 Herdr，在项目目录运行 `./herdr-team/lfa-team.sh` 并选择“恢复 PM 协调”。不要再次启动新一轮覆盖现有状态。
 
 任务派发后，运行入口并选择 `4) 打开 PM 对话窗口` 可直接切换到 `lfa-pm` pane，继续讨论其他项目问题；已派发且无依赖的工作不会因此暂停。
 
@@ -36,9 +36,9 @@ PM 激活后先读取 `herdr-team/.agent-control/MASTER_PLAN.md`，再扫描仓�
 发送中断或结果不明保留 `DELIVERY_UNKNOWN`，不假定成功、不盲目重发。核实实际投递证据后，使用 `python3 herdr-team/review_dispatch.py resolve '<submission-key>' lfa-start SENT '<投递证据>'` 确认已送达，或以 `QUEUED` 和未送达证据允许重试。单 Gate、过期、拒绝、BLOCKED/CONFLICTED 或缺证据不触发继续。专门隔离回归：`python3 herdr-team/review_dispatch.py self-test`；不会向真实业务队列写入验收。
 
 ## 模型分工
-`lfa-start`、`lfa-pm`、`lfa-review` 使用 `shuaiapi-020/gpt-6-astra`；`lfa-android`、`lfa-api`、`lfa-ios` 使用 `shuaiapi-020/gpt-5.6-sol`。显式 provider 防止同名裸模型被解析到其他连接；模型通过 OMP 原生 `--model` 参数启动，并记录在 `herdr-team/.agent-control/AGENT_STATUS/`。
+`lfa-start`、`lfa-pm`、`lfa-review` 使用 `shuaiapi-020/gpt-6-astra`；`lfa-android`、`lfa-api`、`lfa-ios` 使用 `shuaiapi-020/gpt-5.6-sol`。`lfa-grok-review` 使用 Grok CLI 的 `shuai-grok`；`lfa-claude-review` 使用 Claude CLI 的本机默认模型。模型和 kind 记录在 `herdr-team/.agent-control/AGENT_STATUS/`。
 
-团队 Agent 统一以 OMP `--auto-approve` 启动，工具调用默认授权，不再逐次等待 Yes。
+OMP 使用 `--auto-approve`，Grok 使用 `--always-approve`，Claude 使用 `--permission-mode auto`。辅助评审角色的 prompt 明确限制为只读第二意见。
 
 Web 面板使用 Python 标准库并仅绑定 `127.0.0.1`，无需安装 Node 或额外依赖。运行日志写入 `.agent-control/dashboard.log`；动态控制账本和日志不纳入静态发行哈希。
 

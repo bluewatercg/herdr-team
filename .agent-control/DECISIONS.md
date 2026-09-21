@@ -45,3 +45,23 @@
 ## GOV-MGMT-01 authorized recording workflow
 
 依据用户明确授权及MASTER_PLAN339-357，复用BLOCKERS保存issue当前责任、状态和解除条件，当前ROUNDS保存事实和回执，DECISIONS保存已确认流程决定。PM负责管理评估，START是八文件唯一writer；任务状态仍在TASK_BOARD。完整规则位于prompts/start.md的“管理问题记录规则”，PM提示与TASK_TEMPLATE引用它。这个已授权流程决定不等于修复验收；MGMT-20260918-001保持OPEN，等待精确revision的非作者Review及单独PM Gate。历史前缀和旧Evidence/Review不变，不扩大QR或业务权限。
+
+## REMEDIATION-CONTRACT-FIRST-R01
+
+Source: explicit user decision registered by PM at MASTER_PLAN.md:845-853. Proposed remediation implementation_allowed=false until lfa-pm approves the exact event, acceptance and projection contracts plus actual repository path mapping. Original owners complete versioned contracts and same-revision API/state conflict dispositions; START consolidates exact artifacts and observed schema/fixture validation; original independent Review assesses; PM approves or requires revision for that exact scope. Author completion, coordinator registration, Review, prior Shadow approval or narrative validation do not grant implementation permission.
+
+Package must contain revision, exact paths/SHA256/bytes, requirement-to-event-to-acceptance-to-projection semantics, existing versus explicitly proposed paths, per-file FILE_SCOPE/sole WRITE_OWNER without wildcard or concurrent claims, exact schema/fixture paths and reproducible commands/results bound to submitted bytes. Changed bytes require renewed revision binding and applicable review. Unresolved conflicts or missing evidence retain implementation_allowed=false. This note grants no source/schema/runtime write scope. lfa-ios remains DEFERRED, FILE_SCOPE=[], no assigned writer or edit dispatch. Existing API plan revision, docs completion and separately bounded Android clarity implementation continue.
+
+## Mainline preparation resumption / PM988-998
+
+Confirmed user direction and MASTER_PLAN.md:988-998: remove the duplicate final-JPEG QR payload/product gate in the intended cutover while retaining authenticated server pre-capture product/configuration binding. QR geometry may assist Window localization; it must not reintroduce payload readability as identity acceptance. Runtime is unchanged and implementation_allowed=false; bypassing identity before server binding exists is not authorized.
+
+Original API supplies stable R03 identities and independent EXIF/Window exact source/check scope; original Android supplies same-revision consumer/persistence dispositions; original Review evaluates contract/science and proposed checks separately from future runtime acceptance. Room and archive completion are not prerequisites for Core preparation. START returns concrete PM options with recommendations and keeps the existing task IDs/owners. No new agents or iOS work. Docs may correct only its two owned drafts; archive movement remains NOT_RELEASED_FOR_MOVE. MASTER_PLAN remains PM-owned.
+
+## Exact pre-capture policies / PM1000-1012
+
+LATE_COMMIT_POLICY=A; CONTROLLED_MVP_LOCAL_FREEZE_TRUST=ACCEPTED_FOR_CONTRACT. Complete JPEG and recoverable local freeze must precede the conservative deadline in the original process/clock scope. Shutter CAS alone is insufficient. R02 agreement permitting JPEG completion after deadline is not inherited and requires explicit revised owner disposition. Recovery preserves original bytes/binding/time facts and clock scope; no recreated shutter authority, invented OS-boot proof or hardware attestation.
+
+REVOKE_CUTOFF_POLICY=A: accepted server commit preserves identical-binding measure/replay eligibility after confirmation revocation; revocation blocks new commits/bindings. Every request still checks authentication, authorization and exact binding/idempotency. Local freeze or unacknowledged send is not proof of server acceptance. Define ordering and lost-response recovery in the contract.
+
+TTL_MS=30000 remains PROPOSED_NOT_FROZEN / NOT_EMPIRICALLY_VERIFIED. API reports actual source, assumptions and expiry/retake cost without new device work. Duplicate final-JPEG payload gate removal with server binding retained is settled. Technical fields/CAS/scientific residuals and same-revision dispositions remain required; runtime implementation_allowed=false. Independent EXIF/Window preparation/review continues without Room/archive/TTL completion.

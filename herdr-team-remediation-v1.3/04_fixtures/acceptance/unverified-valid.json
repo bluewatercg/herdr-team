@@ -1,0 +1,33 @@
+{
+  "schema_version": "herdr-task-acceptance/1.3",
+  "task_id": "TASK-001",
+  "subject_revision": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "criterion_registry_ref": "sha256:fca523affa89314855d04bd1cc590b13bb00a3ee0e8f7c93ebeff4645f95d046",
+  "acceptance_results": [
+    {
+      "criterion_id": "C01",
+      "generation": 1,
+      "supersedes_event_id": null,
+      "result": "UNVERIFIED",
+      "evidence_refs": [
+        "EVIDENCE-12"
+      ],
+      "reason_code": "DEVICE_EVIDENCE_PENDING",
+      "reason": "Device evidence pending"
+    }
+  ],
+  "repair": {
+    "current_round": 0,
+    "max_rounds": 2,
+    "status": "NOT_REQUIRED",
+    "finding_refs": []
+  },
+  "regression": {
+    "required": false,
+    "scope": null,
+    "result": null,
+    "evidence_refs": [],
+    "reason_code": null,
+    "reason": null
+  }
+}

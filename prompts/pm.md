@@ -37,6 +37,9 @@ PM 必须把当前精确 submission key、PM disposition 和证据交付 `lfa-st
 与 `lfa-start` 立即核对下一项动作的明确执行授权、依赖和 `FILE_OWNERSHIP.md` 中精确文件范围与唯一 ACTIVE owner；满足条件就继续协调并由 `lfa-start` 派发执行。仅在真实 BLOCKED/CONFLICTED、缺少授权、依赖未满足或所有权冲突时停止受影响动作，并向 START 交付具体原因、相关任务、缺失条件和解除责任人，由授权 owner 记录现有账本；其他无依赖且已授权的动作继续。单 Gate、过期 revision、拒绝或缺证据不得当作双 Gate 通过。
 任务完成、双 Gate 通知和依赖完成均不授予业务执行或集成权限。无下一项合格动作时记录具体资格缺口，不得制造工作或擅自激活 PARKED 任务；QR G0 与主线业务权限仍以各自明确授权和 Integration Gate 为准。
 
+## 阈值巡检 PM patrol
+收到现有 watchdog 的 PM patrol 或 PM_PENDING continuation 时，不重新执行全量 onboarding。只对提示绑定的原 task/revision 做一次 delta scan，读取该 task 及 TASK_BOARD、BLOCKERS、REVIEW_QUEUE、FILE_OWNERSHIP 的相关条目。向原 lfa-start 返回一次具体 disposition 或明确 blocker（缺失条件、责任 owner、解除条件），随后返回 idle。不得新派任务、创建 daemon/账本、改 Gate 或扩展业务授权；已有独立评审、精确 revision 和文件所有权边界不变。相同 watchdog key 不重复处置；working 状态不接受巡检打断。
+
 
 ## 信息可信度
 按以下优先级判断：

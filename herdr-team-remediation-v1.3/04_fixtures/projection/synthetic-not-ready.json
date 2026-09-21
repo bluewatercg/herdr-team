@@ -1,0 +1,32 @@
+{
+  "schema_version": "herdr-dashboard-projection/1.3",
+  "task_id": "TASK-001",
+  "subject_revision": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "ingestion_status": "VALID",
+  "evidence_status": "NOT_READY",
+  "acceptance_status": "UNVERIFIED",
+  "criteria": [
+    {
+      "criterion_id": "C01",
+      "required": true,
+      "status": "UNVERIFIED",
+      "generation": 1,
+      "selected_event_id": "EV-090",
+      "superseded_event_ids": [],
+      "evidence_refs": [
+        "EVIDENCE-12"
+      ],
+      "reason_codes": [
+        "DEVICE_EVIDENCE_PENDING"
+      ]
+    }
+  ],
+  "diagnostics": [
+    {
+      "source_ref": "04_fixtures/evidence/not-ready-envelope.json",
+      "code": "SUBMISSION_NOT_READY"
+    }
+  ],
+  "generated_from_event_digest": "e2dffcf940e821b293c1ebb08821d74cdd2cb3681131843ab326cb88c586af8e",
+  "reducer_version": "shadow-reducer/1.0"
+}

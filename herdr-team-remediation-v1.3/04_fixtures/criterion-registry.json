@@ -1,0 +1,23 @@
+{
+  "schema_version": "herdr-criterion-registry/1.1",
+  "task_id": "TASK-001",
+  "task_contract_revision": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "criteria": [
+    {
+      "criterion_id": "C01",
+      "required": true,
+      "statement": "Core path works",
+      "expected_evidence_types": [
+        "application/json"
+      ]
+    },
+    {
+      "criterion_id": "C02",
+      "required": false,
+      "statement": "Optional diagnostic",
+      "expected_evidence_types": [
+        "application/json"
+      ]
+    }
+  ]
+}

@@ -17,7 +17,7 @@ ASSIGNMENTS=${3:-}
 [ -z "$BRIEF" ] || [ -f "$BRIEF" ]
 [ -z "$ASSIGNMENTS" ] || [ -f "$ASSIGNMENTS" ]
 
-for role in lfa-start lfa-pm lfa-android lfa-api lfa-ios lfa-review; do
+for role in lfa-start lfa-pm lfa-android lfa-api lfa-ios lfa-review lfa-grok-review lfa-claude-review; do
   if herdr agent get "$role" >/dev/null 2>&1; then
     echo "团队已存在：$role。请运行 ./herdr-team/lfa-team.sh 并选择恢复协调，不要重复启动。" >&2
     exit 2
@@ -31,7 +31,7 @@ validate_assignments() {
   while IFS='=' read -r assigned_role pane; do
     [ -n "$assigned_role" ] && [ -n "$pane" ] || { echo "无效 pane 映射：$assigned_role=$pane" >&2; exit 2; }
     case "$assigned_role" in
-      lfa-start|lfa-pm|lfa-android|lfa-api|lfa-ios|lfa-review) ;;
+      lfa-start|lfa-pm|lfa-android|lfa-api|lfa-ios|lfa-review|lfa-grok-review|lfa-claude-review) ;;
       *) echo "未知团队角色：$assigned_role" >&2; exit 2;;
     esac
     case "$seen_roles" in *" $assigned_role "*) echo "角色重复映射：$assigned_role" >&2; exit 2;; esac
@@ -74,6 +74,8 @@ start_role() {
     lfa-api) k=$API_KIND; model=$API_MODEL; prompt_file=api;;
     lfa-ios) k=$APP_IOS_KIND; model=$APP_IOS_MODEL; prompt_file=app-ios;;
     lfa-review) k=$REVIEW_CODE_KIND; model=$REVIEW_CODE_MODEL; prompt_file=review-code;;
+    lfa-grok-review) k=$GROK_REVIEW_KIND; model=$GROK_REVIEW_MODEL; prompt_file=review-code;;
+    lfa-claude-review) k=$CLAUDE_REVIEW_KIND; model=$CLAUDE_REVIEW_MODEL; prompt_file=review-code;;
   esac
   p=$(assigned_pane "$role")
   if [ -z "$p" ]; then
@@ -81,7 +83,11 @@ start_role() {
     p=$(printf %s "$j" | jq -r '.result.root_pane.pane_id // .result.root_pane.id // empty')
     [ -n "$p" ]
   fi
-  herdr agent start "$role" --kind "$k" --pane "$p" -- --model "$model" --auto-approve
+  case "$k" in
+    grok) herdr agent start "$role" --kind "$k" --pane "$p" -- --model "$model" --always-approve;;
+    claude) herdr agent start "$role" --kind "$k" --pane "$p" -- --permission-mode auto;;
+    *) herdr agent start "$role" --kind "$k" --pane "$p" -- --model "$model" --auto-approve;;
+  esac
   printf '{"role":"%s","model":"%s","pane":"%s","run_id":"%s","status":"STARTED"}\n' "$role" "$model" "$p" "$RUN_ID" > "$CONTROL_DIR/AGENT_STATUS/$role.json"
   prompt=$(cat "$KIT_DIR/prompts/COMMON.md" "$KIT_DIR/prompts/$prompt_file.md")
   brief_text=
@@ -94,7 +100,7 @@ $brief_text
 立即使用 OMP todo_write 建立你的 TODO。PM 先执行 PM-ONBOARD 并生成 herdr-team/.agent-control/PROJECT_SNAPSHOT.md；lfa-start 等待 PM_GATE=READY 且校验快照 HEAD 后再召开正式会议；其他角色只做预检并等待正式 TASK_ID，不得修改业务代码。"
 }
 
-for role in lfa-start lfa-pm lfa-android lfa-api lfa-ios lfa-review; do
+for role in lfa-start lfa-pm lfa-android lfa-api lfa-ios lfa-review lfa-grok-review lfa-claude-review; do
   start_role "$role" > "$CONTROL_DIR/EVIDENCE/activate-$role.log" 2>&1 &
 done
 wait

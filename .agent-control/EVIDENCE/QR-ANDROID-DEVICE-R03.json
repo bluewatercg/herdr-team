@@ -1,0 +1,88 @@
+{
+  "task_id": "RUN-20260918-QR-ANDROID",
+  "ingestion_task_id": "RUN-20260920-SHADOW-QR-INGEST-R03",
+  "deliverable_id": "QR-ANDROID-DEVICE-R03",
+  "status": "IMPLEMENTED_DEVICE_EVIDENCE_PENDING",
+  "artifacts": [
+    {
+      "path": "artifacts/qli-cutover/device-inspection-20260920T082256Z/evidence.json",
+      "sha256": "43fe1ee1d6516028e5fe6a6d2802e56e0d05dcbcf838d79d80b36c470a6a98fb",
+      "bytes": 2538
+    }
+  ],
+  "device_evidence": {
+    "task_id": "RUN-20260918-QR-ANDROID",
+    "classification": "REAL_ANDROID_CAPTURE_READ_ONLY_BINDING",
+    "device": "DEVICE_MODEL",
+    "serial": "adb-5b10bb35-rkB4bn._adb-tls-connect._tcp",
+    "installed_apk_sha256": "f9a6d0c2094a06ff60d251688892ba6aa8ca32cfb941f04a8f46bcb1582a3222",
+    "source_revision_binding": "UNVERIFIED",
+    "capture_attempt_id": "f2bca35a-17a3-4686-9537-32b6de550f10",
+    "capture_bundle_id": "2f73b5b5-7534-4b35-8881-13f415e3856e",
+    "analysis_id": "9823525c-b87a-4e89-9fee-44488f2ebfb5",
+    "jpeg_bytes": 3235287,
+    "original_sha256": "9d0f9e3563ed34f0a72118357560776f49ec38f65b39d86e7cc744e9fb938856",
+    "server_object": "/root/.local/share/SERVICE/objects/02bc7fd5a57c4cfaba26f34e155ce68c",
+    "server_http_status": 200,
+    "app_result_equals_server_result": true,
+    "device_bytes_equal_server_bytes": true,
+    "business_status": "rejected",
+    "wire_code": "QR_NOT_READABLE",
+    "scenarios": {
+      "1_pre_qr_shutter_disabled": "MISSING_TEMPORAL_DEVICE_EVIDENCE",
+      "2_qr_removed_over_three_seconds": "MISSING_TEMPORAL_DEVICE_EVIDENCE",
+      "3_different_qr_disabled": "MISSING_DEVICE_SCENARIO_EVIDENCE",
+      "4_capture_requires_rerecognition": "MISSING_TEMPORAL_DEVICE_EVIDENCE",
+      "5_http_upload_server_receipt": "EVIDENCED_HTTP_200_BUSINESS_REJECTED",
+      "6_capture_server_sha_equal": "EVIDENCED_BYTE_EQUAL"
+    },
+    "projection_acceptance": "NOT_READY_UNVERIFIED_PENDING_REVISION_BINDING_AND_REVIEW",
+    "product_pass": false,
+    "formal_reporting_allowed": false,
+    "actions": "read-only ADB snapshot and SQLite/object reads; no shutter, upload, retry or queue edits",
+    "files": [
+      {
+        "path": "artifacts/qli-cutover/device-inspection-20260920T082256Z/2f73b5b5-7534-4b35-8881-13f415e3856e.json",
+        "bytes": 5163,
+        "sha256": "8d85ed935b26511426919b5b6f204cdad6c9b014303c45a8490d770c46f15662"
+      },
+      {
+        "path": "artifacts/qli-cutover/device-inspection-20260920T082256Z/f2bca35a-17a3-4686-9537-32b6de550f10.journal.json",
+        "bytes": 4584,
+        "sha256": "69626e3c3d74e4c45499f79715b2f0e579a96003483a346894ccdea039476f2d"
+      },
+      {
+        "path": "artifacts/qli-cutover/device-inspection-20260920T082256Z/f2bca35a-17a3-4686-9537-32b6de550f10.jpg",
+        "bytes": 3235287,
+        "sha256": "9d0f9e3563ed34f0a72118357560776f49ec38f65b39d86e7cc744e9fb938856"
+      },
+      {
+        "path": "artifacts/qli-cutover/device-inspection-20260920T082256Z/server-response.json",
+        "bytes": 3124,
+        "sha256": "5ecc729bc1c944056ec138a5db0b96feb4ebd60138a64da25221631c3bf41c66"
+      }
+    ]
+  },
+  "independent_review": {
+    "reviewer": "lfa-review",
+    "disposition": "ACCEPTED_BOUNDED_DEVICE_EVIDENCE_ONLY",
+    "source_sha256": "43fe1ee1d6516028e5fe6a6d2802e56e0d05dcbcf838d79d80b36c470a6a98fb",
+    "checks": "4/4 referenced SHA/bytes; complete App/server JSON semantic equality; canonical metadata and attempt/bundle/session/analysis/JPEG binding",
+    "remote_observations": "User-accepted PM observations; not reviewer remote re-execution",
+    "output_review": "NOT_YET_SUBMITTED"
+  },
+  "android_source_binding_disposition": {
+    "owner": "lfa-android",
+    "status": "UNVERIFIED",
+    "reason": "Current workspace rebuild observations do not bind the historical capture source revision",
+    "source_refs": [
+      "artifacts/qli-cutover/device-inspection-20260920T082256Z/evidence.json",
+      "herdr-team/.agent-control/TASK_BOARD.md:1088-1096"
+    ]
+  },
+  "acceptance_status": "UNVERIFIED",
+  "product_pass": false,
+  "formal_reporting_allowed": false,
+  "historical_subject_acceptance_inherited": false,
+  "synthetic_smoke_included": false
+}

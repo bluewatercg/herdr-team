@@ -11,7 +11,7 @@ status() {
   printf '\nPM Gate:\n'
   [ ! -f "$CONTROL_DIR/PM_GATE" ] || cat "$CONTROL_DIR/PM_GATE"
   printf '\nTeam Agents:\n'
-  for role in lfa-start lfa-pm lfa-android lfa-api lfa-ios lfa-review; do
+  for role in lfa-start lfa-pm lfa-android lfa-api lfa-ios lfa-review lfa-grok-review lfa-claude-review; do
     herdr agent get "$role" 2>/dev/null || printf '%s: NOT_RUNNING\n' "$role"
   done
 }
@@ -52,7 +52,7 @@ choose_panes() {
   echo '可接入的当前项目空闲 Shell pane：'
   list_available_panes
   echo '为每个角色输入 pane ID；直接回车表示自动创建 workspace。'
-  for role in lfa-start lfa-pm lfa-android lfa-api lfa-ios lfa-review; do
+  for role in lfa-start lfa-pm lfa-android lfa-api lfa-ios lfa-review lfa-grok-review lfa-claude-review; do
     while :; do
       printf '%s pane: ' "$role"
       IFS= read -r pane

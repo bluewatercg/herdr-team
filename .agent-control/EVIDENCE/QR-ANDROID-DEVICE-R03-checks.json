@@ -1,0 +1,48 @@
+{
+  "task_id": "RUN-20260920-SHADOW-QR-INGEST-R03",
+  "result": "PASS",
+  "checks": [
+    "Existing legacy classification NOT_READY",
+    "Registry schema and duplicate-ID validation",
+    "Both ledger event schemas and JCS payload digests",
+    "Projection schema",
+    "Independent event digest",
+    "Reverse-event order invariance",
+    "Old projection unchanged until dispositions and valid ingestion",
+    "Serialized shadow.project output readback equals return value",
+    "Immutable input device evidence unchanged",
+    "Fresh subject digest, generation 1, no supersession or inherited acceptance"
+  ],
+  "initial_attempt": "Unsupported legacy status NOT_READY caught before projection write; corrected to existing IMPLEMENTED_DEVICE_EVIDENCE_PENDING mapping before freeze",
+  "outputs": [
+    {
+      "path": "herdr-team/.agent-control/EVIDENCE/QR-ANDROID-DEVICE-R03.json",
+      "sha256": "216f8f35af950f475b16991ef7685c8617404668dad17e9dbc1a30b920e36aab",
+      "bytes": 4152
+    },
+    {
+      "path": "herdr-team/.agent-control/MACHINE/HARNESS-VERIFICATION-SHADOW/qr-android-r03-inputs.json",
+      "sha256": "427faeeb66d72ccb248763ee9204889cde8a68672c0a7b7a4c82898273032334",
+      "bytes": 3588
+    },
+    {
+      "path": "herdr-team/.agent-control/MACHINE/HARNESS-VERIFICATION-SHADOW/qr-android-projection.json",
+      "sha256": "50e629198cc08eb36744430e43f212803963de9ec8ba526300c4cdcc70d6b462",
+      "bytes": 1334
+    }
+  ],
+  "reducer": {
+    "path": "herdr-team/harness/shadow.py",
+    "sha256": "e70d6a1d63c7c7b4b3ede67ea9d67e71c70472b60d899bbe699467eecf4cc052"
+  },
+  "previous_projection_sha256": "d41e331c1389ec8df3f7ec797253be5c466e79375eb35a087087e578eb0ac8fa",
+  "event_digest": "15ab4e1c3f0fbbbccfb4f00f93fdd8fdb554b634e4c50ae6dd25c13575b42518",
+  "statuses": [
+    "VALID",
+    "NOT_READY",
+    "UNVERIFIED"
+  ],
+  "review": "PENDING_INDEPENDENT_OUTPUT_REVIEW",
+  "pm_gate": "PENDING",
+  "no_adb_restart_or_full_suite": true
+}

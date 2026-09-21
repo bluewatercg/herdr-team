@@ -1,5 +1,5 @@
 # 通用规则
-你是 Herdr 多 Agent 团队中的 OMP。不得越权修改文件；不得伪造测试、构建或证据；不得泄露凭证；研究候选不得标成实现基线。
+你是 Herdr 多 Agent 团队成员。不得越权修改文件；不得伪造测试、构建或证据；不得泄露凭证；研究候选不得标成实现基线。
 
 ## 计划绑定与 OMP TODO
 `MASTER_PLAN.md` 是项目阶段、当前交付物、下一 Gate 和停放工作的唯一权威；`TASK_BOARD.md` 是跨 Agent/跨会话任务权威；OMP TODO 是单 Agent 当前会话执行权威，三者不可替代。
@@ -16,7 +16,7 @@
 正式任务必须声明 `FILE_SCOPE` 和唯一 `WRITE_OWNER`，并与 `herdr-team/.agent-control/FILE_OWNERSHIP.md` 的 `ACTIVE` 记录一致。只有指定 pane 可写入范围内文件；一级 Agent 管理本组 pane，其他二级 pane 只读且不得自行扩大范围。发现所需写入超出范围时立即停止，通知 `lfa-start` 与 `lfa-pm` 重新切分或串行安排；禁止先编辑再靠人工合并。
 
 ## 稳定角色与持久化
-稳定名称为 `lfa-start`、`lfa-pm`、`lfa-android`、`lfa-api`、`lfa-ios`、`lfa-review`。pane 或 TUI 断连后，不得仅依赖聊天历史恢复事实；必须先读取 `herdr-team/.agent-control/MASTER_PLAN.md`，再从 `ROUNDS/`、`PM_GATE`、`PROJECT_SNAPSHOT.md`、`TASK_BOARD.md`、`DECISIONS.md`、`BLOCKERS.md`、`REVIEW_QUEUE.md` 和 `AGENT_STATUS/` 恢复。
+稳定主角色为 `lfa-start`、`lfa-pm`、`lfa-android`、`lfa-api`、`lfa-ios`、`lfa-review`；辅助交叉评审角色为 `lfa-grok-review`、`lfa-claude-review`。辅助角色只提供第二意见，不替代 `lfa-review`，不形成正式 Review Gate，也不得直接修改代码或控制账本。pane 或 TUI 断连后，不得仅依赖聊天历史恢复事实；必须先读取 `herdr-team/.agent-control/MASTER_PLAN.md`，再从 `ROUNDS/`、`PM_GATE`、`PROJECT_SNAPSHOT.md`、`TASK_BOARD.md`、`DECISIONS.md`、`BLOCKERS.md`、`REVIEW_QUEUE.md` 和 `AGENT_STATUS/` 恢复。
 重要决定、计划状态、任务状态、阻塞和证据必须先落盘，再通过 `herdr agent prompt <稳定角色名> <消息>` 通知相关角色。prompt 提交成功只表示消息已发送，不表示任务已完成或已批准。
 
 ## 通信规则

@@ -12,42 +12,76 @@ from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-TEAM = ("lfa-start", "lfa-pm", "lfa-android", "lfa-api", "lfa-ios", "lfa-review")
+TEAM = ("lfa-start", "lfa-pm", "lfa-android", "lfa-api", "lfa-ios", "lfa-review", "lfa-grok-review", "lfa-claude-review")
 ROOT = Path(__file__).resolve().parent
 CONTROL = ROOT / ".agent-control"
+SHADOW_PROJECTION = CONTROL / "MACHINE" / "HARNESS-VERIFICATION-SHADOW" / "qr-android-projection.json"
 
 PAGE = r'''<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LFA 项目时间轴</title>
+<title>LFA 项目观察台</title>
 <style>
-:root{color-scheme:dark;--bg:#090c0f;--panel:#11161b;--panel2:#171d23;--line:#34404b;--text:#eef3f7;--muted:#aab5bf;--blue:#78aaff;--green:#54d69b;--amber:#ffd166;--red:#ff8585;--focus:#fff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:0}button{font:inherit}.shell{max-width:1700px;margin:auto;padding:16px}.skip{position:absolute;top:-60px;left:12px;background:var(--blue);color:#07111d;padding:10px 12px;z-index:20}.skip:focus{top:10px}.top,.controls,.summary,.project-head,.node-top,.drawer-head,.agent-line{display:flex;align-items:center}.top{justify-content:space-between;gap:16px;margin-bottom:12px}.brand h1{font-size:22px;margin:0}.brand p,.muted{color:var(--muted);margin:2px 0 0}.controls{gap:8px}.stamp{color:var(--muted);font-variant-numeric:tabular-nums}.icon{width:44px;height:44px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--text);cursor:pointer}.icon svg{display:block;width:18px;height:18px;margin:auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.icon:hover,.icon[aria-pressed=true]{border-color:var(--blue);background:#172338}button:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-bottom:12px}.metric,.board,.project{border:1px solid var(--line);background:var(--panel);border-radius:6px}.metric{padding:9px 12px;min-width:0}.metric b{display:block;font-size:18px;overflow-wrap:anywhere}.metric span{color:var(--muted);font-size:12px}.board{overflow:hidden}.board-title{padding:11px 13px;border-bottom:1px solid var(--line)}.board-title h2{font-size:16px;margin:0}.project{margin:10px;background:var(--panel2);overflow:hidden}.project-head{justify-content:space-between;gap:12px;padding:9px 11px;border-bottom:1px solid var(--line)}.project-head strong{font-size:15px}.project-head code{color:var(--muted);overflow-wrap:anywhere}.track-wrap{overflow-x:auto;padding:14px}.track{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(190px,1fr);align-items:stretch;gap:30px;min-width:max-content}.stage{position:relative;display:grid;gap:8px;align-content:center}.stage:not(:last-child)::after{content:"";position:absolute;left:100%;top:50%;width:30px;border-top:2px solid var(--line)}.stage:not(:last-child)::before{content:"";position:absolute;right:-30px;top:calc(50% - 4px);border:4px solid transparent;border-left-color:var(--line)}.node{position:relative;width:100%;min-height:112px;text-align:left;border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:5px;background:#0f1419;color:var(--text);padding:10px;cursor:pointer}.node:hover{border-color:var(--blue);transform:translateY(-1px)}.node.accepted{border-left-color:var(--green)}.node.active,.node.running{border-left-color:var(--blue)}.node.warning,.node.repair{border-left-color:var(--amber)}.node.blocked,.node.error{border-left-color:var(--red)}.node-top{justify-content:space-between;gap:8px}.node-id{font:11px ui-monospace,monospace;color:var(--muted);overflow-wrap:anywhere}.node-name{display:block;font-weight:700;margin:5px 0}.node-meta{color:var(--muted);font-size:12px}.badge{display:inline-flex;align-items:center;min-height:23px;padding:2px 7px;border:1px solid var(--line);border-radius:999px;font-size:11px;line-height:1.3;overflow-wrap:anywhere}.accepted{color:var(--green);border-color:#287b5c}.active,.running{color:#b8d2ff;border-color:#416ea9}.warning,.repair{color:var(--amber);border-color:#806826}.blocked,.error{color:var(--red);border-color:#914545}.pending,.idle{color:var(--muted)}.drawer{width:min(620px,calc(100vw - 24px));height:100dvh;max-height:none;margin:0 0 0 auto;border:0;border-left:1px solid var(--line);background:var(--panel);color:var(--text);padding:0}.drawer::backdrop{background:#0009}.drawer-head{position:sticky;top:0;z-index:2;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--panel)}.drawer-head h2{font-size:18px;margin:0}.drawer-body{padding:16px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.detail{padding:10px;border:1px solid var(--line);border-radius:5px;background:var(--panel2);min-width:0;overflow-wrap:anywhere}.detail.wide{grid-column:1/-1}.detail h3{font-size:12px;color:var(--muted);margin:0 0 5px}.detail p{margin:0}.checks{list-style:none;padding:0;margin:0}.checks li{padding:7px 0;border-bottom:1px solid var(--line)}.checks li:last-child{border:0}.task-state{display:inline-block;width:16px;color:var(--green)}.agent-line{gap:8px;flex-wrap:wrap}.source-alert{margin:10px;padding:9px 12px;border:1px solid #806826;background:#2a2515;color:#ffe7a1;border-radius:5px}.diagnostics{margin:10px}.diagnostics summary{cursor:pointer;padding:10px;border:1px solid var(--line);border-radius:5px}.diagnostics-body{padding:10px;color:var(--muted)}@media(max-width:650px){body{font-size:16px}.shell{padding:10px}.top{align-items:flex-start;flex-direction:column}.controls{width:100%}.stamp{margin-right:auto;font-size:12px}.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.project{margin:8px}.project-head{align-items:flex-start;flex-direction:column}.track{grid-auto-columns:minmax(235px,78vw)}.detail-grid{grid-template-columns:1fr}.detail.wide{grid-column:auto}}
+:root{color-scheme:dark;--bg:#0b0e11;--panel:#12171c;--panel2:#181e24;--line:#35414c;--text:#f1f5f8;--muted:#aab5bf;--blue:#78aaff;--green:#54d69b;--amber:#ffd166;--red:#ff8585;--focus:#fff}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:0}button{font:inherit}.shell{max-width:1500px;margin:auto;padding:16px}.skip{position:absolute;top:-60px;left:12px;background:var(--blue);color:#07111d;padding:10px 12px;z-index:20}.skip:focus{top:10px}.top,.controls,.summary,.project-head,.node-top,.drawer-head,.agent-line{display:flex;align-items:center}.top{justify-content:space-between;gap:16px;margin-bottom:12px}.brand h1{font-size:22px;margin:0}.brand p,.muted{color:var(--muted);margin:2px 0 0}.controls{gap:8px}.stamp{color:var(--muted);font-variant-numeric:tabular-nums}.icon{width:44px;height:44px;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--text);cursor:pointer}.icon svg{display:block;width:18px;height:18px;margin:auto;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.icon:hover,.icon[aria-pressed=true]{border-color:var(--blue);background:#172338}button:focus-visible,summary:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:0 0 12px}.metric,.board,.project{border:1px solid var(--line);background:var(--panel);border-radius:6px}.metric{padding:8px 12px;min-width:0}.metric b{display:block;font-size:17px;overflow-wrap:anywhere}.metric span{color:var(--muted);font-size:12px}.board{overflow:hidden}.board-title{padding:11px 13px;border-bottom:1px solid var(--line)}.board-title h2{font-size:16px;margin:0}.project{margin:10px;background:var(--panel2);overflow:hidden}.project-head{justify-content:space-between;gap:12px;padding:9px 11px;border-bottom:1px solid var(--line)}.project-head strong{font-size:15px}.project-head code{color:var(--muted);overflow-wrap:anywhere}.track-wrap{padding:14px}.track{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(210px,100%),1fr));align-items:stretch;gap:16px}.stage{position:relative;display:grid;gap:8px;align-content:center}.stage::after,.stage::before{display:none}.node{position:relative;width:100%;min-height:108px;text-align:left;border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:5px;background:#0f1419;color:var(--text);padding:10px;cursor:pointer}.node:hover{border-color:var(--blue);transform:translateY(-1px)}.node.accepted{border-left-color:var(--green);opacity:.78}.node.active,.node.running{border-left-color:var(--blue);background:#111c29}.node.warning,.node.repair{border-left-color:var(--amber);background:#211d12}.node.blocked,.node.error{border-left-color:var(--red);background:#211415}.node-top{justify-content:space-between;gap:8px}.node-id{font:11px ui-monospace,monospace;color:var(--muted);overflow-wrap:anywhere}.node-name{display:block;font-weight:700;margin:5px 0}.node-meta{color:var(--muted);font-size:12px}.badge{display:inline-flex;align-items:center;min-height:23px;padding:2px 7px;border:1px solid var(--line);border-radius:999px;font-size:11px;line-height:1.3;overflow-wrap:anywhere}.accepted{color:var(--green);border-color:#287b5c}.active,.running{color:#b8d2ff;border-color:#416ea9}.warning,.repair{color:var(--amber);border-color:#806826}.blocked,.error{color:var(--red);border-color:#914545}.pending,.idle{color:var(--muted)}.drawer{width:min(620px,calc(100vw - 24px));height:100dvh;max-height:none;margin:0 0 0 auto;border:0;border-left:1px solid var(--line);background:var(--panel);color:var(--text);padding:0}.drawer::backdrop{background:#0009}.drawer-head{position:sticky;top:0;z-index:2;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:var(--panel)}.drawer-head h2{font-size:18px;margin:0}.drawer-body{padding:16px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.detail{padding:10px;border:1px solid var(--line);border-radius:5px;background:var(--panel2);min-width:0;overflow-wrap:anywhere}.detail.wide{grid-column:1/-1}.detail h3{font-size:12px;color:var(--muted);margin:0 0 5px}.detail p{margin:0}.checks{list-style:none;padding:0;margin:0}.checks li{padding:7px 0;border-bottom:1px solid var(--line)}.checks li:last-child{border:0}.task-state{display:inline-block;width:16px;color:var(--green)}.agent-line{gap:8px;flex-wrap:wrap}.source-alert{margin:0 0 12px;padding:9px 12px;border:1px solid #806826;background:#2a2515;color:#ffe7a1;border-radius:5px}.diagnostics-body{padding:10px;color:var(--muted)}@media(max-width:650px){body{font-size:14px}.shell{padding:10px}.top{align-items:flex-start;flex-direction:column}.controls{width:100%}.stamp{margin-right:auto;font-size:12px}.summary{grid-template-columns:repeat(3,minmax(0,1fr))}.project{margin:8px}.project-head{align-items:flex-start;flex-direction:column}.track-wrap{overflow:visible;padding:12px 14px}.track{display:grid;grid-auto-flow:row;grid-template-columns:1fr;gap:12px;min-width:0;border-left:2px solid var(--line);padding-left:14px}.stage{display:grid}.node{min-height:0}.detail-grid{grid-template-columns:1fr}.detail.wide{grid-column:auto}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}.node:hover{transform:none}}
 </style></head>
-<body><a class="skip" href="#portfolio">跳到项目时间轴</a><main class="shell">
-<header class="top"><div class="brand"><h1>LFA 项目时间轴</h1><p>项目 → 里程碑节点 → 执行任务 → Agent / Gate</p></div><div class="controls"><span id="stamp" class="stamp">加载中</span><button id="pause" class="icon" title="暂停自动刷新" aria-label="暂停自动刷新" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button><button id="refresh" class="icon" title="立即刷新" aria-label="立即刷新"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 4v5h5M4 13a8.1 8.1 0 0 0 15.5 2M20 20v-5h-5"/></svg></button></div></header>
-<section class="summary" aria-label="项目摘要"><div class="metric"><b id="projectCount">-</b><span>项目</span></div><div class="metric"><b id="milestoneCount">-</b><span>里程碑节点</span></div><div class="metric"><b id="runningCount">-</b><span>执行中</span></div><div class="metric"><b id="blockedCount">-</b><span>等待 / 阻塞</span></div></section>
-<section class="board" aria-labelledby="pmPlanTitle"><div class="board-title"><h2 id="pmPlanTitle">PM 当前执行清单</h2><p class="muted">PM 执行视图及调整记录，不替代 MASTER_PLAN 或任务 Gate。</p></div><div id="pmPlan" class="diagnostics-body">加载中</div></section>
-<section id="portfolio" class="board"><div class="board-title"><h2>项目与里程碑</h2><p class="muted">横向按依赖推进；并行节点上下排列。点击任一节点查看唯一详情面板。</p></div><div id="sourceAlert" class="source-alert" role="status" hidden></div><div id="projects"></div><details class="diagnostics"><summary>来源与历史诊断</summary><div id="diagnostics" class="diagnostics-body"></div></details></section>
-<style>#pmPlan li{margin:12px 0;overflow-wrap:anywhere}#pmPlan p,#pmHistory p{overflow-wrap:anywhere}</style>
+<body><a class="skip" href="#portfolio">跳到当前交付路径</a><main class="shell">
+<header class="top"><div class="brand"><h1>LFA 项目观察台</h1><p id="workstreamName">当前交付状态与下一动作</p></div><div class="controls"><span id="stamp" class="stamp">加载中</span><button id="pause" class="icon" title="暂停自动刷新" aria-label="暂停自动刷新" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg></button><button id="refresh" class="icon" title="立即刷新" aria-label="立即刷新"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 4v5h5M4 13a8.1 8.1 0 0 0 15.5 2M20 20v-5h-5"/></svg></button></div></header>
+<p class="readonly"><b>只读项目观察台</b><span>状态由 herdr-team 权威记录提供；本页面不派单、不审批、不修改状态，也不操作 Agent。</span></p>
+<div id="sourceAlert" class="source-alert" role="status" hidden></div>
+<nav class="view-tabs" role="tablist" aria-label="观察台视图"><button id="tab-current" role="tab" aria-selected="true" aria-controls="view-current" data-view="current">当前执行</button><button id="tab-plan" role="tab" aria-selected="false" aria-controls="view-plan" data-view="plan" tabindex="-1">计划与历史</button><button id="tab-diagnostics" role="tab" aria-selected="false" aria-controls="view-diagnostics" data-view="diagnostics" tabindex="-1">诊断</button></nav>
+<div id="view-current" class="view-panel" role="tabpanel" aria-labelledby="tab-current" data-panel="current">
+<section class="program-board board" aria-labelledby="programTitle"><div class="board-title"><span class="eyebrow">当前主线</span><h2 id="programTitle">项目现在处于哪里</h2><p id="programSummary" class="muted">来自 MASTER_PLAN</p></div><div id="programStrip" class="program-strip"></div></section>
+<section class="overview" aria-labelledby="overviewTitle"><div class="overview-head"><div><span class="eyebrow">实时执行</span><h2 id="overviewTitle">当前 LFA Agent</h2></div><button id="focusAction" class="focus-action" type="button">查看执行详情</button></div><div class="overview-grid"><article><span>当前主线</span><strong id="currentFocus">加载中</strong></article><article><span>实时执行</span><strong id="currentOwner">加载中</strong></article><article class="blocker-card"><span>任务归属</span><strong id="currentBlocker">加载中</strong></article><article><span>当前交付状态</span><strong id="nextOwner">加载中</strong></article><article class="next-step"><span>下一 Gate</span><strong id="nextAction">加载中</strong></article></div><p id="stateConflict" class="state-conflict" hidden></p></section>
+<section class="summary" aria-label="实时执行摘要"><div class="metric"><b id="actionCount">-</b><span>活跃 Agent</span></div><div class="metric"><b id="runningCount">-</b><span>已映射任务</span></div><div class="metric"><b id="blockedCount">-</b><span>UNMAPPED</span></div></section>
+<section id="portfolio" class="board primary-board"><div class="board-title"><span class="eyebrow">实时会话</span><h2>当前执行任务</h2><p class="muted">只显示 Herdr 当前 working 的 LFA Agent；任务归属必须来自 TASK_BOARD。</p></div><div class="browser-tools" role="search"><label for="nodeSearch">查找 Agent</label><input id="nodeSearch" type="search" placeholder="Agent、任务或归属" autocomplete="off"><label for="nodeStatus">状态</label><select id="nodeStatus"><option value="">全部状态</option><option value="active">执行中</option></select><span id="filterResult" role="status" aria-live="polite"></span></div><div id="currentProject"></div></section>
+</div>
+<div id="view-plan" class="view-panel" role="tabpanel" aria-labelledby="tab-plan" data-panel="plan" hidden><section class="board"><div class="board-title"><span class="eyebrow">母计划</span><h2>总体路线详情</h2><p class="muted">完整 M0-M7 节点。</p></div><div id="programProject"></div></section><section class="board"><div class="board-title"><span class="eyebrow">登记记录</span><h2>其他已登记工作</h2><p class="muted">账本投影与历史任务，非实时执行。</p></div><div id="otherProjects"></div></section></div>
+<div id="view-diagnostics" class="view-panel" role="tabpanel" aria-labelledby="tab-diagnostics" data-panel="diagnostics" hidden><section class="global" aria-labelledby="globalTitle"><div class="board-title"><span class="eyebrow">来源状态</span><h2 id="globalTitle">项目全局态势</h2><p class="muted">以下数字来自不同权威记录，保留各自口径。</p></div><div class="global-grid"><div class="metric"><b id="globalActionCount">-</b><span>未完成 PM 项</span></div><div class="metric"><b id="globalBlockedCount">-</b><span>阻塞 PM 项</span></div><div class="metric"><b id="globalWorkingCount">-</b><span>执行中 Agent</span></div><div class="metric"><b id="globalSourceCount">-</b><span>异常来源</span></div></div><div id="managementIssues" class="issues" aria-live="polite"></div></section><section class="board"><div class="board-title"><span class="eyebrow">执行记录</span><h2 id="pmPlanTitle">执行清单与 revision 历史</h2></div><div id="pmPlan" class="diagnostics-body">加载中</div><div class="diagnostics-body"><div id="diagnostics"></div><section id="pmHistory"></section></div></section><section class="board shadow-board" aria-labelledby="shadowTitle"><div class="board-title"><span class="eyebrow">证据诊断</span><h2 id="shadowTitle">验证投影</h2><p class="muted">只读诊断，不改变正式 Gate。</p></div><div id="shadowProjection" class="shadow-content" aria-live="polite" aria-busy="true">加载中</div></section></div>
+<style>.program-board{margin-bottom:12px}.program-strip{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:1px;background:var(--line)}.program-step{min-width:0;padding:10px;background:var(--panel)}.program-step.current{background:#111c29;border-top:3px solid var(--blue)}.program-step.done{border-top:3px solid var(--green)}.program-step.parked{opacity:.62}.program-step code{display:block;color:var(--muted);font-size:11px}.program-step strong{display:block;margin:3px 0;overflow-wrap:anywhere}.program-step small{color:var(--muted)}.overview-grid{grid-template-columns:1fr 1fr 1.25fr 1fr!important}.overview-grid .next-step{grid-column:1/-1}.view-tabs{display:flex;gap:4px;margin:0 0 12px;padding:4px;border:1px solid var(--line);border-radius:6px;background:var(--panel);overflow-x:auto}.view-tabs button{min-width:max-content;min-height:44px;padding:0 16px;border:0;border-radius:4px;background:transparent;color:var(--muted);font-weight:700;cursor:pointer}.view-tabs button[aria-selected="true"]{background:#20324e;color:var(--text)}.view-tabs button:focus-visible{outline:3px solid var(--focus);outline-offset:1px}.view-panel[hidden]{display:none}.view-panel>.board,.view-panel>.global{margin-bottom:12px}@media(max-width:1100px){.program-strip{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:650px){.program-strip{grid-template-columns:1fr}.view-tabs{scrollbar-width:thin}}</style>
+<style>@media(max-width:900px){.overview-grid{grid-template-columns:1fr 1fr!important}}@media(max-width:650px){.overview-grid{grid-template-columns:1fr!important}}</style>
+<style>html,body{max-width:100%;overflow-x:hidden}.readonly{display:flex;gap:10px;align-items:baseline;margin:0 0 12px;padding:9px 12px;border:1px solid #416ea9;border-radius:5px;background:#111c29}.readonly span{color:var(--muted)}.global{margin-bottom:12px;border:1px solid var(--line);border-radius:6px;background:var(--panel);overflow:hidden}.global-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line)}.global-grid .metric{border:0;border-radius:0}.issues{padding:0 13px}.issues ul{margin:8px 0 10px;padding-left:20px}.issues li{margin:4px 0;overflow-wrap:anywhere}.browser-tools{display:grid;grid-template-columns:auto minmax(180px,1fr) auto minmax(130px,220px) auto;align-items:center;gap:8px;padding:10px 13px;border-bottom:1px solid var(--line)}.browser-tools label{color:var(--muted);font-size:12px}.browser-tools input,.browser-tools select{min-width:0;min-height:44px;border:1px solid var(--line);border-radius:5px;background:#0f1419;color:var(--text);padding:0 10px;font:inherit}.browser-tools input:focus-visible,.browser-tools select:focus-visible{outline:3px solid var(--focus);outline-offset:2px}.browser-tools #filterResult{color:var(--muted);font-size:12px}.node[hidden]{display:none}.eyebrow{display:block;color:var(--blue);font-size:11px;font-weight:700;text-transform:uppercase}.overview{margin-bottom:12px;border:1px solid #416ea9;border-radius:6px;background:var(--panel)}.overview-head{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 14px;border-bottom:1px solid var(--line)}.overview-head h2{margin:2px 0 0;font-size:18px}.focus-action{min-height:44px;padding:0 14px;border:1px solid #416ea9;border-radius:5px;background:#172338;color:var(--text);font-weight:700;cursor:pointer}.focus-action:hover{background:#20324e}.overview-grid{display:grid;grid-template-columns:1.4fr 1fr .65fr 1.4fr;gap:1px;background:var(--line)}.overview-grid article{min-width:0;padding:12px 13px;background:var(--panel)}.overview-grid .blocker-card{background:#211d12;border-top:3px solid var(--amber)}.overview-grid span{display:block;margin-bottom:4px;color:var(--muted);font-size:12px}.overview-grid strong{display:block;font-size:14px;line-height:1.45;overflow-wrap:anywhere}.state-conflict{margin:0;padding:9px 13px;color:#ffe7a1;background:#2a2515;border-top:1px solid #806826}.primary-board{margin-bottom:12px}.auxiliary{margin:12px 0}.auxiliary>summary{cursor:pointer;padding:12px 13px;list-style-position:inside}.auxiliary>summary span{display:inline-flex;align-items:baseline;gap:10px}.auxiliary>summary small{color:var(--muted);font-weight:400}.shadow-content{padding:10px 13px;min-width:0;overflow-wrap:anywhere}.shadow-state{margin:0}.shadow-statuses{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:10px}.shadow-status{min-width:0;padding:8px 10px;background:var(--panel2)}.shadow-status span{display:block;color:var(--muted);font-size:12px}.shadow-status strong,.shadow-value{font-family:ui-monospace,monospace;overflow-wrap:anywhere;word-break:break-word}.shadow-status strong{display:block;margin-top:2px}.shadow-section{padding:9px 0;border-top:1px solid var(--line)}.shadow-section:first-of-type{border-top:0}.shadow-section h3{font-size:13px;margin:0 0 6px}.shadow-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 14px;margin:0}.shadow-fields div{min-width:0}.shadow-fields dt{color:var(--muted);font-size:12px}.shadow-fields dd{margin:0}.shadow-list{margin:0;padding-left:20px}.shadow-list li{padding:2px 0;overflow-wrap:anywhere}.shadow-error{color:var(--red)}.recorded-projects{margin:10px}.recorded-projects>summary,.pm-complete>summary{cursor:pointer;padding:10px 12px}.recorded-projects .project{opacity:.82}.shadow-node-rows{display:none}.pm-focus{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.pm-actions{margin:8px 0}.pm-complete{margin-top:10px;border-top:1px solid var(--line)}#pmPlan li{margin:8px 0;overflow-wrap:anywhere}#pmPlan p,#pmHistory p{overflow-wrap:anywhere}@media(max-width:900px){.overview-grid{grid-template-columns:1fr 1fr}.global-grid{grid-template-columns:1fr 1fr}.shadow-statuses,.shadow-fields{grid-template-columns:1fr}}@media(max-width:650px){.readonly{align-items:flex-start;flex-direction:column;gap:2px}.overview-grid{grid-template-columns:1fr}.overview-head{align-items:stretch;flex-direction:column}.focus-action{width:100%}.browser-tools{grid-template-columns:1fr}.browser-tools label{margin-bottom:-5px}.auxiliary>summary span{align-items:flex-start;flex-direction:column;gap:2px}}@media(max-width:500px){.shadow-statuses,.shadow-fields{grid-template-columns:1fr}}</style>
+<style>.empty-state{margin:0;padding:24px 14px;text-align:center;color:var(--muted)}.empty-state b{color:var(--text);font-size:16px}.focus-action:disabled{cursor:not-allowed;opacity:.5}</style>
 </main><dialog id="drawer" class="drawer" aria-labelledby="drawerTitle"><div class="drawer-head"><h2 id="drawerTitle">节点详情</h2><button id="closeDrawer" class="icon" aria-label="关闭详情"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div><div id="drawerBody" class="drawer-body"></div></dialog>
 <script>
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const fmt=t=>t?new Date(t*1000).toLocaleString():'未记录';const badge=(t,k='pending')=>`<span class="badge ${esc(k)}">${esc(t)}</span>`;let paused=false,timer,data,nodeIndex={};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const fmt=t=>t?new Date(t*1000).toLocaleString():'未记录';const statusText=t=>({ACCEPTED:'已通过',PM_ACCEPTED:'PM 已通过',SUPERSEDED:'已被修正',PARTIAL:'部分完成',HOLD:'暂停',HOLD_FOR_CONTRACT_CORRECTION:'等待契约修正',UNFROZEN:'未冻结',CHANGES_REQUESTED:'需要修改',WAITING_DEPENDENCY:'等待依赖',WAITING_REVIEW:'等待复审',WAITING_PM:'等待 PM',PENDING_REREVIEW:'等待复审',REPAIRING:'修复中',NOT_READY:'未就绪',NOT_AUTHORIZED:'未授权',IN_PROGRESS:'执行中',ACTIVE:'执行中',NOT_STARTED:'未开始',PARKED:'已停放',RECORDED:'已记录',completed:'已完成',pending:'待处理',blocked:'阻塞',working:'执行中',idle:'空闲'}[t]||t);const badge=(t,k='pending')=>`<span class="badge ${esc(k)}" title="${esc(t)}">${esc(statusText(t))}</span>`;let paused=false,timer,data,nodeIndex={},shadowProjection=null,focusNodeId=null,openNodeId=null,lastSuccess=null,loading=false;
 function renderPM(p,agents){
   const root=document.querySelector('#pmPlan'),opened=new Set([...root.querySelectorAll('details[open]')].map(e=>e.dataset.key)),current=p.current;
   const describe=x=>esc(typeof x==='object'&&x!==null?JSON.stringify(x):x??'未映射');
   const revision=r=>`<p><b>${esc(r.revision||r.agent_revision)}</b> · ${esc(r.recorded_at)} · ${r.items.length} 项<br>${esc(r.reason)}<br>previous_revision: ${esc(r.previous_revision??'未提供')} · 发送原文摘要: ${esc(r.previous_submission_sha256??'未提供')}</p>`;
   const agentView=(name,id)=>{const a=agents.current[name],key=id+':'+name;return `<details data-key="${esc(key)}" ${opened.has(key)?'open':''}><summary>${esc(name)} · ${a?esc(a.agent_revision)+' · '+a.items.length+' 项':'PENDING · 缺失真实快照'}</summary>${a?revision(a)+`<p>上游 ${esc(a.parent_pm_revision)} · ${esc(a.parent_pm_todo_ids.join(', '))}</p><p class="muted">以下为该角色完整执行清单，不推断每项与当前 PM-TODO 一对一对应。</p><ol>${a.items.map(t=>`<li><code>${esc(t.id)}</code> ${badge(t.status)} ${esc(t.title)}<br>关联 ${describe(t.related_task_or_deliverable)}</li>`).join('')}</ol>`:''}</details>`};
   const h=current?.hierarchy||{};
-  root.innerHTML=current?`<p>整体大计划：${esc(h.overall_goal??'未登记')}</p><p>当前计划：${esc(h.current_plan_section??'未登记')}<br>${describe(h.current_plan_reference??current.base_plan_version)}<br>${esc((h.registered_plans||[]).join(' → '))}</p><p>当前任务：${esc((h.registered_tasks||[]).join(' / '))}</p>${revision(current)}<ol class="pm-items">${current.items.map(i=>`<li><details data-key="${esc(i.id)}" ${opened.has(i.id)?'open':''}><summary><code>${esc(i.id)}</code> ${badge(i.status)} ${esc(i.title)}</summary><p>parent: ${describe(i.parent_task_or_deliverable)} · 关联 ${describe(i.related_task_or_deliverable)}</p>${current.blocked_reason?.[i.id]?`<p>${esc(current.blocked_reason[i.id])}</p>`:''}<p>participants: ${esc((i.participants||[]).join(', ')||'未登记')}</p>${(i.participants||[]).map(a=>agentView(a,i.id)).join('')}</details></li>`).join('')}</ol>`:'尚无 PM 完整快照';
+  const counts=current?.items.reduce((out,i)=>(out[i.status]=(out[i.status]||0)+1,out),{})||{},actionable=current?.items.filter(i=>!['completed','abandoned'].includes(i.status))||[];
+  const item=i=>`<li><details data-key="${esc(i.id)}" ${opened.has(i.id)?'open':''}><summary><code>${esc(i.id)}</code> ${badge(i.status)} ${esc(i.title)}</summary><p>parent: ${describe(i.parent_task_or_deliverable)} · 关联 ${describe(i.related_task_or_deliverable)}</p>${current.blocked_reason?.[i.id]?`<p>${esc(current.blocked_reason[i.id])}</p>`:''}<p>participants: ${esc((i.participants||[]).join(', ')||'未登记')}</p>${(i.participants||[]).map(a=>agentView(a,i.id)).join('')}</details></li>`;
+  root.innerHTML=current?`<div class="pm-focus"><b>${esc(h.current_plan_section??'当前计划未登记')}</b>${Object.entries(counts).map(([status,count])=>badge(`${status}: ${count}`,status)).join('')}</div><p>当前任务：${esc((h.registered_tasks||[]).join(' / ')||'未登记')}</p><ol class="pm-actions">${actionable.length?actionable.map(i=>`<li><code>${esc(i.id)}</code> ${badge(i.status)} ${esc(i.title)}</li>`).join(''):'<li class="muted">无未完成行动项</li>'}</ol><details class="pm-complete" data-key="pm-complete" ${opened.has('pm-complete')?'open':''}><summary>完整 PM 执行清单 · ${current.items.length} 项</summary><p>整体大计划：${esc(h.overall_goal??'未登记')}</p><p>当前计划：${describe(h.current_plan_reference??current.base_plan_version)}<br>${esc((h.registered_plans||[]).join(' → '))}</p>${revision(current)}<ol class="pm-items">${current.items.map(item).join('')}</ol></details>`:'尚无 PM 完整快照';
   let history=document.querySelector('#pmHistory');if(!history){history=document.createElement('section');history.id='pmHistory';document.querySelector('.diagnostics').append(history)}
   history.innerHTML=`<h3>PM 执行清单 revision 历史</h3>${p.history.map(revision).join('')}<h3>Agent 完整快照历史</h3>${agents.history.map(revision).join('')}<p>缺失快照：${esc(agents.missing.join(', ')||'无')}</p><p class="error">${esc([...p.errors,...agents.errors].join('; '))}</p><p class="muted">发送原文摘要不是账本hash，不代表防篡改。TODO完成不等于业务Gate通过。</p>`;
 }
-function normalize(d){const qr=d.execution.workstream.nodes.map((n,i)=>({...n,kind:'当前执行节点',stage:i===0?0:i<3?1:i-1,subtasks:n.subtasks||[]}));const program=d.plan.milestones.map((m,i)=>({node_id:m.id,name:m.name,execution_status:m.status,tone:m.status==='ACCEPTED'?'accepted':m.status==='IN_PROGRESS'?'active':'pending',owner:'PROJECT_LEAD',dependencies:i?[d.plan.milestones[i-1].id]:[],stage:i,kind:'总体里程碑',subtasks:d.tasks.filter(t=>t.plan_id===m.id).map(t=>({id:t.id,title:t.deliverable_id,status:t.status,owner:t.owner}))}));const grouped={};d.tasks.forEach(t=>(grouped[t.plan_id]??=[]).push(t));const registered=Object.entries(grouped).filter(([id])=>!id.startsWith('M')).map(([id,ts])=>({id,name:id,status:ts.some(t=>/ACTIVE|IN_PROGRESS/.test(t.status))?'ACTIVE':'RECORDED',nodes:ts.map((t,i)=>({node_id:t.deliverable_id||t.id,name:t.id,task_id:t.id,owner:t.owner,execution_status:t.status,tone:/ACTIVE|IN_PROGRESS/.test(t.status)?'active':/BLOCK/.test(t.status)?'blocked':'pending',dependencies:i?[ts[i-1].deliverable_id||ts[i-1].id]:[],stage:i,kind:'登记任务',subtasks:[{id:t.id,title:t.deliverable_id,status:t.status,owner:t.owner}]}))}));return[{id:d.execution.goal.goal_id,name:d.execution.goal.name,status:d.execution.goal.status,nodes:qr},{id:'PROGRAM_MILESTONES',name:'Investor MVP 总体里程碑',status:d.plan.current_milestone,nodes:program},...registered.map(p=>({...p,nodes:p.nodes.map(n=>qr.find(q=>q.node_id===n.node_id)||n)}))]}
-function nodeButton(n){nodeIndex[n.node_id]=n;return `<button class="node ${esc(n.tone)}" data-node="${esc(n.node_id)}"><span class="node-top"><span class="node-id">${esc(n.node_id)}</span>${badge(n.execution_status,n.tone)}</span><span class="node-name">${esc(n.name)}</span><span class="node-meta">${esc(n.owner||'未分配')} · ${n.subtasks.length} 项任务</span></button>`}
+function renderShadow(state){
+  const root=document.querySelector('#shadowProjection'),value=v=>esc(v===null?'null':Array.isArray(v)?JSON.stringify(v):typeof v==='object'?JSON.stringify(v):v),field=(k,v)=>`<div><dt>${esc(k)}</dt><dd class="shadow-value">${value(v)}</dd></div>`;
+  root.setAttribute('aria-busy','false');
+  if(!state||state.status!=='AVAILABLE'){root.innerHTML=`<p class="shadow-state shadow-error" role="status"><b>验证投影 ${esc(state?.status||'不可用')}</b><br>${esc(state?.error||'投影数据不可用')}</p>`;return}
+  const p=state.projection,legacy=Object.values(nodeIndex).find(n=>n.task_id===p.task_id),status=(k,v)=>`<div class="shadow-status"><span>${esc(k)}</span><strong>${value(v)}</strong></div>`;
+  root.innerHTML=`<div class="shadow-statuses" aria-label="验证投影状态">${status('任务',p.task_id)}${status('目标 revision',p.subject_revision)}${status('接收状态',p.ingestion_status)}${status('证据状态',p.evidence_status)}${status('验收状态',p.acceptance_status)}${status('正式阶段',legacy?.execution_status??'未匹配')}</div><p><b>作用：</b>不改变正式阶段、不调度、不代表通过。</p>${p.criteria.map((c,i)=>`<article class="shadow-section" aria-labelledby="criterion-${i}"><h3 id="criterion-${i}">判据 ${esc(c.criterion_id)}</h3><dl class="shadow-fields">${field('criterion_id',c.criterion_id)}${field('required',c.required)}${field('status',c.status)}${field('generation',c.generation)}${field('selected_event_id',c.selected_event_id)}${field('superseded_event_ids',c.superseded_event_ids)}${field('evidence_refs',c.evidence_refs)}${field('reason_codes',c.reason_codes)}</dl></article>`).join('')}<section class="shadow-section"><h3>诊断</h3><ul class="shadow-list">${p.diagnostics.length?p.diagnostics.map(d=>`<li class="shadow-value">${value(d)}</li>`).join(''):'<li class="shadow-value">[]</li>'}</ul></section><section class="shadow-section"><h3>投影来源</h3><dl class="shadow-fields">${field('generated_from_event_digest',p.generated_from_event_digest)}${field('reducer_version',p.reducer_version)}</dl></section>`;
+}
+
+function normalize(d){const live=d.execution.workstream.nodes.map(n=>({...n,kind:'实时 Agent 会话',stage:n.stage??0,subtasks:n.subtasks||[]}));const program=d.plan.milestones.map((m,i)=>({node_id:m.id,name:m.name,execution_status:m.status,tone:m.status==='ACCEPTED'?'accepted':m.status==='IN_PROGRESS'?'active':'pending',owner:'PROJECT_LEAD',dependencies:i?[d.plan.milestones[i-1].id]:[],stage:i,kind:'总体里程碑',subtasks:d.tasks.filter(t=>t.plan_id===m.id).map(t=>({id:t.id,title:`${t.deliverable_id} → ${t.id}`,status:t.status,owner:t.owner}))}));const registeredProjection={id:d.registered_execution.workstream.workstream_id,name:d.registered_execution.workstream.name,status:'RECORDED',nodes:d.registered_execution.workstream.nodes.map(n=>({...n,kind:'账本投影，非实时执行',subtasks:n.subtasks||[]}))};const grouped={};d.tasks.forEach(t=>(grouped[t.plan_id]??=[]).push(t));const registered=Object.entries(grouped).filter(([id])=>!id.startsWith('M')).map(([id,ts])=>({id,name:id,status:'RECORDED',nodes:ts.map((t,i)=>({node_id:`${id}-${i}-${t.id}`,name:t.deliverable_id||t.id,task_id:t.id,execution_status:t.status,tone:/ACCEPTED|DONE|COMPLETE/.test(t.status)?'accepted':'pending',owner:t.owner,dependencies:[],stage:i,kind:'已登记任务，非实时执行',subtasks:[]}))}));return [{id:d.execution.workstream.workstream_id,name:d.execution.workstream.name,status:d.execution.workstream.status,nodes:live},{id:'MASTER_PLAN',name:'总体路线',status:d.plan.progress,nodes:program},registeredProjection,...registered]}
+function shadowRows(n){const p=shadowProjection;if(!p||n.task_id!==p.task_id)return '';const legacyEvidence=n.gates?.find(g=>g.label==='作者验证')?.status??'未记录',legacyAcceptance=n.gates?.find(g=>g.label==='PM')?.status??'未记录';return `<span class="shadow-node-rows"><b></b><b>Evidence</b><b>Acceptance</b><b>Legacy</b><span>${esc(legacyEvidence)}</span><span>${esc(legacyAcceptance)}</span><b>Shadow</b><span>${esc(p.evidence_status)}</span><span>${esc(p.acceptance_status)}</span></span>`}
+function nodeButton(n){nodeIndex[n.node_id]=n;const taskText=n.subtasks.length?`${n.subtasks.length} 项细化任务`:'未登记细化任务';return `<button class="node ${esc(n.tone)}" data-node="${esc(n.node_id)}"><span class="node-top"><span class="node-id">${esc(n.node_id)}</span>${badge(n.execution_status,n.tone)}</span><span class="node-name">${esc(n.name)}</span><span class="node-meta">${esc(n.owner||'未分配')} · ${taskText}</span>${shadowRows(n)}</button>`}
 function renderProject(p){const stages={};p.nodes.forEach(n=>(stages[n.stage]??=[]).push(n));return `<article class="project"><div class="project-head"><div><strong>${esc(p.name)}</strong><br><code>${esc(p.id)}</code></div>${badge(p.status,/ACTIVE|IN_PROGRESS/.test(p.status)?'active':'pending')}</div><div class="track-wrap"><div class="track">${Object.values(stages).map(ns=>`<div class="stage">${ns.map(nodeButton).join('')}</div>`).join('')}</div></div></article>`}
-function showNode(id){const n=nodeIndex[id],agent=data.agents.find(a=>n.owner?.includes(a.name));if(!n)return;document.querySelector('#drawerTitle').textContent=n.name;document.querySelector('#drawerBody').innerHTML=`<div class="detail-grid"><section class="detail"><h3>节点 / 执行模型</h3><p><b>${esc(n.node_id)}</b><br>${esc(n.model_summary||n.kind)}</p></section><section class="detail"><h3>执行 Agent</h3><p class="agent-line"><b>${esc(n.owner||'未分配')}</b>${agent?badge(agent.status,agent.status==='working'?'running':'idle'):''}</p>${agent?`<p class="muted">${esc(agent.title)}<br>${esc(agent.mapping_status)} · 观测 ${fmt(agent.observed_at)}</p>`:''}</section><section class="detail wide"><h3>里程碑 / 状态</h3><p>${badge(n.execution_status,n.tone)} · ${esc(n.milestone||n.name)}</p></section><section class="detail wide"><h3>前置依赖</h3><p>${esc(n.dependencies?.length?n.dependencies.join(' → '):'无')}</p></section><section class="detail wide"><h3>细化任务</h3><ul class="checks">${n.subtasks.length?n.subtasks.map(t=>`<li><span class="task-state">${/PASS|COMPLETE|ACCEPTED|CLOSED/.test(t.status)?'✓':'○'}</span><b>${esc(t.id)}</b> ${esc(t.title)}<br><span class="muted">${esc(t.status)}${t.owner?' · '+esc(t.owner):''}</span></li>`).join(''):'<li class="muted">尚未注册细化任务</li>'}</ul></section><section class="detail wide"><h3>Gate</h3><p>${n.gates?.length?n.gates.map(g=>badge(`${g.label}: ${g.status}`,g.tone)).join(' '):'无独立 Gate 记录'}</p></section><section class="detail wide"><h3>阻塞与下一步</h3><p>${esc(n.blocker||'无当前阻塞')}</p><p>${esc(n.next_action||'按登记状态推进')}</p></section><section class="detail wide"><h3>执行条件 / 证据</h3><p>${esc(n.execution_window||'未记录')}</p><p class="muted">${esc(n.source_ref||'TASK_BOARD.md / MASTER_PLAN.md')}</p></section></div>`;document.querySelector('#drawer').showModal()}
-function render(d){data=d;nodeIndex={};const projects=normalize(d);document.querySelector('#projectCount').textContent=projects.length;document.querySelector('#milestoneCount').textContent=projects.reduce((n,p)=>n+p.nodes.length,0);document.querySelector('#runningCount').textContent=projects.reduce((n,p)=>n+p.nodes.filter(x=>/ACTIVE|IN_PROGRESS|RUNNING/.test(x.execution_status)).length,0);document.querySelector('#blockedCount').textContent=projects.reduce((n,p)=>n+p.nodes.filter(x=>/WAITING|BLOCK|PENDING_REREVIEW|CHANGES_REQUESTED/.test(x.execution_status)).length,0);document.querySelector('#projects').innerHTML=projects.map(renderProject).join('');document.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>showNode(b.dataset.node));const stale=d.source_health.filter(s=>s.status!=='OK');const alert=document.querySelector('#sourceAlert');alert.hidden=!stale.length;alert.textContent=stale.length?`来源提醒：${stale.map(s=>`${s.source_id} ${s.status}`).join('；')}`:'';document.querySelector('#diagnostics').innerHTML=`<p>数据生成 ${fmt(d.generated_at)} · Review ${esc(d.review.status)}</p><ul>${d.source_health.map(s=>`<li>${esc(s.source_id)} · ${esc(s.status)} · ${fmt(s.updated_at)}</li>`).join('')}</ul>`;document.querySelector('#stamp').textContent=`更新 ${new Date(d.generated_at*1000).toLocaleTimeString()}`}
-async function load(){try{const r=await fetch('/api/status',{cache:'no-store'});if(!r.ok)throw new Error(`${r.status} ${r.statusText}`);const payload=await r.json();render(payload);renderPM(payload.pm_operational_plan,payload.agent_operational_plans)}catch(e){document.querySelector('#stamp').innerHTML=`<span class="error">刷新失败: ${esc(e.message)}</span>`}}function schedule(){clearInterval(timer);if(!paused)timer=setInterval(load,5000)}document.querySelector('#refresh').onclick=load;document.querySelector('#pause').onclick=e=>{paused=!paused;e.currentTarget.innerHTML=paused?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7Z"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>';e.currentTarget.title=paused?'继续自动刷新':'暂停自动刷新';e.currentTarget.setAttribute('aria-label',e.currentTarget.title);e.currentTarget.setAttribute('aria-pressed',String(paused));schedule()};document.querySelector('#closeDrawer').onclick=()=>document.querySelector('#drawer').close();document.querySelector('#drawer').onclick=e=>{if(e.target===e.currentTarget)e.currentTarget.close()};load();schedule();
+function setNodeUrl(id,replace=false){const url=new URL(location.href);id?url.searchParams.set('node',id):url.searchParams.delete('node');history[replace?'replaceState':'pushState']({},'',url)}
+function sourceRefs(n){const refs=(n.source_ref||'TASK_BOARD.md / MASTER_PLAN.md').split(';').map(x=>x.trim()).filter(Boolean);return `<ul class="source-refs">${refs.map(r=>`<li><code>${esc(r)}</code></li>`).join('')}</ul>`}
+function showNode(id,{updateUrl=true}={}){const n=nodeIndex[id];if(!n)return false;openNodeId=id;const agent=data.agents.find(a=>n.owner?.includes(a.name)),shadow=shadowRows(n),unregistered=agent?.snapshot_status==='CURRENT_SNAPSHOT_UNREGISTERED';document.querySelector('#drawerTitle').textContent=n.name;document.querySelector('#drawerBody').innerHTML=`<div class="detail-grid"><section class="detail wide"><h3>阻塞与下一步</h3><p>${esc(n.blocker||'无当前阻塞')}</p><p>${esc(n.next_action||'按登记状态推进')}</p></section><section class="detail"><h3>负责人</h3><p class="agent-line"><b>${esc(n.current_actor||n.owner||'未分配')}</b>${agent?badge(agent.status,agent.status==='working'?'running':'idle'):''}</p>${n.next_actor?`<p class="muted">下一接棒：${esc(n.next_actor)}</p>`:''}${agent?`<p class="muted">${esc(agent.title)}<br>${esc(agent.mapping_status)} · ${esc(agent.snapshot_status)} · 观测 ${fmt(agent.observed_at)}</p>`:''}</section><section class="detail"><h3>状态</h3><p>${badge(n.execution_status,n.tone)} · ${esc(n.milestone||n.name)}</p>${shadow}</section><section class="detail wide"><h3>细化任务</h3><ul class="checks">${n.subtasks.length?n.subtasks.map(t=>`<li><span class="task-state">${/PASS|COMPLETE|ACCEPTED|CLOSED/i.test(t.status)?'✓':'○'}</span><b>${esc(t.id)}</b> ${esc(t.title)}<br><span class="muted">${esc(statusText(t.status))}${t.owner?' · '+esc(t.owner):''}</span></li>`).join(''):`<li class="muted">${unregistered?'当前 TODO 快照未登记':'未登记细化任务'}${unregistered?'<br><span class="muted">终端 TODO 仅为观察，不作为权威细化任务。</span>':''}</li>`}</ul></section>${n.gates?.length?`<section class="detail wide"><h3>Gate</h3><p>${n.gates.map(g=>badge(`${g.label}: ${g.status}`,g.tone)).join(' ')}</p></section>`:''}<section class="detail"><h3>节点 / 执行模型</h3><p><b>${esc(n.node_id)}</b><br>${esc(n.model_summary||n.kind)}</p></section><section class="detail"><h3>并行前置条件</h3><ul class="checks">${n.dependencies?.length?n.dependencies.map(x=>`<li><code>${esc(x)}</code></li>`).join(''):'<li>无</li>'}</ul></section>${n.release_condition?`<section class="detail wide"><h3>解除条件</h3><p>${esc(n.release_condition)}</p></section>`:''}<section class="detail wide"><h3>执行条件</h3><p>${esc(n.execution_window||'未记录')}</p></section><section class="detail wide"><h3>证据定位</h3>${sourceRefs(n)}</section></div>`;const drawer=document.querySelector('#drawer');if(!drawer.open)drawer.showModal();if(updateUrl)setNodeUrl(id);return true}
+function closeNode({updateUrl=true}={}){openNodeId=null;const drawer=document.querySelector('#drawer');if(drawer.open)drawer.close();if(updateUrl)setNodeUrl(null)}
+function filterGroup(n){return /ACCEPTED|PM_ACCEPTED/.test(n.execution_status)?'accepted':/ACTIVE|IN_PROGRESS|RUNNING|REPAIRING/.test(n.execution_status)?'active':/WAITING|BLOCK|PENDING|NOT_READY|NOT_AUTHORIZED|HOLD|UNFROZEN/.test(n.execution_status)?'waiting':'action'}
+function applyFilters(){const query=document.querySelector('#nodeSearch').value.trim().toLowerCase(),status=document.querySelector('#nodeStatus').value,buttons=[...document.querySelectorAll('#currentProject [data-node]')];let shown=0;buttons.forEach(button=>{const n=nodeIndex[button.dataset.node],match=(!query||[n.node_id,n.name,n.owner,n.task_id].some(v=>String(v||'').toLowerCase().includes(query)))&&(!status||filterGroup(n)===status);button.hidden=!match;if(match)shown++});document.querySelector('#filterResult').textContent=`显示 ${shown}/${buttons.length}`}
+function collectConflicts(d){const out=[];d.execution.workstream.nodes.filter(n=>n.linkage_conflict).forEach(n=>out.push(`${n.node_id}：任务映射未登记`));const byRelated=new Map((d.pm_operational_plan.current?.items||[]).map(i=>[i.related_task_or_deliverable,i]));d.execution.workstream.nodes.filter(n=>n.execution_status!=='SUPERSEDED').forEach(n=>{const p=byRelated.get(n.node_id);if(p?.status==='completed'&&!/ACCEPTED|PM_ACCEPTED/.test(n.execution_status))out.push(`${n.node_id}：PM 清单已完成，但节点 ${statusText(n.execution_status)}`)});d.errors.forEach(e=>out.push(`数据读取：${e}`));return [...new Set(out)]}
+function renderGlobal(d){const items=d.pm_operational_plan.current?.items||[],conflicts=collectConflicts(d);document.querySelector('#globalActionCount').textContent=items.filter(i=>!['completed','abandoned'].includes(i.status)).length;document.querySelector('#globalBlockedCount').textContent=items.filter(i=>i.status==='blocked').length;document.querySelector('#globalWorkingCount').textContent=d.agents.filter(a=>a.status==='working').length;document.querySelector('#globalSourceCount').textContent=d.source_health.filter(s=>s.status!=='OK').length;document.querySelector('#managementIssues').innerHTML=conflicts.length?`<ul>${conflicts.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p class="muted">未发现跨来源状态冲突。</p>'}
+function renderManagerView(d){document.querySelector('#programStrip').innerHTML=d.plan.milestones.map(m=>`<div class="program-step ${m.id===d.plan.current_milestone?'current':m.status==='ACCEPTED'?'done':m.status==='PARKED'?'parked':''}"><code>${esc(m.id)}</code><strong>${esc(m.name)}</strong><small>${esc(statusText(m.status))}</small></div>`).join('')}
+function renderOverview(d){const nodes=d.execution.workstream.nodes,current=nodes[0],record=d.plan.current_deliverable_record,warning=document.querySelector('#stateConflict');focusNodeId=current?.node_id??null;document.querySelector('#workstreamName').textContent=`主线 ${d.plan.current_milestone} → ${d.plan.current_deliverable}`;document.querySelector('#currentFocus').textContent=`${d.plan.current_milestone} → ${d.plan.current_deliverable}`;document.querySelector('#currentOwner').textContent=current?`${current.current_actor} · ${current.name}`:'当前无 LFA Agent 执行';document.querySelector('#currentBlocker').textContent=current?.milestone||'无活跃任务归属';document.querySelector('#nextOwner').textContent=record?`${record.name} · ${statusText(record.status)}`:'未找到当前交付记录';document.querySelector('#nextAction').textContent=d.plan.next_gate||'未登记';document.querySelector('#focusAction').disabled=!focusNodeId;const unmapped=nodes.filter(n=>n.linkage_conflict);warning.hidden=!unmapped.length;warning.textContent=unmapped.length?`${unmapped.map(n=>n.owner).join('、')} 正在执行，但任务归属为 UNMAPPED；不得推断其所属主线。`:''}
+function render(d){data=d;nodeIndex={};shadowProjection=d.shadow_projection?.status==='AVAILABLE'?d.shadow_projection.projection:null;const [current,program,...others]=normalize(d),nodes=current.nodes;document.querySelector('#currentProject').innerHTML=nodes.length?renderProject(current):'<p class="empty-state" role="status"><b>当前无 LFA Agent 执行</b><br>MASTER_PLAN 与 TASK_BOARD 仍可在下方查看，但不代表 Agent 正在运行。</p>';document.querySelector('#programProject').innerHTML=renderProject(program);document.querySelector('#otherProjects').innerHTML=others.length?others.map(renderProject).join(''):'<p class="diagnostics-body">无其他登记工作</p>';document.querySelector('#programSummary').textContent=`${d.plan.current_milestone} → ${d.plan.current_deliverable} · ${esc(d.plan.current_deliverable_record?.name||'未找到交付记录')} · 总进度 ${d.plan.progress}`;document.querySelector('#actionCount').textContent=nodes.length;document.querySelector('#runningCount').textContent=nodes.filter(n=>!n.linkage_conflict).length;document.querySelector('#blockedCount').textContent=nodes.filter(n=>n.linkage_conflict).length;document.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>showNode(b.dataset.node));renderManagerView(d);applyFilters();renderGlobal(d);const stale=d.source_health.filter(s=>s.status!=='OK');const alert=document.querySelector('#sourceAlert');alert.hidden=!stale.length;alert.innerHTML=stale.length?`<b>数据可能过期</b> · ${stale.map(s=>`${esc(s.source_id)}：${esc(statusText(s.status))}`).join('；')}`:'';document.querySelector('#diagnostics').innerHTML=`<p>数据生成 ${fmt(d.generated_at)} · Review ${esc(d.review.status)}</p><ul>${d.source_health.map(s=>`<li>${esc(s.source_id)} · ${esc(s.status)} · ${fmt(s.updated_at)}</li>`).join('')}</ul>`;const requested=openNodeId||new URLSearchParams(location.search).get('node');if(requested&&!showNode(requested,{updateUrl:false}))setNodeUrl(null,true)}
+function selectView(name,{focus=false,updateUrl=true}={}){const tabs=[...document.querySelectorAll('[role="tab"][data-view]')],target=tabs.find(tab=>tab.dataset.view===name)||tabs[0];tabs.forEach(tab=>{const selected=tab===target;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1;document.querySelector(`[data-panel="${tab.dataset.view}"]`).hidden=!selected});if(updateUrl){const url=new URL(location.href);url.hash=target.dataset.view;history.replaceState(null,'',url)}if(focus)target.focus()}
+async function load(){if(loading)return;loading=true;document.querySelector('#refresh').setAttribute('aria-busy','true');document.querySelector('#stamp').textContent='正在刷新';try{const r=await fetch('/api/status',{cache:'no-store'});if(!r.ok)throw new Error(`${r.status} ${r.statusText}`);const payload=await r.json();render(payload);renderOverview(payload);renderShadow(payload.shadow_projection);renderPM(payload.pm_operational_plan,payload.agent_operational_plans);lastSuccess=payload.generated_at;document.querySelector('#stamp').textContent=`更新 ${new Date(lastSuccess*1000).toLocaleTimeString()}`}catch(e){document.querySelector('#stamp').innerHTML=`<span class="error">刷新失败${lastSuccess?'，保留 '+new Date(lastSuccess*1000).toLocaleTimeString()+' 数据':''}: ${esc(e.message)}</span>`}finally{loading=false;document.querySelector('#refresh').removeAttribute('aria-busy')}}function schedule(){clearInterval(timer);if(!paused)timer=setInterval(load,5000)}document.querySelector('#focusAction').onclick=()=>focusNodeId&&showNode(focusNodeId);document.querySelector('#refresh').onclick=load;document.querySelector('#nodeSearch').oninput=applyFilters;document.querySelector('#nodeStatus').onchange=applyFilters;document.querySelector('#pause').onclick=e=>{paused=!paused;e.currentTarget.innerHTML=paused?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7Z"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>';e.currentTarget.title=paused?'继续自动刷新':'暂停自动刷新';e.currentTarget.setAttribute('aria-label',e.currentTarget.title);e.currentTarget.setAttribute('aria-pressed',String(paused));schedule()};document.querySelector('#closeDrawer').onclick=()=>closeNode();document.querySelector('#drawer').onclick=e=>{if(e.target===e.currentTarget)closeNode()};document.querySelector('#drawer').addEventListener('cancel',e=>{e.preventDefault();closeNode()});addEventListener('popstate',()=>{selectView(location.hash.slice(1),{updateUrl:false});const id=new URLSearchParams(location.search).get('node');id?showNode(id,{updateUrl:false}):closeNode({updateUrl:false})});load();schedule();
+document.querySelectorAll('[role="tab"][data-view]').forEach((tab,index,tabs)=>{tab.onclick=()=>selectView(tab.dataset.view);tab.onkeydown=e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;selectView(tabs[next].dataset.view,{focus:true})}});selectView(location.hash.slice(1));
 </script></body></html>'''
 
 
@@ -93,17 +127,28 @@ def parse_plan() -> dict:
     if separator and key.isupper():
       headers[key] = value.strip()
   milestones = []
+  deliverables = []
   section = ""
   for line in text.splitlines():
     if line.startswith("## "):
       section = line[3:]
       continue
-    if section != "Milestones" or not line.startswith("| M"):
+    if not line.startswith("| M"):
       continue
     columns = [part.strip() for part in line.strip("|").split("|")]
-    if len(columns) >= 4:
+    if section == "Milestones" and len(columns) >= 4:
       milestones.append({"id": columns[0], "name": columns[1], "status": columns[3]})
-  return {"current_milestone": headers.get("CURRENT_MILESTONE", ""), "current_deliverable": headers.get("CURRENT_DELIVERABLE", ""), "progress": headers.get("PROGRAM_PROGRESS", ""), "milestones": milestones}
+    elif section == "Deliverables" and len(columns) >= 4:
+      deliverables.append({"id": columns[0], "name": columns[1], "status": columns[3]})
+  current_deliverable = headers.get("CURRENT_DELIVERABLE", "")
+  return {
+    "current_milestone": headers.get("CURRENT_MILESTONE", ""),
+    "current_deliverable": current_deliverable,
+    "current_deliverable_record": next((item for item in deliverables if item["id"] == current_deliverable), None),
+    "next_gate": headers.get("NEXT_GATE", ""),
+    "progress": headers.get("PROGRAM_PROGRESS", ""),
+    "milestones": milestones,
+  }
 
 
 def parse_tasks() -> list[dict[str, str]]:
@@ -150,52 +195,87 @@ def gate(label: str, status: str, tone: str) -> dict:
   return {"label": label, "status": status, "tone": tone}
 
 
-def execution_projection(agents: list[dict], table_tasks: list[dict]) -> dict:
-  table_ids = {task["id"] for task in table_tasks}
-  by_name = {agent["name"]: agent for agent in agents}
-  node1_tasks = evidence_tasks("QR-PC-01-D01.json")
-  node3_tasks = evidence_tasks("QR-FINAL-01-D01.json")
-  android_output = by_name.get("lfa-android", {}).get("output", "")
-  progress_match = re.search(r"Android QR implementation\s*[·:]\s*(\d+/\d+)", android_output)
-  android_progress = progress_match.group(1) if progress_match else "进度未结构化"
-  review_text = read_text("REVIEW_QUEUE.md")
-  evidence = load_evidence("QR-FINAL-01-D01.json")
-  node3_changes = "QR-FINAL-01 actual CHANGES_REQUESTED" in review_text
-  repaired_revision_ready = evidence.get("status") == "IMPLEMENTED_PENDING_REVIEW" and len(evidence.get("implementation_files", [])) >= 11
-  node3_review_accepted = "QR-FINAL-01 repaired revision independent Review accepted" in review_text and "c99cfa6d411f3181fe0453f0b34c786bf4ce44287e6c795e66b964369ee3a538" in review_text
-  node3_pm_accepted = node3_review_accepted and "Actual existing lfa-pm PM_ACCEPTED" in review_text and "15214bytes" in review_text
-  node1 = {
-    "node_id": "QR-PC-01-D01", "name": "产品声明契约", "task_id": "RUN-20260918-QR-PC", "owner": "lfa-api", "dependencies": [], "execution_status": "ACCEPTED", "tone": "accepted", "milestone": "冻结产品声明、Schema、Registry 语义", "model_summary": "严格声明解析 + trusted Registry + JCS/SHA 身份绑定", "next_action": "冻结契约，供 Node2/Node3 使用", "execution_window": "已完成", "source_ref": "MASTER_PLAN.md:359-381; TASK_BOARD.md:448-459; EVIDENCE/QR-PC-01-D01.json", "blocker": "", "linkage_conflict": "RUN-20260918-QR-PC" not in table_ids, "subtasks": node1_tasks,
-    "gates": [gate("Review", "ACCEPTED", "accepted"), gate("PM", "ACCEPTED", "accepted")],
-  }
-  node2 = {
-    "node_id": "QR-ANDROID-01-D01", "name": "Android QR 最小实现", "task_id": "RUN-20260918-QR-ANDROID", "owner": "lfa-android", "dependencies": ["QR-PC-01-D01"], "execution_status": "ACTIVE", "tone": "active", "milestone": "预览识别、快门单次验证、Bundle 声明持久化", "model_summary": "Android preview QR 状态机 + shutter verification attempt + Capture Bundle 1.5 持久化", "next_action": f"完成快门绑定、声明持久化与生命周期检查；当前观测 {android_progress}", "execution_window": "与最终 JPEG 复核并行；无时长基线", "source_ref": "MASTER_PLAN.md:369-381; TASK_BOARD.md:448-459; lfa-android recent output", "blocker": "", "linkage_conflict": "RUN-20260918-QR-ANDROID" not in table_ids,
-    "subtasks": [{"id": "QR-ANDROID-01-01", "title": "预览 QR 状态机", "status": "COMPLETE", "owner": "lfa-android"}, {"id": "QR-ANDROID-01-02", "title": "快门绑定一次验证尝试", "status": "PENDING", "owner": "lfa-android"}, {"id": "QR-ANDROID-01-03", "title": "产品声明写入 Capture Bundle", "status": "PENDING", "owner": "lfa-android"}, {"id": "QR-ANDROID-01-04", "title": "生命周期与延迟回调检查", "status": "PENDING", "owner": "lfa-android"}],
-    "gates": [gate("作者验证", "IN_PROGRESS", "active"), gate("Review", "PENDING", "pending"), gate("PM", "PENDING", "pending"), gate("真机证据", "PENDING", "pending")],
-  }
-  node2_receipt = re.search(r"^### Node2 independent Review return and original-owner repair dispatch\n(.*?)(?=^### |^## |\Z)", read_text("TASK_BOARD.md"), re.MULTILINE | re.DOTALL)
-  if node2_receipt and "CODE_REVIEW=CHANGES_REQUESTED, PM_GATE=NOT_ACCEPTED" in node2_receipt[1]:
-    node2.update(execution_status="CHANGES_REQUESTED", tone="repair", next_action="修复中：原 lfa-android 修复四项 HIGH；新精确 revision 交同一 Reviewer 复审，再进入 PM Gate。", blocker="QR-ANDROID-R1..R4 四项 HIGH 未关闭；同 revision 双 Gate 未通过", source_ref="TASK_BOARD.md: Node2 independent Review return and original-owner repair dispatch")
-    node2["subtasks"] = [{"id": finding, "title": detail, "status": "CHANGES_REQUESTED", "owner": "lfa-android"} for finding, detail in re.findall(r"^- (QR-ANDROID-R\d+): (.+)$", node2_receipt[1], re.MULTILINE)]
-    node2["gates"] = [gate("作者修复", "IN_PROGRESS", "active"), gate("Review", "CHANGES_REQUESTED", "changes_requested"), gate("PM", "NOT_ACCEPTED", "pending"), gate("真机证据", "PENDING", "pending")]
-  node3 = {
-    "node_id": "QR-FINAL-01-D01", "name": "最终 JPEG QR 复核", "task_id": "RUN-20260918-QR-FINAL", "owner": "lfa-api", "dependencies": ["QR-PC-01-D01"], "execution_status": "PM_ACCEPTED" if node3_pm_accepted else ("WAITING_PM" if node3_review_accepted else ("WAITING_REVIEW" if repaired_revision_ready else ("REPAIRING" if node3_changes else "WAITING_REVIEW"))), "tone": "accepted" if node3_pm_accepted else ("warning" if repaired_revision_ready else ("repair" if node3_changes else "warning")), "milestone": "持久化完整 JPEG 上独立 QR 复核后进入同一 DheaRuntime", "model_summary": "cv2.QRCodeDetector + UTF-8 payload SHA-256 + trusted Registry + unchanged DheaRuntime.analyze", "next_action": "保持冻结，等待 Node2 后进入集成依赖检查" if node3_pm_accepted else ("由 lfa-pm 对精确 Evidence revision 执行独立 Gate" if node3_review_accepted else ("提交已修复冻结 revision，由 lfa-review 复审" if repaired_revision_ready else "修复 R1-R4，冻结新 revision 后重新提交非作者 Review")), "execution_window": "已完成双 Gate" if node3_pm_accepted else "与 Android 节点并行；Review 通过后进入 PM Gate", "source_ref": "MASTER_PLAN.md:383; TASK_BOARD.md:461-465; REVIEW_QUEUE.md:592-604; EVIDENCE/QR-FINAL-01-D01.json", "blocker": "" if node3_pm_accepted else ("等待同一 Evidence revision 的 PM Gate" if node3_review_accepted else "等待该 Evidence digest 被非作者 Review 和 PM Gate 精确绑定"), "linkage_conflict": "RUN-20260918-QR-FINAL" not in table_ids, "subtasks": node3_tasks,
-    "gates": [gate("作者验证", "COMPLETE" if repaired_revision_ready else "IN_PROGRESS", "accepted" if repaired_revision_ready else "active"), gate("Review", "ACCEPTED" if node3_review_accepted else ("PENDING_REREVIEW" if repaired_revision_ready else ("CHANGES_REQUESTED" if node3_changes else "PENDING")), "accepted" if node3_review_accepted else ("warning" if repaired_revision_ready else ("changes_requested" if node3_changes else "pending"))), gate("PM", "ACCEPTED" if node3_pm_accepted else ("PENDING" if node3_review_accepted else "NOT_READY"), "accepted" if node3_pm_accepted else "pending"), gate("真机证据", "PENDING", "pending")],
-  }
-  integration = {
-    "node_id": "QR-INTEGRATION", "name": "完整 JPEG 上传与结果闭环", "task_id": "待注册", "owner": "lfa-pm / START", "dependencies": ["QR-ANDROID-01-D01", "QR-FINAL-01-D01"], "execution_status": "WAITING_DEPENDENCY", "tone": "pending", "milestone": "Android → API → Core → App/Web 自动闭环", "model_summary": "标准 multipart API + immutable JPEG + UnifiedAnalysisRequest + DheaRuntime", "next_action": "等待 Android 与最终 JPEG 节点同 revision 双 Gate 完成后注册并调度", "execution_window": "双依赖完成后", "source_ref": "MASTER_PLAN.md:373-375", "blocker": "等待 QR-ANDROID-01-D01 与 QR-FINAL-01-D01", "linkage_conflict": False, "subtasks": [{"id": "QR-E2E-AUTO", "title": "完整 JPEG 上传、存储、Core、结果、诊断、App 自动闭环", "status": "WAITING_DEPENDENCY", "owner": "lfa-pm / START"}],
-    "gates": [gate("依赖", "NOT_READY", "pending"), gate("集成", "NOT_AUTHORIZED", "pending")],
-  }
-  device = {
-    "node_id": "QR-DEVICE-EVIDENCE", "name": "指定 Android 真机证据", "task_id": "外部证据", "owner": "PROJECT_LEAD / designated operator", "dependencies": ["QR-INTEGRATION"], "execution_status": "WAITING_DEPENDENCY", "tone": "pending", "milestone": "真实拍摄与端到端证据链", "model_summary": "指定设备受控拍摄；原始 JPEG、SHA、API、Core、App/Web 逐段绑定", "next_action": "集成通过后执行真实拍摄、原图 SHA、上传、Core、App/Web 证据链", "execution_window": "集成完成且指定设备可用后", "source_ref": "MASTER_PLAN.md:375", "blocker": "等待 QR-INTEGRATION", "linkage_conflict": False, "subtasks": [{"id": "DEVICE-CAPTURE", "title": "真实 Android 拍摄与完整原始 JPEG", "status": "PENDING", "owner": "designated operator"}, {"id": "DEVICE-TRACE", "title": "original_sha256、上传、Core、App/Web 全链路", "status": "PENDING", "owner": "PROJECT_LEAD"}],
-    "gates": [gate("真机证据", "PENDING", "pending")],
-  }
-  nodes = [node1, node2, node3, integration, device]
-  tasks = []
-  blocker = "" if node3_pm_accepted else ("原 revision 的 Review R1-R4 已返工；等待新 revision 非作者复审。R1-R4：证据归因、replay/409 观察范围、OpenAPI/生成物同步、原 JPEG 失败状态" if repaired_revision_ready else ("Review R1-R4：证据归因、replay/409 观察范围、OpenAPI/生成物同步、原 JPEG 失败状态" if node3_changes else ""))
-  for wave, node in [(1, node1), (2, node2), (2, node3), (3, integration), (4, device)]:
-    tasks.append({**node, "title": node["name"], "breadcrumb": f"QIUQIU DHEA QR 产品识别 → QR 产品识别 → {node['node_id']}", "wave": wave, "queue_position": "当前并行" if wave == 2 else ("已完成" if wave == 1 else f"等待波次 {wave - 1}"), "blocker": blocker if node is node3 else (f"等待：{', '.join(node['dependencies'])}" if node["dependencies"] and wave > 2 else node["blocker"]), "source_ref": node["source_ref"] + ("; REVIEW_QUEUE.md:592-604; EVIDENCE/QR-FINAL-01-D01.json" if node is node3 else "")})
-  return {"goal": {"goal_id": "QIUQIU_DHEA_QR_PRODUCT_IDENTIFICATION_END_TO_END", "name": "QIUQIU DHEA QR 产品识别端到端", "status": "ACTIVE"}, "workstream": {"workstream_id": "QR_PRODUCT_IDENTIFICATION", "name": "QR 产品识别（独立于几何研究）", "status": "ACTIVE", "integration_status": "NOT_AUTHORIZED", "current_wave": 2, "next_wave_label": "波次 3 · 集成", "nodes": nodes, "waves": [{"number": 1, "label": "契约冻结", "node_ids": [node1["node_id"]]}, {"number": 2, "label": "并行实现", "node_ids": [node2["node_id"], node3["node_id"]]}, {"number": 3, "label": "集成闭环", "node_ids": [integration["node_id"]]}, {"number": 4, "label": "真机证据", "node_ids": [device["node_id"]]}]}, "tasks": tasks}
+def registered_projection() -> dict:
+  plan = read_text("MASTER_PLAN.md")
+  accepted = "PM_ACCEPTED" if "Integration engineering Gate: QR-E2E-01" in plan else "IN_PROGRESS"
+  nodes = [
+    {
+      "node_id": "QR-PC-01-D01", "name": "产品声明契约", "task_id": "RUN-20260918-QR-PC", "owner": "lfa-api", "dependencies": [], "stage": 0,
+      "execution_status": "PM_ACCEPTED", "tone": "accepted", "milestone": "产品声明、Schema 与 Registry", "model_summary": "产品族声明与服务端可信 Registry", "next_action": "历史基线；当前命名空间已由 QLI cutover 取代", "execution_window": "已完成", "source_ref": "MASTER_PLAN.md:367-379", "blocker": "", "linkage_conflict": False, "subtasks": evidence_tasks("QR-PC-01-D01.json"), "gates": [gate("Review", "ACCEPTED", "accepted"), gate("PM", "ACCEPTED", "accepted")],
+    },
+    {
+      "node_id": "QR-ANDROID-01-D01", "name": "Android QR 最小实现", "task_id": "RUN-20260918-QR-ANDROID", "owner": "lfa-android", "dependencies": ["QR-PC-01-D01"], "stage": 1,
+      "execution_status": "PM_ACCEPTED", "tone": "accepted", "milestone": "预览识别、快门绑定与声明持久化", "model_summary": "Android QR 状态机与 Capture Bundle 绑定", "next_action": "工程 Gate 已通过；后续由 QLI 与拍前确认契约修订承接", "execution_window": "已完成", "source_ref": "MASTER_PLAN.md:369; MASTER_PLAN.md:385", "blocker": "", "linkage_conflict": False, "subtasks": [], "gates": [gate("Review", "ACCEPTED", "accepted"), gate("PM", "ACCEPTED", "accepted"), gate("真机证据", "PARTIAL", "warning")],
+    },
+    {
+      "node_id": "QR-FINAL-01-D01", "name": "最终 JPEG QR 复核（已被修正）", "task_id": "RUN-20260918-QR-FINAL", "owner": "lfa-api", "dependencies": ["QR-PC-01-D01"], "stage": 1,
+      "execution_status": "SUPERSEDED", "tone": "warning", "milestone": "历史最终 JPEG 二次身份 Gate", "model_summary": "历史实现曾在持久化 JPEG 上复核 QR", "next_action": "保留历史证据；不得继续强化或部署最终 JPEG QR 内容 Gate", "execution_window": "历史 Gate 已完成，当前产品意图已修正", "source_ref": "MASTER_PLAN.md:371-383; MASTER_PLAN.md:757-761", "blocker": "HOLD_FOR_CONTRACT_CORRECTION", "linkage_conflict": False, "subtasks": evidence_tasks("QR-FINAL-01-D01.json"), "gates": [gate("历史 Review", "ACCEPTED", "accepted"), gate("当前适用性", "SUPERSEDED", "warning")],
+    },
+    {
+      "node_id": "QR-E2E-01-D01", "name": "Android 来源端到端集成", "task_id": "RUN-20260920-QR-E2E", "owner": "lfa-android / lfa-api", "dependencies": ["QR-ANDROID-01-D01", "QR-FINAL-01-D01"], "stage": 2,
+      "execution_status": accepted, "tone": "accepted" if accepted == "PM_ACCEPTED" else "active", "milestone": "完整 JPEG 上传、API、Core、App/Web 闭环", "model_summary": "隔离 HTTPS Gateway + Android 来源请求 + DheaRuntime", "next_action": "工程闭环已接受；真实设备证据仍单独判定", "execution_window": "工程 Gate 已完成", "source_ref": "MASTER_PLAN.md:387-393", "blocker": "", "linkage_conflict": False, "subtasks": [], "gates": [gate("Review", "ACCEPTED", "accepted"), gate("PM", "ACCEPTED", "accepted"), gate("真机", "PENDING", "pending")],
+    },
+    {
+      "node_id": "QLI-CUTOVER", "name": "QLI 全文与运行时切换", "task_id": "RUN-20260920-QLI-CUTOVER", "owner": "lfa-api / lfa-start / lfa-android", "dependencies": ["QR-E2E-01-D01"], "stage": 3,
+      "execution_status": "PM_ACCEPTED", "tone": "accepted", "milestone": "精确 payload 1:QLI:DHEA:1234567890", "model_summary": "API/Core、文档、Android 兼容性三切片与 synthetic HTTP", "next_action": "切换已完成；旧 QIUQIU 仅可作为拒绝测试或历史事实", "execution_window": "已完成", "source_ref": "MASTER_PLAN.md:658-676; MASTER_PLAN.md:690-724", "blocker": "", "linkage_conflict": False, "subtasks": [], "gates": [gate("API/Core", "ACCEPTED", "accepted"), gate("Docs", "ACCEPTED", "accepted"), gate("Android", "ACCEPTED", "accepted"), gate("运行时", "COMPLETE", "accepted")],
+    },
+    {
+      "node_id": "QLI-DEVICE-RECEIPT", "name": "真实设备上传回执", "task_id": "PM-TODO-010", "owner": "PROJECT_LEAD / designated operator", "dependencies": ["QLI-CUTOVER"], "stage": 4,
+      "execution_status": "PARTIAL", "tone": "warning", "milestone": "设备 JPEG、SHA、HTTP 与服务端结果绑定", "model_summary": "Redmi 捕获与服务端原图字节一致；结果 QR_NOT_READABLE", "next_action": "保留 5/6 场景证据；完成剩余设备场景与 APK/source binding", "execution_window": "部分证据已登记", "source_ref": "MASTER_PLAN.md:724-728; MASTER_PLAN.md:740-755", "blocker": "场景 1-4、APK/source binding 与独立设备接受未完成", "linkage_conflict": False, "subtasks": [], "gates": [gate("传输字节", "PARTIAL", "warning"), gate("产品识别", "NOT_READY", "pending"), gate("设备接受", "UNVERIFIED", "pending")],
+    },
+    {
+      "node_id": "ANDROID-UI-010-R01", "name": "上下双观察窗与真机显示", "task_id": "ANDROID-UI-010-R01", "owner": "lfa-android", "dependencies": ["QLI-CUTOVER"], "stage": 4,
+      "execution_status": "PARTIAL", "tone": "warning", "milestone": "上方试剂窗、下方二维码窗", "model_summary": "非权威取景指导与完整 JPEG 保持不变", "next_action": "完成实物同时放置、QR 启用/移除/异码拒绝和真实上传", "execution_window": "工程 Gate 已通过，设备证据部分完成", "source_ref": "MASTER_PLAN.md:411-427", "blocker": "实际物理放置与拍摄上传未完成", "linkage_conflict": False, "subtasks": [], "gates": [gate("Review", "ACCEPTED", "accepted"), gate("PM", "ACCEPTED", "accepted"), gate("设备", "PARTIAL", "warning")],
+    },
+    {
+      "node_id": "EXIF-ORDER-R01", "name": "EXIF 解码顺序修复", "task_id": "RUN-20260920-EXIF-ORDER-REPAIR", "owner": "lfa-api", "dependencies": ["QLI-DEVICE-RECEIPT"], "stage": 5,
+      "execution_status": "HOLD_FOR_CONTRACT_CORRECTION", "tone": "warning", "milestone": "Core EXIF 证据先于 QR 拒绝", "model_summary": "EXIF 正常化仍需要；最终 JPEG QR Gate 已被产品意图修正", "next_action": "保留已做工作；不得按旧最终 JPEG 身份 Gate 接受或部署", "execution_window": "HOLD", "source_ref": "MASTER_PLAN.md:730-738; MASTER_PLAN.md:757-761", "blocker": "等待拍前产品确认契约冻结", "linkage_conflict": False, "subtasks": [], "gates": [gate("契约", "HOLD", "warning")],
+    },
+    {
+      "node_id": "PRECAPTURE-CONTRACT-TABLE-R01", "name": "拍前产品确认 API 契约", "task_id": "RUN-20260920-PRECAPTURE-CONTRACT-R01", "owner": "lfa-start / lfa-api / lfa-android / lfa-review", "next_actor": "lfa-android", "waiting_parties": ["lfa-android", "lfa-review", "lfa-pm"], "release_condition": "API 字段/状态/错误/幂等表完成，同 revision 经 Android 确认与 Review 后，由 PM 决定实施 Gate", "plan_milestone": "M1", "dependencies": ["QLI-CUTOVER"], "stage": 5,
+      "execution_status": "RECORDED", "tone": "pending", "milestone": "Android 读 QR → 服务端确认 → 允许快门", "model_summary": "服务端确认身份、session/attempt 绑定、有效期、提交与恢复语义", "next_action": "账本保留；须由当前任务板和真实 Agent 会话重新授权后执行", "execution_window": "历史登记，非实时执行", "source_ref": "MASTER_PLAN.md:757-779", "blocker": "CONTRACT_REVISION=UNFROZEN；IMPLEMENTATION_AUTHORIZED=NO", "linkage_conflict": False, "subtasks": [], "gates": [gate("契约", "UNFROZEN", "warning"), gate("实施", "NOT_AUTHORIZED", "pending"), gate("Review", "PENDING", "pending"), gate("PM", "PENDING", "pending")],
+    },
+    {
+      "node_id": "QR-DEVICE-CLOSURE", "name": "指定设备最终闭环", "task_id": "PM-TODO-010 / PM-TODO-015", "owner": "PROJECT_LEAD / designated operator", "current_actor": "PROJECT_LEAD / designated operator", "next_actor": "lfa-pm", "waiting_parties": ["PROJECT_LEAD", "lfa-pm"], "release_condition": "三个并行前置条件全部完成：拍前契约实施、Android 真机显示、EXIF 顺序修复", "plan_milestone": "M1", "dependencies": ["PRECAPTURE-CONTRACT-TABLE-R01", "ANDROID-UI-010-R01", "EXIF-ORDER-R01"], "stage": 6,
+      "execution_status": "WAITING_DEPENDENCY", "tone": "pending", "milestone": "真实拍摄、服务器确认、完整 JPEG、Core、App/Web 证据链", "model_summary": "所有缺失事实保持 null；不把 QR_NOT_READABLE 当产品 PASS", "next_action": "契约实施双 Gate 后执行剩余真实设备场景并完成最终十五项关闭评估", "execution_window": "等待当前契约链", "source_ref": "MASTER_PLAN.md:405-427; MASTER_PLAN.md:763-785", "blocker": "拍前确认契约未冻结；设备场景与最终关闭证据未完成", "linkage_conflict": False, "subtasks": [], "gates": [gate("设备证据", "PENDING", "pending"), gate("最终关闭", "BLOCKED", "blocked")],
+    },
+  ]
+  tasks = [{**node, "title": node["name"], "breadcrumb": f"QIUQIU DHEA QR 产品识别 → {node['node_id']}", "wave": node["stage"], "queue_position": "已登记"} for node in nodes]
+  critical_path = [
+    {"label": "API 契约表", "actor": "lfa-api", "status": "RECORDED", "node_id": "PRECAPTURE-CONTRACT-TABLE-R01"},
+    {"label": "同 revision 确认", "actor": "lfa-android", "status": "WAITING_DEPENDENCY", "node_id": "PRECAPTURE-CONTRACT-TABLE-R01"},
+    {"label": "独立 Review", "actor": "lfa-review", "status": "WAITING_DEPENDENCY", "node_id": "PRECAPTURE-CONTRACT-TABLE-R01"},
+    {"label": "实施 Gate", "actor": "lfa-pm", "status": "NOT_AUTHORIZED", "node_id": "PRECAPTURE-CONTRACT-TABLE-R01"},
+    {"label": "指定设备闭环", "actor": "PROJECT_LEAD", "status": "WAITING_DEPENDENCY", "node_id": "QR-DEVICE-CLOSURE"},
+  ]
+  return {"goal": {"goal_id": "QIUQIU_DHEA_QR_PRODUCT_IDENTIFICATION_END_TO_END", "name": "QIUQIU DHEA QR 产品识别端到端", "status": "RECORDED"}, "workstream": {"workstream_id": "QR_PRODUCT_IDENTIFICATION", "name": "QR 产品识别登记投影（非实时）", "status": "RECORDED", "integration_status": "CONTRACT_REVISION_UNFROZEN", "plan_milestone": "M1", "current_node_id": None, "current_wave": None, "next_wave_label": "须重新授权后执行", "critical_path": critical_path, "nodes": nodes, "waves": []}, "tasks": tasks}
+
+def live_execution(agents: list[dict]) -> dict:
+  nodes = [
+    {
+      "node_id": f"LIVE-{agent['name']}",
+      "name": agent["title"] or agent["linked_task_id"] or agent["name"],
+      "task_id": agent["linked_task_id"],
+      "owner": agent["name"],
+      "current_actor": agent["name"],
+      "execution_status": "RUNNING",
+      "tone": "running",
+      "stage": index,
+      "kind": "实时 Agent 会话",
+      "milestone": agent["ownership_chain"],
+      "model_summary": agent["mapping_status"],
+      "next_action": "以 Agent 会话和任务板记录为准",
+      "execution_window": "Herdr 当前观测为 working",
+      "source_ref": "Herdr agent list; TASK_BOARD.md; Agent operational snapshot",
+      "blocker": "" if agent["mapping_status"] == "REGISTERED_MATCH" else "UNMAPPED：未找到可信任务归属",
+      "linkage_conflict": agent["mapping_status"] != "REGISTERED_MATCH",
+      "dependencies": [],
+      "subtasks": agent.get("subtasks", []),
+      "gates": [],
+    }
+    for index, agent in enumerate(agent for agent in agents if agent["status"] == "working")
+  ]
+  return {"workstream": {"workstream_id": "LIVE_AGENT_EXECUTION", "name": "实时 LFA Agent 执行", "status": "ACTIVE" if nodes else "IDLE", "current_node_id": nodes[0]["node_id"] if nodes else None, "nodes": nodes}}
 
 
 def review_payload() -> dict:
@@ -210,7 +290,7 @@ def review_payload() -> dict:
 def parse_pm_operational_plan(text: str | None = None) -> dict:
   text = read_text("TASK_BOARD.md") if text is None else text
   history, errors = [], []
-  sections = re.findall(r"^## PM_OPERATIONAL_PLAN_REVISIONS\s*\n(.*?)(?=^## |\Z)", text, re.MULTILINE | re.DOTALL)
+  sections = [text]
   for section in sections:
     for raw in re.findall(r"^```json pm-operational-plan\s*\n(.*?)^```\s*$", section, re.MULTILINE | re.DOTALL):
       try:
@@ -252,7 +332,7 @@ def parse_pm_operational_plan(text: str | None = None) -> dict:
       except (ValueError, TypeError, KeyError, StopIteration) as error:
         errors.append("PM transcription supplement: " + str(error))
   current = history[-1] if history else None
-  markers = re.findall(r"^CURRENT_PM_OPERATIONAL_REVISION: (\S+)\s*$", "\n".join(sections), re.MULTILINE)
+  markers = re.findall(r"^CURRENT_PM_OPERATIONAL_REVISION: (\S+)\s*$", text, re.MULTILINE)
   if current and (not markers or markers[-1] != current["revision"]):
     errors.append("PM current revision marker missing or inconsistent")
   return {"current_revision": current["revision"] if current else None, "current": current, "history": history, "errors": errors}
@@ -296,6 +376,69 @@ def parse_agent_operational_plans(pm: dict, text: str | None = None) -> dict:
   return {"current": current, "history": history, "missing": [a for a in expected if a not in current], "errors": errors}
 
 
+def load_shadow_projection(path: Path = SHADOW_PROJECTION, raw: str | bytes | None = None) -> dict:
+  try:
+    projection = json.loads(path.read_text(encoding="utf-8") if raw is None else raw)
+  except OSError as error:
+    return {"status": "UNAVAILABLE", "projection": None, "error": str(error)}
+  except (json.JSONDecodeError, UnicodeError) as error:
+    return {"status": "INVALID", "projection": None, "error": f"invalid JSON: {error}"}
+
+  top_keys = {"schema_version", "task_id", "subject_revision", "ingestion_status", "evidence_status", "acceptance_status", "criteria", "diagnostics", "generated_from_event_digest", "reducer_version"}
+  criterion_keys = {"criterion_id", "required", "status", "generation", "selected_event_id", "superseded_event_ids", "evidence_refs", "reason_codes"}
+  ingestion_statuses = {"VALID", "CONFLICTED", "INVALID_PAYLOAD"}
+  evidence_statuses = {"DISPATCHABLE", "NOT_READY", "NOT_SUBMISSION", "MALFORMED", "UNKNOWN_STATUS", "CONFLICTED", "UNAVAILABLE"}
+  acceptance_statuses = {"PASS", "FAIL", "UNVERIFIED", "PENDING", "INVALID", "STALE", "CONFLICTED", "UNAVAILABLE"}
+  criterion_statuses = {"PASS", "FAIL", "UNVERIFIED", "PENDING", "INVALID", "STALE", "CONFLICTED"}
+  sha256_revision = re.compile(r"sha256:[0-9a-f]{64}\Z")
+  sha256_digest = re.compile(r"[0-9a-f]{64}\Z")
+
+  def strings(values: object) -> bool:
+    return isinstance(values, list) and all(isinstance(value, str) for value in values) and len(values) == len(set(values))
+
+  valid = (
+    isinstance(projection, dict)
+    and set(projection) == top_keys
+    and projection["schema_version"] == "herdr-dashboard-projection/1.3"
+    and isinstance(projection["task_id"], str) and bool(projection["task_id"])
+    and isinstance(projection["subject_revision"], str) and bool(sha256_revision.fullmatch(projection["subject_revision"]))
+    and isinstance(projection["ingestion_status"], str) and projection["ingestion_status"] in ingestion_statuses
+    and isinstance(projection["evidence_status"], str) and projection["evidence_status"] in evidence_statuses
+    and isinstance(projection["acceptance_status"], str) and projection["acceptance_status"] in acceptance_statuses
+    and isinstance(projection["criteria"], list) and bool(projection["criteria"])
+    and isinstance(projection["diagnostics"], list)
+    and isinstance(projection["generated_from_event_digest"], str) and bool(sha256_digest.fullmatch(projection["generated_from_event_digest"]))
+    and isinstance(projection["reducer_version"], str) and bool(projection["reducer_version"])
+  )
+  if valid:
+    for criterion in projection["criteria"]:
+      generation = criterion.get("generation") if isinstance(criterion, dict) else None
+      valid = (
+        isinstance(criterion, dict) and set(criterion) == criterion_keys
+        and isinstance(criterion["criterion_id"], str) and bool(criterion["criterion_id"])
+        and type(criterion["required"]) is bool
+        and isinstance(criterion["status"], str) and criterion["status"] in criterion_statuses
+        and (generation is None or type(generation) is int and generation >= 1)
+        and (criterion["selected_event_id"] is None or isinstance(criterion["selected_event_id"], str))
+        and strings(criterion["superseded_event_ids"])
+        and strings(criterion["evidence_refs"])
+        and strings(criterion["reason_codes"])
+      )
+      if not valid:
+        break
+  if valid:
+    valid = all(
+      isinstance(diagnostic, dict)
+      and set(diagnostic) == {"source_ref", "code"}
+      and isinstance(diagnostic["source_ref"], str) and bool(diagnostic["source_ref"])
+      and isinstance(diagnostic["code"], str) and bool(diagnostic["code"])
+      for diagnostic in projection["diagnostics"]
+    )
+  if not valid:
+    return {"status": "INVALID", "projection": None, "error": "projection does not match herdr-dashboard-projection/1.3"}
+  return {"status": "AVAILABLE", "projection": projection, "error": None}
+
+
 def status_payload() -> dict:
   errors = []
   try:
@@ -304,9 +447,10 @@ def status_payload() -> dict:
     rows = []
     errors.append(f"agent list: {error}")
   named = {row.get("name"): row for row in rows if row.get("name") in TEAM}
-  task_links = {"lfa-android": "RUN-20260918-QR-ANDROID", "lfa-api": "RUN-20260918-QR-FINAL", "lfa-start": "RUN-20260918-QR-FINAL", "lfa-review": "RUN-20260918-QR-FINAL", "lfa-pm": "QIUQIU_DHEA_QR_PRODUCT_IDENTIFICATION_END_TO_END"}
   tasks = parse_tasks()
-  table_ids = {task["id"] for task in tasks}
+  task_by_id = {task["id"]: task for task in tasks}
+  pm = parse_pm_operational_plan()
+  agent_plans = parse_agent_operational_plans(pm)
   agents = []
   for name in TEAM:
     row = named.get(name, {})
@@ -316,18 +460,23 @@ def status_payload() -> dict:
         output = recent_output(name)
       except (OSError, subprocess.SubprocessError) as error:
         errors.append(f"{name}: {error}")
-    linked_task_id = task_links.get(name)
-    mapping_status = "REGISTERED_MATCH" if linked_task_id in table_ids else ("INFERRED_MATCH" if linked_task_id else "UNMAPPED")
-    agents.append({"name": name, "status": row.get("agent_status", "not_running"), "pane": row.get("pane_id", ""), "title": row.get("terminal_title_stripped", ""), "output": output, "linked_task_id": linked_task_id, "mapping_status": mapping_status, "observed_at": time.time()})
-  pm = parse_pm_operational_plan()
-  return {"generated_at": time.time(), "gate": parse_gate(), "plan": parse_plan(), "pm_operational_plan": pm, "agent_operational_plans": parse_agent_operational_plans(pm), "tasks": tasks, "execution": execution_projection(agents, tasks), "review": review_payload(), "blockers": read_text("BLOCKERS.md"), "agents": agents, "source_health": [source_health(name) for name in ("MASTER_PLAN.md", "TASK_BOARD.md", "REVIEW_QUEUE.md", "BLOCKERS.md")], "errors": errors}
+    snapshot = agent_plans["current"].get(name, {})
+    active_items = [item for item in snapshot.get("items", []) if item.get("status") == "in_progress"]
+    linked_task_id = next((item.get("related_task_or_deliverable") for item in active_items if isinstance(item.get("related_task_or_deliverable"), str) and item["related_task_or_deliverable"] in task_by_id), None)
+    task = task_by_id.get(linked_task_id)
+    mapping_status = "REGISTERED_MATCH" if task else "UNMAPPED"
+    ownership_chain = f"{task['plan_id']} → {task['deliverable_id']} → {task['id']}" if task else "UNMAPPED"
+    agents.append({"name": name, "status": row.get("agent_status", "not_running"), "pane": row.get("pane_id", ""), "title": row.get("terminal_title_stripped", ""), "output": output, "linked_task_id": linked_task_id, "mapping_status": mapping_status, "snapshot_status": "REGISTERED_MATCH" if task else "CURRENT_SNAPSHOT_UNREGISTERED", "ownership_chain": ownership_chain, "subtasks": snapshot.get("items", []) if task else [], "observed_at": time.time()})
+  registered = registered_projection()
+  return {"generated_at": time.time(), "gate": parse_gate(), "plan": parse_plan(), "pm_operational_plan": pm, "agent_operational_plans": agent_plans, "tasks": tasks, "execution": live_execution(agents), "registered_execution": registered, "review": review_payload(), "shadow_projection": load_shadow_projection(), "blockers": read_text("BLOCKERS.md"), "agents": agents, "source_health": [source_health(name) for name in ("MASTER_PLAN.md", "TASK_BOARD.md", "REVIEW_QUEUE.md", "BLOCKERS.md")], "errors": errors}
 
 
 class Handler(BaseHTTPRequestHandler):
   def do_GET(self) -> None:
-    if self.path == "/":
+    path = self.path.partition("?")[0]
+    if path == "/":
       self.respond(PAGE.encode(), "text/html; charset=utf-8")
-    elif self.path == "/api/status":
+    elif path == "/api/status":
       self.respond(json.dumps(status_payload(), ensure_ascii=False).encode(), "application/json; charset=utf-8")
     else:
       self.send_error(404)
@@ -375,21 +524,60 @@ def main() -> None:
     updated_agent = {**agent_sample, "agent_revision": "a2", "items": [{**sample["items"][0], "status": "completed"}]}
     assert parse_agent_operational_plans(pm_check, agent_blocks(agent_sample, updated_agent))["current"]["test-agent"] == updated_agent
     payload = status_payload()
+    shadow = payload["shadow_projection"]
+    assert shadow["status"] == "AVAILABLE", shadow
+    projection = shadow["projection"]
+    assert projection["evidence_status"] == "NOT_READY"
+    assert projection["acceptance_status"] == "UNVERIFIED"
+    assert projection["criteria"][0]["status"] == "UNVERIFIED"
+    assert "DEVICE_EVIDENCE_PENDING" in projection["criteria"][0]["reason_codes"]
+    assert 'id="pmPlan"' in PAGE and 'id="pmPlanTitle"' in PAGE
+    assert 'id="shadowTitle">验证投影</h2>' in PAGE
+    assert '不改变正式阶段、不调度、不代表通过' in PAGE
+    assert 'class="pm-complete"' in PAGE and 'id="otherProjects"' in PAGE
+    assert "n.task_id!==p.task_id" in PAGE and "正式阶段" in PAGE
+    assert "数据可能过期" in PAGE and "grid-template-columns:repeat(auto-fit" in PAGE
+    assert all(f'id="{field}"' in PAGE for field in ("currentFocus", "currentBlocker", "currentOwner", "nextOwner", "nextAction", "focusAction", "programStrip"))
+    assert 'function renderOverview' in PAGE and 'role="tablist"' in PAGE and '当前无 LFA Agent 执行' in PAGE
+    assert all(f"field('{key}'" in PAGE for key in ("criterion_id", "required", "status", "generation", "selected_event_id", "superseded_event_ids", "evidence_refs", "reason_codes", "generated_from_event_digest", "reducer_version"))
+    assert all(f'id="{field}"' in PAGE for field in ("globalActionCount", "globalBlockedCount", "globalWorkingCount", "globalSourceCount", "managementIssues", "nodeSearch", "nodeStatus", "filterResult"))
+    assert all(marker in PAGE for marker in ("function collectConflicts", "function applyFilters", "function setNodeUrl", "function sourceRefs", "openNodeId", "lastSuccess"))
+    invalid_pass = {**projection, "acceptance_status": "PASS", "criteria": [{**projection["criteria"][0], "status": "PASS", "unexpected": True}]}
+    assert load_shadow_projection(raw=json.dumps(invalid_pass))["status"] == "INVALID"
+    duplicate_refs = {**projection, "criteria": [{**projection["criteria"][0], "evidence_refs": ["same", "same"]}]}
+    assert load_shadow_projection(raw=json.dumps(duplicate_refs))["status"] == "INVALID"
+    assert load_shadow_projection(raw=b"\xff")["status"] == "INVALID"
+    assert load_shadow_projection(raw="{broken")["status"] == "INVALID"
+    assert load_shadow_projection(Path("/definitely/missing/qr-android-projection.json"))["status"] == "UNAVAILABLE"
     assert not payload["pm_operational_plan"]["errors"], payload["pm_operational_plan"]["errors"]
     assert not payload["agent_operational_plans"]["errors"], payload["agent_operational_plans"]["errors"]
-    nodes = payload["execution"]["workstream"]["nodes"]
-    assert len(nodes) == 5
-    assert nodes[1]["dependencies"] == ["QR-PC-01-D01"]
-    assert nodes[2]["dependencies"] == ["QR-PC-01-D01"]
-    assert nodes[3]["dependencies"] == ["QR-ANDROID-01-D01", "QR-FINAL-01-D01"]
-    assert nodes[4]["dependencies"] == ["QR-INTEGRATION"]
-    assert len(nodes[1]["subtasks"]) == 4
-    assert nodes[1]["execution_status"] == "CHANGES_REQUESTED"
-    assert nodes[1]["gates"][1] == gate("Review", "CHANGES_REQUESTED", "changes_requested")
-    assert {s["id"] for s in nodes[1]["subtasks"]} == {f"QR-ANDROID-R{i}" for i in range(1, 5)}
-    assert all(s["status"] == "CHANGES_REQUESTED" for s in nodes[1]["subtasks"])
-    assert payload["execution"]["tasks"][1]["blocker"] == nodes[1]["blocker"] != ""
-    assert len(nodes[2]["subtasks"]) == 12
+    assert payload["plan"]["current_milestone"] == "M1"
+    assert payload["plan"]["current_deliverable"] == "M1-D05"
+    assert payload["plan"]["current_deliverable_record"]["id"] == "M1-D05"
+    assert payload["plan"]["next_gate"] == "M1_EXIT_BASELINE_AND_REPAIR_BOUNDARIES_ACCEPTED"
+    assert live_execution([])["workstream"]["nodes"] == []
+    working_names = {agent["name"] for agent in payload["agents"] if agent["status"] == "working"}
+    assert {node["owner"] for node in payload["execution"]["workstream"]["nodes"]} == working_names
+    registered_nodes = payload["registered_execution"]["workstream"]["nodes"]
+    by_id = {node["node_id"]: node for node in registered_nodes}
+    assert len(registered_nodes) == 10 and "QLI-CUTOVER" in by_id
+    assert by_id["PRECAPTURE-CONTRACT-TABLE-R01"]["execution_status"] == "RECORDED"
+    assert "current_actor" not in by_id["PRECAPTURE-CONTRACT-TABLE-R01"]
+    assert payload["registered_execution"]["workstream"]["current_node_id"] is None
+    mapped = live_execution([{"name": "lfa-api", "status": "working", "title": "API task", "linked_task_id": "TASK-1", "mapping_status": "REGISTERED_MATCH", "ownership_chain": "M1 → M1-D05 → TASK-1", "subtasks": [{"id": "TODO-1", "title": "Visible task", "status": "in_progress"}]}])
+    assert mapped["workstream"]["nodes"][0]["milestone"] == "M1 → M1-D05 → TASK-1"
+    assert mapped["workstream"]["nodes"][0]["subtasks"] == [{"id": "TODO-1", "title": "Visible task", "status": "in_progress"}]
+    unmapped = live_execution([{"name": "lfa-api", "status": "working", "title": "Unknown task", "linked_task_id": None, "mapping_status": "UNMAPPED", "ownership_chain": "UNMAPPED"}])
+    assert unmapped["workstream"]["nodes"][0]["linkage_conflict"] is True
+    assert "UNMAPPED" in unmapped["workstream"]["nodes"][0]["blocker"]
+    assert "账本投影与历史任务，非实时执行" in PAGE
+    assert all(f'data-view="{view}"' in PAGE and f'data-panel="{view}"' in PAGE for view in ("current", "plan", "diagnostics"))
+    assert "ArrowLeft" in PAGE and "aria-selected" in PAGE
+    assert "n.gates?.length?" in PAGE and "无独立 Gate 记录" not in PAGE
+    assert all(agent["mapping_status"] == "REGISTERED_MATCH" or not agent["subtasks"] for agent in payload["agents"])
+    assert all(agent["snapshot_status"] == "REGISTERED_MATCH" or not agent["subtasks"] for agent in payload["agents"])
+    assert "CURRENT_SNAPSHOT_UNREGISTERED" in PAGE
+    assert "当前 TODO 快照未登记" in PAGE
     print(json.dumps(payload, ensure_ascii=False, indent=2))
     return
   server = ThreadingHTTPServer((args.host, args.port), Handler)

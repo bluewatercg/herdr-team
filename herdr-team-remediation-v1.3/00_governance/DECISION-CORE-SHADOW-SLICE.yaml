@@ -1,0 +1,34 @@
+decision_id: DECISION-CORE-SHADOW-SLICE
+decision_revision: "3"
+status: DRAFT
+scope: CORE
+accepted:
+  - item: File-based stdlib read-only Core Shadow design
+    rationale: Close verification facts without creating a new platform.
+    evidence_refs:
+      - V1.3-DESIGN-PACKAGE
+rejected:
+  - item: Persistent Evidence Registry
+    rationale: A rebuildable in-memory evidence index is sufficient.
+  - item: Generic event framework
+    rationale: Shadow supports only two typed events.
+  - item: Production Gate replacement
+    rationale: Outside current shadow scope.
+modified:
+  - original: Evidence Registry contract and persistence
+    final: Self-contained Evidence Envelope plus in-memory index
+    rationale: Reduce authority layers and synchronization risk.
+implementation_allowed: false
+required_gates:
+  - gate: WORKSTREAM_REGISTRATION
+  - gate: CORE_CONTRACT_REVIEW
+  - gate: C01_C18_FIXTURE_REVIEW
+  - gate: FILE_SCOPE_AND_WRITE_OWNER
+  - gate: PM_DETAILED_DESIGN_ACCEPTANCE
+open_questions:
+  - question: Authoritative status vocabulary revision
+    owner: CORE_WORKGROUP
+    blocks_implementation: true
+  - question: Exact unique WRITE_OWNER
+    owner: PM
+    blocks_implementation: true
