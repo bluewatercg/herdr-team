@@ -119,4 +119,32 @@ normalization, or hash recomputation. If source capture is incomplete, keep
 `SOURCE_CAPTURE_STATUS: INCOMPLETE`, `SOURCE_EXCERPT_SHA256: null`, and
 `REQUIREMENT_MAPPING_ALLOWED: false`.
 
+## Jev Quick Check
+
+Before creating a Task, OMP TODO, `FILE_SCOPE`, `WRITE_OWNER`, or dispatching an
+Agent for unresolved intake, PM MAY run the read-only Jev precheck:
+
+```bash
+python3 herdr-team/experiments/jev-intake-mvp/jev_intake_mvp.py --quick-check \
+  --user-verbatim "$USER_VERBATIM" \
+  --candidate-action "$CANDIDATE_ACTION" \
+  --pm-interpretation "$PM_INTERPRETATION" \
+  --agent-suggestions "$AGENT_SUGGESTIONS"
+```
+
+The command's stdout is one JSON object; diagnostics are on stderr. Read only
+the JSON fields. Jev is evidence, not authority: ignore any model suggestion
+that conflicts with deterministic checks or this PM contract. All `authority`
+fields must remain `false` and `authority_effect` must remain `NONE`.
+
+Treat `CLARIFY_USER_INTENT`, `FUTURE_SCOPE`, `RESEARCH_CANDIDATE`, `NO_ACTION`,
+missing/invalid responses, API failure, or exit code `6` as non-dispatchable.
+Record the separate source types in Requirement Intake and do not create a
+formal task until the user has explicitly confirmed intent and Requirement
+Mapping is valid. A successful quick-check never changes Intake, Task, Review,
+Gate, ownership, or dispatch state.
+
+Do not pass API keys, raw headers, raw requests, or raw responses as arguments.
+Missing `TYPESAFE_API_KEY` is a safe unavailable result, not authorization.
+
 <!-- END HERDR SLICE 1 REVISION 2: REQUIREMENT INTAKE -->

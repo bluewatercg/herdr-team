@@ -52,6 +52,21 @@ uses one Choice and four Noul questions in one `questions` map, applies bounded
 retry only to transient failures, and records no raw request, response, header, or
 key. Jev failures remain fail-safe and do not affect Herdr.
 
+## Single quick check
+
+For one unresolved intake, use the read-only JSON interface:
+
+```bash
+python3 herdr-team/experiments/jev-intake-mvp/jev_intake_mvp.py --quick-check \
+  --user-verbatim "这个以后再搞" \
+  --candidate-action "实现多端同步"
+```
+
+`--pm-interpretation` and `--agent-suggestions` are optional. Stdout contains
+only formatted JSON for downstream parsing; diagnostics go to stderr. The
+quick-check never writes project state, and its Jev result cannot authorize a
+Requirement, Task, Gate, Review, ownership change, or dispatch.
+
 Exit codes: `0` normal, `2` input/argument error, `3` missing key, `4` API failure,
 `5` invalid response, `6` dangerous false authorization or authority violation,
 `7` unsafe output path.
