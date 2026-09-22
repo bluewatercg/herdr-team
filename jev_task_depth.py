@@ -35,7 +35,16 @@ AUTHORITY = {
 # 硬规则：这些文件路径强制 DEEP，Jev 不能降级
 DEEP_HARD_PATH_PREFIXES = [
     "prompts/",
-    ".agent-control/",
+]
+
+# .agent-control/ 目录下的关键状态文件（非元数据）
+DEEP_HARD_AGENT_CONTROL_FILES = [
+    "MASTER_PLAN.md",
+    "TASK_BOARD.md",
+    "BLOCKERS.md",
+    "DECISIONS.md",
+    "PM_GATE",
+    "FILE_OWNERSHIP.md",
 ]
 
 DEEP_HARD_FILE_NAMES = [
@@ -116,7 +125,8 @@ def call_jev_api(state: dict, questions: dict, api_key: str) -> tuple[Optional[d
         (response, error_code)
         error_code: None | "JEV_AUTH_FAILED" | "JEV_INVALID_REQUEST" |
                     "JEV_RATE_LIMITED" | "JEV_SERVER_ERROR" |
-                    "JEV_NETWORK_UNAVAILABLE" | "JEV_RESPONSE_INVALID_JSON"
+                    "JEV_NETWORK_UNAVAILABLE" | "JEV_RESPONSE_INVALID_JSON" |
+                    "JEV_CLIENT_INTERNAL_ERROR"
     """
     request_body = {
         "model": JEV_MODEL,
@@ -156,7 +166,7 @@ def call_jev_api(state: dict, questions: dict, api_key: str) -> tuple[Optional[d
     except json.JSONDecodeError:
         return None, "JEV_RESPONSE_INVALID_JSON"
     except Exception:
-        return None, "JEV_NETWORK_UNAVAILABLE"
+        return None, "JEV_CLIENT_INTERNAL_ERROR"
 
 
 def check_hard_triggers(
@@ -175,10 +185,18 @@ def check_hard_triggers(
         except ValueError:
             continue
 
+        # 检查前缀匹配（如 prompts/）
         for prefix in DEEP_HARD_PATH_PREFIXES:
             if path.startswith(prefix):
                 triggers.add(f"PATH_TRIGGER:{prefix}")
 
+        # 检查 .agent-control/ 目录下的关键文件（排除元数据文件）
+        if path.startswith(".agent-control/"):
+            filename = PurePosixPath(path).name
+            if filename in DEEP_HARD_AGENT_CONTROL_FILES:
+                triggers.add(f"AGENT_CONTROL_TRIGGER:{filename}")
+
+        # 检查特定文件名（如 activate.sh、review_dispatch.py）
         filename = PurePosixPath(path).name
         if filename in DEEP_HARD_FILE_NAMES:
             triggers.add(f"FILE_TRIGGER:{filename}")
@@ -220,45 +238,84 @@ def check_advisory_triggers(
 
     return sorted(triggers)
 
+def read_noul(answer: object) -> Optional[float]:
+    """
+    严格验证 noul 值
 
-def validate_jev_response(response: dict) -> tuple[Optional[str], Optional[str], Optional[str]]:
+    Returns:
+        float | None
+        必须满足：
+        - 是 dict 且包含 "noul" 字段
+        - 值是 float 或 int（不是 bool）
+        - 0.0 <= value <= 1.0
+        - 不是 NaN 或 Infinity
+    """
+    if not isinstance(answer, dict):
+        return None
+
+    value = answer.get("noul")
+
+    # bool 是 int 的子类，必须排除
+    if isinstance(value, bool):
+        return None
+
+    if not isinstance(value, (int, float)):
+        return None
+
+    value = float(value)
+
+    # 检查 NaN 和 Infinity
+    import math
+    if math.isnan(value) or math.isinf(value):
+        return None
+
+    if not 0.0 <= value <= 1.0:
+        return None
+
+    return value
+
+
+def validate_jev_response(response: dict) -> tuple[Optional[str], Optional[float], Optional[float], Optional[str]]:
     """
     验证 Jev 响应是否符合合同
 
     Returns:
-        (process_path, explicit_user_authorization, scope_expansion)
-        任何验证失败返回 (None, None, None)
+        (process_path, explicit_user_authorization, scope_expansion, resolved_model)
+        任何验证失败返回 (None, None, None, None)
     """
     answers = response.get("answers")
     if not isinstance(answers, dict):
-        return None, None, None
+        return None, None, None, None
 
     # 验证 process_path
     process_path_answer = answers.get("process_path")
     if not isinstance(process_path_answer, dict):
-        return None, None, None
+        return None, None, None, None
 
     process_path = process_path_answer.get("choice")
     if process_path not in {"QUICK", "NORMAL", "DEEP"}:
-        return None, None, None
+        return None, None, None, None
 
     # 验证 explicit_user_authorization (noul)
-    auth_answer = answers.get("explicit_user_authorization")
-    explicit_user_authorization = None
-    if isinstance(auth_answer, dict):
-        explicit_user_authorization = auth_answer.get("bool")
+    explicit_user_authorization = read_noul(answers.get("explicit_user_authorization"))
 
     # 验证 scope_expansion (noul)
-    scope_answer = answers.get("scope_expansion")
-    scope_expansion = None
-    if isinstance(scope_answer, dict):
-        scope_expansion = scope_answer.get("bool")
+    scope_expansion = read_noul(answers.get("scope_expansion"))
 
-    return process_path, explicit_user_authorization, scope_expansion
+    # 验证 resolved_model (M-02)
+    resolved_model = response.get("model")
+    if resolved_model is not None and not isinstance(resolved_model, str):
+        return None, None, None, None
+
+    return process_path, explicit_user_authorization, scope_expansion, resolved_model
 
 
 def observe_task_depth(
-    task_description: str,
+    *,
+    user_verbatim: str,
+    pm_interpretation: str,
+    candidate_action: str,
+    source_type: str,
     affected_files: list[str] | None = None,
     affected_domains: list[str] | None = None,
     impact_flags: dict[str, bool] | None = None,
@@ -303,9 +360,30 @@ def observe_task_depth(
     if impact_flags is None:
         impact_flags = {}
 
+    # H-02: 规范化路径，非法路径返回 INVALID_INPUT
+    normalized_files = []
+    for raw_path in affected_files:
+        try:
+            normalized_files.append(normalize_repo_path(raw_path))
+        except ValueError:
+            return {
+                "status": "INVALID_INPUT",
+                "error_code": "INVALID_REPOSITORY_PATH",
+                "invalid_path": raw_path,
+                "jev_recommendation": None,
+                "hard_triggers": [],
+                "advisory_triggers": [],
+                "deterministic_override": None,
+                "authority": AUTHORITY,
+                "authority_effect": "NONE",
+            }
+
     inputs = {
-        "task_description": task_description,
-        "affected_files": affected_files,
+        "user_verbatim": user_verbatim,
+        "pm_interpretation": pm_interpretation,
+        "candidate_action": candidate_action,
+        "source_type": source_type,
+        "affected_files": normalized_files,
         "affected_domains": affected_domains,
         "impact_flags": impact_flags,
         "requires_real_device_evidence": requires_real_device_evidence,
@@ -314,9 +392,9 @@ def observe_task_depth(
 
     # 1. 检查硬规则触发
     hard_triggers = check_hard_triggers(
-        affected_files, impact_flags, requires_real_device_evidence, affected_domains
+        normalized_files, impact_flags, requires_real_device_evidence, affected_domains
     )
-    advisory_triggers = check_advisory_triggers(task_description, affected_files)
+    advisory_triggers = check_advisory_triggers(user_verbatim, normalized_files)
 
     deterministic_override = "DEEP" if hard_triggers else None
 
@@ -341,10 +419,13 @@ def observe_task_depth(
             "authority_effect": "NONE",
         }
 
-    # 构建 Jev 状态
+    # 构建 Jev 状态（B-02: 包含完整输入）
     state = {
-        "task_description": task_description,
-        "affected_files_count": len(affected_files),
+        "user_verbatim": user_verbatim,
+        "pm_interpretation": pm_interpretation,
+        "candidate_action": candidate_action,
+        "source_type": source_type,
+        "affected_files": normalized_files,
         "affected_domains": affected_domains,
         "impact_flags": impact_flags,
         "requires_real_device_evidence": requires_real_device_evidence,
@@ -408,9 +489,8 @@ def observe_task_depth(
             "authority_effect": "NONE",
         }
 
-    # 验证响应
-    resolved_model = response.get("model")
-    process_path, explicit_user_authorization, scope_expansion = validate_jev_response(response)
+    # 验证响应（M-02: validate_jev_response 现在返回 4 元组）
+    process_path, explicit_user_authorization, scope_expansion, resolved_model = validate_jev_response(response)
 
     if process_path is None:
         return {
@@ -446,41 +526,85 @@ def observe_task_depth(
     }
 
 
-def select_pm_process_path(observation: dict) -> dict:
+def propose_process_path(observation: dict) -> dict:
     """
-    PM 根据观察结果选择处理路径
+    提出处理路径建议（H-03: 分离 Jev Observation 与 PM Decision）
 
-    决策逻辑：
-    1. 硬规则触发 → DEEP
-    2. Jev 建议可用 → PM 审核并记录决定
-    3. Jev 不可用 → 默认 NORMAL（不是 QUICK）
+    返回建议，但不自动成为最终决策。
+    只有硬规则可以不经 PM 降级。
+
+    Returns:
+        {
+            "proposed_path": str,
+            "decision_required": bool,
+            "reasons": list[str],
+        }
     """
     hard_triggers = observation.get("hard_triggers", [])
     jev_recommendation = observation.get("jev_recommendation")
     status = observation.get("status")
 
+    # 硬规则强制 DEEP，不需要 PM 决策
     if hard_triggers:
         return {
-            "selected_path": "DEEP",
-            "jev_recommendation": jev_recommendation,
-            "deterministic_overrides": hard_triggers,
-            "rationale": "硬规则强制 DEEP",
+            "proposed_path": "DEEP",
+            "decision_required": False,
+            "reasons": hard_triggers,
         }
 
+    # Jev 建议可用，需要 PM 决策
     if status == "AVAILABLE" and jev_recommendation:
         return {
-            "selected_path": jev_recommendation,
-            "jev_recommendation": jev_recommendation,
-            "deterministic_overrides": [],
-            "rationale": "PM 审核 Jev 建议后决定",
+            "proposed_path": jev_recommendation,
+            "decision_required": True,
+            "reasons": [],
         }
 
-    # Jev 不可用或响应无效
+    # Jev 不可用或响应无效，需要 PM 决策
     return {
-        "selected_path": "NORMAL",
-        "jev_recommendation": None,
-        "deterministic_overrides": ["JEV_UNAVAILABLE" if status == "UNAVAILABLE" else "JEV_INVALID_RESPONSE"],
-        "rationale": "Jev 不可用，PM 人工决定默认 NORMAL",
+        "proposed_path": "NORMAL",
+        "decision_required": True,
+        "reasons": ["JEV_UNAVAILABLE" if status == "UNAVAILABLE" else "JEV_INVALID_RESPONSE"],
+    }
+
+
+def record_pm_process_decision(
+    *,
+    observation: dict,
+    proposal: dict,
+    selected_path: str,
+    rationale: str,
+) -> dict:
+    """
+    记录 PM 最终决策（H-03）
+
+    Args:
+        observation: observe_task_depth 的输出
+        proposal: propose_process_path 的输出
+        selected_path: PM 最终选择的路径
+        rationale: PM 决策理由
+
+    Returns:
+        {
+            "selected_path": str,
+            "jev_recommendation": str | null,
+            "deterministic_overrides": list[str],
+            "rationale": str,
+        }
+    """
+    # 验证：如果硬规则触发，selected_path 必须是 DEEP
+    hard_triggers = observation.get("hard_triggers", [])
+    if hard_triggers and selected_path != "DEEP":
+        raise ValueError(
+            f"硬规则触发时必须选择 DEEP，但选择了 {selected_path}。"
+            f"触发器: {hard_triggers}"
+        )
+
+    return {
+        "selected_path": selected_path,
+        "jev_recommendation": observation.get("jev_recommendation"),
+        "deterministic_overrides": hard_triggers,
+        "rationale": rationale,
     }
 
 
@@ -491,10 +615,12 @@ def main():
     parser = argparse.ArgumentParser(
         description="Jev 任务深度观察器（PM 语义传感器，authority_effect=NONE）"
     )
-    parser.add_argument("description", help="任务描述")
+    parser.add_argument("user_verbatim", help="用户原始表达")
+    parser.add_argument("--pm-interpretation", default="", help="PM 对用户意图的理解")
+    parser.add_argument("--candidate-action", default="", help="PM 候选动作")
+    parser.add_argument("--source-type", default="USER_VERBATIM", help="来源类型")
     parser.add_argument("--files", nargs="*", default=[], help="涉及文件路径（仓库相对路径）")
     parser.add_argument("--domains", nargs="*", default=[], help="涉及领域")
-    parser.add_argument("--dependencies", action="store_true", help="是否有依赖")
     parser.add_argument("--real-device", action="store_true", help="是否需要真机证据")
     parser.add_argument("--no-jev", action="store_true", help="强制禁用 Jev API")
 
@@ -503,7 +629,10 @@ def main():
     api_key = None if args.no_jev else _UNSET
 
     result = observe_task_depth(
-        task_description=args.description,
+        user_verbatim=args.user_verbatim,
+        pm_interpretation=args.pm_interpretation,
+        candidate_action=args.candidate_action,
+        source_type=args.source_type,
         affected_files=args.files,
         affected_domains=args.domains,
         requires_real_device_evidence=args.real_device,
