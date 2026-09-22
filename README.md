@@ -64,6 +64,19 @@ OMP 使用 `--auto-approve`，Grok 使用 `--always-approve`，Claude 使用 `--
 
 Web 面板使用 Python 标准库并仅绑定 `127.0.0.1`，无需安装 Node 或额外依赖。运行日志写入 `.agent-control/dashboard.log`；动态控制账本和日志不纳入静态发行哈希。
 
+## Jev 任务深度观察
+`jev_task_depth.py` 是 PM 语义传感器，不是授权或派发器；其 `authority` 全部为 `false`，`authority_effect` 固定为 `NONE`。CLI 接受位置参数 `user_verbatim`，以及 `--pm-interpretation`、`--candidate-action`、`--source-type`、`--files`、`--domains`、`--real-device`、`--no-jev`；来源类型必须区分 `USER_VERBATIM`、`PM_INTERPRETATION`、`AGENT_SUGGESTION`、`OPEN_QUESTION`。
+
+```bash
+python3 herdr-team/jev_task_depth.py "用户原始表达" \
+  --pm-interpretation "PM 解释" --candidate-action "候选动作" \
+  --source-type USER_VERBATIM --no-jev
+```
+
+输出状态为 `AVAILABLE`、`UNAVAILABLE`、`INVALID_RESPONSE` 或 `INVALID_INPUT`，包含 `input_sha256`/`input_digest`、模型、建议路径、授权/范围分数、硬/建议触发器和确定性覆盖。`prompts/`、关键 `.agent-control` 控制文件、`activate.sh`、`review_dispatch.py`、真机证据、跨领域或结构化高风险变更强制 `DEEP`；`.agent-control/REVIEW_QUEUE.md` 等元数据时间戳变化不触发硬规则。硬触发时 `propose_process_path()` 只能给出 `DEEP`，最终由 PM 通过 `record_pm_process_decision()` 记录选择；Jev 不创建任务、改变 Gate 或授权。
+
+完整字段和 PM 操作顺序见 [`prompts/pm.md`](prompts/pm.md#jev-任务深度观察pm-语义传感器)。
+
 `preflight.sh` 和 `activate.sh` 是 `lfa-team.sh` 调用的内部脚本，不作为日常入口。
 
 <!-- BEGIN HERDR SLICE 1 REVISION 2: REQUIREMENT INTAKE OVERVIEW -->

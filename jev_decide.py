@@ -18,6 +18,48 @@ from typing import Any
 CONTROL = Path(__file__).resolve().parent / ".agent-control"
 DEFAULT_LOG = CONTROL / "JEV_DECISIONS.jsonl"
 REQUIRED_STRINGS = ("decision_id", "timestamp", "actor", "question", "status")
+ROOT = CONTROL.parent
+
+def _table_rows(text: str, required: set[str]) -> list[dict[str, str]]:
+    rows = []
+    headers = None
+    for line in text.splitlines():
+        if not line.lstrip().startswith("|"):
+            headers = None
+            continue
+        cells = [cell.strip() for cell in line.strip().strip("|").split("|")]
+        if required <= set(cells):
+            headers = cells
+            continue
+        if headers and len(cells) == len(headers) and not all(set(cell) <= {"-", ":", " "} for cell in cells):
+            rows.append(dict(zip(headers, cells)))
+    return rows
+
+
+def _same_path(left: str, right: str) -> bool:
+    return Path(left.removeprefix("herdr-team/")).as_posix() == Path(right.removeprefix("herdr-team/")).as_posix()
+
+
+def validate_authoritative_binding(record: dict[str, Any]) -> None:
+    """生产 writer 只接受控制账本中登记的精确绑定。"""
+    board_rows = _table_rows((ROOT / ".agent-control/TASK_BOARD.md").read_text(encoding="utf-8"), {"PLAN_ID", "DELIVERABLE_ID", "TASK_ID"})
+    binding = next((row for row in board_rows
+                    if row.get("TASK_ID") == record["task_id"]
+                    and row.get("PLAN_ID") == record["plan_id"]
+                    and row.get("DELIVERABLE_ID") == record["deliverable_id"]), None)
+    if binding is None:
+        fail("authorization binding is not registered on TASK_BOARD")
+    ownership_rows = _table_rows((ROOT / ".agent-control/FILE_OWNERSHIP.md").read_text(encoding="utf-8"), {"path", "WRITE_OWNER", "status"})
+    scopes = record["file_scope"] if isinstance(record["file_scope"], list) else [record["file_scope"]]
+    for scope in scopes:
+        if not isinstance(scope, str) or not scope.strip():
+            fail("file_scope entries must be non-empty strings")
+        if not any(_same_path(row.get("path", ""), scope)
+                   and row.get("status", "").upper() == "ACTIVE"
+                   and row.get("WRITE_OWNER", "").split("(", 1)[0].startswith("lfa-")
+                   for row in ownership_rows):
+            fail(f"file_scope is not ACTIVE in FILE_OWNERSHIP: {scope}")
+
 RESULTS = {"APPROVED", "REJECTED", "MODIFIED"}
 
 
@@ -40,12 +82,7 @@ def validate_record(value: object) -> dict[str, Any]:
     if record["decision"].get("result") not in RESULTS:
         fail("decision.result must be APPROVED, REJECTED, or MODIFIED")
     auth = record["authorization"]
-    expected = {
-        "status": "AUTHORIZED_FOR_HANDOFF",
-        "granted_by": "lfa-pm",
-        "recipient": "lfa-start",
-    }
-    for key, expected_value in expected.items():
+    for key, expected_value in {"status": "AUTHORIZED_FOR_HANDOFF", "granted_by": "lfa-pm", "recipient": "lfa-start"}.items():
         if auth.get(key) != expected_value:
             fail(f"authorization.{key} must be {expected_value}")
     for key in ("task_id", "plan_id", "deliverable_id", "file_scope"):
@@ -60,9 +97,12 @@ def validate_record(value: object) -> dict[str, Any]:
     return record
 
 
-def append_record(record: dict[str, Any], path: Path = DEFAULT_LOG) -> str:
+def append_record(record: dict[str, Any], path: Path = DEFAULT_LOG, *, allow_test_path: bool = False) -> str:
     record = validate_record(record)
-    path.parent.mkdir(parents=True, exist_ok=True)
+    if path.resolve() == DEFAULT_LOG.resolve():
+        validate_authoritative_binding(record)
+    elif not allow_test_path:
+        raise ValueError("decision log must be .agent-control/JEV_DECISIONS.jsonl")
     encoded = (json.dumps(record, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
     with path.open("a+b") as handle:
         fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
@@ -93,15 +133,14 @@ def append_record(record: dict[str, Any], path: Path = DEFAULT_LOG) -> str:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Append one authorized Jev/PM decision event")
     parser.add_argument("--input", type=Path, help="JSON record path; stdin when omitted")
-    parser.add_argument("--log", type=Path, default=DEFAULT_LOG)
     args = parser.parse_args(argv)
     try:
         raw = args.input.read_text(encoding="utf-8") if args.input else sys.stdin.read()
-        result = append_record(json.loads(raw), args.log)
+        result = append_record(json.loads(raw))
     except (OSError, json.JSONDecodeError, ValueError) as error:
         print(f"jev_decide: {error}", file=sys.stderr)
         return 2
-    print(json.dumps({"status": result, "path": str(args.log)}, ensure_ascii=False))
+    print(json.dumps({"status": result, "path": str(DEFAULT_LOG)}, ensure_ascii=False))
     return 0
 
 
@@ -118,11 +157,11 @@ def self_test() -> None:
     }
     with tempfile.TemporaryDirectory() as directory:
         path = Path(directory) / "decisions.jsonl"
-        assert append_record(base, path) != "IDEMPOTENT"
-        assert append_record(base, path) == "IDEMPOTENT"
+        assert append_record(base, path, allow_test_path=True) != "IDEMPOTENT"
+        assert append_record(base, path, allow_test_path=True) == "IDEMPOTENT"
         changed = {**base, "decision": {**base["decision"], "reason": "changed"}}
         try:
-            append_record(changed, path)
+            append_record(changed, path, allow_test_path=True)
         except ValueError:
             pass
         else:
@@ -137,12 +176,11 @@ def self_test() -> None:
         corrupted = Path(directory) / "corrupted.jsonl"
         corrupted.write_text("{broken\n", encoding="utf-8")
         try:
-            append_record({**base, "decision_id": "JEV-TEST-3"}, corrupted)
+            append_record({**base, "decision_id": "JEV-TEST-3"}, corrupted, allow_test_path=True)
         except ValueError:
             pass
         else:
             raise AssertionError("corrupted log was appended")
-
 
 if __name__ == "__main__":
     if len(sys.argv) == 2 and sys.argv[1] == "--self-test":

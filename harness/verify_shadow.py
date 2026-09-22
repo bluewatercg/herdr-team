@@ -5,7 +5,9 @@ from __future__ import annotations
 import hashlib
 import itertools
 import json
+import os
 import sys
+import tempfile
 from pathlib import Path
 
 from shadow import (
@@ -27,13 +29,47 @@ REPO = Path(__file__).resolve().parents[2]
 PACKAGE = REPO / "herdr-team/herdr-team-remediation-v1.3"
 FIXTURES = PACKAGE / "04_fixtures"
 CONTRACTS = PACKAGE / "01_contracts"
-QR_EVIDENCE = REPO / "herdr-team/.agent-control/EVIDENCE/QR-ANDROID-01-D01.json"
+QR_EVIDENCE = REPO / "herdr-team/.agent-control/EVIDENCE/QR-ANDROID-DEVICE-R03.json"
+R03_INPUTS = REPO / "herdr-team/.agent-control/MACHINE/HARNESS-VERIFICATION-SHADOW/qr-android-r03-inputs.json"
 OUTPUT = REPO / "herdr-team/.agent-control/MACHINE/HARNESS-VERIFICATION-SHADOW/qr-android-projection.json"
-QR_SHA256 = "34ff8fac1e19d73225ca0ac395fa82c1504457977de953df0ddeb95cf22f29a3"
+QR_SHA256 = "7cc1adfa48c948710755ba8a19cc131098aab1ba0a9c941206f9088a57b8468b"
 
 
 def load(path: Path):
   return json.loads(path.read_text(encoding="utf-8"))
+
+
+def _write_projection(projection: dict, output: Path) -> dict:
+  """Atomically persist only a validated reducer projection."""
+  errors = validate_schema(projection, schema("dashboard-projection.schema.json"))
+  if errors:
+    raise ValueError("INVALID_PROJECTION_SCHEMA: " + "; ".join(errors))
+  if projection["acceptance_status"] == "PASS":
+    raise ValueError("PROJECTION_ACCEPTANCE_PASS_FORBIDDEN")
+  if "formal_reporting_allowed" in projection and projection["formal_reporting_allowed"] is not False:
+    raise ValueError("FORMAL_REPORTING_FORBIDDEN")
+  serialized = json.dumps(projection, ensure_ascii=False, indent=2) + "\n"
+  output.parent.mkdir(parents=True, exist_ok=True)
+  temporary: Path | None = None
+  try:
+    with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=output.parent, prefix=f".{output.name}.", delete=False) as handle:
+      temporary = Path(handle.name)
+      handle.write(serialized)
+      handle.flush()
+      os.fsync(handle.fileno())
+    os.replace(temporary, output)
+    temporary = None
+    readback = load(output)
+    if readback != projection or json.dumps(readback, ensure_ascii=False, indent=2) + "\n" != serialized:
+      raise ValueError("PROJECTION_READBACK_MISMATCH")
+    return readback
+  finally:
+    if temporary is not None:
+      temporary.unlink(missing_ok=True)
+
+
+def write_projection(projection: dict) -> dict:
+  return _write_projection(projection, OUTPUT)
 
 
 def schema(name: str) -> dict:
@@ -163,53 +199,47 @@ def qr_smoke() -> dict:
   value = json.loads(raw)
   classification, evidence_id, reason_codes = classify_record(value)
   assert classification == "NOT_READY"
-  assert evidence_id == "LEGACY:QR-ANDROID-01-D01"
+  assert evidence_id == "LEGACY:QR-ANDROID-DEVICE-R03"
   assert reason_codes == ["DEVICE_EVIDENCE_PENDING"]
 
-  event = fixture("events/qr-android-evidence-observed.json")
-  assert event["subject_revision"] == "sha256:" + QR_SHA256
-  assert event["payload"]["classification"] == classification
-  assert event["payload"]["evidence_id"] == evidence_id
-  assert event["payload"]["reason_codes"] == reason_codes
-  assert sha256_jcs(event["payload"]) == event["payload_digest"]
-
-  projection = {
-    "schema_version": "herdr-dashboard-projection/1.3",
-    "task_id": value["task_id"],
-    "subject_revision": "sha256:" + QR_SHA256,
-    "ingestion_status": "VALID",
-    "evidence_status": classification,
-    "acceptance_status": "UNVERIFIED",
-    "criteria": [{
-      "criterion_id": "DEVICE_EVIDENCE",
-      "required": True,
-      "status": "UNVERIFIED",
-      "generation": None,
-      "selected_event_id": None,
-      "superseded_event_ids": [],
-      "evidence_refs": [evidence_id],
-      "reason_codes": reason_codes,
-    }],
-    "diagnostics": [{
-      "source_ref": "herdr-team/.agent-control/EVIDENCE/QR-ANDROID-01-D01.json",
-      "code": "SUBMISSION_NOT_READY",
-    }],
-    "generated_from_event_digest": hashlib.sha256(
-      f"{event['event_id']}  {event['payload_digest']}\n".encode()
-    ).hexdigest(),
-    "reducer_version": "shadow-reducer/1.0",
-  }
-  assert projection == fixture("projection/qr-android-real-not-ready.json")
-  assert not validate_schema(projection, schema("dashboard-projection.schema.json"))
-  assert projection["acceptance_status"] == "UNVERIFIED"
-  assert projection["evidence_status"] == "NOT_READY"
+  inputs = load(R03_INPUTS)
+  reduced = project(
+    inputs["registry"],
+    inputs["events"],
+    inputs["evidence_index"],
+    **inputs["project_arguments"],
+  )
+  assert reduced == load(OUTPUT)
+  assert reduced["subject_revision"] == "sha256:216f8f35af950f475b16991ef7685c8617404668dad17e9dbc1a30b920e36aab"
+  assert reduced["evidence_status"] == "NOT_READY"
+  assert reduced["acceptance_status"] == "UNVERIFIED"
+  assert reduced["criteria"][0]["evidence_refs"] == [evidence_id]
+  assert reduced["criteria"][0]["reason_codes"] == reason_codes
   assert value["formal_reporting_allowed"] is False
-  OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-  OUTPUT.write_text(json.dumps(projection, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-  readback = load(OUTPUT)
-  assert readback == projection
-  assert readback["acceptance_status"] != "PASS"
-  return readback
+  with tempfile.TemporaryDirectory() as directory:
+    original_output = globals()["OUTPUT"]
+    globals()["OUTPUT"] = Path(directory) / "projection.json"
+    try:
+      readback = write_projection(reduced)
+      assert readback == reduced
+      test_output = globals()["OUTPUT"]
+      test_output.write_text("sentinel\n", encoding="utf-8")
+      before = test_output.read_bytes()
+      for rejected in (
+        {**reduced, "acceptance_status": "PASS"},
+        {**reduced, "formal_reporting_allowed": True},
+        {**reduced, "criteria": []},
+      ):
+        try:
+          write_projection(rejected)
+        except ValueError:
+          pass
+        else:
+          raise AssertionError("invalid projection was accepted")
+        assert test_output.read_bytes() == before
+    finally:
+      globals()["OUTPUT"] = original_output
+  return reduced
 
 
 def main() -> int:

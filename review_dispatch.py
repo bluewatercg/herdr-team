@@ -75,8 +75,24 @@ def discover_evidence(root, state):
         required = ('task_id', 'plan_id', 'deliverable_id', 'status', 'write_owner')
         if any(not evidence.get(name) for name in required) or evidence['status'] not in EVIDENCE_READY:
             continue
+        source_refs = evidence.get('source_references')
+        if (not isinstance(source_refs, list)
+                or not source_refs
+                or any(not isinstance(ref, str) or not ref.strip() for ref in source_refs)):
+            continue
         matches = [row for row in rows if row.get('TASK_ID') == evidence['task_id']]
         if len(matches) != 1 or matches[0].get('PLAN_ID') != evidence['plan_id'] or matches[0].get('DELIVERABLE_ID') != evidence['deliverable_id']:
+            continue
+        source_hashes = {}
+        try:
+            for ref in source_refs:
+                name, separator, fragment = ref.partition('#')
+                file_hash(root, name)
+                content = (root / name).read_bytes()
+                if separator and (not fragment or heading_slug(unquote(fragment)) not in heading_ids(content.decode('utf-8'))):
+                    raise ValueError('invalid source fragment')
+                source_hashes[name] = hashlib.sha256(content).hexdigest()
+        except (OSError, ValueError, UnicodeDecodeError):
             continue
         content = path.read_bytes()
         sha256, size = hashlib.sha256(content).hexdigest(), len(content)
@@ -101,7 +117,7 @@ def discover_evidence(root, state):
         envelope = {'task_id': evidence['task_id'], 'plan_id': evidence['plan_id'],
                     'deliverable_id': evidence['deliverable_id'],
                     'requirement_ids': [v.strip() for v in matches[0].get('REQUIREMENT_IDS', '').split(',') if v.strip()],
-                    'source_references': [], 'artifacts': manifest, 'source_hashes': {},
+                    'source_references': source_refs, 'artifacts': manifest, 'source_hashes': source_hashes,
                     'review_role': 'lfa-review', 'author_role': evidence['write_owner'],
                     'evidence_sha256': sha256, 'evidence_bytes': size}
         state['submissions'][key] = {'envelope': envelope, 'phase': 'AUTHOR_COMPLETE',
@@ -563,7 +579,8 @@ def self_test():
         (root / 'artifact.txt').write_text('revision one')
         artifact_sha = file_hash(root, 'artifact.txt')
         evidence = {'task_id': 'T', 'plan_id': 'P', 'deliverable_id': 'D',
-                    'requirement_ids': ['R'], 'write_owner': 'lfa-api',
+                    'requirement_ids': ['R'], 'source_references': ['herdr-team/.agent-control/TASK_BOARD.md'],
+                    'write_owner': 'lfa-api',
                     'status': 'IMPLEMENTED_PENDING_REVIEW',
                     'implementation_files': [{'path': 'artifact.txt', 'sha256': artifact_sha}]}
         evidence_path = control / 'EVIDENCE/D.json'

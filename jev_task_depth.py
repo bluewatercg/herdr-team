@@ -78,6 +78,7 @@ DEEP_ADVISORY_KEYWORDS = [
 
 # Sentinel for api_key parameter
 _UNSET = object()
+SOURCE_TYPES = {"USER_VERBATIM", "PM_INTERPRETATION", "AGENT_SUGGESTION", "OPEN_QUESTION"}
 
 
 def normalize_repo_path(raw: str) -> str:
@@ -360,6 +361,19 @@ def observe_task_depth(
     if impact_flags is None:
         impact_flags = {}
 
+    if not isinstance(source_type, str) or source_type not in SOURCE_TYPES:
+        return {
+            "status": "INVALID_INPUT",
+            "error_code": "INVALID_SOURCE_TYPE",
+            "source_type": source_type,
+            "jev_recommendation": None,
+            "hard_triggers": [],
+            "advisory_triggers": [],
+            "deterministic_override": None,
+            "authority": AUTHORITY,
+            "authority_effect": "NONE",
+        }
+
     # H-02: 规范化路径，非法路径返回 INVALID_INPUT
     normalized_files = []
     for raw_path in affected_files:
@@ -575,36 +589,25 @@ def record_pm_process_decision(
     selected_path: str,
     rationale: str,
 ) -> dict:
-    """
-    记录 PM 最终决策（H-03）
-
-    Args:
-        observation: observe_task_depth 的输出
-        proposal: propose_process_path 的输出
-        selected_path: PM 最终选择的路径
-        rationale: PM 决策理由
-
-    Returns:
-        {
-            "selected_path": str,
-            "jev_recommendation": str | null,
-            "deterministic_overrides": list[str],
-            "rationale": str,
-        }
-    """
-    # 验证：如果硬规则触发，selected_path 必须是 DEEP
+    """记录 PM 最终决策；Jev 观察本身不产生授权。"""
+    if selected_path not in {"QUICK", "NORMAL", "DEEP"}:
+        raise ValueError("selected_path must be QUICK, NORMAL, or DEEP")
+    if not isinstance(rationale, str) or not rationale.strip():
+        raise ValueError("rationale must be non-empty")
+    if not isinstance(proposal, dict) or proposal.get("proposed_path") not in {"QUICK", "NORMAL", "DEEP"}:
+        raise ValueError("proposal must contain a valid proposed_path")
+    if not isinstance(proposal.get("decision_required"), bool):
+        raise ValueError("proposal.decision_required must be boolean")
     hard_triggers = observation.get("hard_triggers", [])
     if hard_triggers and selected_path != "DEEP":
-        raise ValueError(
-            f"硬规则触发时必须选择 DEEP，但选择了 {selected_path}。"
-            f"触发器: {hard_triggers}"
-        )
-
+        raise ValueError(f"硬规则触发时必须选择 DEEP，但选择了 {selected_path}。触发器: {hard_triggers}")
+    if hard_triggers and proposal.get("proposed_path") != "DEEP":
+        raise ValueError("proposal must preserve deterministic DEEP override")
     return {
         "selected_path": selected_path,
         "jev_recommendation": observation.get("jev_recommendation"),
         "deterministic_overrides": hard_triggers,
-        "rationale": rationale,
+        "rationale": rationale.strip(),
     }
 
 

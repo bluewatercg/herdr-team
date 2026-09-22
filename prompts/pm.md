@@ -190,25 +190,36 @@ PM 结合本地硬规则作出最终决定。
 ### 调用方式
 
 ```bash
-python3 herdr-team/jev_task_depth.py "任务描述" \
+python3 herdr-team/jev_task_depth.py "用户原始表达" \
+  --pm-interpretation "PM 对意图的解释" \
+  --candidate-action "候选动作" \
+  --source-type USER_VERBATIM \
   --files path/to/file1 path/to/file2 \
   --domains android api \
-  --dependencies \
   --real-device
 ```
+
+`--source-type` 只能是 `USER_VERBATIM`、`PM_INTERPRETATION`、`AGENT_SUGGESTION` 或 `OPEN_QUESTION`；四类来源必须分开记录，不能把推断或建议冒充用户原话。
 
 ### 输出格式
 
 ```json
 {
-  "status": "AVAILABLE | UNAVAILABLE | NOT_RUN",
-  "input_digest": "sha256前16位",
+  "status": "AVAILABLE | UNAVAILABLE | INVALID_RESPONSE | INVALID_INPUT",
+  "input_sha256": "完整 SHA-256",
+  "input_digest": "SHA-256 前 16 位",
+  "requested_model": "jev-latest",
+  "resolved_model": "模型名或 null",
   "jev_recommendation": "QUICK | NORMAL | DEEP | null",
-  "hard_triggers": ["PATH_TRIGGER:prompts/", "REAL_DEVICE_EVIDENCE"],
+  "explicit_user_authorization": "0.0..1.0 或 null",
+  "scope_expansion": "0.0..1.0 或 null",
+  "hard_triggers": [],
+  "advisory_triggers": [],
   "deterministic_override": "DEEP | null",
   "authority_effect": "NONE"
 }
 ```
+
 
 ### PM 决策流程
 
@@ -225,9 +236,8 @@ else:
     selected_path = "NORMAL"  # Jev 不可用时默认 NORMAL，不是 QUICK
 ```
 
-### 硬规则触发条件（强制 DEEP）
-
-- 修改 `prompts/**`、`.agent-control/**`、`activate.sh`、`review_dispatch.py`
+- 修改 `prompts/**`、`.agent-control/MASTER_PLAN.md`、`.agent-control/TASK_BOARD.md`、`.agent-control/BLOCKERS.md`、`.agent-control/DECISIONS.md`、`.agent-control/PM_GATE`、`.agent-control/FILE_OWNERSHIP.md`、`activate.sh`、`review_dispatch.py`
+- `.agent-control/REVIEW_QUEUE.md` 等元数据文件的时间戳变化不触发硬规则
 - 涉及 schema、wire、secret、hook、migration、authority、gate、role_definition
 - 需要真实设备证据
 - 跨多个领域（android + api + ios）
@@ -237,8 +247,8 @@ else:
 PM 决策和 Jev 观察分开保存：
 
 ```yaml
-JEV_OBSERVATION:
-  status: AVAILABLE | UNAVAILABLE | NOT_RUN
+  status: AVAILABLE | UNAVAILABLE | INVALID_RESPONSE | INVALID_INPUT
+  input_sha256: <完整 SHA-256>
   input_digest: <sha256前16位>
   jev_recommendation: QUICK | NORMAL | DEEP | null
   hard_triggers: []

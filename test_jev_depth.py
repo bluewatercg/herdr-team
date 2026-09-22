@@ -231,6 +231,17 @@ class TestObserveTaskDepth(unittest.TestCase):
         )
         self.assertEqual(result["status"], "INVALID_INPUT")
         self.assertEqual(result["error_code"], "INVALID_REPOSITORY_PATH")
+    def test_invalid_source_type_returns_invalid_input(self):
+        """非法来源类型返回 INVALID_INPUT"""
+        result = observe_task_depth(
+            user_verbatim="测试",
+            pm_interpretation="测试任务",
+            candidate_action="执行测试",
+            source_type="INVENTED_SOURCE",
+            api_key=None,
+        )
+        self.assertEqual(result["status"], "INVALID_INPUT")
+        self.assertEqual(result["error_code"], "INVALID_SOURCE_TYPE")
 
     @patch("jev_task_depth.call_jev_api")
     def test_mock_quick_response(self, mock_call):
