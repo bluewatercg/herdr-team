@@ -1,144 +1,312 @@
 #!/usr/bin/env python3
-"""测试 Jev 任务深度观察器（PM 语义传感器）"""
+"""Jev 任务深度观察器测试 - PM 语义传感器"""
 
-import sys
 import json
-from pathlib import Path
+import os
+import sys
+import unittest
+from unittest.mock import patch
 
-sys.path.insert(0, str(Path(__file__).parent))
-
-from jev_task_depth import observe_task_depth
-
-
-def test_simple_task():
-    """简单任务：无硬触发，Jev 不可用时返回 null"""
-    result = observe_task_depth(
-        task_description="修改配置文件",
-        affected_files=["config.txt"],
-        affected_domains=["android"],
-    )
-
-    assert result["status"] == "UNAVAILABLE", "无 API Key 时应为 UNAVAILABLE"
-    assert result["jev_recommendation"] is None
-    assert result["hard_triggers"] == []
-    assert result["deterministic_override"] is None
-    assert result["authority_effect"] == "NONE"
-    assert len(result["input_digest"]) == 16
-    print("✓ 简单任务：无硬触发，authority_effect=NONE")
+# 导入被测模块
+from jev_task_depth import (
+    observe_task_depth,
+    select_pm_process_path,
+    normalize_repo_path,
+    check_hard_triggers,
+    validate_jev_response,
+    AUTHORITY,
+)
 
 
-def test_prompt_file_forces_deep():
-    """修改 prompts/** 强制 DEEP"""
-    result = observe_task_depth(
-        task_description="修改 PM prompt",
-        affected_files=["prompts/pm.md"],
-    )
+class TestNormalizeRepoPath(unittest.TestCase):
+    """测试路径规范化"""
 
-    assert "PATH_TRIGGER:prompts/" in result["hard_triggers"]
-    assert result["deterministic_override"] == "DEEP"
-    assert result["authority_effect"] == "NONE"
-    print("✓ prompts/** 强制 DEEP，Jev 不能降级")
+    def test_simple_path(self):
+        """简单路径"""
+        self.assertEqual(normalize_repo_path("prompts/pm.md"), "prompts/pm.md")
 
+    def test_dot_slash_prefix(self):
+        """移除 ./ 前缀"""
+        self.assertEqual(normalize_repo_path("./prompts/pm.md"), "prompts/pm.md")
 
-def test_agent_control_forces_deep():
-    """修改 .agent-control/** 强制 DEEP"""
-    result = observe_task_depth(
-        task_description="修改任务板",
-        affected_files=[".agent-control/TASK_BOARD.md"],
-    )
+    def test_backslash_to_slash(self):
+        """Windows 路径转换"""
+        self.assertEqual(normalize_repo_path("prompts\\pm.md"), "prompts/pm.md")
 
-    assert "PATH_TRIGGER:.agent-control/" in result["hard_triggers"]
-    assert result["deterministic_override"] == "DEEP"
-    print("✓ .agent-control/** 强制 DEEP")
+    def test_absolute_path_rejected(self):
+        """拒绝绝对路径"""
+        with self.assertRaises(ValueError):
+            normalize_repo_path("/etc/passwd")
 
-
-def test_schema_keyword_forces_deep():
-    """涉及 schema 关键词强制 DEEP"""
-    result = observe_task_depth(
-        task_description="修改 schema 定义",
-        affected_files=["src/model.py"],
-    )
-
-    assert "KEYWORD_TRIGGER:schema" in result["hard_triggers"]
-    assert result["deterministic_override"] == "DEEP"
-    print("✓ schema 关键词强制 DEEP")
+    def test_path_escape_rejected(self):
+        """拒绝路径逃逸"""
+        with self.assertRaises(ValueError):
+            normalize_repo_path("../etc/passwd")
 
 
-def test_real_device_forces_deep():
-    """需要真机证据强制 DEEP"""
-    result = observe_task_depth(
-        task_description="测试相机功能",
-        affected_files=["CameraActivity.java"],
-        requires_real_device_evidence=True,
-    )
+class TestHardTriggers(unittest.TestCase):
+    """测试硬规则触发器"""
 
-    assert "REAL_DEVICE_EVIDENCE" in result["hard_triggers"]
-    assert result["deterministic_override"] == "DEEP"
-    print("✓ 真机证据强制 DEEP")
+    def test_prompts_path_trigger(self):
+        """prompts/ 路径触发"""
+        triggers = check_hard_triggers(["prompts/pm.md"], {}, False, [])
+        self.assertIn("PATH_TRIGGER:prompts/", triggers)
 
+    def test_agent_control_trigger(self):
+        """.agent-control/ 路径触发"""
+        triggers = check_hard_triggers([".agent-control/TASK_BOARD.md"], {}, False, [])
+        self.assertIn("PATH_TRIGGER:.agent-control/", triggers)
 
-def test_cross_domain_forces_deep():
-    """跨领域强制 DEEP"""
-    result = observe_task_depth(
-        task_description="跨平台修改",
-        affected_domains=["android", "api"],
-    )
+    def test_impact_flag_trigger(self):
+        """结构化标志触发"""
+        triggers = check_hard_triggers([], {"changes_schema": True}, False, [])
+        self.assertIn("IMPACT_FLAG:changes_schema", triggers)
 
-    assert "CROSS_DOMAIN" in result["hard_triggers"]
-    assert result["deterministic_override"] == "DEEP"
-    print("✓ 跨领域强制 DEEP")
+    def test_real_device_trigger(self):
+        """真机证据触发"""
+        triggers = check_hard_triggers([], {}, True, [])
+        self.assertIn("REAL_DEVICE_EVIDENCE", triggers)
 
+    def test_cross_domain_trigger(self):
+        """跨领域触发"""
+        triggers = check_hard_triggers([], {}, False, ["android", "api"])
+        self.assertIn("CROSS_DOMAIN", triggers)
 
-def test_jev_unavailable_no_quik_default():
-    """Jev 不可用时不默认 QUICK"""
-    result = observe_task_depth(
-        task_description="简单任务",
-        affected_files=["readme.txt"],
-    )
+    def test_single_domain_no_trigger(self):
+        """单领域不触发"""
+        triggers = check_hard_triggers([], {}, False, ["android"])
+        self.assertNotIn("CROSS_DOMAIN", triggers)
 
-    assert result["status"] == "UNAVAILABLE"
-    assert result["jev_recommendation"] is None
-    # PM 应该默认 NORMAL，不是 QUICK
-    print("✓ Jev 不可用时返回 null，PM 默认 NORMAL（不是 QUICK）")
-
-
-def test_authority_always_none():
-    """所有场景 authority_effect 都是 NONE"""
-    scenarios = [
-        {"task_description": "简单任务", "affected_files": ["a.txt"]},
-        {"task_description": "修改 prompt", "affected_files": ["prompts/pm.md"]},
-        {"task_description": "跨领域", "affected_domains": ["android", "api"]},
-    ]
-
-    for s in scenarios:
-        result = observe_task_depth(**s)
-        assert result["authority_effect"] == "NONE", f"authority_effect 必须是 NONE: {s}"
-
-    print("✓ 所有场景 authority_effect=NONE")
+    def test_triggers_sorted_unique(self):
+        """触发器排序且去重"""
+        triggers = check_hard_triggers(
+            ["prompts/pm.md", "prompts/start.md"], {}, False, []
+        )
+        self.assertEqual(triggers, ["PATH_TRIGGER:prompts/"])
 
 
-def main():
-    print("=" * 60)
-    print("Jev 任务深度观察器测试（PM 语义传感器）")
-    print("=" * 60)
+class TestValidateJevResponse(unittest.TestCase):
+    """测试 Jev 响应验证"""
 
-    tests = [
-        test_simple_task,
-        test_prompt_file_forces_deep,
-        test_agent_control_forces_deep,
-        test_schema_keyword_forces_deep,
-        test_real_device_forces_deep,
-        test_cross_domain_forces_deep,
-        test_jev_unavailable_no_quik_default,
-        test_authority_always_none,
-    ]
+    def test_valid_response(self):
+        """有效响应"""
+        response = {
+            "model": "jev-1.13.0",
+            "answers": {
+                "process_path": {"choice": "NORMAL"},
+                "explicit_user_authorization": {"bool": 0.9},
+                "scope_expansion": {"bool": 0.1},
+            },
+        }
+        path, auth, scope = validate_jev_response(response)
+        self.assertEqual(path, "NORMAL")
+        self.assertEqual(auth, 0.9)
+        self.assertEqual(scope, 0.1)
 
-    for t in tests:
-        t()
+    def test_invalid_choice(self):
+        """无效 choice 值"""
+        response = {
+            "answers": {
+                "process_path": {"choice": "INVALID"},
+            }
+        }
+        path, _, _ = validate_jev_response(response)
+        self.assertIsNone(path)
 
-    print("=" * 60)
-    print("✓ 所有测试通过")
+    def test_missing_answers(self):
+        """缺少 answers 字段"""
+        response = {"model": "jev-1.13.0"}
+        path, _, _ = validate_jev_response(response)
+        self.assertIsNone(path)
+
+    def test_empty_answers(self):
+        """空 answers"""
+        response = {"answers": {}}
+        path, _, _ = validate_jev_response(response)
+        self.assertIsNone(path)
+
+    def test_missing_choice_field(self):
+        """缺少 choice 字段"""
+        response = {"answers": {"process_path": {"confidence": 0.8}}}
+        path, _, _ = validate_jev_response(response)
+        self.assertIsNone(path)
+
+
+class TestObserveTaskDepth(unittest.TestCase):
+    """测试观察函数"""
+
+    def test_no_api_key_returns_unavailable(self):
+        """无 API Key 返回 UNAVAILABLE"""
+        result = observe_task_depth(
+            task_description="简单任务",
+            affected_files=["test.txt"],
+            api_key=None,
+        )
+        self.assertEqual(result["status"], "UNAVAILABLE")
+        self.assertIsNone(result["jev_recommendation"])
+        self.assertEqual(result["authority_effect"], "NONE")
+
+    def test_hard_triggers_force_deep(self):
+        """硬规则强制 DEEP"""
+        result = observe_task_depth(
+            task_description="修改 prompt",
+            affected_files=["prompts/pm.md"],
+            api_key=None,
+        )
+        self.assertIn("PATH_TRIGGER:prompts/", result["hard_triggers"])
+        self.assertEqual(result["deterministic_override"], "DEEP")
+
+    def test_authority_always_false(self):
+        """Authority 始终为 False"""
+        result = observe_task_depth(
+            task_description="测试",
+            api_key=None,
+        )
+        for key, value in result["authority"].items():
+            self.assertFalse(value, f"{key} 应为 False")
+
+    def test_input_sha256_full_length(self):
+        """SHA-256 完整长度"""
+        result = observe_task_depth(
+            task_description="测试",
+            api_key=None,
+        )
+        self.assertEqual(len(result["input_sha256"]), 64)
+        self.assertEqual(len(result["input_digest"]), 16)
+
+    def test_requested_model_present(self):
+        """requested_model 存在"""
+        result = observe_task_depth(
+            task_description="测试",
+            api_key=None,
+        )
+        self.assertEqual(result["requested_model"], "jev-latest")
+
+    @patch("jev_task_depth.call_jev_api")
+    def test_mock_quick_response(self, mock_call):
+        """Mock QUICK 响应"""
+        mock_call.return_value = (
+            {
+                "model": "jev-1.13.0",
+                "answers": {
+                    "process_path": {"choice": "QUICK"},
+                    "explicit_user_authorization": {"bool": 0.95},
+                    "scope_expansion": {"bool": 0.05},
+                },
+            },
+            None,
+        )
+
+        result = observe_task_depth(
+            task_description="简单修复",
+            affected_files=["src/fix.py"],
+            api_key="test-key",
+        )
+
+        self.assertEqual(result["status"], "AVAILABLE")
+        self.assertEqual(result["jev_recommendation"], "QUICK")
+        self.assertEqual(result["resolved_model"], "jev-1.13.0")
+
+    @patch("jev_task_depth.call_jev_api")
+    def test_mock_invalid_response(self, mock_call):
+        """Mock 无效响应"""
+        mock_call.return_value = (
+            {
+                "answers": {"process_path": {"choice": "INVALID"}},
+            },
+            None,
+        )
+
+        result = observe_task_depth(
+            task_description="测试",
+            api_key="test-key",
+        )
+
+        self.assertEqual(result["status"], "INVALID_RESPONSE")
+        self.assertIsNone(result["jev_recommendation"])
+
+    @patch("jev_task_depth.call_jev_api")
+    def test_mock_api_error(self, mock_call):
+        """Mock API 错误"""
+        mock_call.return_value = (None, "JEV_RATE_LIMITED")
+
+        result = observe_task_depth(
+            task_description="测试",
+            api_key="test-key",
+        )
+
+        self.assertEqual(result["status"], "UNAVAILABLE")
+        self.assertEqual(result["error_code"], "JEV_RATE_LIMITED")
+
+
+class TestSelectPmProcessPath(unittest.TestCase):
+    """测试 PM 决策函数"""
+
+    def test_hard_triggers_force_deep(self):
+        """硬规则强制 DEEP"""
+        observation = {
+            "status": "AVAILABLE",
+            "jev_recommendation": "QUICK",
+            "hard_triggers": ["PATH_TRIGGER:prompts/"],
+        }
+        decision = select_pm_process_path(observation)
+        self.assertEqual(decision["selected_path"], "DEEP")
+        self.assertEqual(decision["jev_recommendation"], "QUICK")
+
+    def test_jev_available_uses_recommendation(self):
+        """Jev 可用时使用建议"""
+        observation = {
+            "status": "AVAILABLE",
+            "jev_recommendation": "NORMAL",
+            "hard_triggers": [],
+        }
+        decision = select_pm_process_path(observation)
+        self.assertEqual(decision["selected_path"], "NORMAL")
+
+    def test_jev_unavailable_defaults_normal(self):
+        """Jev 不可用默认 NORMAL"""
+        observation = {
+            "status": "UNAVAILABLE",
+            "jev_recommendation": None,
+            "hard_triggers": [],
+        }
+        decision = select_pm_process_path(observation)
+        self.assertEqual(decision["selected_path"], "NORMAL")
+        self.assertIn("JEV_UNAVAILABLE", decision["deterministic_overrides"])
+
+    def test_invalid_response_defaults_normal(self):
+        """无效响应默认 NORMAL"""
+        observation = {
+            "status": "INVALID_RESPONSE",
+            "jev_recommendation": None,
+            "hard_triggers": [],
+        }
+        decision = select_pm_process_path(observation)
+        self.assertEqual(decision["selected_path"], "NORMAL")
+        self.assertIn("JEV_INVALID_RESPONSE", decision["deterministic_overrides"])
+
+
+class TestEnvironmentIsolation(unittest.TestCase):
+    """测试环境隔离"""
+
+    def test_no_env_var_no_api_call(self):
+        """无环境变量不调用 API"""
+        with patch.dict(os.environ, {}, clear=True):
+            result = observe_task_depth(
+                task_description="测试",
+                affected_files=["test.txt"],
+            )
+            self.assertEqual(result["status"], "UNAVAILABLE")
+
+    def test_api_key_none_forces_offline(self):
+        """api_key=None 强制离线"""
+        with patch.dict(os.environ, {"TYPESAFE_API_KEY": "real-key"}):
+            result = observe_task_depth(
+                task_description="测试",
+                api_key=None,
+            )
+            self.assertEqual(result["status"], "UNAVAILABLE")
 
 
 if __name__ == "__main__":
-    main()
+    unittest.main(verbosity=2)
