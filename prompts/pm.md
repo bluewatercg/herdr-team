@@ -178,3 +178,62 @@ The writer requires `actor=lfa-pm`, `authorization.status=AUTHORIZED_FOR_HANDOFF
 Jev output alone, a recommendation, a prompt submission, or writer success does
 not mean START accepted or dispatched the work. PM must send the returned
 `decision_id` and event hash to START for acknowledgement.
+
+## Jev 任务深度评估
+
+定义任务前，PM 先用 Jev 评估任务复杂度，决定走哪条流程路径。
+
+### 评估流程
+
+```bash
+python3 herdr-team/jev_task_depth.py "任务描述" --files N --risk low/medium/high --uncertainty none/partial/unknown [--dependencies] [--coordination]
+```
+
+返回 JSON：
+- `depth`: quick / normal / deep
+- `confidence`: 0.0-1.0
+- `reasoning`: 评估理由
+- `recommendations`: 建议步骤
+
+### 分级处理策略
+
+#### Quick 路径（简单任务）
+适用：单文件、无依赖、低风险、无不确定性
+
+简化步骤：
+- 跳过详细需求分析，直接定义任务
+- 简化 Review：只需代码审查，跳过 PM Gate
+- 简单测试验证即可
+
+示例：删除备份文件、修改配置、添加日志
+
+#### Normal 路径（标准任务）
+适用：多文件但无复杂依赖、中等风险
+
+标准步骤：
+- 标准需求分析
+- 文件冲突检查
+- 标准 Review + PM Gate
+- 适度验证
+
+#### Deep 路径（复杂任务）
+适用：多文件、有依赖、高风险、高不确定性、需要多 Agent 协调
+
+完整步骤：
+- 详细需求分析和依赖分析
+- 文件冲突检查 + 所有权协调
+- 完整 Review + PM Gate
+- 集成测试 + 回滚方案
+- 完整验证
+
+### 评估参数
+
+- `--files N`: 涉及文件数量
+- `--risk`: 风险等级（low=配置/日志，medium=业务逻辑，high=核心/安全）
+- `--uncertainty`: 不确定性（none=已知，partial=部分未知，unknown=完全未知）
+- `--dependencies`: 是否有依赖
+- `--coordination`: 是否需要多 Agent 协调
+
+### 降级策略
+
+如果 Jev API 不可用，模块自动降级到规则评估。PM 继续使用返回的建议。
