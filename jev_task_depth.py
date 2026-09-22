@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
-"""Jev Task Depth Evaluator - 评估任务需要的处理深度
+"""Jev Task Depth Observer - PM 语义传感器
 
-使用 TypeSafe Jev API 对任务进行分类：
-- quick: 简单任务，直接执行
-- normal: 标准任务，适度协调
-- deep: 复杂任务，完整流程
+角色：PM_SEMANTIC_SENSOR
+权威效应：NONE
+
+只提供结构化语义观察，不创建任务、不派发、不改变 Gate。
+PM 结合本地硬规则作出最终决定。
 """
+import hashlib
 import json
 import os
 import sys
 from pathlib import Path
-from typing import Any, Optional
+from typing import Optional
 import urllib.request
 import urllib.error
 
@@ -19,249 +21,223 @@ JEV_ENDPOINT = "https://api.typesafe.ai/v1/systemone"
 JEV_MODEL = "jev-latest"
 JEV_API_KEY_ENV = "TYPESAFE_API_KEY"
 
+# 硬规则：这些文件/场景强制 DEEP，Jev 不能降级
+DEEP_HARD_TRIGGERS = [
+    "prompts/",
+    ".agent-control/",
+    "activate.sh",
+    "review_dispatch.py",
+]
+
+DEEP_HARD_KEYWORDS = [
+    "schema",
+    "wire",
+    "secret",
+    "hook",
+    "migration",
+    "real_device",
+    "authority",
+    "gate",
+    "role_definition",
+]
+
+
+def compute_input_digest(inputs: dict) -> str:
+    """计算输入摘要，用于证据追踪"""
+    canonical = json.dumps(inputs, sort_keys=True, ensure_ascii=False)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
+
 
 def get_api_key() -> Optional[str]:
     """从环境变量获取 API Key"""
     return os.environ.get(JEV_API_KEY_ENV)
 
 
-def call_jev_api(state: dict, questions: list, api_key: str) -> dict:
+def call_jev_api(state: dict, questions: list, api_key: str) -> Optional[dict]:
     """调用 TypeSafe Jev API"""
     request_body = {
         "model": JEV_MODEL,
         "state": state,
         "questions": questions
     }
-    
+
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {api_key}"
     }
-    
+
     req = urllib.request.Request(
         JEV_ENDPOINT,
         data=json.dumps(request_body).encode("utf-8"),
         headers=headers,
         method="POST"
     )
-    
+
     try:
         with urllib.request.urlopen(req, timeout=10) as response:
             return json.loads(response.read().decode("utf-8"))
-    except urllib.error.HTTPError as e:
-        print(f"Jev API error: {e.code} {e.reason}", file=sys.stderr)
-        return None
-    except Exception as e:
-        print(f"Jev API request failed: {e}", file=sys.stderr)
+    except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, Exception) as e:
+        print(f"Jev API error: {e}", file=sys.stderr)
         return None
 
 
-def evaluate_task_depth(
+def check_hard_triggers(
+    affected_files: list[str],
+    task_description: str
+) -> list[str]:
+    """检查是否触发 DEEP 硬规则"""
+    triggers = []
+
+    for f in affected_files:
+        for trigger_path in DEEP_HARD_TRIGGERS:
+            if f.startswith(trigger_path):
+                triggers.append(f"PATH_TRIGGER:{trigger_path}")
+
+    desc_lower = task_description.lower()
+    for keyword in DEEP_HARD_KEYWORDS:
+        if keyword in desc_lower:
+            triggers.append(f"KEYWORD_TRIGGER:{keyword}")
+
+    return triggers
+
+
+def observe_task_depth(
     task_description: str,
-    files_involved: int = 1,
+    affected_files: list[str] | None = None,
+    affected_domains: list[str] | None = None,
     has_dependencies: bool = False,
-    risk_level: str = "low",
-    uncertainty: str = "none",
-    requires_coordination: bool = False,
-    api_key: Optional[str] = None
+    requires_real_device_evidence: bool = False,
+    api_key: Optional[str] = None,
 ) -> dict:
     """
-    评估任务需要的处理深度
-    
-    Args:
-        task_description: 任务描述
-        files_involved: 涉及文件数量
-        has_dependencies: 是否有依赖
-        risk_level: 风险等级 (low/medium/high)
-        uncertainty: 不确定性 (none/partial/unknown)
-        requires_coordination: 是否需要多 Agent 协调
-        api_key: TypeSafe API Key（可选，默认从环境变量读取）
-    
-    Returns:
-        {
-            "depth": "quick" | "normal" | "deep",
-            "confidence": 0.0-1.0,
-            "reasoning": str,
-            "recommendations": list
-        }
+    观察任务复杂度，返回语义建议。
+
+    输出格式符合 SOP：
+    {
+        "status": "AVAILABLE" | "UNAVAILABLE" | "NOT_RUN",
+        "input_digest": str,
+        "jev_recommendation": "QUICK" | "NORMAL" | "DEEP" | null,
+        "hard_triggers": list[str],
+        "deterministic_override": "DEEP" | null,
+        "authority_effect": "NONE"
+    }
+
+    注意：
+    - Jev 建议只是观察，不授权任何动作
+    - 硬规则触发时强制 DEEP，Jev 不能降级
+    - Jev 不可用时返回 null，PM 人工决定（默认 NORMAL）
     """
-    if api_key is None:
-        api_key = get_api_key()
-    
+    if affected_files is None:
+        affected_files = []
+    if affected_domains is None:
+        affected_domains = []
+
+    inputs = {
+        "task_description": task_description,
+        "affected_files": affected_files,
+        "affected_domains": affected_domains,
+        "has_dependencies": has_dependencies,
+        "requires_real_device_evidence": requires_real_device_evidence,
+    }
+    input_digest = compute_input_digest(inputs)
+
+    # 1. 检查硬规则触发
+    hard_triggers = check_hard_triggers(affected_files, task_description)
+    if requires_real_device_evidence:
+        hard_triggers.append("REAL_DEVICE_EVIDENCE")
+    if len(affected_domains) > 1:
+        hard_triggers.append("CROSS_DOMAIN")
+
+    deterministic_override = "DEEP" if hard_triggers else None
+
+    # 2. 尝试 Jev 观察
+    api_key = api_key or get_api_key()
+
     if not api_key:
-        # 降级：基于规则的评估
-        return _rule_based_evaluation(
-            files_involved, has_dependencies, risk_level, 
-            uncertainty, requires_coordination
-        )
-    
-    # 构建 Jev 状态
+        return {
+            "status": "UNAVAILABLE",
+            "input_digest": input_digest,
+            "jev_recommendation": None,
+            "hard_triggers": hard_triggers,
+            "deterministic_override": deterministic_override,
+            "authority_effect": "NONE",
+        }
+
     state = {
         "task_description": task_description,
-        "files_involved": files_involved,
+        "affected_files_count": len(affected_files),
+        "affected_domains": affected_domains,
         "has_dependencies": has_dependencies,
-        "risk_level": risk_level,
-        "uncertainty": uncertainty,
-        "requires_coordination": requires_coordination
+        "requires_real_device_evidence": requires_real_device_evidence,
     }
-    
-    # 构建 Jev 问题
+
     questions = [
         {
-            "id": "research_depth",
+            "id": "process_path",
             "type": "choice",
-            "instructions": "这个任务需要多深的研究和协调？",
-            "criteria": {
-                "labels": ["quick", "normal", "deep"]
-            }
+            "instructions": "这个任务适合哪种处理路径？",
+            "criteria": {"labels": ["QUICK", "NORMAL", "DEEP"]},
         },
         {
-            "id": "confidence",
-            "type": "score",
-            "instructions": "你对这个判断的置信度是多少？",
-            "criteria": [0.0, 1.0]
+            "id": "explicit_user_authorization",
+            "type": "bool",
+            "instructions": "用户是否明确授权当前实施？",
         },
         {
-            "id": "reasoning",
-            "type": "choice",
-            "instructions": "主要考虑因素是什么？",
-            "criteria": {
-                "labels": [
-                    "single_file_simple_fix",
-                    "multi_file_coordination",
-                    "unknown_implementation",
-                    "high_risk_change",
-                    "historical_precedent",
-                    "complex_dependencies"
-                ]
-            }
-        }
+            "id": "scope_expansion",
+            "type": "bool",
+            "instructions": "候选动作是否扩大了用户原始范围？",
+        },
     ]
-    
-    # 调用 Jev API
+
     response = call_jev_api(state, questions, api_key)
-    
+
     if not response or "answers" not in response:
-        # API 调用失败，降级到规则评估
-        return _rule_based_evaluation(
-            files_involved, has_dependencies, risk_level,
-            uncertainty, requires_coordination
-        )
-    
-    # 解析响应
+        return {
+            "status": "UNAVAILABLE",
+            "input_digest": input_digest,
+            "jev_recommendation": None,
+            "hard_triggers": hard_triggers,
+            "deterministic_override": deterministic_override,
+            "authority_effect": "NONE",
+        }
+
     answers = response["answers"]
-    
-    depth = "normal"
-    confidence = 0.5
-    reasoning = "unknown"
-    
-    if "research_depth" in answers:
-        depth = answers["research_depth"].get("choice", "normal")
-    
-    if "confidence" in answers:
-        confidence = answers["confidence"].get("score", 0.5)
-    
-    if "reasoning" in answers:
-        reasoning = answers["reasoning"].get("choice", "unknown")
-    
-    # 生成建议
-    recommendations = _generate_recommendations(depth, confidence, reasoning)
-    
+    jev_recommendation = answers.get("process_path", {}).get("choice", "NORMAL")
+
     return {
-        "depth": depth,
-        "confidence": confidence,
-        "reasoning": reasoning,
-        "recommendations": recommendations
+        "status": "AVAILABLE",
+        "input_digest": input_digest,
+        "jev_recommendation": jev_recommendation,
+        "hard_triggers": hard_triggers,
+        "deterministic_override": deterministic_override,
+        "authority_effect": "NONE",
     }
-
-
-def _rule_based_evaluation(
-    files_involved: int,
-    has_dependencies: bool,
-    risk_level: str,
-    uncertainty: str,
-    requires_coordination: bool
-) -> dict:
-    """基于规则的降级评估（当 Jev API 不可用时）"""
-    
-    # 简单任务：单文件、无依赖、低风险、无不确定性
-    if (files_involved == 1 and not has_dependencies and 
-        risk_level == "low" and uncertainty == "none" and 
-        not requires_coordination):
-        return {
-            "depth": "quick",
-            "confidence": 0.85,
-            "reasoning": "single_file_simple_fix",
-            "recommendations": ["直接执行", "简单测试验证"]
-        }
-    
-    # 复杂任务：多文件、有依赖、高风险或高不确定性
-    if (files_involved > 3 or has_dependencies or 
-        risk_level == "high" or uncertainty == "unknown" or
-        requires_coordination):
-        return {
-            "depth": "deep",
-            "confidence": 0.80,
-            "reasoning": "multi_file_coordination" if requires_coordination else "complex_dependencies",
-            "recommendations": ["详细分析", "多角色协调", "完整验证"]
-        }
-    
-    # 标准任务
-    return {
-        "depth": "normal",
-        "confidence": 0.70,
-        "reasoning": "standard_task",
-        "recommendations": ["适度协调", "标准验证"]
-    }
-
-
-def _generate_recommendations(depth: str, confidence: float, reasoning: str) -> list:
-    """根据评估结果生成建议"""
-    
-    if depth == "quick":
-        if confidence > 0.9:
-            return ["直接执行", "简单测试"]
-        else:
-            return ["快速验证后执行", "检查边界情况"]
-    
-    elif depth == "deep":
-        recs = ["详细需求分析"]
-        if reasoning == "multi_file_coordination":
-            recs.extend(["多 Agent 协调", "文件所有权检查"])
-        elif reasoning == "complex_dependencies":
-            recs.extend(["依赖分析", "集成测试"])
-        elif reasoning == "high_risk_change":
-            recs.extend(["风险评估", "回滚方案"])
-        recs.append("完整验证")
-        return recs
-    
-    else:  # normal
-        return ["标准协调流程", "适度验证"]
 
 
 def main():
     """命令行接口"""
     import argparse
-    
-    parser = argparse.ArgumentParser(description="评估任务处理深度")
-    parser.add_argument("task", help="任务描述")
-    parser.add_argument("--files", type=int, default=1, help="涉及文件数")
-    parser.add_argument("--dependencies", action="store_true", help="有依赖")
-    parser.add_argument("--risk", choices=["low", "medium", "high"], default="low", help="风险等级")
-    parser.add_argument("--uncertainty", choices=["none", "partial", "unknown"], default="none", help="不确定性")
-    parser.add_argument("--coordination", action="store_true", help="需要协调")
-    
-    args = parser.parse_args()
-    
-    result = evaluate_task_depth(
-        task_description=args.task,
-        files_involved=args.files,
-        has_dependencies=args.dependencies,
-        risk_level=args.risk,
-        uncertainty=args.uncertainty,
-        requires_coordination=args.coordination
+
+    parser = argparse.ArgumentParser(
+        description="Jev 任务深度观察器（PM 语义传感器，authority_effect=NONE）"
     )
-    
+    parser.add_argument("description", help="任务描述")
+    parser.add_argument("--files", nargs="*", default=[], help="涉及文件路径")
+    parser.add_argument("--domains", nargs="*", default=[], help="涉及领域")
+    parser.add_argument("--dependencies", action="store_true", help="是否有依赖")
+    parser.add_argument("--real-device", action="store_true", help="是否需要真机证据")
+
+    args = parser.parse_args()
+
+    result = observe_task_depth(
+        task_description=args.description,
+        affected_files=args.files,
+        affected_domains=args.domains,
+        has_dependencies=args.dependencies,
+        requires_real_device_evidence=args.real_device,
+    )
+
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
 

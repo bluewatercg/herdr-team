@@ -179,61 +179,83 @@ Jev output alone, a recommendation, a prompt submission, or writer success does
 not mean START accepted or dispatched the work. PM must send the returned
 `decision_id` and event hash to START for acknowledgement.
 
-## Jev 任务深度评估
+## Jev 任务深度观察（PM 语义传感器）
 
-定义任务前，PM 先用 Jev 评估任务复杂度，决定走哪条流程路径。
+JEV_ROLE: PM_SEMANTIC_SENSOR
+JEV_AUTHORITY_EFFECT: NONE
 
-### 评估流程
+Jev 只提供结构化语义观察，不创建任务、不派发、不改变 Gate。
+PM 结合本地硬规则作出最终决定。
+
+### 调用方式
 
 ```bash
-python3 herdr-team/jev_task_depth.py "任务描述" --files N --risk low/medium/high --uncertainty none/partial/unknown [--dependencies] [--coordination]
+python3 herdr-team/jev_task_depth.py "任务描述" \
+  --files path/to/file1 path/to/file2 \
+  --domains android api \
+  --dependencies \
+  --real-device
 ```
 
-返回 JSON：
-- `depth`: quick / normal / deep
-- `confidence`: 0.0-1.0
-- `reasoning`: 评估理由
-- `recommendations`: 建议步骤
+### 输出格式
 
-### 分级处理策略
+```json
+{
+  "status": "AVAILABLE | UNAVAILABLE | NOT_RUN",
+  "input_digest": "sha256前16位",
+  "jev_recommendation": "QUICK | NORMAL | DEEP | null",
+  "hard_triggers": ["PATH_TRIGGER:prompts/", "REAL_DEVICE_EVIDENCE"],
+  "deterministic_override": "DEEP | null",
+  "authority_effect": "NONE"
+}
+```
 
-#### Quick 路径（简单任务）
-适用：单文件、无依赖、低风险、无不确定性
+### PM 决策流程
 
-简化步骤：
-- 跳过详细需求分析，直接定义任务
-- 简化 Review：只需代码审查，跳过 PM Gate
-- 简单测试验证即可
+1. 执行本地硬规则检查（文件路径、关键词、真机证据、跨领域）
+2. 可选调用 Jev 获取语义建议
+3. PM 综合决定最终路径：
 
-示例：删除备份文件、修改配置、添加日志
+```
+if hard_triggers:
+    selected_path = "DEEP"  # 硬规则强制，Jev 不能降级
+elif jev_recommendation:
+    selected_path = jev_recommendation  # PM 可覆盖
+else:
+    selected_path = "NORMAL"  # Jev 不可用时默认 NORMAL，不是 QUICK
+```
 
-#### Normal 路径（标准任务）
-适用：多文件但无复杂依赖、中等风险
+### 硬规则触发条件（强制 DEEP）
 
-标准步骤：
-- 标准需求分析
-- 文件冲突检查
-- 标准 Review + PM Gate
-- 适度验证
+- 修改 `prompts/**`、`.agent-control/**`、`activate.sh`、`review_dispatch.py`
+- 涉及 schema、wire、secret、hook、migration、authority、gate、role_definition
+- 需要真实设备证据
+- 跨多个领域（android + api + ios）
 
-#### Deep 路径（复杂任务）
-适用：多文件、有依赖、高风险、高不确定性、需要多 Agent 协调
+### 保存格式
 
-完整步骤：
-- 详细需求分析和依赖分析
-- 文件冲突检查 + 所有权协调
-- 完整 Review + PM Gate
-- 集成测试 + 回滚方案
-- 完整验证
+PM 决策和 Jev 观察分开保存：
 
-### 评估参数
+```yaml
+JEV_OBSERVATION:
+  status: AVAILABLE | UNAVAILABLE | NOT_RUN
+  input_digest: <sha256前16位>
+  jev_recommendation: QUICK | NORMAL | DEEP | null
+  hard_triggers: []
+  authority_effect: NONE
 
-- `--files N`: 涉及文件数量
-- `--risk`: 风险等级（low=配置/日志，medium=业务逻辑，high=核心/安全）
-- `--uncertainty`: 不确定性（none=已知，partial=部分未知，unknown=完全未知）
-- `--dependencies`: 是否有依赖
-- `--coordination`: 是否需要多 Agent 协调
+PM_DECISION:
+  selected_path: QUICK | NORMAL | DEEP
+  jev_recommendation: <同上或 null>
+  deterministic_overrides: [JEV_UNAVAILABLE, PATH_TRIGGER:prompts/]
+  rationale: "PM 人工判断理由"
+```
 
-### 降级策略
+### Jev 不可用时的处理
 
-如果 Jev API 不可用，模块自动降级到规则评估。PM 继续使用返回的建议。
+缺 Key、超时、429、响应无效时：
+- `status: UNAVAILABLE`
+- `jev_recommendation: null`
+- PM 按本地规则人工选择
+- 无硬触发项 → 默认 NORMAL（不是 QUICK）
+- 有硬触发项 → 强制 DEEP
