@@ -1,19 +1,23 @@
 # PROJECT_SNAPSHOT
 
-SNAPSHOT_ID: PM-ONBOARD-20260918T043217Z-410b17a0
+SNAPSHOT_ID: PM-QIUQIU-04-b3078300
 RUN_ID: 20260918T043217Z
-SOURCE_BRIEF_RUN_ID: 20260918T042918382640886Z
 GENERATED_BY: lfa-pm
 REPOSITORY_ROOT: /mnt/d/Project/Aventura/java_developer/AIPoweredHealthManager-lfa-reader
 GIT_BRANCH: main
-GIT_HEAD: 410b17a00b63374f5d28a5531c478db8b30e8427
-WORKTREE_STATUS: DIRTY; ahead of origin/main by 6 at initial inspection
-SCOPE_VERSION: PM-ONBOARD-20260918T043217Z
-CONTRACT_VERSION: frozen Android Bundle 1.5 / public research v2; v3 migration excluded and protected
-SNAPSHOT_STATUS: READY
-TASK_ID: PM-ONBOARD
+GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+WORKTREE_STATUS: DIRTY; pre-existing tracked/untracked work preserved; not accepted as a clean implementation baseline
+SCOPE_VERSION: QIUQIU-04-DUAL-ANALYTE-BOUNDED-IMPLEMENTATION
+CONTRACT_VERSION: frozen historical Android Bundle 1.5 / research v2 unchanged; distinct dual-reagent successor wire is an authorized implementation deliverable, not already accepted
+SNAPSHOT_STATUS: IMPLEMENTATION_AUTHORIZED_PENDING_START; integration/device/review/PM acceptance ungranted
+TASK_ID: TASK-QIUQIU-04; BUSINESS_REQUIREMENT_TRACE=QIUQIU_DHEA_COR_DUAL_ANALYTE_DELIVERY
 
-## Scope and source identity
+## Current revision binding
+
+Previous `PM-ONBOARD-20260918T043217Z-f952b0ac` is STALE for any new dispatch or acceptance. Its documentary decisions remain historical, tied only to `f952b0ac6942f8b5794c9a8ef0fcaae617e70d45`. The committed delta to the current HEAD is limited to `docs/technical/YOLO_OBSERVATION_WINDOW_API.md`, `research/validation_capture.html`, `research/validation_capture.py`, and `research/validation_report.html`; dirty working-tree changes remain unreviewed. All below pre-existing onboarding observations and approval descriptions refer to their recorded historical revisions, not a current implementation or device acceptance. Current Cor distinct-analyte behavior, geometry and new-sample evidence remain unverified.
+
+The current user's DHEA/Cor dual-reagent instruction supersedes historical Cor-as-DHEA-family claims. On this HEAD PM_GATE grants only exact-path, sole-owner implementation after lfa-start START plus a verified decision event; see FILE_OWNERSHIP.md:579-610. Cor physical card layout/config and two new sample IDs are not evidenced, so numerical Cor template creation, integration/deployment, fresh device execution and scientific acceptance remain ungranted. The online Redmi K30 Pro and `artifacts/cor-dual-analyte-validation-20260923/` are designated candidates only; preserve every original JPEG and historical record. Historical documentary sections below are revision-scoped observations, not current dispatch or acceptance.
+## Historical onboarding observations (STALE for current dispatch)
 
 The activation explicitly supplies the earlier brief as source material. Its identifier remains distinct from this activation; no same-run equivalence is assumed. The source panes file is empty. Current AGENT_STATUS and live Herdr inventory identify lfa-pm w12:p1, lfa-start w15:p1, lfa-android w14:p1, lfa-api w13:p1, lfa-review w11:p1 and lfa-ios w16:p1.
 
@@ -115,3 +119,33 @@ CURRENT_ACCEPTANCE_STATUS: NOT_ACCEPTED
 B-PM-01 dispatch scope is resolved. B-PM-03 public identities follow the frozen mapping; its required internal UnifiedAnalysisRequest integration remains delivery work. B-PM-02/04/05 remain delivery/evidence work. Earlier CONFLICTED and PM_BLOCKED observations describe the onboarding state before this ruling.
 
 API role evidence subsequently received confirms the same unknown v3 authorization/owner and enumerates its protected paths. Existing core/contracts.py AnalysisRequest is not evidence that UnifiedAnalysisRequest or its required semantics is implemented. The future compatibility draft at api-reference.md 360–368 is not silently imported into research v2. B-PM-03 acceptance must explicitly map required internal request identity, capture identity, immutable JPEG/hash and applicable frozen configuration through the common runtime; preserve separation from public analysis_id ownership. No type alias, renaming-only change or untested equivalence satisfies this item. Keep it open for scoped implementation and independent review.
+
+## Current candidate-only registration / 2026-09-24
+
+`PLAN-QIUQIU-04` / `DELIVERABLE-QIUQIU-04` / `TASK-QIUQIU-04` remains bound to `b307830089b51aca793ca693e375c217ec8e45ea`. The current control-only overlay registers exactly 13 existing candidate paths: 6 `lfa-api`, 3 `lfa-android`, and 4 `lfa-test`. All are `CANDIDATE_NOT_ACTIVE`; no implementation, integration, review/PM acceptance, device execution, or evidence write is authorized. Historical bounded `AUTHORIZED_ACTIVE` rows remain preserved as history and do not grant current candidate execution. Cor template/config and fresh-device evidence remain `RESERVED_NOT_ACTIVE`; iOS `FILE_SCOPE=[]`.
+
+## Current blocked projection / 2026-09-24
+
+`PLAN-QIUQIU-04` / `DELIVERABLE-QIUQIU-04` / `TASK-QIUQIU-04` is `BLOCKED / NOT_DISPATCHED` at HEAD `b307830089b51aca793ca693e375c217ec8e45ea`. The 13 registered paths remain inactive candidates. Root `AGENTS.md` defines DHEA and Cor as current MVP products, but the executable successor wire, exact Cor physical configuration/source scope, and new-sample evidence write scope are not authorized or accepted. No implementation, integration, device execution, Review or PM acceptance is inferred.
+
+## Cor physical-sample candidate / 2026-09-24
+
+The user identifies capture bundle `1df42409-a789-47e4-9dc2-66bd270b603e` as a physical Cor reagent with an observation window and QR code. That identifier is not present in the current repository or latest exported Cor archive, so it is recorded as `CANDIDATE_IDENTITY_RECORDED_NOT_ACCEPTED`. It does not yet prove immutable JPEG/SHA binding, geometry, direction, T/C windows, implementation completion or device acceptance.
+
+## QIUQIU-04 authorized implementation increment / 2026-09-24
+
+At HEAD `b307830089b51aca793ca693e375c217ec8e45ea`, the user selected code/documentation implementation plus read-only evidence export for existing Cor bundle `1df42409-a789-47e4-9dc2-66bd270b603e`. The 13 candidate paths are now `AUTHORIZED_ACTIVE`, and `artifacts/cor-bundle-1df42409-a789-47e4-9dc2-66bd270b603e/` is active for export-only immutable evidence and a manifest. START delta `TASK-QIUQIU-04-START-DELTA-20260924-01` is recorded. Integration deployment, new shutter/sample execution, Cor numeric-template creation, Review and PM acceptance remain ungranted.
+
+## QIUQIU-04 single Cor live trace / 2026-09-24
+
+The user confirms the reagent below the camera is Cor and authorizes one App photo/upload to trace the API failure layer by layer. START delta `TASK-QIUQIU-04-START-DELTA-20260924-02` activates that single execution and evidence capture under the existing Cor bundle evidence directory. It does not grant deployment, Cor template creation, device acceptance, Review or PM acceptance.
+
+## 2026-09-24 双产品交付快照（append-only）
+
+- `IMPLEMENTATION_EXECUTION = DELIVERED_PENDING_INDEPENDENT_REVIEW`
+- `NEW_SAMPLE_DEVICE_EXECUTION = COMPLETED_SINGLE_COR_CAPTURE_AND_UPLOAD`
+- `REVIEW_AND_PM_ACCEPTANCE = NOT_GRANTED`
+- `INTEGRATION_DEPLOYMENT = NOT_GRANTED`
+- DHEA 与 Cor 已在当前源码中按独立产品身份兼容；Cor 不是 DHEA alias，也未创建独立拍摄链。
+- 设备上安装的旧 APK 尚未包含 successor metadata 修复，因此真实上传在 Gateway 前置校验处以 `INVALID_PRODUCT_GATE_DECLARATION` 终止；当前源码已通过真实 JPEG 本地 API smoke 和聚焦测试。
+- 证据目录：`artifacts/cor-bundle-1df42409-a789-47e4-9dc2-66bd270b603e/`。

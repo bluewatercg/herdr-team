@@ -1,7 +1,305 @@
 RUN_ID: 20260918T043217Z
-STATUS: CONFLICTED
-SNAPSHOT_ID: PM-ONBOARD-20260918T043217Z-410b17a0
-GIT_HEAD: 410b17a00b63374f5d28a5531c478db8b30e8427
-CONFLICT: v1.7 current bytes still declare only `1:QLI:DHEA:1234567890`; Cor support is not present in the reread revision.
-DOCUMENT_STATUS: DOCUMENTARY_CANDIDATE_PENDING_REVIEW_AND_PM_GATE
-REQUIRED_ACTION: publish the exact DHEA+Cor revision, then bind fresh independent Review and separate PM Gate; do not infer implementation or acceptance.
+STATUS: READY
+SNAPSHOT_ID: PM-QIUQIU-04-b3078300
+GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+CONFLICT: HISTORICAL_COR_AS_DHEA_SEMANTICS_SUPERSEDED_FOR_NEW_TASK; current dual-reagent business requirement is traced in MASTER_PLAN and TASK_BOARD. Cor-specific physical geometry/template and two new-sample identities remain unknown; science/device acceptance unresolved.
+DOCUMENT_STATUS: HISTORICAL_DOCUMENTARY_DECISION_ONLY_FOR_f952b0ac; no transferred source or device acceptance
+REQUIRED_ACTION: lfa-start records exact-path bounded implementation START under PLAN-QIUQIU-04 / DELIVERABLE-QIUQIU-04 / TASK-QIUQIU-04 and decision event; lfa-api, lfa-android and lfa-test must use sole-owner ACTIVE scopes. PM separately decides integration after focused tests and compatible current wire, then fresh-device execution when two physical sample identities and Cor card evidence are available.
+
+HISTORICAL_PM_GATE_DECISION (only exact revision f952b0ac6942f8b5794c9a8ef0fcaae617e70d45; not current authorization):
+  ACTOR: lfa-pm
+  TIMESTAMP: 2026-09-23T18:15:00Z
+  RESULT: PM_GATE_ACCEPTED_DOCUMENTARY_ONLY
+  EXACT_REVISION: f952b0ac6942f8b5794c9a8ef0fcaae617e70d45
+  BOUND_DOCUMENT: docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.7_IMPLEMENTATION_BASELINE.md
+  DOCUMENT_SHA256: f4e8b3747f7f878049c738377522a96091779492d16ab9f82bd51e99314ab0ff
+  INDEPENDENT_REVIEW: ACCEPTED (fresh, non-author, verified prompts/start.md:70-85, README.md:19-22, TASK_BOARD.md:26, FILE_OWNERSHIP.md:540-545, v1.7 DHEA+Cor dual payload)
+  PM_GATE: ACCEPTED (separate, independent of Review)
+  
+  TASK-QIUQIU-01 DISPATCH:
+    STATUS: CLOSED
+    CLOSED_AT: 2026-09-23T18:40:00Z
+    DUAL_GATE:
+      CODE_REVIEW_ACCEPTED: REVIEW_QUEUE.md:732-758 (lfa-review, non-author)
+      PM_ACCEPTED: PM_REVIEW_TASK-QIUQIU-01.json (lfa-pm)
+    GIT_HEAD: f952b0ac6942f8b5794c9a8ef0fcaae617e70d45
+    FILE_SCOPE: 6 exact paths (FILE_OWNERSHIP.md:540-545)
+    FILE_OWNERSHIP_STATUS: FROZEN_CONTRACT_RELEASED
+    RESULT: NODE1 contract frozen at HEAD f952b0a; dependency for TASK-QIUQIU-02 satisfied
+  
+  TASK-QIUQIU-02 DISPATCH:
+    STATUS: CLOSED
+    CLOSED_AT: 2026-09-23T18:50:00Z
+    DEPENDENCY: NODE1_CONTRACT_FREEZE_SATISFIED (TASK-QIUQIU-01 CLOSED)
+    DUAL_GATE:
+      CODE_REVIEW_ACCEPTED: REVIEW_QUEUE.md:760-853 (lfa-review, non-author)
+      PM_ACCEPTED: PM_REVIEW_TASK-QIUQIU-02.json (lfa-pm)
+    GIT_HEAD: f952b0ac6942f8b5794c9a8ef0fcaae617e70d45
+    FILE_SCOPE: 14 exact paths (FILE_OWNERSHIP.md:546-559)
+    WRITE_OWNER: lfa-android
+    TEST_EVIDENCE: 44 tests (43 passed, 1 skipped E2E_ENABLED); APK SHA-256 4a1b26fbcf81f783cdeafa4bfa3cdf30ea58569b0b779abb7971a839182240e0
+    RESULT: NODE2 code/build contract accepted at HEAD f952b0ac; 14 paths verified; 6 dimensions pass; dirty changes reviewed and accepted
+    CONSTRAINT: Accepts NODE2 code/build contract only. Does not grant device validation, production readiness, clinical/regulatory approval, or integration authorization beyond 14 authorized paths.
+  
+  TASK-QIUQIU-03 DISPATCH:
+    STATUS: CLOSED
+    DEPENDENCY: NODE1 CLOSED (TASK-QIUQIU-01); NODE2 CLOSED (TASK-QIUQIU-02); NODE3 shared file AUTHORIZED_ACTIVE
+    DISPATCHED_AT: 2026-09-23T19:05:00Z
+    CLOSED_AT: 2026-09-23T19:35:00Z
+    DUAL_GATE:
+      CODE_REVIEW_ACCEPTED: REVIEW_QUEUE.md:935-991 (revision 2, preserves rejection 855-933)
+      PM_ACCEPTED: PM_REVIEW_TASK-QIUQIU-03.json
+    FILE_SCOPE: 9 exact paths (FILE_OWNERSHIP.md:560-568)
+    WRITE_OWNER: lfa-api
+    CONSTRAINT: Independent lfa-review and lfa-pm dual Gate required. Does not inherit device validation. Does not imply production readiness, clinical/regulatory approval.
+  
+  IMPLEMENTATION_ACCEPTANCE: NOT_GRANTED
+  DEVICE_VALIDATION: NOT_GRANTED
+  PRODUCTION_READINESS: NOT_GRANTED
+  INTEGRATION_AUTHORIZATION: NOT_GRANTED
+  
+  HISTORICAL_RATIONALE (superseded Cor-family assertion): TASK-QIUQIU-01/02/03 were closed for the prior f952b0ac revision. Cor-as-DHEA-family language above is not a valid current requirement. No acceptance or authorization transfers to b3078300.
+
+CURRENT_TASK_AUTHORIZATION:
+  PLAN_ID: PLAN-QIUQIU-04
+  DELIVERABLE_ID: DELIVERABLE-QIUQIU-04
+  TASK_ID: TASK-QIUQIU-04
+  GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+  OLD_SNAPSHOT: PM-ONBOARD-20260918T043217Z-f952b0ac / STALE_FOR_CURRENT_TASK
+  CONTROL_REGISTRATION: GRANTED_BY_USER_TO_lfa-pm; control records only; no business-source or device edit performed here
+  BUSINESS_REQUIREMENT_TRACE: QIUQIU_DHEA_COR_DUAL_ANALYTE_DELIVERY; user instruction, AGENTS.md:16-17,32-33,56, docs/requirements/DHEA_MVP_完整需求.md:6,39-45,243-261; API-reference.md:18-24 and frozen 11_DHEA原生Android研究v2公开契约.md:45-47 delimit historical wire. New successor version/identity contract belongs to exact lfa-api scope; no rewrite of historical 2.0/2.1, 2.2-confirmed or rejected 3.0.
+  REQUIREMENT_RECONCILIATION: COMPLETED_FOR_BOUNDED_IMPLEMENTATION; Cor is independent product/analyte, not DHEA alias; shared T/C path conditional on Cor physical configuration; historical results remain unchanged
+  IMPLEMENTATION_EXECUTION: LIMITED_GRANTED_BY_lfa-pm; exact FILE_OWNERSHIP.md:579-610 AUTHORIZED_ACTIVE paths, sole WRITE_OWNER, HEAD b307830089b51aca793ca693e375c217ec8e45ea; JEV_DECISIONS.jsonl decision PM-QIUQIU-04-BOUNDED-IMPLEMENTATION-b3078300 (SHA-256 5a925d60442e252c716ff68cb060d57762c2b2d3287d464b64d1af0c80dedb12). Effective only after lfa-start records START. Science-safe Cor refusal and current contract/source/test/doc work allowed; no invented Cor template, no old evidence or device write.
+  IMPLEMENTATION_ACCEPTANCE: NOT_GRANTED; independent non-author lfa-review CODE_REVIEW_ACCEPTED and separate lfa-pm PM_ACCEPTED for same exact source revision and focused checks required
+  INTEGRATION_AUTHORIZATION: NOT_GRANTED; separate PM decision only after successor versioned wire and API/Core/Android focused compatibility checks; implementation grant does not permit deploy or live API/device integration
+  NEW_SAMPLE_DEVICE_EXECUTION: NOT_GRANTED; designated online Redmi K30 Pro serial adb-5b10bb35-rkB4bn._adb-tls-connect._tcp is a candidate, not execution permission. PM needs actual independent DHEA and Cor sample IDs, verified Cor card direction/window/template, bounded revision/APK/runtime and lfa-start device START.
+  DEVICE_EVIDENCE_DESTINATION: artifacts/cor-dual-analyte-validation-20260923/; FILE_OWNERSHIP.md:613 RESERVED_NOT_ACTIVE, sole future lfa-test writer; never overwrite original JPEG or historical artifacts
+  DEVICE_VALIDATION_ACCEPTANCE: NOT_GRANTED; two new physical sample captures, API/Core/App/Web and original-JPEG/SHA evidence plus independent review are required; old records do not qualify
+  COR_TEMPLATE_WRITE: NOT_GRANTED; docs/LFA_最新完整文档集合/config/cor_template.v1.json RESERVED_NOT_ACTIVE until actual reagent physical evidence is recorded
+  PRODUCTION_READINESS: NOT_GRANTED; separate post-funding review/approval, not a controlled-MVP blocker
+  REVIEW: lfa-review independent non-author review required on exact future revision; no current acceptance asserted
+  DISPATCH: PENDING_lfa-start_BOUNDED_START; no source edit or device action authorized merely by the PM_GATE entry
+
+SHARED_CHAIN_REQUIREMENT_REVISION_20260924:
+  PLAN_ID: PLAN-QIUQIU-04
+  DELIVERABLE_ID: DELIVERABLE-QIUQIU-04
+  TASK_ID: TASK-QIUQIU-04
+  REQUIREMENT_ID: QIUQIU-04-SHARED-CHAIN-01
+  GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+  SOURCE: User ruling; MASTER_PLAN.md QIUQIU-04 shared-chain revision; DECISIONS.md QIUQIU-04 shared measurement chain
+  HISTORICAL_CONFLICT: CURRENT_TASK_AUTHORIZATION lines 71-72 condition shared T/C on a Cor-specific physical configuration and authorize the conservative refusal; they describe the old bounded implementation, not the revised measurement principle.
+  REVISED_RULE: QR segment three determines product/analyte identity only; DHEA and Cor share capture, localization, quality, Green/Profile and T/C science. Existing Cor refusal remains a truthful current limitation; lack of evidence never licenses fabricated geometry, template or T/C.
+  DELTA_IMPLEMENTATION_AUTHORIZATION: NOT_GRANTED_PENDING_EXACT_RECONCILIATION_AND_PM_DECISION
+  DELTA_DISPATCH: PENDING_lfa-start_AFTER_PM_AUTHORIZATION; do not repeat the 20260924T070358Z START
+  CANDIDATE_FILE_SCOPE: FILE_OWNERSHIP.md:579-610, existing sole writers only; other paths require prior PM registration
+  COR_TEMPLATE_AND_DEVICE_EVIDENCE: FILE_OWNERSHIP.md:612-613 RESERVED_NOT_ACTIVE
+  INTEGRATION_AUTHORIZATION: NOT_GRANTED
+  NEW_SAMPLE_DEVICE_EXECUTION: NOT_GRANTED
+  REVIEW_AND_PM_ACCEPTANCE: NOT_GRANTED
+  IOS_IMPLEMENTATION: DEFERRED; FILE_SCOPE=[]
+  
+CURRENT_TASK_CANDIDATE_REGISTRATION_20260924:
+  PLAN_ID: PLAN-QIUQIU-04
+  DELIVERABLE_ID: DELIVERABLE-QIUQIU-04
+  TASK_ID: TASK-QIUQIU-04
+  GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+  STATUS: CANDIDATE_REGISTERED_NOT_ACTIVE
+  IMPLEMENTATION_AUTHORIZATION: NOT_GRANTED
+  INTEGRATION_AUTHORIZATION: NOT_GRANTED
+  NEW_SAMPLE_DEVICE_EXECUTION: NOT_GRANTED
+  REVIEW_AND_PM_ACCEPTANCE: NOT_GRANTED
+  CANDIDATE_COUNTS: lfa-api=6; lfa-android=3; lfa-test=4; total=13
+  EXACT_SCOPE: FILE_OWNERSHIP.md current candidate overlay for TASK-QIUQIU-04
+  HISTORICAL_SCOPE_DISPOSITION: prior AUTHORIZED_ACTIVE rows are preserved as append-only history; they are not current write permission for this candidate registration
+  COR_TEMPLATE_AND_DEVICE_EVIDENCE: RESERVED_NOT_ACTIVE
+  IOS_FILE_SCOPE: []
+  CONTROL_CHECK_REQUIREMENT: HEAD match, all 13 paths exist, candidate rows have no active write owner, and no business source/device action is performed
+  DECISION: control registration only; no lfa-start dispatch and no source edit authorized
+
+CURRENT_PROJECTION_OVERRIDE_20260924:
+  STATUS: CANDIDATE_REGISTERED_NOT_ACTIVE
+  REQUIRED_ACTION: control reconciliation only; no lfa-start dispatch, implementation, integration, device execution, Review or PM acceptance
+  IMPLEMENTATION_EXECUTION: NOT_GRANTED
+  DISPATCH: NOT_DISPATCHED
+  ACTIVE_WRITE_SCOPE: []
+  CANDIDATE_SCOPE: 13 exact existing paths recorded in FILE_OWNERSHIP.md current candidate-only overlay
+
+CURRENT_TASK_BLOCKER_20260924:
+  PLAN_ID: PLAN-QIUQIU-04
+  DELIVERABLE_ID: DELIVERABLE-QIUQIU-04
+  TASK_ID: TASK-QIUQIU-04
+  GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+  STATUS: BLOCKED
+  DISPATCH: NOT_DISPATCHED
+  IMPLEMENTATION_EXECUTION: NOT_GRANTED
+  BLOCKERS: exact Cor physical configuration/source scope and new-sample evidence write scope are not authorized; current candidate paths remain inactive
+  REQUIREMENT_AUTHORITY: root AGENTS.md defines DHEA and Cor as current MVP products; accepted executable wire and Cor scientific configuration remain incomplete
+  RELEASE_REQUIRES: exact PM authorization and START receipt; independent same-revision Review and PM acceptance remain later gates
+
+COR_PHYSICAL_SAMPLE_CANDIDATE_20260924:
+  CAPTURE_BUNDLE_ID: 1df42409-a789-47e4-9dc2-66bd270b603e
+  USER_ATTESTATION: physical Cor reagent with an observation window and QR code
+  LOCAL_EVIDENCE_LOOKUP: NOT_FOUND_IN_CURRENT_REPOSITORY_OR_LATEST_EXPORTED_COR_ARCHIVE
+  STATUS: CANDIDATE_IDENTITY_RECORDED_NOT_ACCEPTED
+  EFFECT: reduces the unknown-sample-identity blocker only; does not establish geometry, direction, T/C windows, JPEG/SHA binding, implementation authorization, device execution authorization or acceptance
+  REQUIRED_NEXT_EVIDENCE: export the immutable bundle JPEG and sealed declaration/journal for read-only review under an explicitly activated evidence path
+
+CURRENT_PROJECTION_AFTER_COR_SAMPLE_CANDIDATE_20260924:
+  STATUS: BLOCKED
+  DISPATCH: NOT_DISPATCHED
+  IMPLEMENTATION_EXECUTION: NOT_GRANTED
+  ACTIVE_WRITE_SCOPE: []
+  COR_SAMPLE_CANDIDATE: 1df42409-a789-47e4-9dc2-66bd270b603e / CANDIDATE_IDENTITY_RECORDED_NOT_ACCEPTED
+  REQUIRED_ACTION: activate a read-only evidence destination and export the immutable JPEG, sealed declaration/journal and SHA chain; implementation still requires PM authorization and START
+
+PM_QIUQIU_04_INCREMENTAL_GRANT_20260924:
+  PLAN_ID: PLAN-QIUQIU-04
+  DELIVERABLE_ID: DELIVERABLE-QIUQIU-04
+  TASK_ID: TASK-QIUQIU-04
+  GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+  USER_SELECTION: CODE_DOCUMENTATION_PLUS_EVIDENCE_EXPORT
+  STATUS: AUTHORIZED_ACTIVE
+  DISPATCH: START_DELTA_RECORDED
+  IMPLEMENTATION_EXECUTION: GRANTED
+  INTEGRATION_AUTHORIZATION: NOT_GRANTED
+  NEW_SAMPLE_DEVICE_EXECUTION: NOT_GRANTED
+  EVIDENCE_EXPORT: GRANTED_READ_ONLY_FOR_EXISTING_CAPTURE_BUNDLE
+  CAPTURE_BUNDLE_ID: 1df42409-a789-47e4-9dc2-66bd270b603e
+  ACTIVE_WRITE_SCOPE: 13 exact candidate paths in FILE_OWNERSHIP.md plus artifacts/cor-bundle-1df42409-a789-47e4-9dc2-66bd270b603e/
+  COR_TEMPLATE: RESERVED_NOT_ACTIVE
+  DEVICE_BOUNDARY: read-only extraction of the existing bundle is authorized; no shutter, new sample execution, reinstall, clear, mutation or acceptance
+  ACCEPTANCE: independent Review and PM acceptance remain NOT_GRANTED_PENDING_DELIVERY
+
+PM_QIUQIU_04_SINGLE_CAPTURE_AUTH_20260924:
+  PLAN_ID: PLAN-QIUQIU-04
+  DELIVERABLE_ID: DELIVERABLE-QIUQIU-04
+  TASK_ID: TASK-QIUQIU-04
+  GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+  USER_INSTRUCTION: use the App to photograph and upload, then inspect each API layer
+  CAPTURE_SCOPE: one Cor reagent capture with camera below the lens, QR-gated App flow, then upload for API diagnosis
+  CAPTURE_BUNDLE_ID: 1df42409-a789-47e4-9dc2-66bd270b603e
+  NEW_SAMPLE_DEVICE_EXECUTION: GRANTED_SINGLE_COR_CAPTURE_AND_UPLOAD
+  DEVICE_MUTATION: capture_and_normal_upload_only; no install, clear, settings changes, other sample or template edits
+  EVIDENCE_DESTINATION: artifacts/cor-bundle-1df42409-a789-47e4-9dc2-66bd270b603e/
+  INTEGRATION_DEPLOYMENT: NOT_GRANTED
+  ACCEPTANCE: DEVICE_ACCEPTANCE_NOT_GRANTED; independent Review and PM acceptance NOT_GRANTED
+
+CURRENT_PROJECTION_AFTER_SINGLE_CAPTURE_AUTH_20260924:
+  STATUS: AUTHORIZED_ACTIVE
+  DISPATCH: START_DELTA_RECORDED
+  IMPLEMENTATION_EXECUTION: GRANTED
+  EVIDENCE_EXPORT: GRANTED_READ_ONLY_FOR_EXISTING_CAPTURE_BUNDLE
+  NEW_SAMPLE_DEVICE_EXECUTION: GRANTED_SINGLE_COR_CAPTURE_AND_UPLOAD
+  ACTIVE_WRITE_SCOPE: prior exact 13 paths plus artifacts/cor-bundle-1df42409-a789-47e4-9dc2-66bd270b603e/
+  COR_TEMPLATE: RESERVED_NOT_ACTIVE
+  INTEGRATION_DEPLOYMENT: NOT_GRANTED
+  REVIEW_AND_PM_ACCEPTANCE: NOT_GRANTED
+
+## 2026-09-24 TASK-QIUQIU-04 双产品交付回执（append-only）
+
+- Receipt: `TASK-QIUQIU-04-DELIVERY-20260924-01`
+- Source execution: `TASK-QIUQIU-04-START-DELTA-20260924-01`
+- `IMPLEMENTATION_EXECUTION = DELIVERED_PENDING_INDEPENDENT_REVIEW`
+- `NEW_SAMPLE_DEVICE_EXECUTION = COMPLETED_SINGLE_COR_CAPTURE_AND_UPLOAD`
+- `INTEGRATION_DEPLOYMENT = NOT_GRANTED`
+- `REVIEW_AND_PM_ACCEPTANCE = NOT_GRANTED`
+- `COR_TEMPLATE = RESERVED_NOT_ACTIVE`
+- 实施结果：DHEA 与 Cor 使用同一拍摄、原图持久化、声明绑定和共享 API 入口，但保持独立产品身份；Gateway 只按 App 已验证的 `product_gate_declaration` 路由，Core 不从最终 JPEG 重扫 QR。
+- Cor 无可信物理配置时固定返回 `COR_PHYSICAL_CONFIGURATION_UNAVAILABLE`；T、C、T/C 及 DHEA 配置/来源字段均为 `null`，不调用 DHEA runtime。
+- 真实设备旧 APK 上传因生成 `Cor` 声明与 `DHEA` assay context 冲突，API 正确返回 `422 INVALID_PRODUCT_GATE_DECLARATION`；当前源码使用同一真实 JPEG 的本地 API smoke 返回 HTTP `200` + 业务拒绝 `COR_PHYSICAL_CONFIGURATION_UNAVAILABLE`。
+- Verification: Python 双产品聚焦套件 `Ran 40 tests ... OK`；Cor HTTP/诊断专项 `Ran 2 tests ... OK`；Android 网络/持久化聚焦单测 `BUILD SUCCESSFUL`。
+- Evidence: `artifacts/cor-bundle-1df42409-a789-47e4-9dc2-66bd270b603e/`；`SHA256SUMS` 已对 8 个导出文件逐项校验通过。
+- 本回执仅记录 implementation delivered；不构成独立 Review、PM acceptance、真机新 APK 验收、集成部署或生产发布授权。
+
+CURRENT_PROJECTION_AFTER_DELIVERY_20260924:
+  DELIVERY_RECEIPT: TASK-QIUQIU-04-DELIVERY-20260924-01
+  IMPLEMENTATION_EXECUTION: DELIVERED_PENDING_INDEPENDENT_REVIEW
+  NEW_SAMPLE_DEVICE_EXECUTION: COMPLETED_SINGLE_COR_CAPTURE_AND_UPLOAD
+  INTEGRATION_DEPLOYMENT: NOT_GRANTED
+  REVIEW_AND_PM_ACCEPTANCE: NOT_GRANTED
+  COR_TEMPLATE: RESERVED_NOT_ACTIVE
+  REQUIRED_ACTION: independent non-author Review on the current exact source state, then separate PM acceptance; new APK installation/device replay and deployment require separate explicit authorization
+
+PM_QIUQIU_04_ANDROID_INSTALL_AUTH_20260924:
+  USER_INSTRUCTION: 改文档的同时安排安装Android新版本
+  DEVICE: Redmi K30 Pro / ADB 192.168.8.134:5555
+  BUILD_SCOPE: current source debug APK only
+  INSTALL_SCOPE: adb install -r only; preserve app data
+  CLEAR_DATA_UNINSTALL_SETTINGS_CHANGE: NOT_GRANTED
+  POST_INSTALL_CAPTURE_OR_UPLOAD: NOT_GRANTED_BY_THIS_ENTRY
+  INTEGRATION_DEPLOYMENT: NOT_GRANTED
+  REVIEW_AND_PM_ACCEPTANCE: NOT_GRANTED
+
+
+ANDROID_INSTALL_RECEIPT_20260924:
+  DEVICE: Redmi K30 Pro / ADB 192.168.8.134:5555
+  PACKAGE: com.aistudio.lfaspi.kxpqla
+  ACTIVITY: com.example.MainActivity
+  APK: Android_App/app/build/outputs/apk/debug/app-debug.apk
+  APK_SHA256: 0cd8109092d8037f0cb58559acaf2a5e4fe5e10367bad2cb20b4d76fcd51db79
+  BUILD: SUCCESSFUL
+  INSTALL_COMMAND: adb install -r
+  INSTALL_RESULT: SUCCESS
+  APP_DATA: PRESERVED
+  POST_INSTALL_PACKAGE_PATH_VERIFIED: true
+  POST_INSTALL_ACTIVITY_RESOLVED: true
+  DEVICE_CAPTURE_REPLAY: NOT_PERFORMED
+  INTEGRATION_DEPLOYMENT: NOT_GRANTED
+  REVIEW_AND_PM_ACCEPTANCE: NOT_GRANTED
+
+
+PM_QIUQIU_04_POST_INSTALL_COR_DEVICE_TRACE_AUTH_20260924:
+  DECISION_ID: PM-QIUQIU-04-POSTINSTALL-COR-TRACE-20260924-01
+  PLAN_ID: PLAN-QIUQIU-04
+  DELIVERABLE_ID: DELIVERABLE-QIUQIU-04
+  TASK_ID: TASK-QIUQIU-04
+  REQUIREMENT_ID: QIUQIU-04-SHARED-CHAIN-01
+  GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+  DEVICE: Redmi K30 Pro; use and record verified live ADB serial, not connection order
+  PACKAGE: com.aistudio.lfaspi.kxpqla
+  INSTALLED_APK_RECEIPT: ANDROID_INSTALL_RECEIPT_20260924; APK_SHA256=0cd8109092d8037f0cb58559acaf2a5e4fe5e10367bad2cb20b4d76fcd51db79
+  NEW_SAMPLE_DEVICE_EXECUTION: GRANTED_ONE_NORMAL_COR_APP_QR_GATE_CAPTURE_UPLOAD_TRACE_AFTER_START
+  DISPATCH: PENDING_lfa-start_DISTINCT_DEVICE_DELTA_TO_lfa-test
+  WRITE_OWNER: lfa-test
+  FILE_SCOPE: artifacts/cor-dual-analyte-validation-20260923/ append-only current-run evidence only
+  TRACE: QR gate; one shutter; immutable original JPEG and SHA; normal App upload; request/response; Gateway/Core stages; App result and diagnostics; record actual failure and nulls
+  FORBIDDEN: reinstall; uninstall; clear data; change App or device settings; deploy; write Cor template; another sample or capture; overwrite historical evidence or original JPEG
+  INTEGRATION_DEPLOYMENT: NOT_GRANTED
+  SCIENTIFIC_DEVICE_ACCEPTANCE: NOT_GRANTED
+  INDEPENDENT_REVIEW_AND_PM_ACCEPTANCE: NOT_GRANTED
+  PRIOR_RECORDS: preserve install receipt and earlier capture; this grant supersedes only POST_INSTALL_CAPTURE_OR_UPLOAD=NOT_GRANTED_BY_THIS_ENTRY for one bounded new run
+
+PM_QIUQIU_04_POST_INSTALL_COR_TRACE_EVIDENCE_RECEIPT_20260924:
+  RECEIPT_ID: PM-QIUQIU-04-POSTINSTALL-COR-EVIDENCE-20260924-01
+  PLAN_ID: PLAN-QIUQIU-04
+  DELIVERABLE_ID: DELIVERABLE-QIUQIU-04
+  TASK_ID: TASK-QIUQIU-04
+  REQUIREMENT_ID: QIUQIU-04-SHARED-CHAIN-01
+  START_DELTA_ID: TASK-QIUQIU-04-START-DELTA-20260924-03
+  GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+  SOURCE: lfa-test evidence receipt supplied by user; EVIDENCE-ADDENDUM.md and CORRECTION-ADDENDUM.md in artifacts/cor-dual-analyte-validation-20260923/
+  EXECUTION: ONE_CAPTURE_AND_ONE_NORMAL_APP_UPLOAD; NO_RETRY_OR_SECOND_DEVICE_ACTION
+  DEVICE_SERIAL: adb-5b10bb35-rkB4bn._adb-tls-connect._tcp
+  CAPTURE_ATTEMPT_ID: 198a3398-1564-4385-8504-d1ae6ba78c3d
+  CAPTURE_SESSION_ID: ab41c832-0ff8-4d48-867b-7ff3b19f6f69
+  CAPTURE_BUNDLE_ID: a6b4d289-8e48-49a9-afc7-413cddc0e1d4
+  ANALYSIS_ID: 56c0d2dc-3614-492e-9b0d-6e599879c7e1
+  EXECUTION_ID: 67041b8d-c632-4cfd-ab8f-26f53e01f139
+  REQUEST_ID: null
+  ORIGINAL_JPEG_SHA256: 2d526f166d7a4989e7e9250c199ec0a50b6013cb74afd6b119a5a62e4e067c23
+  HASH_BINDING: FOUR_WAY_MATCH_EXPORTED_FILE_APP_UI_JOURNAL_GATEWAY_DB; NOT_A_CRYPTOGRAPHIC_SIGNATURE_CHAIN
+  HTTP_STATUS: 200
+  BUSINESS_STATUS: rejected
+  WIRE_CODE: COR_PHYSICAL_CONFIGURATION_UNAVAILABLE
+  MEASUREMENT_STATUS: not_measurable
+  T_C_AND_CONCENTRATION: null
+  CORE_DISPATCH: NOT_PERFORMED_FOR_COR; NO_PER_STAGE_TRACE
+  DIAGNOSTICS: UNAVAILABLE; DIAGNOSTICS_PUBLICATION_FAILED; manifest=null
+  APP_DISPLAY: IMAGE_MEASUREMENT_REJECTED; NOT_T_C_SUCCESS
+  TRACE_VERDICT: BLOCKED_FOR_FULL_ACCEPTANCE
+  EVIDENCE_MANIFEST: artifacts/cor-dual-analyte-validation-20260923/SHA256SUMS-evidence-batch-20260924T101800Z
+  CORRECTION: CORRECTION-ADDENDUM.md withdraws REPORT.md overclaims; REPORT.md conclusions are not accepted
+  DEVICE_EXECUTION_AUTHORIZATION: CONSUMED; NO_FURTHER_DEVICE_ACTION
+  SCIENTIFIC_DEVICE_DUAL_ANALYTE_VALIDATION: NOT_GRANTED
+  INTEGRATION_DEPLOYMENT: NOT_GRANTED
+  INDEPENDENT_REVIEW_AND_PM_ACCEPTANCE: NOT_GRANTED

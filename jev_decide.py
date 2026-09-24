@@ -18,6 +18,7 @@ from typing import Any
 CONTROL = Path(__file__).resolve().parent / ".agent-control"
 DEFAULT_LOG = CONTROL / "JEV_DECISIONS.jsonl"
 REQUIRED_STRINGS = ("decision_id", "timestamp", "actor", "question", "status")
+ACTIVE_OWNERSHIP_STATUSES = {"ACTIVE", "AUTHORIZED_ACTIVE"}
 ROOT = CONTROL.parent
 
 def _table_rows(text: str, required: set[str]) -> list[dict[str, str]]:
@@ -55,7 +56,7 @@ def validate_authoritative_binding(record: dict[str, Any]) -> None:
         if not isinstance(scope, str) or not scope.strip():
             fail("file_scope entries must be non-empty strings")
         if not any(_same_path(row.get("path", ""), scope)
-                   and row.get("status", "").upper() == "ACTIVE"
+                   and row.get("status", "").upper() in ACTIVE_OWNERSHIP_STATUSES
                    and row.get("WRITE_OWNER", "").split("(", 1)[0].startswith("lfa-")
                    for row in ownership_rows):
             fail(f"file_scope is not ACTIVE in FILE_OWNERSHIP: {scope}")
@@ -155,6 +156,8 @@ def self_test() -> None:
         "authorization": {"status": "AUTHORIZED_FOR_HANDOFF", "granted_by": "lfa-pm", "recipient": "lfa-start", "task_id": "TASK-1", "plan_id": "M1", "deliverable_id": "M1-D05", "file_scope": ["src/example.py"]},
         "status": "OPEN",
     }
+    assert {"ACTIVE", "AUTHORIZED_ACTIVE"} <= ACTIVE_OWNERSHIP_STATUSES
+    assert not ({"RELEASED", "BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE"} & ACTIVE_OWNERSHIP_STATUSES)
     with tempfile.TemporaryDirectory() as directory:
         path = Path(directory) / "decisions.jsonl"
         assert append_record(base, path, allow_test_path=True) != "IDEMPOTENT"

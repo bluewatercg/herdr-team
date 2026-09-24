@@ -605,7 +605,7 @@ Later implementation review requires exact changed-file/hunk baseline, actual co
       }
     }
   },
-  "last_reconcile": 1790211251.7375379
+  "last_reconcile": 1790249416.052161
 }
 <!-- /review-state -->
 
@@ -728,3 +728,264 @@ Three binding rules registered:
 Consistency check: MASTER_PLAN CURRENT_MILESTONE=M1, CURRENT_DELIVERABLE=M1-D05, PROGRAM_PROGRESS=1/6, PARKED_MILESTONES=M6,M7 unchanged. TASK_BOARD historical rows preserved; new governance row appended at line 42. REVIEW_QUEUE submissions and decisions preserved; this governance record appended at line 713. No existing row was rewritten.
 
 M1 Exit, M2 dispatch, QR implementation and Integration remain unauthorized. No Review or PM acceptance is granted by this registration.
+
+## TASK-QIUQIU-01 independent Review CODE_REVIEW_ACCEPTED
+
+PLAN_ID=PLAN-QIUQIU-01; DELIVERABLE_ID=DELIVERABLE-QIUQIU-01; TASK_ID=TASK-QIUQIU-01; REQUIREMENT_IDS=QIUQIU_DHEA_QR_PRODUCT_IDENTIFICATION_END_TO_END; GIT_HEAD=f952b0ac6942f8b5794c9a8ef0fcaae617e70d45. Reviewer=existing non-author lfa-review; Decision=CODE_REVIEW_ACCEPTED.
+
+FILE_SCOPE (6 paths, all git status clean, no staged/unstaged/untracked):
+
+| Path | SHA-256 | Bytes |
+|---|---|---|
+| core/product_identity.py | 43581506fd7d54ccc20a2fbf6ba0ad49c7ed735ee0457212e721abb5c463a67e | 4280 |
+| python_gateway/dhea_input.py | 8bd733b06a3b05a55841b0daaa5b66d38c3f977c98a7fb65a98ef0af247c1523 | 26372 |
+| docs/api/api-reference.md | c69f2c53882de82ad0d63b89f3bad75936f26301cec91d308609e5c85042866f | 54771 |
+| docs/api/schemas/dhea-product.schema.json | 3381081680252f7579b3188972f804d27eac2b5edef7eb62a7c396ff1557a0f2 | 22131 |
+| fixtures/dhea-product/cases.json | e083e72fc197578711307a1e1f71e0dcdfc4c85177cb3ce6c61e2ebc43d44cd9 | 1651 |
+| python_gateway/tests/test_dhea_product_contract.py | 743ee33704cce9bca94f483a5216fa13d9ff1ae46b58102806bfb6b2cb3afcc1 | 7611 |
+
+Total bytes: 116816.
+
+Verified at exact HEAD f952b0ac6942f8b5794c9a8ef0fcaae617e70d45:
+
+1. 6/6 focused contract tests PASS: `uv run --project python_gateway python -m unittest python_gateway.tests.test_dhea_product_contract -v` → Ran 6 tests OK.
+2. Dual QLI DHEA/Cor payload registry: `_REGISTRY` contains `(1,"QLI","DHEA")` and `(1,"QLI","Cor")`, both mapping to `product_id="QLI-DHEA-LFA"`, `analyte_id="DHEA"`, `template_id="DHEA-17X4-V1"`. Cor remains DHEA product-family code.
+3. Strict parsing with proper error codes: `identify_product()` at `core/product_identity.py:44-63` performs no trim/case/prefix normalization; direct `payload.encode("utf-8")` for SHA-256. Seven negative cases return correct `ProductIdentityError` codes (`QR_FORMAT_UNSUPPORTED`, `QR_VERSION_UNSUPPORTED`, `PRODUCT_NAMESPACE_UNSUPPORTED`, `PRODUCT_CODE_UNSUPPORTED`). `validate_product_declaration()` at `python_gateway/dhea_input.py:233-252` raises `InputError(422, "INVALID_PRODUCT_GATE_DECLARATION")` on mismatch.
+4. Geometry-free schema: `PRODUCT_DECLARATION` and `PRODUCT_METADATA` contain no `homography`, `measurement_roi` or `observation_window` fields. Checked-in `docs/api/schemas/dhea-product.schema.json` equals runtime `PRODUCT_DECLARATION`/`PRODUCT_METADATA` byte-for-byte (DECLARATION_MATCH=True, METADATA_MATCH=True).
+5. Dual payload fixtures with SHA-256 verification: `fixtures/dhea-product/cases.json` contains `success` (`1:QLI:DHEA:1234567890`, SHA-256 `887fc2bc8c3365758aac857b459e453ad09fcec4db849c0e14e9cd5193aac50f`) and `cor_success` (`1:QLI:Cor:1234567890`, SHA-256 `103cd0cc6a4bf2087a6d108cb0439eed814975a715acfe5ba428c3b642a255de`), plus 12 parse_cases covering all refusal codes.
+6. Four-identity binding: `validate_product_declaration()` verifies `capture_session_id`, `camera_session_id`, `capture_attempt_id`, `verification_record_id` tuple matches metadata; verifies `qr_protocol_version`, `brand_namespace`, `product_code`, `qr_payload_sha256` match registry; verifies `matched_at_monotonic_ns <= last_observed_at_monotonic_ns <= shutter_pressed_at_monotonic_ns`.
+
+No Android/NODE3/device/production acceptance claimed. No M1 Exit, M2 dispatch, QR implementation or Integration authorization. Separate PM Gate pending.
+
+## TASK-QIUQIU-02 independent Review CODE_REVIEW_ACCEPTED
+
+**Binding:**
+- PLAN_ID=PLAN-QIUQIU-02
+- DELIVERABLE_ID=DELIVERABLE-QIUQIU-02
+- TASK_ID=TASK-QIUQIU-02
+- REQUIREMENT_IDS=QIUQIU_DHEA_QR_PRODUCT_IDENTIFICATION_END_TO_END
+- Reviewer=lfa-review (non-author)
+- Decision=CODE_REVIEW_ACCEPTED
+- GIT_HEAD=f952b0ac6942f8b5794c9a8ef0fcaae617e70d45
+
+**FILE_SCOPE (14 paths, FILE_OWNERSHIP.md:546-559):**
+
+| Path | SHA-256 | Bytes | Status |
+|------|---------|-------|--------|
+| ProductGate.kt | `f19e1df4ba96fb1570f816b8af779147202f48076f7aa1c73e86c3ec808b5861` | 6127 | clean |
+| PreviewGuidanceAnalyzer.kt | `83cd7d61d8e174196b0a9fb53bb37100d6620be8a413bd6059c2b6492e0e3473` | 31050 | clean |
+| NativeCameraManager.kt | `8c9cfd4010ad095efb5adf394699bc26e5a1de47be907ba01835d8efb20ad77d` | 26946 | clean |
+| LfaViewModel.kt | `a42113d8efa5f3ad2cd0f0c08c339278b75005f0676b5f06e1a0f2736dcac8fe` | 30652 | clean |
+| CaptureScreen.kt | `d420d78cef671c724ade5f9fc62a9c0859bbb0e9dfbf97edd12263163f580bff` | 30460 | clean |
+| Models.kt | `8f7fa269a899775ca4de3072aacbcb80679bdc7995bfa2ac57868c731ed0d92e` | 5946 | dirty |
+| JournaledArtifactStore.kt | `bc55499767a11c9257c7a5a4663e82bb795b970b3089fba502744d0385ca555d` | 42501 | clean |
+| DheaJson.kt | `28c3cb5135a363e52318c2ce56707291cf4c60f31d4add10eeb4e74a384d7ff6` | 10473 | clean |
+| ProductGateTest.kt | `01c9edc29cf76214b816fc9463022ff5e162c161228fa14e9d8692433009825a` | 15150 | clean |
+| PreviewGuidanceAnalyzerTest.kt | `5cad6709983c74fd55b03e583dcfef8f1372c4be9689550ed72f3bd103acca75` | 15711 | clean |
+| DheaContractTest.kt | `94a8c384222df285aede0c314e0ebf6bc39476636678adbfb856c6a08852ebed` | 18266 | dirty |
+| ProductBundlePersistenceTest.kt | `8447f92d403c31781498131904f201fa82305d47aa0dfeb0ae17ead199d2cdf4` | 13722 | dirty |
+| ProductEndToEndTest.kt | `2c541ae24ab8aba4a12cbb3aba02cba2950c4398019fc22935d36349591fa27f` | 16969 | clean |
+| README.md | `afb7c61dba7552f52670e3a57089f733a7a57074936f3663c558821dadb8c3b3` | 1819 | untracked |
+
+Total: 265792 bytes
+
+**Dirty changes review:**
+
+1. **Models.kt (+1/-1):** `productCode: String` moved from default `"DHEA"` (line 130) to required parameter (line 124). Prevents silent DHEA fallback when Cor payload is scanned. ProductGate.kt:164 supplies explicit value via `productCodeForQrPayload()`. Test at ProductBundlePersistenceTest.kt:72 confirms explicit construction. ✓ Correct, minimal, well-tested.
+
+2. **DheaContractTest.kt (+11):** Added Cor declaration test at lines 93-103. Verifies `assay_context.analyte_id` derives from persisted Cor declaration. Test passes (11 tests, 0 failed). ✓ Correct, fills dual-payload coverage gap.
+
+3. **ProductBundlePersistenceTest.kt (+21/-22):** Switched from DHEA to Cor payload (line 72 `qrPayload = "1:QLI:Cor:1234567890"`, line 73 `productCode = "Cor"`, SHA-256 `103cd0cc...`). Replaced `Bitmap.createBitmap` JPEG generation with static base64-encoded JPEG (lines 43-60) to avoid Windows JBR25 native crash. Added assertions at lines 113-114 verifying persisted `product_code` and `assay_context.analyte_id` are `"Cor"`. Test passes (1 test, 0 failed). ✓ Correct, addresses real platform issue, improves dual-payload coverage.
+
+4. **README.md (untracked):** Documents dual payload acceptance, byte-exact matching, Bundle 1.6 persistence, upload analyte derivation, and build instructions. ✓ Correct, accurate, no blocking findings.
+
+**Six verification dimensions:**
+
+1. **Dual payload (DHEA/Cor) ✓:** Models.kt:6-10 maps `1:QLI:DHEA:1234567890` → `"DHEA"`, `1:QLI:Cor:1234567890` → `"Cor"`, else `null`. ProductGate.kt:54-56 uses `productCodeForQrPayload(payload) != null`. DheaJson.kt:110 derives from validated payload. JournaledArtifactStore.kt:457 recomputes and requires match. Test evidence: DheaContractTest.kt:52-65 verifies both payloads and rejects trim/case/namespace deviations.
+
+2. **Session+camera+attempt binding ✓:** ProductGateBinding (ProductGate.kt:30-34) contains `captureSessionId`, `cameraSessionId`, `captureAttemptId`. LfaViewModel.kt:212 constructs binding with three identities. ProductGate.observe():100 rejects mismatched binding. ProductGate.consume():149 performs four-way check. Test evidence: ProductGateTest.kt:95-111 verifies binding mismatch rejects consume.
+
+3. **Manual shutter consume ✓:** LfaViewModel.kt:341-409 calls `productGate.consume(binding, now, monotonicNow)`. Returns `null` → `beginFreshProductGateAttempt(QR_NO_LONGER_OBSERVED)`. ProductGate.consume():143-174 checks `consumed`, binding equality, grace window, monotonic ordering. Sets `consumed = true`, returns `ProductGateDeclaration` with all four IDs. Test evidence: ProductGateTest.kt:74-94 verifies one-shot consume; lines 299-304 verify grace window.
+
+4. **Bundle 1.6 persistence ✓:** LfaViewModel.kt:365 sets `schemaVersion = "1.6"`. JournaledArtifactStore.kt:311 requires version in set. JournaledArtifactStore.kt:406-410 calls `validateProductGateDeclaration()` for version 1.6. Test evidence: ProductBundlePersistenceTest.kt:62-211 verifies restart survival, four-identity binding, optical evidence, journal tamper detection, historical bundle compatibility.
+
+5. **Upload analyte derivation ✓:** DheaJson.kt:110 derives `productCode` from payload. Line 116 requires `declaration.get("product_code") == productCode`. Test evidence: DheaContractTest.kt:92 verifies DHEA analyte_id; line 102 verifies Cor analyte_id. ProductBundlePersistenceTest.kt:113-114 verifies persisted `product_code` and `assay_context.analyte_id` are `"Cor"`.
+
+6. **Refusal bypass prevention ✓:** DheaJson.productGate():97-127 performs strict key-set check (line 103), UUID format (line 108), payload SHA-256 (line 113), monotonic ordering (line 123), identity binding (lines 114-119). Any mismatch throws `DheaClientException("CONTRACT_MISMATCH")`. JournaledArtifactStore.validateProductGateDeclaration():444-476 performs parallel validation on persisted bundle. Test evidence: DheaContractTest.kt:43-51 verifies 5 rejection paths; lines 52-65 verify 5 more rejection paths including trim, wrong product_code, wrong namespace, wrong session, wrong ordering.
+
+**Test results:**
+- 5 focused contract classes build success
+- XML: 44 tests, 43 passed, 0 failed, 1 skipped
+- ProductEndToEndTest skipped: `assumeTrue("Set E2E_ENABLED=true ...")` at line 84. Correct behavior — live Gateway roundtrip requires explicit opt-in and environment variables.
+- APK SHA-256: `4a1b26fbcf81f783cdeafa4bfa3cdf30ea58569b0b779abb7971a839182240e0`
+
+**Non-blocking observations:**
+
+1. **ADB in WSL:** User confirmed `/mnt/c/Users/miller/AppData/Local/Android/Sdk/platform-tools/adb.exe` path. Two devices connected but not authorized for this task. Device validation is out of scope per task authorization.
+
+2. **JournaledArtifactStore.kt:457-463:** `validateProductGateDeclaration()` error message `"Invalid product QR evidence"` is generic. Could be more specific (e.g., `"product_code does not match payload"`), but not a blocking issue.
+
+3. **PreviewGuidanceAnalyzer.kt:494-524:** QR visibility tracking with 1000ms hold window is display-layer concern, not product gate authority. Comment at line 273 explicitly separates display hold from gate grace. Correct separation.
+
+**NODE2 scope compliance:**
+- ✓ 14 exact paths (FILE_OWNERSHIP.md:546-559)
+- ✓ Dual payload (DHEA/Cor)
+- ✓ Session+camera+attempt binding
+- ✓ Manual shutter consume
+- ✓ Bundle 1.6 persistence
+- ✓ Upload analyte derivation
+- ✓ Refusal bypass prevention
+- ✓ Focused contract tests (5 classes, 44 tests)
+- ✓ APK build
+- ✗ TASK-QIUQIU-03 (Core/API recheck) — not touched
+- ✗ Device validation — NOT_EXECUTED_NOT_AUTHORIZED
+- ✗ v1.7 spec dirty changes — user-owned, not NODE2 write
+- ✗ M1 Exit, M2 dispatch, QR implementation, Integration — not authorized
+
+**Decision: ACCEPT**
+
+All six verification dimensions pass. Dirty changes are minimal, correct, and well-tested. No blocking findings. NODE2 scope boundaries respected.
+
+**Constraints:**
+- Separate PM Gate pending
+- No M1 Exit, M2 dispatch, QR implementation, or Integration authorization
+- No device validation claimed
+- No production readiness, clinical validity, or regulatory approval implied
+
+## TASK-QIUQIU-03 independent Review CODE_REVIEW_REJECTED
+
+**Binding:**
+- PLAN_ID=PLAN-QIUQIU-03
+- DELIVERABLE_ID=DELIVERABLE-QIUQIU-03
+- TASK_ID=TASK-QIUQIU-03
+- REQUIREMENT_IDS=QIUQIU_DHEA_QR_PRODUCT_IDENTIFICATION_END_TO_END
+- Reviewer=lfa-review (non-author)
+- Decision=CODE_REVIEW_REJECTED
+- GIT_HEAD=f952b0ac6942f8b5794c9a8ef0fcaae617e70d45
+
+**Prior pane/subagent ACCEPTED statements were non-authoritative.** This is the first authoritative independent review.
+
+**FILE_SCOPE (9 paths, FILE_OWNERSHIP.md:560-568):**
+
+| Path | SHA-256 | Bytes | Status |
+|------|---------|-------|--------|
+| core/dhea.py | `e90de80196f885b470fc9ee91d86c0a2310d6ab05e1a542fb77a64de3cb9088d` | 43839 | clean |
+| core/dhea_diagnostics.py | `46d1c87236de4ce7fae339fdae58063ee03cb5b430860c8680f222a2886a0c36` | 78269 | clean |
+| python_gateway/dhea.py | `bbcf1b95c4725a6c333592cfd77cf343a927fc1bb439541af18930bed9d5cbbb` | 34905 | clean |
+| python_gateway/app.py | `d83aeb24849864b4de3bd9b582ed67ad890646a42e0aa4a1551ac007a006d469` | 3515 | clean |
+| python_gateway/service.py | `57bb6f9ecdff1e552d39a3f9af877e88ed6082c83746a5cd0bb2fcb9e640760f` | 9327 | clean |
+| python_gateway/tests/test_dhea_product_recheck.py | `32dfa77a588d3b45c50d097bfc03c7b40aa2a30a5e57d67835d4631fbb7a9c5f` | 4139 | clean |
+| python_gateway/tests/test_dhea_diagnostics.py | `3dd1f71a5b9aa9c0435b0aa1602e5bf9b950b58a957d24c545dd425524982601` | 19372 | clean |
+| tests/test_dhea_product.py | `c8e72a8ff92669e0b4f95cc11c76417d901137e18579b216da4373addbc1cc4f` | 7278 | clean |
+| core/product_identity.py | `127f217b9b6bd072caf0cb914a3b6514852df4286458b8ae994e04e3eb6990a6` | 4829 | clean |
+
+Total: 205473 bytes
+
+**Test results:**
+- tests/test_dhea_product.py: 5/5 PASS (0.689s)
+- python_gateway/tests/test_dhea_product_recheck.py: 1 FAILURE
+
+**Failing test command:**
+```
+uv run python -m unittest python_gateway.tests.test_dhea_product_recheck.FinalJpegGatewayTest.test_cor_product_declaration_passes_the_gate_reaches_core_and_is_replayable
+```
+
+**Failing test result:**
+```
+AssertionError: 'QR_NOT_READABLE' != 'G201'
+- QR_NOT_READABLE
++ G201
+```
+
+**Root cause:**
+The test modifies metadata to declare a Cor payload (`1:QLI:Cor:1234567890`) while the test image contains a DHEA QR code. The Core's `recheck_product()` function at `core/product_identity.py:91` attempts to read the QR code from the persisted JPEG, but returns `QR_NOT_READABLE` instead of detecting the mismatch.
+
+**Expected behavior:**
+The test expects wire code `G201` (from `self.runtime.analyze()`), indicating the Cor declaration should pass the product gate and reach Core analysis.
+
+**Actual behavior:**
+The QR code is not readable, returning `QR_NOT_READABLE` before reaching Core.
+
+**Evidence:**
+- Test setup creates DHEA QR image: `self.image = qr_jpeg()` (test_dhea_product_recheck.py:19)
+- Test modifies metadata to Cor: `value["product_gate_declaration"].update(qr_payload=cor_payload, ...)` (test_dhea.py:114-117)
+- Upload returns `QR_NOT_READABLE` instead of expected `G201`
+- `recheck_product()` at line 94-95 returns `QR_NOT_READABLE` when QR detection fails
+
+**Blocking issue:**
+The Cor payload test failure demonstrates that the dual-payload (DHEA/Cor) product identification is not correctly implemented. The requirement states: "exact DHEA/Cor payload semantics" must be supported. The test failure shows that Cor declarations are not passing the product gate as expected.
+
+**Recommendation:**
+Investigate why `cv2.QRCodeDetector().detectAndDecode()` fails to read the QR code in the test image when the metadata declares Cor. The issue may be:
+1. QR code generation quality in `qr_jpeg()` function
+2. OpenCV QR detector configuration
+3. Image preprocessing in `decode_image()`
+4. Mismatch between test image content and metadata declaration
+
+**Decision: REJECT**
+
+Do not proceed with TASK-QIUQIU-03 until this failure is resolved. Author will repair and resubmit a new exact revision; preserve this rejection as history.
+
+**Constraints:**
+- No M1 Exit, M2 dispatch, QR implementation, or Integration authorization
+- No device validation claimed
+- No production readiness, clinical validity, or regulatory approval implied
+- Separate PM Gate pending
+
+## TASK-QIUQIU-03 independent Review CODE_REVIEW_ACCEPTED (revision 2)
+
+**Binding:**
+- PLAN_ID=PLAN-QIUQIU-03
+- DELIVERABLE_ID=DELIVERABLE-QIUQIU-03
+- TASK_ID=TASK-QIUQIU-03
+- REQUIREMENT_IDS=QIUQIU_DHEA_QR_PRODUCT_IDENTIFICATION_END_TO_END
+- Reviewer=lfa-review (non-author)
+- Decision=CODE_REVIEW_ACCEPTED
+- GIT_HEAD=f952b0ac6942f8b5794c9a8ef0fcaae617e70d45
+- Revision=2 (after NODE3 test fixture correction)
+
+**Prior pane/subagent ACCEPTED statements were non-authoritative.** This is the first authoritative independent review after fixture correction.
+
+**FILE_SCOPE (9 paths, FILE_OWNERSHIP.md:560-568):**
+
+| Path | SHA-256 | Bytes | Status |
+|------|---------|-------|--------|
+| core/dhea.py | `e90de80196f885b470fc9ee91d86c0a2310d6ab05e1a542fb77a64de3cb9088d` | 43839 | clean |
+| core/dhea_diagnostics.py | `46d1c87236de4ce7fae339fdae58063ee03cb5b430860c8680f222a2886a0c36` | 78269 | clean |
+| python_gateway/dhea.py | `bbcf1b95c4725a6c333592cfd77cf343a927fc1bb439541af18930bed9d5cbbb` | 34905 | clean |
+| python_gateway/app.py | `d83aeb24849864b4de3bd9b582ed67ad890646a42e0aa4a1551ac007a006d469` | 3515 | clean |
+| python_gateway/service.py | `57bb6f9ecdff1e552d39a3f9af877e88ed6082c83746a5cd0bb2fcb9e640760f` | 9327 | clean |
+| python_gateway/tests/test_dhea_product_recheck.py | `3e15e9346e017aa041ef82b0395bea1fa2fea1c03d15e096f93612ecadef0947` | 5275 | clean |
+| python_gateway/tests/test_dhea_diagnostics.py | `3dd1f71a5b9aa9c0435b0aa1602e5bf9b950b58a957d24c545dd425524982601` | 19372 | clean |
+| tests/test_dhea_product.py | `c8e72a8ff92669e0b4f95cc11c76417d901137e18579b216da4373addbc1cc4f` | 7278 | clean |
+| core/product_identity.py | `127f217b9b6bd072caf0cb914a3b6514852df4286458b8ae994e04e3eb6990a6` | 4829 | clean |
+
+Total: 206609 bytes
+
+**Test results:**
+- tests/test_dhea_product.py: 5/5 PASS (0.630s)
+- python_gateway/tests/test_dhea_product_recheck.FinalJpegGatewayTest.test_cor_product_declaration_passes_the_gate_reaches_core_and_is_replayable: PASS (28.297s)
+- python_gateway/tests/test_dhea_product_recheck.FinalJpegGatewayTest.test_product_declaration_does_not_reenter_product_identification: PASS (31.220s)
+- python_gateway/tests/test_dhea_diagnostics.DiagnosticHistoryTest.test_optical_evidence_survives_restart_replay_and_rejects_invalid_binding: PASS (22.299s)
+- python_gateway/tests/test_dhea_diagnostics.DiagnosticHistoryTest.test_final_jpeg_product_recheck_is_recorded_in_diagnostics: PASS (parent evidence)
+- python_gateway/tests/test_dhea_diagnostics.DiagnosticHistoryTest.test_cor_final_jpeg_recheck_preserves_product_code_binding: PASS (parent evidence)
+
+**Both repaired diagnostics defects verified:**
+1. **Supplied-decoded callbacks:** `test_final_jpeg_product_recheck_is_recorded_in_diagnostics` (line 180) verifies `product["parameters"] == {"source": "CORE_FINAL_JPEG", "core_reverified": True}`, confirming the Core uses the supplied decoded QR payload from `recheck_product()` instead of re-decoding.
+2. **Truthful overlay:** `test_final_jpeg_product_recheck_is_recorded_in_diagnostics` (lines 188-189) verifies the `RECOGNIZED_REGIONS` artifact has `stage_id == "EXIF_ORIENTATION"`, confirming the overlay is truthfully attributed to the EXIF orientation stage, not misattributed to PRODUCT_IDENTIFICATION.
+
+**Revision 2 changes:**
+- NODE3 test fixture corrected: inherited DHEA/Cor tests now use QR-bearing JPEGs (`qr_jpeg()`) instead of the base white JPEG
+- `python_gateway/tests/test_dhea_product_recheck.py` SHA-256 changed from `32dfa77a588d3b45c50d097bfc03c7b40aa2a30a5e57d67835d4631fbb7a9c5f` to `3e15e9346e017aa041ef82b0395bea1fa2fea1c03d15e096f93612ecadef0947`
+- `python_gateway/tests/test_dhea_product_recheck.py` bytes changed from 4139 to 5275
+- All other 8 paths unchanged
+
+**Decision: ACCEPT**
+
+All DHEA/Cor inherited gateway tests pass. Both repaired diagnostics defects verified. Implementation source unchanged. Test fixture correction resolves the prior REJECTION at lines 855-933.
+
+**Constraints:**
+- No M1 Exit, M2 dispatch, QR implementation, or Integration authorization
+- No device validation claimed
+- No production readiness, clinical validity, or regulatory approval implied
+- Separate PM Gate pending

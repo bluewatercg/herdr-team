@@ -270,9 +270,9 @@ Current user whole-goal business authorization and MASTER_PLAN section QIUQIU DH
 | herdr-team/.agent-control/EVIDENCE/QR-ANDROID-01-D01.json | RUN-20260918-QR-ANDROID | PRODUCT-IMPLEMENTATION | lfa-android | all roles | ACTIVE |
 | core/dhea.py | RUN-20260918-QR-FINAL | PRODUCT-IMPLEMENTATION | lfa-api | all roles | ACTIVE |
 | core/dhea_diagnostics.py | RUN-20260918-QR-FINAL | PRODUCT-IMPLEMENTATION | lfa-api | all roles | ACTIVE |
-| python_gateway/tests/test_dhea_product_recheck.py | RUN-20260918-QR-FINAL | PRODUCT-IMPLEMENTATION | lfa-api | all roles | ACTIVE |
-| tests/test_dhea_product.py | RUN-20260918-QR-FINAL | PRODUCT-IMPLEMENTATION | lfa-api | all roles | ACTIVE |
-| python_gateway/tests/test_dhea_diagnostics.py | RUN-20260918-QR-FINAL | PRODUCT-IMPLEMENTATION | lfa-api | all roles | ACTIVE |
+| python_gateway/tests/test_dhea_product_recheck.py | RUN-20260918-QR-FINAL | PRODUCT-IMPLEMENTATION | lfa-api | all roles | RELEASED_FOR_TASK-QIUQIU-04 |
+| tests/test_dhea_product.py | RUN-20260918-QR-FINAL | PRODUCT-IMPLEMENTATION | lfa-api | all roles | RELEASED_FOR_TASK-QIUQIU-04 |
+| python_gateway/tests/test_dhea_diagnostics.py | RUN-20260918-QR-FINAL | PRODUCT-IMPLEMENTATION | lfa-api | all roles | RELEASED_FOR_TASK-QIUQIU-04 |
 | herdr-team/.agent-control/EVIDENCE/QR-FINAL-01-D01.json | RUN-20260918-QR-FINAL | PRODUCT-IMPLEMENTATION | lfa-api | all roles | ACTIVE |
 
 Node2/Node3 activate after Node1 dual Gate. Shared Node1 paths retain lfa-api exclusively and extend to Node3 only after freeze; do not duplicate ownership rows. Node2 owns all Android changes including declaration persistence/serialization migration. Required additional paths are registered by PM before edit within existing user authorization. Each owner preserves baseline hashes and reports unrelated changes rather than overwriting them.
@@ -371,9 +371,9 @@ RUN-20260920-QLI-CUTOVER; shared contract revision sha256:54da44fd6071410f765c50
 | fixtures/dhea-product/cases.json | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
 | python_gateway/tests/test_dhea_product_contract.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
 | python_gateway/tests/test_dhea.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
-| python_gateway/tests/test_dhea_product_recheck.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
-| tests/test_dhea_product.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
-| python_gateway/tests/test_dhea_diagnostics.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
+| python_gateway/tests/test_dhea_product_recheck.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | RELEASED_FOR_TASK-QIUQIU-04 |
+| tests/test_dhea_product.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | RELEASED_FOR_TASK-QIUQIU-04 |
+| python_gateway/tests/test_dhea_diagnostics.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | RELEASED_FOR_TASK-QIUQIU-04 |
 | experiments/qr-product-e2e/gateway.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
 | docs/api/generate_dhea_v3.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
 | python_gateway/dhea_v3_schema.py | RUN-20260920-QLI-CUTOVER | API-CORE | lfa-api | all roles | ACTIVE |
@@ -515,7 +515,7 @@ RUN-20260920-DHEA-MAINLINE-REPLAN-R01, original sole writer=lfa-api. Separate PM
 | core/dhea.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | R04-MINIMUM-DIRECTION | lfa-api | all roles | ACTIVE |
 | core/geometry.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | R04-MINIMUM-DIRECTION | lfa-api | all roles | ACTIVE |
 | core/dhea_diagnostics.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | R04-MINIMUM-DIRECTION | lfa-api | all roles | ACTIVE |
-| tests/test_dhea.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | R04-MINIMUM-DIRECTION | lfa-api | all roles | ACTIVE |
+| tests/test_dhea.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | R04-MINIMUM-DIRECTION | lfa-api | all roles | RELEASED_FOR_TASK-QIUQIU-04 |
 | tests/test_geometry.py | RUN-20260920-DHEA-MAINLINE-REPLAN-R01 | R04-MINIMUM-DIRECTION | lfa-api | all roles | ACTIVE |
 
 Conflict determination: four paths already belong to lfa-api; tests/test_dhea.py had no competing ACTIVE writer in the recovered ledger. IMPLEMENTATION_AUTHORIZED=YES within these five paths only. No new agent or task, no other path promotion, and no deployment/device/gateway/schema/Room/archive permission. Preserve prior edits as an unaccepted incoming baseline; original owner supplies focused executable evidence and fresh independent implementation review. Existing broader historical acceptance is not inherited.
@@ -537,35 +537,177 @@ Scope: local detection clearing only, preserving configuration, credentials and 
 
 | path | PLAN_ID | DELIVERABLE_ID | TASK_ID | WRITE_OWNER | READERS | status |
 |---|---|---|---|---|---|---|
-| core/product_identity.py | PLAN-QIUQIU-01 | DELIVERABLE-QIUQIU-01 | TASK-QIUQIU-01 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| python_gateway/dhea_input.py | PLAN-QIUQIU-01 | DELIVERABLE-QIUQIU-01 | TASK-QIUQIU-01 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| docs/api/api-reference.md | PLAN-QIUQIU-01 | DELIVERABLE-QIUQIU-01 | TASK-QIUQIU-01 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| docs/api/schemas/dhea-product.schema.json | PLAN-QIUQIU-01 | DELIVERABLE-QIUQIU-01 | TASK-QIUQIU-01 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| fixtures/dhea-product/cases.json | PLAN-QIUQIU-01 | DELIVERABLE-QIUQIU-01 | TASK-QIUQIU-01 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| python_gateway/tests/test_dhea_product_contract.py | PLAN-QIUQIU-01 | DELIVERABLE-QIUQIU-01 | TASK-QIUQIU-01 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| Android_App/app/src/main/java/com/example/camera/ProductGate.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| Android_App/app/src/main/java/com/example/camera/PreviewGuidanceAnalyzer.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| Android_App/app/src/main/java/com/example/camera/NativeCameraManager.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| Android_App/app/src/main/java/com/example/domain/model/Models.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| Android_App/app/src/main/java/com/example/data/local/JournaledArtifactStore.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| Android_App/app/src/main/java/com/example/network/DheaJson.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| Android_App/app/src/test/java/com/example/camera/ProductGateTest.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| Android_App/app/src/test/java/com/example/camera/PreviewGuidanceAnalyzerTest.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| Android_App/app/src/test/java/com/example/network/DheaContractTest.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| Android_App/app/src/test/java/com/example/network/ProductBundlePersistenceTest.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| Android_App/app/src/test/java/com/example/network/ProductEndToEndTest.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| Android_App/README.md | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE |
-| core/dhea.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| core/dhea_diagnostics.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| python_gateway/dhea.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| python_gateway/app.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| python_gateway/service.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| python_gateway/tests/test_dhea_product_recheck.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| python_gateway/tests/test_dhea_diagnostics.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| tests/test_dhea_product.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
-| core/product_identity.py (NODE3 recheck portion; serialized after NODE1) | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | BLOCKED_UNTIL_NODE1_PM_GATE |
+| core/product_identity.py | PLAN-QIUQIU-01 | DELIVERABLE-QIUQIU-01 | TASK-QIUQIU-01 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| python_gateway/dhea_input.py | PLAN-QIUQIU-01 | DELIVERABLE-QIUQIU-01 | TASK-QIUQIU-01 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| docs/api/api-reference.md | PLAN-QIUQIU-01 | DELIVERABLE-QIUQIU-01 | TASK-QIUQIU-01 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| docs/api/schemas/dhea-product.schema.json | PLAN-QIUQIU-01 | DELIVERABLE-QIUQIU-01 | TASK-QIUQIU-01 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| fixtures/dhea-product/cases.json | PLAN-QIUQIU-01 | DELIVERABLE-QIUQIU-01 | TASK-QIUQIU-01 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| python_gateway/tests/test_dhea_product_contract.py | PLAN-QIUQIU-01 | DELIVERABLE-QIUQIU-01 | TASK-QIUQIU-01 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/app/src/main/java/com/example/camera/ProductGate.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/app/src/main/java/com/example/camera/PreviewGuidanceAnalyzer.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/app/src/main/java/com/example/camera/NativeCameraManager.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/app/src/main/java/com/example/domain/model/Models.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/app/src/main/java/com/example/data/local/JournaledArtifactStore.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/app/src/main/java/com/example/network/DheaJson.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/app/src/test/java/com/example/camera/ProductGateTest.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/app/src/test/java/com/example/camera/PreviewGuidanceAnalyzerTest.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/app/src/test/java/com/example/network/DheaContractTest.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/app/src/test/java/com/example/network/ProductBundlePersistenceTest.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/app/src/test/java/com/example/network/ProductEndToEndTest.kt | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| Android_App/README.md | PLAN-QIUQIU-02 | DELIVERABLE-QIUQIU-02 | TASK-QIUQIU-02 | lfa-android | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| core/dhea.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| core/dhea_diagnostics.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| python_gateway/dhea.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| python_gateway/app.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| python_gateway/service.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| python_gateway/tests/test_dhea_product_recheck.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| python_gateway/tests/test_dhea_diagnostics.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| tests/test_dhea_product.py | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
+| core/product_identity.py (NODE3 recheck portion; serialized after NODE1) | PLAN-QIUQIU-03 | DELIVERABLE-QIUQIU-03 | TASK-QIUQIU-03 | lfa-api | lfa-review; lfa-pm | FROZEN_CONTRACT_RELEASED |
 NODE1 conflicts: `core/product_identity.py`, `python_gateway/dhea_input.py`, and `docs/api/api-reference.md` have prior same-owner ACTIVE QR-PC/QLI-CUTOVER/EXIF claims. Those claims remain historical/serialized; NODE1 is the sole successor writer after exact conflict disposition. NODE3 has exclusive sequential access to `core/product_identity.py` only after NODE1 PM gate. `python_gateway/dhea.py` is explicitly bound to NODE3. NODE2 depends on NODE1 contract freeze. No source dispatch is authorized by this ledger edit.
 
 Disposition for the three named NODE1 overlaps: TASK-QIUQIU-01 is the sole current successor scope for lfa-api; prior QR-PC/QLI-CUTOVER/EXIF rows remain historical evidence, not concurrent write permission on these paths. NODE1 review bytes remain frozen until review disposition. NODE2 excludes API/Core and waits for NODE1 contract freeze; its exact paths above replace the former category rows. NODE3 excludes Android and waits for NODE1 exact-revision Review plus PM Gate and explicit file release. All other historical claims remain protected. Registration is not implementation dispatch or acceptance.
+
+## QIUQIU-04 bounded implementation ownership (HEAD b307830089b51aca793ca693e375c217ec8e45ea)
+
+Each `AUTHORIZED_ACTIVE` row below is a single-writer PM grant for the named task only; lfa-start must record a bounded START before implementation. Historical same-owner ACTIVE rows are serialized, not concurrent permission; lfa-test receives the four paths explicitly released from older lfa-api claims at lines 273-275, 374-376 and 518. Other frozen QIUQIU-01/02/03 records remain historical. `RESERVED_NOT_ACTIVE` is not write permission. No wildcard directory grant, old evidence overwrite or device action follows from this table.
+
+| path | PLAN_ID | DELIVERABLE_ID | TASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|---|
+| core/dhea.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| core/product_identity.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| core/dhea_diagnostics.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/dhea.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/app.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/service.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/dhea_input.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/dhea_export.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/workbench.html | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| docs/api/api-reference.md | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| docs/specs/API.md | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| docs/requirements/MVP.md | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| docs/LFA_最新完整文档集合/11_DHEA原生Android研究v2公开契约.md | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| docs/api/schemas/lfa-dual.schema.json | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| docs/api/openapi-lfa-dual.json | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/main/java/com/example/network/DheaClient.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/main/java/com/example/network/DheaJson.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/main/java/com/example/camera/ProductGate.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/main/java/com/example/domain/model/Models.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/main/java/com/example/data/local/JournaledArtifactStore.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/main/java/com/example/ui/screens/QueueScreen.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/test/java/com/example/network/DheaContractTest.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/test/java/com/example/network/ProductBundlePersistenceTest.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/test/java/com/example/ui/ProductGateDisplayTest.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| tests/test_dhea.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| tests/test_dhea_product.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/tests/test_dhea_diagnostics.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/tests/test_dhea_product_recheck.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/tests/test_dhea_product_contract.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/tests/test_dhea.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+
+| docs/LFA_最新完整文档集合/config/cor_template.v1.json | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | RESERVED_NOT_ACTIVE |
+| artifacts/cor-dual-analyte-validation-20260923/ | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | RESERVED_NOT_ACTIVE |
+
+Cor physical layout/matrix/direction/line-window measurements and two new physical-sample identities are absent from verified current evidence. The Cor numerical template cannot be promoted or written until those inputs exist. Fresh device artifacts have the single reserved destination above; this is not yet a device write grant. Historical `artifacts/cor-*` and original JPEGs are read-only.
+
+Only the currently listed exact paths are granted; any newly discovered callsite must be registered by PM before editing. Historical `dhea-capture/2.0`, `2.1-product`, frozen `2.2-confirmed`, rejected `3.0`, original images and old evidence are outside this write scope.
+
+## QIUQIU-04 current candidate-only ownership overlay / HEAD b307830089b51aca793ca693e375c217ec8e45ea
+
+The following exact existing paths are registered for TASK-QIUQIU-04 as inactive candidates only. This current overlay is authoritative for current dispatch status; historical `AUTHORIZED_ACTIVE` rows above remain append-only history and do not grant current write permission. No implementation, integration, device execution, Review or PM acceptance follows from this registration.
+
+| path | PLAN_ID | DELIVERABLE_ID | TASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|---|
+| core/dhea.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | CANDIDATE_NOT_ACTIVE |
+| core/product_identity.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | CANDIDATE_NOT_ACTIVE |
+| python_gateway/dhea.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | CANDIDATE_NOT_ACTIVE |
+| python_gateway/dhea_input.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | CANDIDATE_NOT_ACTIVE |
+| docs/api/schemas/lfa-dual.schema.json | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | CANDIDATE_NOT_ACTIVE |
+| docs/api/openapi-lfa-dual.json | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | CANDIDATE_NOT_ACTIVE |
+| Android_App/app/src/main/java/com/example/network/DheaClient.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | CANDIDATE_NOT_ACTIVE |
+| Android_App/app/src/main/java/com/example/network/DheaJson.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | CANDIDATE_NOT_ACTIVE |
+| Android_App/app/src/main/java/com/example/camera/ProductGate.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | CANDIDATE_NOT_ACTIVE |
+| tests/test_dhea.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | CANDIDATE_NOT_ACTIVE |
+| tests/test_dhea_product.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | CANDIDATE_NOT_ACTIVE |
+| python_gateway/tests/test_dhea_diagnostics.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | CANDIDATE_NOT_ACTIVE |
+| python_gateway/tests/test_dhea_product_recheck.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | CANDIDATE_NOT_ACTIVE |
+
+Candidate count is exactly 13 (lfa-api 6, lfa-android 3, lfa-test 4). Cor template/config and device evidence remain `RESERVED_NOT_ACTIVE`; iOS remains deferred with empty file scope.
+
+## QIUQIU-04 current dispatch disposition / 2026-09-24
+
+`TASK-QIUQIU-04` is `BLOCKED / NOT_DISPATCHED`. The 13 rows in the current candidate-only overlay remain inactive and confer no write authority. Historical `AUTHORIZED_ACTIVE` rows are not current permission. Cor configuration/source additions and the new-sample evidence destination require a later exact PM registration before any owner may write.
+
+## QIUQIU-04 current authorized activation / 2026-09-24
+
+This append supersedes only the dispatch status of the candidate overlay at lines 619-643. The user's `CODE_DOCUMENTATION_PLUS_EVIDENCE_EXPORT` selection and START delta activate exactly these paths. Historical rows remain unchanged; no wildcard permission follows.
+
+| path | PLAN_ID | DELIVERABLE_ID | TASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|---|
+| core/dhea.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| core/product_identity.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/dhea.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/dhea_input.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| docs/api/schemas/lfa-dual.schema.json | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| docs/api/openapi-lfa-dual.json | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-api | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/main/java/com/example/network/DheaClient.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/main/java/com/example/network/DheaJson.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| Android_App/app/src/main/java/com/example/camera/ProductGate.kt | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-android | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| tests/test_dhea.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| tests/test_dhea_product.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/tests/test_dhea_diagnostics.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| python_gateway/tests/test_dhea_product_recheck.py | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | AUTHORIZED_ACTIVE |
+| artifacts/cor-bundle-1df42409-a789-47e4-9dc2-66bd270b603e/ | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-review; lfa-pm | AUTHORIZED_ACTIVE_EXPORT_ONLY |
+
+`docs/LFA_最新完整文档集合/config/cor_template.v1.json` and `artifacts/cor-dual-analyte-validation-20260923/` remain `RESERVED_NOT_ACTIVE`. The device source is read-only: no new capture, install, clear or App-data mutation.
+
+## QIUQIU-04 single Cor capture evidence activation / 2026-09-24
+
+The existing `lfa-test` ownership of `artifacts/cor-bundle-1df42409-a789-47e4-9dc2-66bd270b603e/` is extended from export-only to `AUTHORIZED_ACTIVE_SINGLE_CAPTURE_TRACE` for the user's one App Cor capture/upload and API-layer trace. This changes no source owner. Device mutation is limited to the normal capture/upload; no install, clear-data, settings change or template/config write.
+
+## 2026-09-24 TASK-QIUQIU-04 实施写入释放（append-only）
+
+- Receipt: `TASK-QIUQIU-04-DELIVERY-20260924-01`
+- `TASK_QIUQIU_04_ACTIVE_WRITE_CLAIMS = 0`
+- `TASK_QIUQIU_04_WRITE_SCOPE = []`
+- 原 `TASK-QIUQIU-04-START-DELTA-20260924-01` 的 13 条精确实现路径已完成实施并释放写入占用；后续仅允许独立 Reviewer 读取，任何整改或部署须新建明确授权与文件清单。
+- `docs/LFA_最新完整文档集合/config/cor_template.v1.json` 始终未激活、未修改。
+
+## 2026-09-24 TASK-QIUQIU-04 文档事实同步整改（append-only）
+
+用户要求在修复 `DheaJson.kt` 编译错误后继续聚焦验证；验证中确认以下五份现行文档仍描述修复前的 Cor→DHEA 误路由状态。本次只同步已交付源码事实，不修改历史 wire、archive、设备、部署或 Cor 物理配置。
+
+| path | PLAN_ID | DELIVERABLE_ID | TASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|---|
+| docs/requirements/DHEA_MVP_完整需求.md | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-pm | lfa-review | RELEASED |
+| docs/QiuQiu_DHEA_Capture_Product_Gate_End_to_End_Spec_v1.7_IMPLEMENTATION_BASELINE.md | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-pm | lfa-review | RELEASED |
+| docs/LFA_最新完整文档集合/02_LFA端到端处理流程_v1.4_DHEA_MVP.md | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-pm | lfa-review | RELEASED |
+| docs/api/dhea-v2-app-integration.md | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-pm | lfa-review | RELEASED |
+| docs/design/app-android-ios-detail.md | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-pm | lfa-review | RELEASED |
+
+`docs/LFA_最新完整文档集合/config/cor_template.v1.json` 继续为 `RESERVED_NOT_ACTIVE`；本整改不声称 Cor 科学验收、新 APK 真机验收、部署、独立 Review 或 PM acceptance。
+
+## 2026-09-24 TASK-QIUQIU-04 文档事实同步整改释放（append-only）
+
+- 上述五份现行文档已完成 Cor 独立 successor identity、安全拒绝与历史 v2 wire 边界同步。
+- `TASK_QIUQIU_04_DOCUMENT_REMEDIATION_ACTIVE_WRITE_CLAIMS = 0`
+- `TASK_QIUQIU_04_DOCUMENT_REMEDIATION_WRITE_SCOPE = []`
+- Cor 模板、archive、设备、部署、独立 Review 和 PM acceptance 未激活。
+- 2026-09-24 状态同步（append-only）：上述五行已按本释放回执从 `AUTHORIZED_ACTIVE_REMEDIATION` 改为 `RELEASED`；此为账本一致性行政修正，不改变任何授权语义或历史回执。
+
+## TASK-QIUQIU-04 post-install Cor device evidence activation / 2026-09-24
+
+| path | PLAN_ID | DELIVERABLE_ID | TASK_ID | WRITE_OWNER | READERS | status |
+|---|---|---|---|---|---|---|
+| artifacts/cor-dual-analyte-validation-20260923/ | PLAN-QIUQIU-04 | DELIVERABLE-QIUQIU-04 | TASK-QIUQIU-04 | lfa-test | lfa-start; lfa-review; lfa-pm | AUTHORIZED_APPEND_ONLY_SINGLE_POSTINSTALL_COR_RUN_AFTER_START |
+
+This activates only the previously reserved evidence destination at line 613 for the installed-APK Redmi K30 Pro run in PM_GATE `PM_QIUQIU_04_POST_INSTALL_COR_DEVICE_TRACE_AUTH_20260924`. Existing files and original JPEGs are immutable; add only new run artifacts with provenance and checksums after START delta. No business-code/config write is reopened; Cor template stays `RESERVED_NOT_ACTIVE`. Earlier evidence directory `artifacts/cor-bundle-1df42409-a789-47e4-9dc2-66bd270b603e/` is prior-run history, not this run's write target.
+
+
+## TASK-QIUQIU-04 post-install Cor evidence scope consumed / 2026-09-24
+
+RECEIPT_ID: `PM-QIUQIU-04-POSTINSTALL-COR-EVIDENCE-20260924-01`. The one-run `lfa-test` write authorization at line 706 is `CONSUMED / RELEASED` after the user-supplied lfa-test receipt. Evidence remains at `artifacts/cor-dual-analyte-validation-20260923/`; no further device action or evidence write is authorized by that row. Historical JPEGs and evidence remain unchanged; `cor_template.v1.json` remains `RESERVED_NOT_ACTIVE`.

@@ -672,6 +672,11 @@ def parse_agent_operational_plans(pm: dict, text: str | None = None, errors: lis
         if any(r not in parent_items or s["agent"] not in parent_items[r].get("participants", []) for r in refs):
           raise ValueError("unregistered PM participant reference")
         items = s.get("items")
+        # Historical snapshots predate related_task_or_deliverable. Normalize only that legacy omission; keep all structural and status validation strict.
+        if isinstance(items, list):
+          for item in items:
+            if isinstance(item, dict) and "related_task_or_deliverable" not in item and all(isinstance(item.get(k), str) and item[k].strip() for k in ("id", "title", "status")):
+              item["related_task_or_deliverable"] = None
         if not isinstance(items, list) or any(not isinstance(i, dict) or any(not isinstance(i.get(k), str) or not i[k].strip() for k in ("id", "title", "status")) or i["status"] not in ("pending", "in_progress", "completed", "blocked", "abandoned") or "related_task_or_deliverable" not in i or not isinstance(i["related_task_or_deliverable"], (str, dict, type(None))) for i in items):
           raise ValueError("invalid complete agent items")
         if len({i["id"] for i in items}) != len(items):

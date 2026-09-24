@@ -1,0 +1,62 @@
+{
+  "task_id": "TASK-QIUQIU-02",
+  "plan_id": "PLAN-QIUQIU-02",
+  "deliverable_id": "DELIVERABLE-QIUQIU-02",
+  "requirement_ids": ["QIUQIU_DHEA_QR_PRODUCT_IDENTIFICATION_END_TO_END"],
+  "pm_gate_base": "PM-ONBOARD-20260918T043217Z-f952b0ac",
+  "exact_revision": "f952b0ac6942f8b5794c9a8ef0fcaae617e70d45",
+  "pm_review_status": "PM_ACCEPTED",
+  "review_timestamp": "2026-09-23T18:45:00Z",
+  "reviewer": "lfa-pm",
+  "independent_review": {
+    "status": "CODE_REVIEW_ACCEPTED",
+    "reviewer": "lfa-review (non-author)",
+    "reference": "REVIEW_QUEUE.md:760-853",
+    "dimensions_passed": 6,
+    "blocking_findings": 0
+  },
+  "file_scope_verified": [
+    "Android_App/app/src/main/java/com/example/camera/ProductGate.kt",
+    "Android_App/app/src/main/java/com/example/camera/PreviewGuidanceAnalyzer.kt",
+    "Android_App/app/src/main/java/com/example/camera/NativeCameraManager.kt",
+    "Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt",
+    "Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt",
+    "Android_App/app/src/main/java/com/example/domain/model/Models.kt",
+    "Android_App/app/src/main/java/com/example/data/local/JournaledArtifactStore.kt",
+    "Android_App/app/src/main/java/com/example/network/DheaJson.kt",
+    "Android_App/app/src/test/java/com/example/camera/ProductGateTest.kt",
+    "Android_App/app/src/test/java/com/example/camera/PreviewGuidanceAnalyzerTest.kt",
+    "Android_App/app/src/test/java/com/example/network/DheaContractTest.kt",
+    "Android_App/app/src/test/java/com/example/network/ProductBundlePersistenceTest.kt",
+    "Android_App/app/src/test/java/com/example/network/ProductEndToEndTest.kt",
+    "Android_App/README.md"
+  ],
+  "verification_evidence": {
+    "test_execution": "5 focused classes, 44 tests / 43 passed / 0 failed / 1 skipped (live Gateway E2E_ENABLED not enabled)",
+    "build_result": "assembleDebug BUILD SUCCESSFUL",
+    "apk_sha256": "4a1b26fbcf81f783cdeafa4bfa3cdf30ea58569b0b779abb7971a839182240e0",
+    "six_dimensions_verified": [
+      "Dual payload (DHEA/Cor) exact matching",
+      "Session+camera+attempt binding",
+      "Manual shutter single consume",
+      "Bundle 1.6 restart persistence",
+      "Upload analyte derivation from declaration",
+      "Strict refusal bypass prevention"
+    ]
+  },
+  "dirty_changes_reviewed": {
+    "Models.kt": "productCode moved from default to required parameter; prevents silent DHEA fallback for Cor payload",
+    "DheaContractTest.kt": "Added Cor declaration test; verifies assay_context.analyte_id derives from persisted Cor declaration",
+    "ProductBundlePersistenceTest.kt": "Switched to Cor payload with static base64 JPEG fixture; verifies persisted product_code and analyte_id are Cor",
+    "README.md": "Documents dual payload acceptance, byte-exact matching, Bundle 1.6 persistence, upload analyte derivation"
+  },
+  "constraints": {
+    "device_validation": "NOT_EXECUTED_NOT_AUTHORIZED",
+    "production_readiness": "NOT_GRANTED",
+    "clinical_regulatory_approval": "NOT_GRANTED",
+    "integration_authorization": "NOT_GRANTED",
+    "task_qiuqiu_03": "NOT_AUTHORIZED (separate dependency)",
+    "m1_exit_m2_dispatch": "NOT_AUTHORIZED"
+  },
+  "rationale": "TASK-QIUQIU-02 implementation at exact HEAD f952b0ac satisfies NODE2 requirements. Independent Review (REVIEW_QUEUE.md:760-853) passed all 6 verification dimensions with no blocking findings. 14 exact paths verified; 44 tests (43 passed, 1 skipped live E2E); assembleDebug successful; APK SHA-256 verified. Dirty changes (Models.kt, DheaContractTest.kt, ProductBundlePersistenceTest.kt, README.md) are minimal, correct, and well-tested. PM Gate accepts NODE2 code/build contract only; does not grant device validation, production readiness, clinical/regulatory approval, or integration authorization beyond 14 authorized paths."
+}

@@ -65,3 +65,27 @@ LATE_COMMIT_POLICY=A; CONTROLLED_MVP_LOCAL_FREEZE_TRUST=ACCEPTED_FOR_CONTRACT. C
 REVOKE_CUTOFF_POLICY=A: accepted server commit preserves identical-binding measure/replay eligibility after confirmation revocation; revocation blocks new commits/bindings. Every request still checks authentication, authorization and exact binding/idempotency. Local freeze or unacknowledged send is not proof of server acceptance. Define ordering and lost-response recovery in the contract.
 
 TTL_MS=30000 remains PROPOSED_NOT_FROZEN / NOT_EMPIRICALLY_VERIFIED. API reports actual source, assumptions and expiry/retake cost without new device work. Duplicate final-JPEG payload gate removal with server binding retained is settled. Technical fields/CAS/scientific residuals and same-revision dispositions remain required; runtime implementation_allowed=false. Independent EXIF/Window preparation/review continues without Room/archive/TTL completion.
+
+## QIUQIU-04 shared measurement chain / 2026-09-24
+
+Bound to PLAN-QIUQIU-04 / DELIVERABLE-QIUQIU-04 / TASK-QIUQIU-04, requirement QIUQIU-04-SHARED-CHAIN-01 and HEAD b307830089b51aca793ca693e375c217ec8e45ea. The user has ruled that DHEA and Cor have one capture/observation-window/quality/Green/Profile/T-C measurement chain; QR segment three distinguishes identity only. Preserve separate product_id/analyte_id and provenance without inventing a second science algorithm. `COR_PHYSICAL_CONFIGURATION_UNAVAILABLE` is the present safe refusal, not an inherent Cor measurement rule. Unknown geometry/template/sample evidence cannot be invented; T/C stays null when scientific evaluation fails. MASTER_PLAN.md#qiuqiu-04-shared-chain-requirement-revision--2026-09-24 supersedes the conflicting Exit rationale prospectively, retaining the earlier control record as history. Existing START/authorization was tied to its old Exit: revised implementation needs PM delta authorization and START delta dispatch by exact owner; neither is granted here. No integration, device execution, independent review, PM acceptance or iOS implementation is authorized by this decision.
+
+## 2026-09-24 TASK-QIUQIU-04 实施交付边界决定（append-only）
+
+1. 记录 `TASK-QIUQIU-04-DELIVERY-20260924-01` 为 `DELIVERED_PENDING_INDEPENDENT_REVIEW`，不等于 Review 通过或 PM acceptance。
+2. DHEA 与 Cor 是两个产品/分析物；共享拍摄和科学处理框架不允许把 Cor 当作 DHEA alias，也不允许在缺少 Cor 物理配置时复用 DHEA 模板。
+3. 产品身份由 App 预览门禁生成并绑定到原始 JPEG；Gateway 校验声明后路由；Core 不得从最终 JPEG 重扫 QR 决定产品。
+4. 真实设备旧 APK 的 `INVALID_PRODUCT_GATE_DECLARATION` 必须保留为版本不一致证据；本地 successor smoke 不能冒充设备成功上传。
+5. 新 APK 安装、真机重验、集成部署、独立 Review 与 PM acceptance 均需后续明确授权。
+
+## PM-LEDGER-REQ-01 实施：控制账本唯一 writer / 2026-09-24（append-only）
+
+Supersedes the writer assignment in the GOV-MGMT-01 section above（“START是八文件唯一writer”）。GOV-MGMT-01 的记录流程本身（issue 字段、recurrence_count、release_conditions、历史不改写）继续有效，只改 writer 身份。
+
+- **WRITER**：`lfa-pm` 是控制账本的唯一 writer —— `MASTER_PLAN.md`、`TASK_BOARD.md`、`BLOCKERS.md`、`REVIEW_QUEUE.md`、`DECISIONS.md`、`FILE_OWNERSHIP.md`、`PM_GATE`、`PROJECT_SNAPSHOT.md`、`PM_REQUIREMENT_INTAKE.md` 及同族控制记录。实质授权来源是已登记的 `PM-LEDGER-REQ-01`（`MASTER_PLAN.md` PM control-ledger governance registration 节；`TASK_BOARD.md` 行 PM-GOV-01）。
+- **`lfa-start`** 是执行与回执角色：核对绑定与 Gate、执行正式派单、回收事实与证据、向 PM 返回可归因回执。不写控制账本。
+- **被关闭的缺口**：`PM-LEDGER-REQ-01` 登记时带 `IMPLEMENTATION_AUTHORIZED: false`，从未应用到 `prompts/*.md`，而 prompt 是运行时行为的唯一来源。结果 PM 在账本里宣布自己是唯一 writer，自己的 prompt 却禁止它写。这个矛盾就是实际观察到的派单堵塞的成因。
+- **已实施于**：`prompts/pm.md`（新增「控制账本唯一 writer」节；四处反向断言改为正向）与 `prompts/start.md`（新增「控制账本写入边界」节；删除截断重复的 sole-writer 段；修正其余 START 写账本表述）。
+- **保留的边界**：证据不得由作者自写；账本 append-only 并带 `previous_submission_sha256` 链；账本规则/Gate/状态语义的实质变更仍需非作者 Review 与单独 PM Gate。
+- **PROVENANCE**：本次实施由外部助手在用户明确指示（“开始动”）下执行，**不是** `lfa-pm` 或 `lfa-start` 所为。在此记录以免隐藏该干预。改动哈希与变更记录见 `.agent-control/CHANGE_RECORD_2026-09-24.md`。
+- **SCOPE_CLASS**: CONTROL_PLANE_ONLY。**MAINLINE_IMPACT**: NONE。未改变任何业务代码、里程碑、交付物、QR、geometry 或 Integration 状态。

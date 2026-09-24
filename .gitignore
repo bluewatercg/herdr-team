@@ -6,3 +6,7 @@ __pycache__/
 .agent-control/EVIDENCE/activate-lfa-*.log
 .desensitize-mapping.json
 config.env
+
+# AI 会话工作目录：本地笔记/工具状态，不入治理仓库
+.workbuddy-ai/
+.pi/

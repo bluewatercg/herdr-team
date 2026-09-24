@@ -281,24 +281,24 @@ The earlier report that Android exact paths were already registered was incorrec
 
 FILE_OWNERSHIP571 resolves the three named NODE1 overlaps as sole TASK-QIUQIU-01 successor scope for lfa-api. Old QR-PC/QLI-CUTOVER/EXIF claims preserve evidence without concurrent write authority for core/product_identity.py, python_gateway/dhea_input.py and docs/api/api-reference.md. Other historical claims remain protected. NODE3 still requires NODE1 exact-revision Review, PM Gate and explicit file release. Governance only, no implementation dispatch or acceptance; NODE2 freeze and NODE3 dependencies remain pending. Goal OPEN; Integration NOT_ACCEPTED; geometry track unchanged.
 
-## MGMT-20260921-001 missing immutable Jev authorization event
+## MGMT-20260921-001 incorrect global Jev gate
 
 - issue_id: MGMT-20260921-001
-- facts: START read `herdr-team/prompts/start.md` Jev Authorization Handoff. No `herdr-team/.agent-control/JEV_DECISIONS.jsonl` exists in the control directory, and no real Jev event was supplied for the QIUQIU nodes. User text and existing PM/ownership ledger registration do not substitute for an immutable Jev recommendation or PM authorization event.
-- evidence_refs: `herdr-team/prompts/start.md:68-82`; control-directory file listing; `herdr-team/.agent-control/PM_GATE` (`STATUS: READY`, which is dispatch readiness only); existing QIUQIU registration in `MASTER_PLAN.md` and `FILE_OWNERSHIP.md`.
-- impact: START cannot verify a real `decision_id`, event hash, valid JSONL record, supersession state, approved or explicitly modified `decision.result`, exact `PLAN_ID`/`DELIVERABLE_ID`/`TASK_ID`, exact `FILE_SCOPE`, or one active `WRITE_OWNER`. No implementation or Review dispatch is eligible.
-- severity: HIGH for the requested dispatch; PM assessment required.
-- root_cause_status: UNKNOWN
-- hypotheses: NONE_PROVIDED
-- containment: Keep all QIUQIU implementation and Review dispatches unissued. Do not modify business ledgers, source files, ownership records or Jev records. Preserve existing historical registrations and evidence.
-- improvement_candidate: PM must submit the real Jev JSONL event through the existing authorization flow, then START will validate it and run the normal Master Plan, requirements, dependency, ownership and PM Gate checks.
-- owner: PM
-- status: OPEN
+- facts: START treated the optional PM-to-START Jev handoff as a prerequisite for all QIUQIU dispatches. `prompts/pm.md:135-185`, `prompts/start.md:70-82`, and `README.md:19-31` define Jev as advisory/optional; START validates an event only when PM selects that handoff.
+- evidence_refs: `prompts/pm.md:135-185`; `prompts/start.md:70-82`; `README.md:19-31`; `TASK_BOARD.md` QIUQIU-01 registration; `FILE_OWNERSHIP.md:540-545`.
+- impact: QIUQIU-01 was incorrectly held for a missing optional event, which transitively prevented normal dependency evaluation for QIUQIU-02 and QIUQIU-03.
+- severity: HIGH for the affected dispatch path
+- root_cause_status: CONFIRMED
+- hypotheses: NONE
+- containment: Remove the global Jev prerequisite. Preserve normal dependency gates: QIUQIU-02 remains dependent on NODE1 contract freeze; QIUQIU-03 remains dependent on NODE1 Review, PM Gate and explicit file release.
+- improvement_candidate: Keep Jev validation conditional on an explicit PM handoff; do not use absence of `JEV_DECISIONS.jsonl` as a global blocker.
+- owner: lfa-start
+- status: CLOSED
 - recurrence_count: 0
 - related_task_ids: TASK-QIUQIU-01, TASK-QIUQIU-02, TASK-QIUQIU-03
-- release_conditions: PM provides an existing immutable Jev event reference in `JEV_DECISIONS.jsonl`; START verifies valid JSONL, real `decision_id`, event hash, no superseding event, approved/explicitly modified result, exact PLAN/DELIVERABLE/TASK binding, exact FILE_SCOPE and one ACTIVE WRITE_OWNER. PM records its assessment and authorization. All dependencies remain satisfied, including NODE2 after NODE1 contract freeze and NODE3 after NODE1 Review/PM Gate/file release.
-- pm_assessment_ref: PENDING_PM_ASSESSMENT
-- management_summary: As of 2026-09-21T110334Z, no real Jev authorization event was found or validated. This is a management blocker record, not a dispatch, acceptance or business-state change.
+- release_conditions: Satisfied by the conditional START rule and formal TASK-QIUQIU-01 registration. Remaining QIUQIU dependencies are independent of Jev.
+- pm_assessment_ref: PM-MODIFIED-JEV-OPTIONAL-20260923
+- management_summary: Closed as an incorrectly elevated optional-mechanism gate. No implementation, Review, device, or integration acceptance is implied.
 
 ## R04 atomic disconnect recovery receipt
 
@@ -318,3 +318,275 @@ FILE_OWNERSHIP571 resolves the three named NODE1 overlaps as sole TASK-QIUQIU-01
 - release_conditions: PM_GATE=READY; PM_GATE RUN_ID and PROJECT_SNAPSHOT RUN_ID match the active run; PM_GATE GIT_HEAD, PROJECT_SNAPSHOT GIT_HEAD and current Git HEAD match exactly; required control files and AGENT_STATUS remain byte-stable across the atomic reread; only then assess the next existing authorized action and its dependency/ownership gates.
 - pm_assessment_ref: Existing R04 recovery record; no new PM business authorization inferred.
 - management_summary: Recovery check completed, progression refused solely because the authoritative snapshot/Gate HEAD is stale relative to the current repository HEAD.
+## TASK-QIUQIU-01 dispatch receipt
+
+- dispatch_id: TASK-QIUQIU-01-DISPATCH-20260923
+- dispatched_by: lfa-start (pane w1J:p1)
+- dispatched_to: lfa-api
+- timestamp: 2026-09-23T18:20:00Z
+- PLAN_ID: PLAN-QIUQIU-01
+- DELIVERABLE_ID: DELIVERABLE-QIUQIU-01
+- TASK_ID: TASK-QIUQIU-01
+- REQUIREMENT_IDS: QIUQIU_DHEA_QR_PRODUCT_IDENTIFICATION_END_TO_END
+- PM_GATE: PM-ONBOARD-20260918T043217Z-f952b0ac (PM_GATE_ACCEPTED_DOCUMENTARY_ONLY)
+- GIT_HEAD: f952b0ac6942f8b5794c9a8ef0fcaae617e70d45
+- FILE_SCOPE: 6 exact paths (FILE_OWNERSHIP.md:540-545)
+  - core/product_identity.py
+  - python_gateway/dhea_input.py
+  - docs/api/api-reference.md
+  - docs/api/schemas/dhea-product.schema.json
+  - fixtures/dhea-product/cases.json
+  - python_gateway/tests/test_dhea_product_contract.py
+- WRITE_OWNER: lfa-api
+- FILE_OWNERSHIP_STATUS: ACTIVE
+- PATH: non-Jev normal dependency path (MGMT-20260921-001 CLOSED)
+- CONSTRAINTS:
+  - Does not imply implementation acceptance, device validation, or production readiness
+  - TASK-QIUQIU-02 remains BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE
+  - TASK-QIUQIU-03 remains BLOCKED_UNTIL_NODE1_REVIEW_AND_PM_GATE_AND_FILE_RELEASE
+  - No NODE2 Android or NODE3 integration scope
+- TASK_BOARD: :26 updated to DISPATCHED
+- dispatch_evidence: herdr agent prompt lfa-api sent with full NODE1 scope
+## TASK-QIUQIU-01 completion receipt
+
+- receipt_id: TASK-QIUQIU-01-RECEIPT-20260923
+- received_by: lfa-start (pane w1J:p1)
+- received_from: lfa-api (pane w1N:p1)
+- timestamp: 2026-09-23T18:25:00Z
+- PLAN_ID: PLAN-QIUQIU-01
+- DELIVERABLE_ID: DELIVERABLE-QIUQIU-01
+- TASK_ID: TASK-QIUQIU-01
+- GIT_HEAD: f952b0ac6942f8b5794c9a8ef0fcaae617e70d45
+- RESULT: baseline-already-complete
+  - 六路径 git status clean（无新改动）
+  - product_identity.py 已含 (1,"QLI","DHEA") 和 (1,"QLI","Cor") 双 payload
+  - focused contract suite 6/6 OK（python_gateway.tests.test_dhea_product_contract）
+  - schema 783 行，fixtures 36 行，test 138 行 — 均已存在
+  - 派单基线已含完整实现，无需新 commit
+- VERIFICATION:
+  - git status: 六路径 clean
+  - HEAD: f952b0a（与 PM_GATE 绑定一致）
+  - unittest: 6/6 OK
+  - product_identity.py:56,26-32: QLI namespace + DHEA/Cor 双 payload 注册
+- CONSTRAINTS:
+  - 不授权实现验收、设备验证或生产就绪
+  - 需独立 lfa-review 和 lfa-pm 双 Gate 对当前 HEAD 验收
+  - TASK-QIUQIU-02 保持 BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE
+  - TASK-QIUQIU-03 保持 BLOCKED_UNTIL_NODE1_REVIEW_AND_PM_GATE_AND_FILE_RELEASE
+  - 无 NODE2 Android 或 NODE3 integration scope
+- TASK_BOARD: :26 更新为 IN_REVIEW
+- NEXT: 等待 lfa-review 和 lfa-pm 双 Gate 提交
+## TASK-QIUQIU-01 closure and contract freeze
+
+- closure_id: TASK-QIUQIU-01-CLOSURE-20260923
+- closed_by: lfa-start (pane w1J:p1)
+- timestamp: 2026-09-23T18:40:00Z
+- PLAN_ID: PLAN-QIUQIU-01
+- DELIVERABLE_ID: DELIVERABLE-QIUQIU-01
+- TASK_ID: TASK-QIUQIU-01
+- GIT_HEAD: f952b0ac6942f8b5794c9a8ef0fcaae617e70d45
+- DUAL_GATE:
+  - CODE_REVIEW_ACCEPTED: REVIEW_QUEUE.md:732-758 (lfa-review, non-author)
+  - PM_ACCEPTED: PM_REVIEW_TASK-QIUQIU-01.json (lfa-pm)
+- RESULT: CLOSED (baseline-already-complete, 6/6 OK)
+- CONTRACT_FREEZE: NODE1 contract frozen at HEAD f952b0a
+  - 六路径 FILE_OWNERSHIP.md:540-545 状态更新为 FROZEN_CONTRACT_RELEASED
+  - 14 路径 FILE_OWNERSHIP.md:546-559 状态更新为 ACTIVE（NODE2 可派发）
+- TASK_BOARD: :26 更新为 CLOSED
+- CONSTRAINTS:
+  - 不授权实现验收、设备验证或生产就绪
+  - 不授权 M1 Exit、M2、QR 实现或 Integration
+  - TASK-QIUQIU-03 保持 BLOCKED_UNTIL_NODE1_REVIEW_AND_PM_GATE_AND_FILE_RELEASE
+
+## TASK-QIUQIU-02 dispatch receipt
+
+- dispatch_id: TASK-QIUQIU-02-DISPATCH-20260923
+- dispatched_by: lfa-start (pane w1J:p1)
+- dispatched_to: lfa-android
+- timestamp: 2026-09-23T18:40:00Z
+- PLAN_ID: PLAN-QIUQIU-02
+- DELIVERABLE_ID: DELIVERABLE-QIUQIU-02
+- TASK_ID: TASK-QIUQIU-02
+- REQUIREMENT_IDS: QIUQIU_DHEA_QR_PRODUCT_IDENTIFICATION_END_TO_END
+- DEPENDENCY: NODE1 contract freeze satisfied (TASK-QIUQIU-01 CLOSED)
+- FILE_SCOPE: 14 exact paths (FILE_OWNERSHIP.md:546-559)
+  - Android_App/app/src/main/java/com/example/camera/ProductGate.kt
+  - Android_App/app/src/main/java/com/example/camera/PreviewGuidanceAnalyzer.kt
+  - Android_App/app/src/main/java/com/example/camera/NativeCameraManager.kt
+  - Android_App/app/src/main/java/com/example/ui/LfaViewModel.kt
+  - Android_App/app/src/main/java/com/example/ui/screens/CaptureScreen.kt
+  - Android_App/app/src/main/java/com/example/domain/model/Models.kt
+  - Android_App/app/src/main/java/com/example/data/local/JournaledArtifactStore.kt
+  - Android_App/app/src/main/java/com/example/network/DheaJson.kt
+  - Android_App/app/src/test/java/com/example/camera/ProductGateTest.kt
+  - Android_App/app/src/test/java/com/example/camera/PreviewGuidanceAnalyzerTest.kt
+  - Android_App/app/src/test/java/com/example/network/DheaContractTest.kt
+  - Android_App/app/src/test/java/com/example/network/ProductBundlePersistenceTest.kt
+  - Android_App/app/src/test/java/com/example/network/ProductEndToEndTest.kt
+  - Android_App/README.md
+- WRITE_OWNER: lfa-android
+- FILE_OWNERSHIP_STATUS: ACTIVE
+- CONSTRAINTS:
+  - 不得触碰 NODE1 API/Core scope (TASK-QIUQIU-01 CLOSED, contract frozen)
+  - 不得触碰 NODE3 integration scope (TASK-QIUQIU-03 BLOCKED)
+  - 不授权设备验证、生产就绪或临床/法规批准
+  - 需独立 lfa-review 和 lfa-pm 双 Gate
+- TASK_BOARD: TASK-QIUQIU-02 行已添加，状态 DISPATCHED
+- NEXT: lfa-android 执行 NODE2 Android QR 产品识别最小切片
+## TASK-QIUQIU-02 independent Review acceptance
+
+- review_id: TASK-QIUQIU-02-CODE_REVIEW_ACCEPTED-20260923
+- reviewer: lfa-review (non-author)
+- timestamp: 2026-09-23
+- PLAN_ID: PLAN-QIUQIU-02
+- DELIVERABLE_ID: DELIVERABLE-QIUQIU-02
+- TASK_ID: TASK-QIUQIU-02
+- GIT_HEAD: f952b0ac6942f8b5794c9a8ef0fcaae617e70d45
+- EVIDENCE: REVIEW_QUEUE.md:760-853
+- FILE_SCOPE: 14 exact paths (FILE_OWNERSHIP.md:546-559)
+- VERIFICATION:
+  - 14 paths verified with SHA-256 and byte counts
+  - 6 verification dimensions pass
+  - 44 tests (43 passed, 1 skipped E2E_ENABLED)
+  - APK SHA-256: 4a1b26fbcf81f783cdeafa4bfa3cdf30ea58569b0b779abb7971a839182240e0
+- DIRTY_CHANGES_REVIEWED:
+  - Models.kt: productCode required (no silent DHEA fallback)
+  - DheaContractTest.kt: Cor declaration test added
+  - ProductBundlePersistenceTest.kt: Cor payload + static JPEG
+  - README.md: documented dual payload acceptance
+- NODE2_SCOPE: satisfied
+- DEVICE_VALIDATION: NOT_EXECUTED_NOT_AUTHORIZED
+- CONSTRAINTS:
+  - Separate lfa-pm PM Gate pending
+  - No M1 Exit, M2 dispatch, QR implementation, or Integration authorization
+  - No production readiness, clinical validity, or regulatory approval implied
+- TASK_BOARD: :27 updated to CODE_REVIEW_ACCEPTED_AWAITING_PM_GATE
+- PM_GATE: :30-37 updated to CODE_REVIEW_ACCEPTED_AWAITING_PM_GATE
+- NEXT: lfa-pm separate PM Gate
+## TASK-QIUQIU-02 closure and dual Gate satisfaction
+
+- closure_id: TASK-QIUQIU-02-CLOSURE-20260923
+- closed_by: lfa-pm (pane w1K:p1)
+- timestamp: 2026-09-23T18:50:00Z
+- PLAN_ID: PLAN-QIUQIU-02
+- DELIVERABLE_ID: DELIVERABLE-QIUQIU-02
+- TASK_ID: TASK-QIUQIU-02
+- GIT_HEAD: f952b0ac6942f8b5794c9a8ef0fcaae617e70d45
+- DUAL_GATE:
+  - CODE_REVIEW_ACCEPTED: REVIEW_QUEUE.md:760-853 (lfa-review, non-author)
+  - PM_ACCEPTED: PM_REVIEW_TASK-QIUQIU-02.json (lfa-pm, independent)
+- RESULT: CLOSED (NODE2 code/build contract accepted)
+- FILE_SCOPE: 14 exact paths (FILE_OWNERSHIP.md:546-559)
+- VERIFICATION:
+  - 14 paths verified with SHA-256 and byte counts
+  - 6 verification dimensions pass
+  - 44 tests (43 passed, 1 skipped E2E_ENABLED)
+  - APK SHA-256: 4a1b26fbcf81f783cdeafa4bfa3cdf30ea58569b0b779abb7971a839182240e0
+- DIRTY_CHANGES_REVIEWED:
+  - Models.kt: productCode required (no silent DHEA fallback)
+  - DheaContractTest.kt: Cor declaration test added
+  - ProductBundlePersistenceTest.kt: Cor payload + static JPEG
+  - README.md: documented dual payload acceptance
+- NODE2_SCOPE: satisfied
+- DEVICE_VALIDATION: NOT_EXECUTED_NOT_AUTHORIZED
+- CONSTRAINTS:
+  - No M1 Exit, M2 dispatch, QR implementation, or Integration authorization
+  - No production readiness, clinical validity, or regulatory approval implied
+  - TASK-QIUQIU-03 remains blocked by its independent dependencies
+- TASK_BOARD: :27 updated to CLOSED
+- PM_GATE: :30-40 updated to CLOSED
+## NODE2 ownership release and NODE3 dispatch
+
+- release_id: NODE2-FROZEN_CONTRACT_RELEASED-20260923
+- released_by: lfa-start (pane w1J:p1)
+- timestamp: 2026-09-23T19:05:00Z
+- NODE2_STATUS: CLOSED (dual Gate satisfied)
+- NODE2_FILE_OWNERSHIP: 14 paths (FILE_OWNERSHIP.md:546-559) → FROZEN_CONTRACT_RELEASED
+- NODE3_DEPENDENCY_CHECK:
+  - NODE1 CLOSED: TASK-QIUQIU-01 (CODE_REVIEW_ACCEPTED + PM_ACCEPTED) ✓
+  - NODE2 CLOSED: TASK-QIUQIU-02 (CODE_REVIEW_ACCEPTED + PM_ACCEPTED) ✓
+  - NODE3 shared file: core/product_identity.py → AUTHORIZED_ACTIVE ✓
+- NODE3_DISPATCH:
+  - dispatch_id: TASK-QIUQIU-03-DISPATCH-20260923
+  - dispatched_by: lfa-start (pane w1J:p1)
+  - dispatched_to: lfa-api
+  - PLAN_ID: PLAN-QIUQIU-03
+  - DELIVERABLE_ID: DELIVERABLE-QIUQIU-03
+  - TASK_ID: TASK-QIUQIU-03
+  - FILE_SCOPE: 9 exact paths (FILE_OWNERSHIP.md:560-568)
+    - core/dhea.py
+    - core/dhea_diagnostics.py
+    - python_gateway/dhea.py
+    - python_gateway/app.py
+    - python_gateway/service.py
+    - python_gateway/tests/test_dhea_product_recheck.py
+    - python_gateway/tests/test_dhea_diagnostics.py
+    - tests/test_dhea_product.py
+    - core/product_identity.py (NODE3 recheck portion)
+  - WRITE_OWNER: lfa-api
+  - CONSTRAINT:
+    - 独立 lfa-review + lfa-pm dual Gate 必需
+    - 不继承设备验证（仍 NOT_EXECUTED_NOT_AUTHORIZED）
+    - 不扩大为生产/临床授权
+    - 不得触碰 NODE1/NODE2 已冻结路径
+- TASK_BOARD: :28 已添加 TASK-QIUQIU-03 DISPATCHED 行
+- PM_GATE: :44-50 已更新 TASK-QIUQIU-03 DISPATCHED
+- NEXT: lfa-api 执行 NODE3 final-JPEG QR product recheck
+## NODE3 双 Gate 证据核验通过 - TASK-QIUQIU-03 CLOSED
+
+- closure_id: TASK-QIUQIU-03-CLOSURE-20260923
+- closed_by: lfa-start (pane w1J:p1)
+- timestamp: 2026-09-23T19:35:00Z
+- PLAN_ID: PLAN-QIUQIU-03
+- DELIVERABLE_ID: DELIVERABLE-QIUQIU-03
+- TASK_ID: TASK-QIUQIU-03
+- GIT_HEAD: f952b0ac6942f8b5794c9a8ef0fcaae617e70d45
+
+**DUAL_GATE**:
+- CODE_REVIEW_ACCEPTED: REVIEW_QUEUE.md:935-991 (revision 2, preserves rejection 855-933)
+- PM_ACCEPTED: PM_REVIEW_TASK-QIUQIU-03.json
+
+**FILE_SCOPE** (9 exact paths, FILE_OWNERSHIP.md:560-568):
+- core/dhea.py: e90de80196f885b470fc9ee91d86c0a2310d6ab05e1a542fb77a64de3cb9088d (43839 bytes)
+- core/dhea_diagnostics.py: 46d1c87236de4ce7fae339fdae58063ee03cb5b430860c8680f222a2886a0c36 (78269 bytes)
+- python_gateway/dhea.py: bbcf1b95c4725a6c333592cfd77cf343a927fc1bb439541af18930bed9d5cbbb (34905 bytes)
+- python_gateway/app.py: d83aeb24849864b4de3bd9b582ed67ad890646a42e0aa4a1551ac007a006d469 (3515 bytes)
+- python_gateway/service.py: 57bb6f9ecdff1e552d39a3f9af877e88ed6082c83746a5cd0bb2fcb9e640760f (9327 bytes)
+- python_gateway/tests/test_dhea_product_recheck.py: 3e15e9346e017aa041ef82b0395bea1fa2fea1c03d15e096f93612ecadef0947 (5275 bytes)
+- python_gateway/tests/test_dhea_diagnostics.py: 3dd1f71a5b9aa9c0435b0aa1602e5bf9b950b58a957d24c545dd425524982601 (19372 bytes)
+- tests/test_dhea_product.py: c8e72a8ff92669e0b4f95cc11c76417d901137e18579b216da4373addbc1cc4f (7278 bytes)
+- core/product_identity.py: 127f217b9b6bd072caf0cb914a3b6514852df4286458b8ae994e04e3eb6990a6 (4829 bytes)
+
+Total: 206609 bytes
+
+**VERIFICATION**:
+- 9/9 SHA-256 hashes match across actual files, REVIEW_QUEUE.md:953-961, and PM_REVIEW_TASK-QIUQIU-03.json
+- HEAD = f952b0ac6942f8b5794c9a8ef0fcaae617e70d45 ✓
+- Focused tests PASS (tests/test_dhea_product.py 5/5, gateway tests PASS)
+- APK: NOT_APPLICABLE_NODE3_CORE_API_SCOPE
+- Device validation: NOT_EXECUTED_NOT_AUTHORIZED
+
+**CONTROL_PLANE_UPDATES**:
+- TASK_BOARD.md:28 - TASK-QIUQIU-03 → CLOSED
+- PM_GATE.md:44-53 - TASK-QIUQIU-03 → CLOSED (DUAL_GATE recorded)
+- FILE_OWNERSHIP.md:560-568 - 9 paths → FROZEN_CONTRACT_RELEASED
+
+**CONSTRAINTS** (如实记录，不得声称):
+- No M1 Exit authorization
+- No M2 dispatch authorization
+- No Integration authorization
+- No production readiness claimed
+- No clinical validity claimed
+- No regulatory approval claimed
+- No device validation (NOT_EXECUTED_NOT_AUTHORIZED)
+
+**治理记录**:
+- 之前的 NODE3-FALSE-GATE-CLAIM-20260923 violation 已解决
+- 第 5 个 BIND-AUTHORITY-MANUAL-REVIEW 违规已记录并关闭
+- 前 4 个违规保持如实，本违规同样记录在案
+
+## TASK-QIUQIU-04 post-install Cor trace / full acceptance blocked / 2026-09-24
+
+RECEIPT_ID: `PM-QIUQIU-04-POSTINSTALL-COR-EVIDENCE-20260924-01`; START_DELTA_ID: `TASK-QIUQIU-04-START-DELTA-20260924-03`. The user-supplied lfa-test receipt establishes one capture and one App upload, not measurement success. HTTP `200` carried `rejected / COR_PHYSICAL_CONFIGURATION_UNAVAILABLE`, `measurement_status=not_measurable`, T/C `null`; Core was not dispatched. Diagnostics publication failed (`UNAVAILABLE / DIAGNOSTICS_PUBLICATION_FAILED`, manifest `null`). `request_id=null` after journal, response and DB-schema lookup; Gateway stage breakdown, per-stage Core trace and server HTTP access log are unavailable in this receipt.
+
+STATUS: `BLOCKED_FOR_FULL_ACCEPTANCE`, not a finding that DHEA MVP is blocked by Cor. The reason and withdrawn overclaims are recorded in `artifacts/cor-dual-analyte-validation-20260923/EVIDENCE-ADDENDUM.md` and `CORRECTION-ADDENDUM.md`; evidence batch hashes in `SHA256SUMS-evidence-batch-20260924T101800Z`. Resolution owner for any future acceptance criteria, missing diagnostics or new scope is PROJECT_LEAD via separate authorization; no device retry, implementation, Review approval, PM acceptance or deployment follows from this receipt. This entry requests no new device action.

@@ -1106,3 +1106,85 @@ User-reported governance correction: the previously dispatched `lfa-pm` agent id
 | PM-LEDGER-REQ-03 | Read-only audits MAY be dispatched under OBSERVATION_ONLY | Observation-only tasks record findings without mutating control-ledger state; they do not grant acceptance, implementation or Integration |
 
 Consistency check at registration time: MASTER_PLAN CURRENT_MILESTONE=M1, CURRENT_DELIVERABLE=M1-D05, PROGRAM_PROGRESS=1/6, PARKED_MILESTONES=M6,M7; TASK_BOARD historical rows preserved with existing statuses; REVIEW_QUEUE submissions and decisions preserved with existing dispositions. No row was rewritten; this entry is appended. M1 Exit, M2 dispatch, QR implementation and Integration remain unauthorized.
+
+## QIUQIU-04 current-revision control registration
+
+PLAN_ID: PLAN-QIUQIU-04
+DELIVERABLE_ID: DELIVERABLE-QIUQIU-04
+TASK_ID: TASK-QIUQIU-04
+GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+STATUS: IMPLEMENTATION_SCOPED_PENDING_START_DISPATCH; no implementation, integration, device or acceptance outcome asserted
+CONTROL_REQUIREMENT_IDS: QIUQIU-04-CTRL-01 (rebind Gate/snapshot), QIUQIU-04-CTRL-02 (revision-bound task), QIUQIU-04-CTRL-03 (exact single-writer scope), QIUQIU-04-CTRL-04 (authorization matrix)
+BUSINESS_REQUIREMENT_TRACE: QIUQIU_DHEA_COR_DUAL_ANALYTE_DELIVERY; user-confirmed current DHEA/Cor scope, AGENTS.md:16-17,32-33,56 and docs/requirements/DHEA_MVP_完整需求.md:6,39-45,243-261. Existing docs/api/api-reference.md:18-24 and frozen 11_DHEA原生Android研究v2公开契约.md:45-47 preserve historical `2.0`/`2.1-product` DHEA semantics, reserve `2.2-confirmed` and reject `3.0`; Cor must not masquerade as DHEA. The successor dual-reagent request/result version and exact identity fields are an implementation deliverable for lfa-api in the current API reference, wire contract and generated schema; no old request or stored result is reinterpreted.
+EXIT: distinct DHEA/Cor product/analyte/template binding; shared quality/ROI/Green/Profile/T/C chain only when reagent-specific physical evidence exists, otherwise explicit Cor scientific refusal with null T, C and T/C; exact pre-shutter QR payload/status and sealed-record display; immutable complete JPEG/SHA; focused Core/API/Android checks and separate fresh physical-sample evidence; independent non-author lfa-review and separate PM acceptance on one exact revision. No 4PL or concentration inversion. Missing Cor matrix/direction/window/template and real laboratory/sample IDs are CURRENT_MVP_BLOCKER for Cor measured and device acceptance, not permission to invent config.
+AUTHORIZED_REACHABLE_SCOPE: FILE_OWNERSHIP.md QIUQIU-04 exact-path table; lfa-api owns Core/gateway/current wire/schema and DHEA-preserving Cor scientific refusal, lfa-android owns App/client/local tests, lfa-test owns focused Core/gateway tests. PM owns these control ledgers. Cor physical config files are RESERVED_NOT_ACTIVE until independently verified measurements; no numerical Cor template, manufactured sample or prior artifact rewrite authorized. Existing historical ACTIVE claims of the same owner are serialized behind QIUQIU-04 and never parallel writers.
+AUTHORIZATION: limited IMPLEMENTATION_EXECUTION=GRANTED_BY_lfa-pm for ACTIVE exact paths only, conditional on lfa-start recording START with PLAN_ID/DELIVERABLE_ID/TASK_ID, exact FILE_SCOPE/WRITE_OWNER and authorization event; INTEGRATION_AUTHORIZATION=NOT_GRANTED pending focused tests and versioned interface; NEW_SAMPLE_DEVICE_EXECUTION=NOT_GRANTED pending two identified physical samples and exact device/evidence binding. Review/PM acceptance remain separate and ungranted.
+
+## QIUQIU-04 shared-chain requirement revision / 2026-09-24
+
+PLAN_ID: PLAN-QIUQIU-04
+DELIVERABLE_ID: DELIVERABLE-QIUQIU-04
+TASK_ID: TASK-QIUQIU-04
+REQUIREMENT_ID: QIUQIU-04-SHARED-CHAIN-01
+GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+STATUS: REQUIREMENT_REGISTERED; DELTA_IMPLEMENTATION_NOT_YET_DISPATCHED
+
+User ruling: Cor and DHEA differ in appearance and the third QR segment; capture, observation-window localization, quality gates, Green/Profile, T/C extraction and T/C calculation use one measurement chain. Product routing establishes distinct `product_id` and `analyte_id`, not a second measurement algorithm. The old Exit at line 1119 is historical for its revision: “Cor physical configuration unavailable => scientific refusal” describes the current conservative runtime, not a scientific requirement or a permanent product-specific algorithm gate. Neither product identity nor the QR text supplies unmeasured physical geometry, line windows, orientation, template numbers, sample identity or a valid T/C. Reuse only parameters actually supported by the common physical layout and evidence; keep unknown values null and any current refusal truthful until a shared-chain implementation can evaluate them without fabrication. No DHEA concentration or Cor calibration/4PL activation.
+
+REVISED_EXIT: distinct immutable product/analyte identity and exact pre-shutter QR binding; same original-JPEG capture/transport and the same Core measurement stages for either identity when the required actual image/geometry evidence is available; measured T, C and T/C only on passing scientific gates, otherwise explicit stage refusal with null missing outputs. Preserve immutable JPEG/SHA, historical responses, frozen research-v2 wire and no formal-reporting claim. Focused owner checks, new real sample/device evidence, independent non-author Review and separate PM acceptance remain distinct future gates; this requirement registration is none of those outcomes.
+
+AUTHORIZATION_DELTA: FILE_OWNERSHIP.md:579-610 lists candidate exact paths and sole writers for TASK-QIUQIU-04, but its b3078300 bounded grant and TASK_BOARD START were for the former conditional Cor-refusal Exit. Do not treat them as authorization for a changed shared-chain behavior. PM must record an exact revised decision/requirement trace and resolve existing dirty hunks before lfa-start appends a delta dispatch; no duplicate original START. Cross-table paths must be explicitly registered before editing. `cor_template.v1.json` and new device-evidence directory at FILE_OWNERSHIP.md:612-613 remain RESERVED_NOT_ACTIVE; integration, new-device execution, Review and PM acceptance remain NOT_GRANTED. iOS remains DEFERRED with no FILE_SCOPE or writer; its ADR and app are a future impact, not this task.
+
+DELTA_SCOPE: lfa-api owns FILE_OWNERSHIP.md:579-593,609-610 (Core/Gateway, requirements/spec/API reference, successor schema/OpenAPI and export generator, focused API tests); lfa-android owns :594-604 (identity-bound capture/upload/display and local tests); lfa-test owns :605-608 (Core/Gateway scientific and refusal tests). Inspect affected paths and change only needed hunks. In particular reconcile TASK_BOARD.md:89-92 suggestions of a mandatory Cor-specific numeric template, separate measurement routing and separate Green algorithm/schema with the shared-chain ruling; independent identity/provenance is still required, separate measurement science is not. START must record exact path/owner and revised authorization before dispatch. No business-source edit is made by this PM registration.
+
+## QIUQIU-04 candidate-only control overlay / 2026-09-24
+
+PLAN_ID: PLAN-QIUQIU-04
+DELIVERABLE_ID: DELIVERABLE-QIUQIU-04
+TASK_ID: TASK-QIUQIU-04
+GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+STATUS: CANDIDATE_REGISTERED_NOT_ACTIVE
+SCOPE: exactly 13 existing paths; lfa-api=6, lfa-android=3, lfa-test=4
+AUTHORIZATION: control-plane registration and read-only reconciliation only; implementation, integration, device execution, Review and PM acceptance are NOT_GRANTED
+DISPOSITION: historical bounded ACTIVE rows remain append-only history; they are not current write permission for this overlay. Cor template/config and fresh-device evidence remain RESERVED_NOT_ACTIVE; iOS FILE_SCOPE=[]
+EXIT_FOR_THIS_OVERLAY: HEAD match, exact candidate existence, zero current active writers, and no business-source/device mutation
+
+## QIUQIU-04 current blocked projection / 2026-09-24
+
+PLAN_ID: PLAN-QIUQIU-04
+DELIVERABLE_ID: DELIVERABLE-QIUQIU-04
+TASK_ID: TASK-QIUQIU-04
+GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea
+STATUS: BLOCKED
+DISPATCH: NOT_DISPATCHED
+AUTHORIZATION: control-plane registration and read-only reconciliation only
+BLOCKERS: exact Cor physical configuration/source scope, executable successor wire disposition, and new-sample evidence write scope are not authorized; 13 candidate paths remain inactive
+RELEASE: exact PM authorization followed by one START delta receipt; no historical review, acceptance or device evidence transfers
+
+## QIUQIU-04 code/documentation plus evidence-export grant / 2026-09-24
+
+PLAN_ID: PLAN-QIUQIU-04; DELIVERABLE_ID: DELIVERABLE-QIUQIU-04; TASK_ID: TASK-QIUQIU-04; GIT_HEAD: b307830089b51aca793ca693e375c217ec8e45ea. The user selected `CODE_DOCUMENTATION_PLUS_EVIDENCE_EXPORT`. The 13 exact candidate paths at FILE_OWNERSHIP.md:625-637 are activated under their recorded sole writers. A new export-only destination, `artifacts/cor-bundle-1df42409-a789-47e4-9dc2-66bd270b603e/`, is activated for immutable copies and an evidence manifest for that existing bundle.
+
+Implementation may align the DHEA/Cor identity contract, shared capture/transport/quality/Green/Profile/T/C chain, conservative null refusal where Cor physical parameters remain unavailable, Android payload persistence/display, successor schema/OpenAPI and focused tests. The export grant permits read-only extraction of the existing bundle from App/device/service storage. It does not permit a shutter action, new sample execution, reinstall, data clearing, source-JPEG mutation, Cor numeric-template creation, deployment, live integration acceptance, Review or PM acceptance. `docs/LFA_最新完整文档集合/config/cor_template.v1.json` and the older reserved validation directory remain `RESERVED_NOT_ACTIVE`; iOS remains deferred with `FILE_SCOPE=[]`.
+
+START_DELTA: recorded in TASK_BOARD.md for the exact owner/path map after the PM grant. Exit for this increment is code/document delivery with focused verification plus a truthful evidence manifest identifying present and missing immutable bundle materials. Same-revision independent Review and PM acceptance remain subsequent gates.
+
+## QIUQIU-04 single Cor capture/API trace authorization / 2026-09-24
+
+The user explicitly authorizes one App capture and upload of the Cor reagent currently below the camera, followed by layer-by-layer API diagnosis. This supersedes only the previous no-shutter boundary. Permitted device mutation is the normal QR-gated capture and upload flow for this one Cor sample; install, clear-data, settings changes, other samples and Cor template/config edits remain prohibited. Evidence is retained under the already active `artifacts/cor-bundle-1df42409-a789-47e4-9dc2-66bd270b603e/`. This run is diagnostic evidence, not device acceptance, Review, PM acceptance or deployment authorization.
+
+## 2026-09-24 双产品实施交付状态（append-only）
+
+- `TASK-QIUQIU-04-DELIVERY-20260924-01`: `DELIVERED_PENDING_INDEPENDENT_REVIEW`
+- 已完成：DHEA/Cor 独立 identity、App declaration 绑定、Gateway 路由、DHEA 原科学链保留、Cor 无物理配置时安全拒绝、API 契约、聚焦测试与真实 Cor 证据导出。
+- 未完成且未授权：独立 Review、PM acceptance、新 APK 真机重验、部署；`cor_template.v1.json` 继续 `RESERVED_NOT_ACTIVE`。
+
+## TASK-QIUQIU-04 post-install single Cor App device trace / 2026-09-24
+
+PLAN_ID: PLAN-QIUQIU-04; DELIVERABLE_ID: DELIVERABLE-QIUQIU-04; TASK_ID: TASK-QIUQIU-04; REQUIREMENT_ID: QIUQIU-04-SHARED-CHAIN-01; HEAD: b307830089b51aca793ca693e375c217ec8e45ea. User authorizes one new diagnostic run on Redmi K30 Pro with the currently placed Cor reagent using the installed `com.aistudio.lfaspi.kxpqla` debug APK recorded at PM_GATE:234-248 (SHA-256 `0cd8109092d8037f0cb58559acaf2a5e4fe5e10367bad2cb20b4d76fcd51db79`). Perform the normal App QR gate → one shutter capture → standard App upload → result and stage/API diagnostics trace. Activation is for append-only evidence in `artifacts/cor-dual-analyte-validation-20260923/`, sole writer lfa-test after lfa-start records a distinct START delta; do not overwrite historical evidence or original JPEG. Record actual device serial, observed QR/declaration, new bundle/request IDs, original SHA, upload HTTP/body, Core stage outcome, App result, timestamps and missing fields as observed, not invented. A safe failure or `COR_PHYSICAL_CONFIGURATION_UNAVAILABLE` is a diagnostic outcome, not a pass for scientific measurement. No reinstall/uninstall, clear-data, app/settings change, deployment, Cor template edit, other sample, repeated capture, integration acceptance, independent Review or PM acceptance. Prior installation and prior single-capture receipts remain historical; this is a new bounded run, not replayed acceptance.
+
+## PM-PATROL-01 补充登记 / 2026-09-24
+
+PLAN_ID: PM-PATROL-01; DELIVERABLE_ID: PM-PATROL-01-D01; TASK_ID: RUN-20260920-PM-PATROL-R01; REQUIREMENT_IDS: PM-PATROL-01; OWNER: lfa-start(w15:p1); STATUS: ACCEPTED; SCOPE_CLASS: CONTROL_PLANE_ONLY; MAINLINE_IMPACT: NONE.
+
+本节为已关闭任务的事后母计划登记（append-only），仅满足 BIND-AUTHORITY 机器核验链，不授予任何新执行权限。任务早已按完整链路关闭：用户授权原文保留于 FILE_OWNERSHIP.md:478；三行精确 FILE_SCOPE（review_dispatch.py / prompts/pm.md / SHA256SUMS.txt）已 RELEASED（FILE_OWNERSHIP.md:482-484 及 :488 行政释放回执）；独立 lfa-review CODE_REVIEW_ACCEPTED 与原 lfa-pm PM_ACCEPTED 按提交 key `RUN-20260920-PM-PATROL-R01:663322c28c65f93b4907e028737b3d7315e829275f8d38736045ad744337f0ce:46794:REVIEW` 顺序完成，TASK_BOARD.md 记录 CLOSED。本次登记核验了上述三元组、scope/owner 与双 Gate 证据一致；交付物 PM-PATROL-01-D01 不属于 M0-M7 分母，不改变 CURRENT_MILESTONE、PROGRAM_PROGRESS 或任何业务 Gate。

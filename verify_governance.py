@@ -540,15 +540,9 @@ def check_integrity(root: Path, ctrl: Path, f: list[Finding]):
 
 
 def check_jev(root: Path, ctrl: Path, f: list[Finding]):
-    log = ctrl / "JEV_DECISIONS.jsonl"
-    blockers = ctrl / "BLOCKERS.md"
-    if log.exists():
-        return
-    referenced = blockers.exists() and "JEV_DECISIONS" in read(blockers)
-    if referenced:
-        f.append(Finding("JEV-EVENT-MISSING", "WARNING",
-                         "存在记录在案的 Jev 授权阻塞：JEV_DECISIONS.jsonl 尚未产生，依赖它的派发不可执行",
-                         ["BLOCKERS.md 引用了 JEV_DECISIONS", f"{log} 不存在"]))
+    # Jev is an optional PM→START handoff. Absence is not a global dispatch error.
+    # If a caller selects the handoff, START validates the supplied event directly.
+    return
 
 
 def check_evidence_refs(root: Path, ctrl: Path, f: list[Finding]):
@@ -572,11 +566,12 @@ def check_review_state(root: Path, ctrl: Path, f: list[Finding]):
     p = ctrl / "REVIEW_QUEUE.md"
     if not p.exists():
         return
-    m = re.search(r"<!-- review-state -->\s*(\{.*\})", read(p), re.S)
-    if not m:
+    marker = "<!-- review-state -->"
+    content = read(p)
+    if marker not in content:
         return
     try:
-        state = json.loads(m.group(1))
+        state, _ = json.JSONDecoder().raw_decode(content.split(marker, 1)[1].lstrip())
     except json.JSONDecodeError as exc:
         f.append(Finding("RQ-STATE-INVALID", "VIOLATION",
                          f"review-state JSON 无法解析：{exc}"))
@@ -595,17 +590,141 @@ def check_agent_status(root: Path, ctrl: Path, f: list[Finding]):
         return
     gate = parse_kv_block(read(ctrl / "PM_GATE")) if (ctrl / "PM_GATE").exists() else {}
     gate_head = (gate.get("GIT_HEAD") or [""])[0]
+    any_has_git_head = False
+    checked = 0
     for p in sorted(d.glob("*.json")):
+        checked += 1
         try:
             rec = json.loads(read(p))
         except json.JSONDecodeError:
             f.append(Finding("AGENT-STATUS-INVALID", "WARNING", f"{p.name} 不是合法 JSON"))
             continue
         gh = rec.get("git_head")
+        if gh:
+            any_has_git_head = True
         if gh and gate_head and gh != gate_head:
             f.append(Finding("AGENT-STATUS-DRIFT", "WARNING",
                              "AGENT_STATUS 记录的 git_head 与 PM_GATE 不一致",
                              [f"{p.name}: {gh}", f"PM_GATE: {gate_head}"]))
+    # 历史 AGENT_STATUS 文件普遍没有 git_head 字段，漂移检查会静默通过。
+    # 显式暴露，避免把「无输出」误读成「已核对」。
+    if not any_has_git_head:
+        f.append(Finding("AGENT-STATUS-INERT", "INFO",
+                         "AGENT_STATUS 中没有任何 git_head 字段，漂移检查实际无法生效",
+                         [f"检查了 {checked} 个文件"]))
+
+
+# ---------- 写入边界 / 章节唯一性 / 账本体量 ----------
+
+# prompt 文件到角色名的映射；COMMON.md 为共享规则，不归属单一角色
+ROLE_OF_PROMPT = {
+    "start.md": "lfa-start",
+    "pm.md": "lfa-pm",
+    "api.md": "lfa-api",
+    "app-apk.md": "lfa-android",
+    "app-ios.md": "lfa-ios",
+    "review-code.md": "lfa-review",
+    "test.md": "lfa-test",
+}
+
+# 控制账本文件（PM-LEDGER-REQ-01 定义的范围）
+LEDGER_FILES = (
+    "MASTER_PLAN.md",
+    "TASK_BOARD.md",
+    "BLOCKERS.md",
+    "REVIEW_QUEUE.md",
+    "DECISIONS.md",
+    "FILE_OWNERSHIP.md",
+)
+
+# 一个句子同时命中「账本词」与「writer 断言」且无否定词，才算越界宣称
+LEDGER_WORDS = (
+    "task_board", "blockers", "review_queue", "master_plan", "decisions",
+    "file_ownership", "control ledger", "控制账本",
+)
+
+# 越界宣称的形状：<角色> ... (is|remains|作为|是) ... (sole writer|唯一 writer) ... <账本>
+# 角色必须紧邻 writer 断言才算数，否则「PM 是唯一 writer」这类合法描述会被误判。
+# [^.] 不跨句号，因此 "START is not a ... writer. ... lfa-pm is the sole writer" 不会命中 START。
+WRITER_CLAIM_RE = re.compile(
+    r"(?P<role>lfa-[a-z-]+|START|PM)\b"
+    r"[^.]{0,120}?"
+    r"(?:is|remains|作为|是)\s*[^.]{0,60}?"
+    r"(?:sole\s+(?:control[- ]ledger\s+)?writer|唯一\s*writer)"
+    r"[^.]{0,200}?"
+    r"(?P<ledger>MASTER_PLAN|TASK_BOARD|BLOCKERS|REVIEW_QUEUE|DECISIONS"
+    r"|FILE_OWNERSHIP|control ledger|控制账本)",
+    re.I,
+)
+PM_ROLES = {"pm", "lfa-pm"}
+
+
+def check_writer_boundary(root: Path, ctrl: Path, f: list[Finding]):
+    """PM-LEDGER-REQ-01：只有 lfa-pm 可以自称控制账本 writer。"""
+    prompts = root / "prompts"
+    if not prompts.is_dir():
+        return
+    for p in sorted(prompts.glob("*.md")):
+        for m in WRITER_CLAIM_RE.finditer(read(p)):
+            if m.group("role").lower() in PM_ROLES:
+                continue
+            f.append(Finding("WRITER-BOUNDARY", "VIOLATION",
+                             f"{p.name} 让非 PM 角色（{m.group('role')}）自称控制账本 "
+                             f"writer，违反 PM-LEDGER-REQ-01",
+                             [m.group(0)[:240]]))
+
+
+def check_section_unique(root: Path, ctrl: Path, f: list[Finding]):
+    """同一账本内 `## ` 标题不得重复（prompts/start.md 明写「不得新建」）。"""
+    for name in LEDGER_FILES:
+        p = ctrl / name
+        if not p.exists():
+            continue
+        counts: dict[str, int] = {}
+        for line in read(p).splitlines():
+            m = re.match(r"^##\s+(.+?)\s*$", line)
+            if m:
+                counts[m.group(1)] = counts.get(m.group(1), 0) + 1
+        for title, n in counts.items():
+            if n > 1:
+                f.append(Finding("SECTION-DUPLICATE", "VIOLATION",
+                                 f"{name} 中 `## {title}` 重复出现 {n} 次",
+                                 [f"出现次数={n}"]))
+
+
+def estimate_tokens(text: str) -> int:
+    cjk = sum(1 for ch in text if "\u4e00" <= ch <= "\u9fff")
+    return int(cjk / 1.5 + (len(text) - cjk) / 3.8)
+
+
+# 账本 token 预算：断线恢复需要读完全部账本，超过单窗口上限即不可恢复
+LEDGER_TOKEN_WARN = 60000
+LEDGER_TOKEN_VIOLATION = 150000
+
+
+def check_ledger_size(root: Path, ctrl: Path, f: list[Finding]):
+    """控制账本总体量：断线恢复需要读完全部账本，超出单窗口即不可恢复。"""
+    total = 0
+    parts = []
+    for name in LEDGER_FILES:
+        p = ctrl / name
+        if not p.exists():
+            continue
+        n = estimate_tokens(read(p))
+        total += n
+        parts.append(f"{name}: ~{n}")
+    parts.append(f"合计: ~{total}")
+    if total > LEDGER_TOKEN_VIOLATION:
+        f.append(Finding("LEDGER-SIZE", "VIOLATION",
+                         f"控制账本约 {total} tokens，超过不可恢复阈值 {LEDGER_TOKEN_VIOLATION}",
+                         parts))
+    elif total > LEDGER_TOKEN_WARN:
+        f.append(Finding("LEDGER-SIZE", "WARNING",
+                         f"控制账本约 {total} tokens，超出预算 {LEDGER_TOKEN_WARN}",
+                         parts))
+    else:
+        f.append(Finding("LEDGER-SIZE", "INFO",
+                         f"控制账本约 {total} tokens（预算 {LEDGER_TOKEN_WARN}）", parts))
 
 
 CHECKS = (
@@ -618,6 +737,9 @@ CHECKS = (
     ("证据引用", check_evidence_refs),
     ("评审队列机器状态", check_review_state),
     ("Agent 状态一致性", check_agent_status),
+    ("控制账本写入边界", check_writer_boundary),
+    ("账本章节唯一性", check_section_unique),
+    ("控制账本体量", check_ledger_size),
 )
 
 
@@ -743,6 +865,62 @@ def self_test() -> int:
         check_integrity(root, ctrl, got)
         expect(any(x.severity == "VIOLATION" and "checksum mismatch: README.md" in x.evidence
                    for x in got), "篡改必须被检出")
+
+    with tempfile.TemporaryDirectory() as td:
+        root, ctrl = Path(td), Path(td) / ".agent-control"
+        (root / "prompts").mkdir(parents=True)
+        ctrl.mkdir()
+
+        # WRITER-BOUNDARY：非 PM 角色不得自称控制账本 writer
+        start_md = root / "prompts" / "start.md"
+        start_md.write_text(
+            "START remains the sole writer for `TASK_BOARD.md`, `BLOCKERS.md`.\n",
+            encoding="utf-8")
+        got = []
+        check_writer_boundary(root, ctrl, got)
+        expect(any(x.check == "WRITER-BOUNDARY" for x in got),
+               "非 PM 角色自称账本 writer 必须被检出")
+
+        start_md.write_text(
+            "START is not a control-ledger writer. Per `PM-LEDGER-REQ-01`, `lfa-pm` is the\n"
+            "sole writer of the control ledger (`TASK_BOARD.md`, `BLOCKERS.md`).\n",
+            encoding="utf-8")
+        got = []
+        check_writer_boundary(root, ctrl, got)
+        expect(not got, "否定句与 PM 归属不应误报")
+
+        (root / "prompts" / "pm.md").write_text(
+            "PM 是控制账本的唯一 writer（`PM-LEDGER-REQ-01`）。\n", encoding="utf-8")
+        got = []
+        check_writer_boundary(root, ctrl, got)
+        expect(not got, "PM 自称唯一 writer 合法")
+
+        (root / "prompts" / "api.md").write_text(
+            "lfa-api is the sole writer for `core/dhea.py`.\n", encoding="utf-8")
+        got = []
+        check_writer_boundary(root, ctrl, got)
+        expect(not got, "业务文件的唯一 writer 不是账本宣称，不应误报")
+
+        # SECTION-UNIQUE
+        (ctrl / "TASK_BOARD.md").write_text("## A\n\ntext\n\n## B\n\n## A\n", encoding="utf-8")
+        got = []
+        check_section_unique(root, ctrl, got)
+        expect(len(got) == 1 and got[0].check == "SECTION-DUPLICATE"
+               and got[0].severity == "VIOLATION", "重复 ## 标题必须被检出")
+
+        # LEDGER-SIZE
+        expect(estimate_tokens("中文") == 1 and estimate_tokens("abcd") == 1,
+               "token 估算：CJK 与 ASCII")
+        (ctrl / "TASK_BOARD.md").write_text("short\n", encoding="utf-8")
+        got = []
+        check_ledger_size(root, ctrl, got)
+        expect(any(x.check == "LEDGER-SIZE" and x.severity == "INFO" for x in got),
+               "小账本应为 INFO")
+        (ctrl / "TASK_BOARD.md").write_text("中" * 300000, encoding="utf-8")
+        got = []
+        check_ledger_size(root, ctrl, got)
+        expect(any(x.check == "LEDGER-SIZE" and x.severity == "VIOLATION" for x in got),
+               "超阈值账本应为 VIOLATION")
 
     if failures:
         print("SELF-TEST FAILED:")

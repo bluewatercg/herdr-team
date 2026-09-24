@@ -1,6 +1,9 @@
 # Herdr 多 Agent 自动激活包
 默认团队包含六个 OMP 主角色，以及 Grok、Claude 两个只读交叉评审角色。
 
+## 仓库布局：kit 与产品是两个 Git 仓库
+本目录（`herdr-team/`）是独立的治理工具包 Git 仓库，部署为外层产品仓库（如 `AIPoweredHealthManager-lfa-reader/`）下的子目录，不包含任何 LFA 产品代码。README 与 `prompts/` 中所有 `herdr-team/...` 路径均从外层产品仓库根目录视角书写；在本 kit 目录内直接执行时，请去掉 `herdr-team/` 前缀。控制账本（`PM_GATE`、`PROJECT_SNAPSHOT.md` 等）中的 `GIT_HEAD` 绑定的是外层产品仓库的 HEAD，不是本 kit 仓库的 HEAD；`verify_governance.py` 按 `PROJECT_SNAPSHOT.REPOSITORY_ROOT` 指向的产品仓库核对。
+
 ```bash
 cd /你的项目
 # 在 Herdr 的空闲 Shell pane 内，只执行这一个公开入口
@@ -17,7 +20,7 @@ PM 激活后先读取 `herdr-team/.agent-control/MASTER_PLAN.md`，再扫描仓�
 未来正式任务还必须填写 `REQUIREMENT_IDS`、`REQUIREMENT_SOURCE_REFERENCES`，遵循 [需求追踪 Gate](prompts/COMMON.md#需求追踪-gate) 的唯一引用链。`UNMAPPED` 阻止派发和验收，直至 PM 核实映射；finding IDs 不得冒充 requirement IDs。模板、任务板、证据和 Dashboard 只引用权威 ID/来源，不复制需求正文。
 
 ## Jev 决策与 START 授权回执
-Jev 只提供建议，不能单独改变 Intake、Task、Review、Gate、ownership 或派发状态。只有同时存在真实 Jev 输出、明确的 PM 裁决、完整任务绑定和唯一 `WRITE_OWNER` 时，才允许持久化授权事件。
+Jev 只提供建议，不能单独改变 Intake、Task、Review、Gate、ownership 或派发状态。PM 可选择把真实 Jev 输出与明确裁决作为 PM→START 回执；仅在 PM 选择该交接时，才允许持久化并要求 START 验证授权事件。普通任务不以 Jev 或 `JEV_DECISIONS.jsonl` 的存在为前置条件。
 
 受控 writer 为 `jev_decide.py`，只接受 `actor=lfa-pm` 且明确授予 `lfa-start` 的事件：
 
