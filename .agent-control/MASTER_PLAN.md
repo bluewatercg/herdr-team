@@ -1084,3 +1084,25 @@ Business authorization: `AUTHORIZED_GOAL=QIUQIU_DHEA_QR_PRODUCT_IDENTIFICATION_E
 Control reconciliation: NODE1 and NODE3 intentionally share `core/product_identity.py` and are serialized. Existing same-owner ACTIVE claims under QR-PC/QLI-CUTOVER/EXIF retain historical precedence until their current revision is released or explicitly superseded; they are not silently overwritten. NODE1 owns parser/registry/schema contract changes first. NODE3 may edit recheck integration in that file only after NODE1 exact revision is reviewed and PM-gated. No implementation dispatch occurs until START records this disposition.
 
 Control constraints: no complete v3 migration, no geometry/ROI/T/C/4PL work, no new top-level diagnostic stage, no authenticity or clinical claim. `QR_PRODUCT_IDENTIFICATION_DEPENDENCY=REMOVED`; `GEOMETRY_DATASET_STATUS=NOT_COMPLETED_OR_UNCHANGED`; `48_HOUR_RELABEL_STATUS=NOT_COMPLETED_OR_UNCHANGED`; `GEOMETRY_RESEARCH_TRACK_STATUS=DEFERRED_SEPARATE_RESEARCH_TRACK`.
+
+## PM control-ledger governance registration
+
+PLAN_ID: PM-GOV-01
+DELIVERABLE_ID: PM-GOV-01-D01
+TASK_ID: RUN-20260923-PM-GOVERNANCE-FIX
+REQUIREMENT_IDS: PM-LEDGER-REQ-01, PM-LEDGER-REQ-02, PM-LEDGER-REQ-03
+STATUS: REGISTERED
+SCOPE_CLASS: CONTROL_PLANE_ONLY
+MAINLINE_IMPACT: NONE
+IMPLEMENTATION_AUTHORIZED: false
+INTEGRATION_AUTHORIZED: false
+
+User-reported governance correction: the previously dispatched `lfa-pm` agent id did not exist at dispatch time; PM governance rules are now repaired and verified. This section registers the three binding rules in the control ledger only. No business code, milestone, deliverable, progress, M1/M1-D05, D05 UNMAPPED, M2, M6, M7, QR, geometry or Integration state is changed.
+
+| REQUIREMENT_ID | Rule | Effect |
+|---|---|---|
+| PM-LEDGER-REQ-01 | PM is the sole writer of the control ledger (MASTER_PLAN, TASK_BOARD, REVIEW_QUEUE, and sibling control records) | Non-PM roles may not mutate these files except via explicit OBSERVATION_ONLY dispatch; conflicting writes are refused |
+| PM-LEDGER-REQ-02 | Every formal task MUST carry PLAN_ID, DELIVERABLE_ID, TASK_ID and a requirement-trace Gate | Dispatch without the four-field binding is refused; requirement trace is verified against an authoritative source before acceptance |
+| PM-LEDGER-REQ-03 | Read-only audits MAY be dispatched under OBSERVATION_ONLY | Observation-only tasks record findings without mutating control-ledger state; they do not grant acceptance, implementation or Integration |
+
+Consistency check at registration time: MASTER_PLAN CURRENT_MILESTONE=M1, CURRENT_DELIVERABLE=M1-D05, PROGRAM_PROGRESS=1/6, PARKED_MILESTONES=M6,M7; TASK_BOARD historical rows preserved with existing statuses; REVIEW_QUEUE submissions and decisions preserved with existing dispositions. No row was rewritten; this entry is appended. M1 Exit, M2 dispatch, QR implementation and Integration remain unauthorized.

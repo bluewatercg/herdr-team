@@ -39,6 +39,7 @@ BTW-CHECK: TODO_ID=更新持久化任务状态与暂停原因; Goal=关机前保
 | QR-PLAN-04 | QR-PLAN-04-D01 | RUN-20260918-V17-BASELINE-SYNC | QR-V17-REQ-01, QR-V17-REQ-02, QR-V17-REQ-03, QR-V17-REQ-04, QR-V17-REQ-05 | lfa-start(w15:p1) | PLAN_ACCEPTED_DOCUMENTARY_ONLY; CODE_REVIEW_ACCEPTED; PM_ACCEPTED; MAINLINE_IMPACT=NONE | TASK_BOARD.md#qr-plan-04-baseline-synchronization-gate; exact frozen six-file revision and actual separate role dispositions below | Documentary task complete. Current Bundle1.5/frozen v2 unchanged; no research, code migration, capture, Integration or subsequent Gate execution authorization. |
 | AUTO-DISPATCH-01 | AUTO-DISPATCH-01-D01 | RUN-20260918-AUTO-DISPATCH-FIX | AUTO-DISPATCH-REQ-01 | lfa-start | ACCEPTED; CONTINUATION_EVALUATED_NO_ELIGIBLE_ACTION; DISPATCH_TRACK=PARALLEL_WORKSTREAM; MAINLINE_IMPACT=NONE; EXECUTION_STATUS=AUTHORIZED; INTEGRATION_STATUS=NOT_AUTHORIZED | ROUNDS/20260918T043217Z-meeting.md#automatic-dispatch-repaired-revision-independent-acceptance; REVIEW_QUEUE key 461ea589516ee3e65244dc186786a7399c0fa4e3a2a25000665b6eb976fa77b0; BLOCKERS.md#accepted-control-repair-continuation | Exact revision independently accepted by Review and PM; existing decisions not duplicated. Continuation SENT and eligibility evaluated once using full submission key. No next authorized execution: M1-D05 requirement trace/Exit unresolved, M2 unauthorized; QR G0 execution unauthorized and output ownership PLANNED. Old rejection retained; live watch not restarted, repaired-code loading not claimed. No business/QR/Integration unlock. |
 | REVIEW-ROLE-01 | REVIEW-ROLE-01-D01 | RUN-20260918-REVIEW-ROLE-FIX | REVIEW-ROLE-REQ-01, REVIEW-ROLE-REQ-02, REVIEW-ROLE-REQ-03, REVIEW-ROLE-REQ-04 | lfa-start | ACCEPTED_CONTROL_PLANE_ONLY | Controller SHA256 ae08ff4205aa0e1180117f15b650dd071ee7e466c5d9338ef60bc7d05b28ad76; fresh lfa-review CODE_REVIEW_ACCEPTED; separate lfa-pm PM_ACCEPTED; PM-SCOPE.md:313-321 and JSON review_role_control_final_pm_disposition | Exact two-file implementation complete; latest mandatory START eligibility notification supersedes old opt-out policy. No business Gate grant. Resident watcher revision unverified; no restart. |
+| PM-GOV-01 | PM-GOV-01-D01 | RUN-20260923-PM-GOVERNANCE-FIX | PM-LEDGER-REQ-01, PM-LEDGER-REQ-02, PM-LEDGER-REQ-03 | lfa-pm | REGISTERED | MASTER_PLAN.md:1088-1108; PM is sole control-ledger writer; formal tasks require PLAN_ID+DELIVERABLE_ID+TASK_ID+requirement-trace Gate; read-only audits MAY use OBSERVATION_ONLY | Control ledger consistency verified; no business code modified; M1/M1-D05/M2/QR/Integration state unchanged |
 
 Task specifications, immutable BASE_HEAD, existing-diff protections, acceptance and dependency graph: ROUNDS/20260918T043217Z-meeting.md. Evidence paths marked pending are required outputs, not claims they exist. Historical task IDs are not automatically imported as CLOSED.
 
@@ -1512,3 +1513,179 @@ FILE_OWNERSHIP571 explicitly makes TASK-QIUQIU-01 the sole current successor wri
 Governance only: SOURCE_DISPATCH_AUTHORIZED=false; implementation and Review dispatch=NOT_SENT. This receipt establishes no implementation, contract-freeze, Review, PM Gate, device or Integration acceptance. Goal=OPEN; Integration=NOT_ACCEPTED; FORMAL_REPORTING_ALLOWED=false; geometry research remains separate.
 
 BTW-CHECK: TODO_ID=TASK-QIUQIU-01/02/03 corrected governance receipt; Goal=record corrected exact ownership without acceptance; Files Changed=TASK_BOARD.md,BLOCKERS.md,REVIEW_QUEUE.md only; Build Result=N/A governance; Requirement Trace=user correction and FILE_OWNERSHIP546-571; Test Result=14 exact Android rows and blocked statuses checked, explicit successor and sequential-release disposition read; Artifact Evidence=FILE_OWNERSHIP546-559,571 and appended START receipts; Known Limitations=no implementation or acceptance inferred; Open Post-Funding Gates=unchanged; Current MVP Blocker Remaining=implementation authorization and registered NODE1 freeze/Review/PM Gate/release dependencies.
+
+### TASK-QIUQIU-01 current-source reconciliation and executable baseline
+
+Latest user request: 核对现有账本与文件归属，推进首个未完成节点。Main identified NODE1 / PLAN-QIUQIU-01 / DELIVERABLE-QIUQIU-01 / TASK-QIUQIU-01 as the first unfinished node in the latest registered QIUQIU sequence. The prior session's blocked Android capture is a separate execution item. FILE_OWNERSHIP540-545 and571 retain lfa-api as sole writer; no ownership transfer, duplicate dispatch or new team occurred. The available peer roster contains only parked read-only QrEvidence and QrTransport scouts, not the registered lfa-api/lfa-review/lfa-pm roles. Herdr was not used. This roster does not prove those original roles have ceased outside this session.
+
+Executable evidence: `uv run --project python_gateway python -m unittest python_gateway.tests.test_dhea_product_contract -q` passed 4 tests in0.007s. This proves the existing QLI baseline only. A direct call to `identify_product("1:QIUQIU:DHEA")` returned `QR_FORMAT_UNSUPPORTED`; `identify_product("1:QLI:DHEA:1234567890")` returned `(1, 'QLI', 'DHEA')`. NODE1 target is therefore NOT_IMPLEMENTED, not accepted. Parser/registry, declaration namespace, exported schema, shared fixture and test payload remain QLI. The exported schema is generated from PRODUCT_DECLARATION/PRODUCT_METADATA by python_gateway/dhea_export.py; do not hand-maintain a second schema contract.
+
+Current six-file baseline (SHA-256 / bytes; inspection identity, not Review acceptance):
+
+| path | SHA-256 | bytes |
+|---|---|---|
+| core/product_identity.py | b5e2856ae152169d979cea5f0607e9e9a5396c064bef421b5b307e1301fc9a25 | 4309 |
+| python_gateway/dhea_input.py | bd27a860de10dca3884e2c687806c90006b8635e8976e94393cfb4f014225b7b | 24397 |
+| docs/api/api-reference.md | 4ebf0e3f312ac1b6ec5756aec7ea57d30c5d85f670b26308d74095cf7e74d88b | 51515 |
+| docs/api/schemas/dhea-product.schema.json | e192fd69b9285505de3fa7d2a813cbc604b1b19f5806b8c70a6bdf61e770cf37 | 16326 |
+| fixtures/dhea-product/cases.json | 60ae33c19a84eeb3f32fce82936f74f2f3f7665234508ffc140009765587391f | 1317 |
+| python_gateway/tests/test_dhea_product_contract.py | d76b32ed0fdff780742d5acf9ad493cf16cab7d1c80c5bea1dc6577fcca6a256 | 5826 |
+
+Reachable progress completed: scope, successor ownership, Review queue and current contract behavior reconciled. Implementation remains pending the registered writer being reachable or an explicit writer reassignment; Main has not appropriated that claim. REVIEW_QUEUE696-712 contains no NODE1 implementation submission/digest or disposition. Independent Review and PM acceptance remain NOT_ESTABLISHED; no frozen contract or sequential file release is inferred. NODE2 remains blocked on NODE1 contract freeze. NODE3's historical final-JPEG product-recheck plan conflicts with the current App-owned product-confirmation contract in api-reference §0.1 and must be reconciled before any NODE3 dispatch; no JPEG recheck was restored. Disabled v3 and frozen, unimplemented pre-capture contracts are not globally renamed by this node.
+
+BTW-CHECK
+TODO_ID: TASK-QIUQIU-01 scope/current-source reconciliation (not node completion)
+Goal: identify the first unfinished registered node and bind its actual baseline without taking another owner's files.
+Files Changed: herdr-team/.agent-control/TASK_BOARD.md only; existing source changes preserved.
+Build Result: no source build; current Python contract module executed.
+Requirement Trace: latest user request -> MASTER_PLAN1081 -> FILE_OWNERSHIP540-545,571 -> REVIEW_QUEUE696-712 -> six-file baseline above.
+Test Result: 4 existing contract tests PASS; direct target probe refused QR_FORMAT_UNSUPPORTED, old QLI probe accepted.
+Artifact Evidence: exact six-file SHA-256/byte manifest and executable outputs recorded above; no new capture or request_id.
+Known Limitations: no source implementation, independent Review, PM gate, device capture or end-to-end acceptance; original roles outside this session were not inspected.
+Open Post-Funding Gates: unchanged and nonblocking for this contract task.
+Current MVP Blocker Remaining: original-writer reachability or explicit reassignment for NODE1 source changes; Android remains unavailable as previously observed. Goal OPEN; Integration NOT_ACCEPTED; FORMAL_REPORTING_ALLOWED=false.
+
+### Full regression execution and device availability — 2026-09-21
+
+Requested scope: complete Core/Gateway/Android local regression and a new connected-phone capture/upload/Core/App/Web loop. This entry records execution, not acceptance. No source, threshold, test assertion, dependency manifest or lockfile was changed. No phone data was cleared, no uninstall/install performed, and no original JPEG was modified.
+
+BTW-CHECK
+TODO_ID: Run complete Core and Gateway test suites
+Goal: execute every discovered host test and expose failures without weakening assertions.
+Files Changed: herdr-team/.agent-control/TASK_BOARD.md only.
+Build Result: Python suites executed; no packaging build requested.
+Requirement Trace: user full-regression request; AGENTS.md original-byte integrity, explicit refusal and separate host/device evidence requirements.
+Test Result: Core default `uv run python -m unittest discover -s tests -v`: 104 entries, 1 failure and 1 module-import error (missing python_multipart). Full rerun `uv run --with python-multipart==0.0.22 python -m unittest discover -s tests -v`: 107 tests, 106 passed, 1 failed, 34.465s. Failure: tests/test_pipeline.py:130 test_incomplete_control_integration_is_not_evaluable expected ['S504'], observed []. The same file's passing SignalWindowContracts test allows integration outside the peak-search window; current signal.py checks complete-profile bounds. This is an unresolved expectation conflict, not a verified algorithm fix.
+Test Result: Gateway `uv run --project python_gateway python -m unittest discover -s python_gateway/tests -v`: 97 entries, 94 passed, 2 failures, 1 import error, 714.552s. Both failures are test_optional_validation_revision_keeps_immutable_result (DheaHttpTest and inherited FinalJpegGatewayTest), python_gateway/tests/test_dhea.py:206: expected business_status completed, observed rejected for fixtures/dhea-v2/calculated/synthetic.jpg; cause unresolved. Missing openapi_spec_validator prevented the v3 contract module loading. Supplementary `uv run --project python_gateway --with openapi-spec-validator==0.8.5 python -m unittest discover -s python_gateway/tests -p test_dhea_v3_contract.py -v`: all 6 passed. Combined executed real cases: 102, 100 passed, 2 failed; this is full discovery plus supplemental module, not one green full run. Initial discovery with `-t .` failed before any tests and is not counted.
+Artifact Evidence: Core initial artifact://299, Core dependency-complete artifact://305, Gateway full output artifact://298 (snapshot artifact://307); supplemental module output reports Ran 6 tests / OK. Temporary uv dependencies only; manifests unchanged.
+Known Limitations: host fixtures do not establish camera behavior or clinical validity; three failing executions remain (one Core, two Gateway, the latter sharing one inherited assertion).
+Open Post-Funding Gates: unchanged; no production or clinical approval claimed.
+Current MVP Blocker Remaining: no-regression acceptance NOT_ESTABLISHED; reconcile Core integration expectation and Gateway synthetic fixture rejection before acceptance.
+
+BTW-CHECK
+TODO_ID: Run complete Android local test suite
+Goal: execute current JVM/Robolectric/Compose suite and build update APK without altering stored phone data.
+Files Changed: ledger only; generated build/test artifacts are not source changes.
+Build Result: Windows Gradle 9.3.1, Android Studio JBR; `:app:testDebugUnitTest :app:assembleDebug --rerun-tasks`: BUILD SUCCESSFUL in 1m 2s, 49 tasks executed. First untracked launcher lost its handle following eval kernel termination; only the subsequent completed, tool-tracked invocation establishes final success.
+Requirement Trace: user full-regression request and AGENTS.md Android host/device separation and no-uninstall rule.
+Test Result: 10 XML suites, 72 entries, 71 passed, 0 failures, 0 errors, 1 skipped. ProductEndToEndTest.androidOriginRoundTripUsesImmutableJpegRealGatewayCoreAndActualResultUi skipped because E2E_ENABLED was not true; it additionally requires origin, app/diagnostics credentials, CA and fixture/output configuration. It is not claimed as passed or as device evidence.
+Artifact Evidence: Android_App/app/build/test-results/testDebugUnitTest/TEST-*.xml and Android_App/app/build/reports/tests/testDebugUnitTest/; APK Android_App/app/build/outputs/apk/debug/app-debug.apk SHA256=6b72248909897cf14aa2fe1ad53435a0f57de8a137293723f67e019ec418b37e.
+Known Limitations: missing google-services.json and native-access/deprecation warnings did not fail this build; no physical camera or online Android roundtrip was exercised.
+Open Post-Funding Gates: unchanged and nonblocking for host tests.
+Current MVP Blocker Remaining: real-device connection and end-to-end evidence unavailable.
+
+BTW-CHECK
+TODO_ID: Record regression results and device evidence
+Goal: preserve actual pass/fail/skip counts and distinguish unavailable device evidence.
+Files Changed: herdr-team/.agent-control/TASK_BOARD.md only.
+Build Result: see completed host runs above; no device build/install acceptance inferred.
+Requirement Trace: user phone-loop request; explicit serial selection, immutable captures and truthful evidence rules.
+Test Result: adb devices -l empty; adb mdns services empty; explicit Redmi serial adb-5b10bb35-rkB4bn._adb-tls-connect._tcp get-state failed device not found. User notified to connect USB debugging or paired wireless debugging. Exercise connected phone capture and upload loop remains BLOCKED, not completed.
+Artifact Evidence: ADB command outputs in this session; no new original JPEG/hash, capture_bundle_id, request_id, App result or Web stage artifact exists for this requested new capture. Historical JPEG replay is not substituted.
+Known Limitations: no-regression conclusion unavailable; instrumented ExampleInstrumentedTest only checks package identity and cannot prove capture/upload.
+Open Post-Funding Gates: unchanged; formal_reporting_allowed=false.
+Current MVP Blocker Remaining: connect authorized phone and execute new physical capture loop; resolve recorded failing tests. Independent Review/PM acceptance NOT_ESTABLISHED.
+
+### Connected Redmi capture and refusal roundtrip evidence
+
+This entry supersedes only the earlier device-unavailable observation. Full-regression failures above remain unresolved. No algorithm, threshold, assertion, credential, source JPEG or phone history was changed. The verified APK was installed with `adb -s adb-5b10bb35-rkB4bn._adb-tls-connect._tcp install -r`; install returned Success. Existing 10 records remained; one real manual capture produced record 11 and one upload attempt.
+
+BTW-CHECK
+TODO_ID: Exercise connected phone capture and upload loop
+Goal: exercise real Android capture → immutable JPEG → API → Core → App terminal receipt without clearing data.
+Files Changed: herdr-team/.agent-control/TASK_BOARD.md only; private runtime evidence archived outside repository.
+Build Result: previously verified debug APK installed in place; no uninstall. App launched on Redmi K30 Pro, explicit serial selected.
+Requirement Trace: user connected-phone test request; AGENTS.md manual capture, immutable original, explicit refusal and App/API/Core separation.
+Test Result: App product gate displayed QLI DHEA and enabled manual shutter. One new capture and one upload reached HTTP 200 / business_status=rejected / wire_code=T_NOT_FOUND. App persisted confirmed, attempts=1, displayed measurement rejection and not_measurable / not_calculable; T, C, T/C and DHEA concentration remained null. Confirmed is receipt state, not measurement success.
+Artifact Evidence: capture_attempt_id=e12988d2-ccdb-41e6-ba31-e9ec8ad0818b; capture_session_id=92f4647c-7cdd-47c8-8083-324f82f096a5; capture_bundle_id=8879da37-88ca-4918-87a8-ca4f29b2f83f; analysis_id/request_id displayed by Web=73adf4ba-71e9-4915-bdb9-474d9f9df992; execution_id=e358c889-c2b4-4913-bb9b-0ebf2d483a44. Phone original retrieved read-only through run-as from files/tasks/e12988d2-ccdb-41e6-ba31-e9ec8ad0818b.jpg; server original object=875a97c626ea4604b603c4a7b497d712. Both are 3,000,603 bytes, byte-for-byte identical, SHA256=6028e434a0767b8415ff69727f7e9c00532ccc57060caef8712efa5c14370fb5. Metadata SHA256=e1631e19d6c5e1bd7622e0112400f8ba2ae9cb08355f329a8d76504588fc7e4d.
+Known Limitations: phone timestamp displayed 09-22 13:26:47 while Web displayed 2026/9/21 22:26:46; preserved without correction. No laboratory value or physical sample binding was supplied. This is one capture, not repeatability validation or successful concentration measurement.
+Open Post-Funding Gates: unchanged, nonblocking; formal_reporting_allowed=false.
+Current MVP Blocker Remaining: measurement refusal and previously recorded Core/Gateway regression failures. New capture transport/receipt evidence is now available; no independent Review/PM acceptance claimed.
+
+BTW-CHECK
+TODO_ID: Verify new Android capture stages and artifacts
+Goal: verify same-execution diagnostics, direction, measurement artifacts and truthful refusal on App and Web.
+Files Changed: ledger only.
+Build Result: existing API process api01-gateway remained running, no restart or configuration change.
+Requirement Trace: AGENTS.md real-device proof, controlled BOTTOM_TO_TOP → canonical LEFT_TO_RIGHT, 256 × 24, Green/profile, explicit null results and Web diagnostic evidence.
+Test Result: all 18 recorded stages inspected. Original/EXIF/window/safe inset/support masks/image quality passed; product stage WARN APP_OWNED_PRODUCT_IDENTIFICATION. Direction WARN CONTROLLED_CAPTURE_DIRECTION_ASSUMED, method=controlled_capture_configuration, upright BOTTOM_TO_TOP, canonical LEFT_TO_RIGHT. Rectification/Green/measurement/profile/baseline executed as RESEARCH_CANDIDATE. Raw/baseline/signal arrays each contain 256 values; canvas is 256 × 24. T_DETECTION FAIL multiple_detected_candidates: positions 79 and 90, both carrying width_out_of_range; C_DETECTION FAIL no_peak_above_detection_threshold. Joint T/C and final summary FAIL T_NOT_FOUND; FOUR_PL_INVERSE SKIPPED UPSTREAM_NOT_EXECUTED. Completed earlier stages remained visible rather than becoming skipped.
+Artifact Evidence: all 27 persisted diagnostic artifacts were read and their SHA256 matched descriptors. Actual browser opened /workbench, selected this bundle, displayed AVAILABLE diagnostics, exact binding, 18-stage timeline and refusal details; selected SELECTED_PROFILE image loaded as 800 × 400, 49,918 bytes, SHA256 ac3d4794357f12e3b677bfe7c872811f1ea93c06b0c47cfeb3d015b96a03f267. Durable private evidence directory: /root/.local/share/dhea-research/device-evidence/8879da37-88ca-4918-87a8-ca4f29b2f83f/ contains original.jpg, response.json, diagnostic-manifest.json, artifact-verification.json, byte-verification.json, App XML/screenshots and Web text/screenshots.
+Known Limitations: image reader exposed metadata only; vision analysis returned 401, so optical placement and selected ROI were not visually validated. Selected quad spans approximately y=105..3635 in the upright image; WINDOW_LOCALIZED is algorithm status, not proof the ROI is correct. Web WINDOW_LOCALIZED wording mentions QR association despite the controlled assumed-direction path; this wording does not establish QR evidence. Web Profile stage contains recorded arrays in metrics and a downloadable plot, but interactive Profile selector remained disabled with no-array text; curve/image linkage is not verified. These observations were not patched during this test-only run.
+Open Post-Funding Gates: unchanged; arbitrary-device/background generalization and clinical/regulatory validation not established.
+Current MVP Blocker Remaining: determine why selected ROI/signal does not yield usable T/C; reconcile recorded host regression failures. Verification execution complete, measurement acceptance NOT_ESTABLISHED, integration NOT_ACCEPTED, formal_reporting_allowed=false.
+
+### Rectified diagnostic display aspect correction — 2026-09-21
+
+BTW-CHECK
+TODO_ID: Diagnose perspective rectification distortion from real capture
+Goal: locate the shared distortion before changing measurement behavior.
+Files Changed: core/dhea_diagnostics.py; tests/test_dhea.py; diagnostic specification §5.6; this ledger.
+Build Result: diagnostics now render RECTIFIED evidence using the verified template's 17:4 physical aspect (1020×240), retaining the 256×24 calculation grid and explicit pixel-center mapping.
+Requirement Trace: diagnostic specification §5.6; physical template 17×4 mm; immutable original and fixed canonical contract.
+Test Result: regression failed before fix (10.6667 instead of 4.25); passed after fix. Actual source-to-destination corner projection verified. Browser uniform scale is not an additional distortion source.
+Artifact Evidence: same original SHA256 6028e434a0767b8415ff69727f7e9c00532ccc57060caef8712efa5c14370fb5; old/new canonical pixels and three profile arrays identical.
+Known Limitations: this proves display correction, not ROI correctness. Optical review unavailable because image reader returned metadata only. Selected long ROI remains unvalidated.
+Open Post-Funding Gates: unchanged, nonblocking; formal_reporting_allowed=false.
+Current MVP Blocker Remaining: real-image T_NOT_FOUND and prior unrelated regression failures remain.
+
+BTW-CHECK
+TODO_ID: Trace safe transverse rows distortion to source
+Goal: preserve safe-row location while correcting physical display.
+Files Changed: shared diagnostic renderer and regression above.
+Build Result: SAFE_ROWS_MASK uses the same physical mapping as RECTIFIED_RGB; no additional warp.
+Requirement Trace: 24 input rows, safe range [4,20), shared RECTIFIED coordinates.
+Test Result: decoded PNG roundtrip preserves exactly rows [4,20); actual browser natural dimensions 1020×240 and rendered aspect 4.25.
+Artifact Evidence: display-aspect-fix/safe-rows.png in the private evidence directory below.
+Known Limitations: source ROI remains unvalidated; safe rows do not validate membrane placement.
+Open Post-Funding Gates: unchanged, nonblocking.
+Current MVP Blocker Remaining: measurement refusal unchanged.
+
+BTW-CHECK
+TODO_ID: Trace support masks distortion to source
+Goal: keep geometry, warp-kernel and measurement masks aligned with corrected RGB presentation.
+Files Changed: shared diagnostic renderer and regression above.
+Build Result: all RECTIFIED masks/overlays share the RGB mapping and 1020×240 dimensions.
+Requirement Trace: diagnostic specification §5.6 and same-coordinate overlay contract.
+Test Result: regression checks mapping equality for every RECTIFIED artifact; actual browser combined-mask dimensions 1020×240, displayed aspect 4.25.
+Artifact Evidence: display-aspect-fix/support-masks.png; all 26 isolated replay artifact hashes verified.
+Known Limitations: mask coverage does not establish correct source ROI or clinically valid measurement.
+Open Post-Funding Gates: unchanged, nonblocking.
+Current MVP Blocker Remaining: measurement refusal unchanged.
+
+BTW-CHECK
+TODO_ID: Fix shared distortion cause and verify artifacts
+Goal: apply the shared fix without changing measurements, originals, credentials or historical evidence.
+Files Changed: core/dhea_diagnostics.py; tests/test_dhea.py; docs/LFA_最新完整文档集合/DHEA图像处理逐阶段可视化诊断规范_v1.0_MVP.md; this ledger.
+Build Result: api01-gateway restarted through direct CLI using existing state and credential files, original 8092 bind unchanged. Initial separate-port attempt on the same state correctly failed its exclusive lock; verification then used an isolated private directory. No credential rewrite or historical-row rewrite.
+Requirement Trace: original JPEG immutable; 256×24 and T/C windows unchanged; physical presentation separated from calculation geometry.
+Test Result: tests.test_dhea 35/35 passed; python_gateway.tests.test_dhea_diagnostics 8/8 passed. Same real JPEG uploaded through /lab/upload as a distinct lab replay, not claimed as another phone capture. HTTP200 rejected/T_NOT_FOUND; T/C/concentration null. Three-stage browser DOM dimensions verified; screenshot files captured, but visual image review unavailable. No full-suite-green claim.
+Artifact Evidence: new live bundle=17a08ce7-632f-466d-af04-a31cfd33c54a; analysis_id=6e8822c6-b008-4dba-afbd-cbadb36d5e01. New live workbench record loaded successfully. Durable private evidence: /root/.local/share/dhea-research/device-evidence/8879da37-88ca-4918-87a8-ca4f29b2f83f/display-aspect-fix/ contains response.json, manifest.json, verification.json and three browser screenshots.
+Known Limitations: old records retain old immutable PNGs; only new executions use corrected display. ROI selection and actual line-measurement failure are not resolved by this presentation change. No threshold/window change. No independent Review/PM acceptance claimed.
+Open Post-Funding Gates: unchanged; no clinical/regulatory or arbitrary-device claims.
+Current MVP Blocker Remaining: T_NOT_FOUND; selected ROI requires separate validation; earlier full-suite failures remain unresolved.
+
+### Portrait layout and QR placement documentation clarification
+
+BTW-CHECK
+TODO_ID: Synchronize physical layout across authoritative documents
+Goal: prevent agents from reversing C/T or including QR in the observation-window ROI.
+Files Changed: AGENTS.md; docs/LFA_最新完整文档集合/01_LFA观察窗口目标识别与测量方案_v4.7_DHEA_MVP.md §1.1; docs/LFA_最新完整文档集合/11_DHEA原生Android研究v2公开契约.md direction section; this ledger.
+Build Result: documentation only; canonical diagram added once in 01, root and wire contract link to it. No code, configuration or source image changed.
+Requirement Trace: user-confirmed portrait layout C above T; QR on T-side flow-origin end outside observation window; canonical origin → T → blank → C → far-end; QR excluded from 256×24 measurement.
+Test Result: executable assertions passed for diagram order, QR outside window, canonical order, both document paths and heading anchors. Instruction structure guard exited 0 with no errors; four pre-existing warnings unchanged.
+Artifact Evidence: authoritative diagram in 01 §1.1; references in root Controlled capture baseline and 11 direction section.
+Known Limitations: documentation clarification is not ROI implementation validation; no algorithm or App test rerun because no runtime behavior changed. Original JPEG preservation and App-owned product confirmation explicitly retained.
+Open Post-Funding Gates: unchanged, nonblocking.
+Current MVP Blocker Remaining: previously recorded T_NOT_FOUND, ROI validation and unrelated regression failures remain unresolved.
+
+BTW-CHECK
+TODO_ID: Verify documentation links and layout constraints
+Goal: verify agents can reach the single layout diagram and its measurement boundary.
+Files Changed: this ledger; verification ran in memory without adding test files.
+Build Result: no build required for documentation-only update.
+Requirement Trace: both entrypoints resolve to 01 §1.1; QR exclusion must not authorize original-image cropping or a new Core final-JPEG product gate.
+Test Result: diagram C/blank/T/window-boundary/QR ordering and both link anchors passed executable checks; instruction guard returned no structural errors.
+Artifact Evidence: check output PASS; guard errors=[] and exit 0.
+Known Limitations: four existing structural-review warnings remain; no claim of software or real-device acceptance.
+Open Post-Funding Gates: unchanged, nonblocking.
+Current MVP Blocker Remaining: no documentation blocker; existing measurement blockers unchanged.

@@ -605,7 +605,7 @@ Later implementation review requires exact changed-file/hunk baseline, actual co
       }
     }
   },
-  "last_reconcile": 1790049944.018506
+  "last_reconcile": 1790211251.7375379
 }
 <!-- /review-state -->
 
@@ -710,3 +710,21 @@ Exact Android scope is user-reported, while this inspected ledger revision still
 The earlier assertion that Android exact paths were already registered was incorrect. FILE_OWNERSHIP546-559 now supplies 14 exact original lfa-android paths, all BLOCKED_UNTIL_NODE1_CONTRACT_FREEZE; the documentary discrepancy is resolved prospectively. FILE_OWNERSHIP571 explicitly makes TASK-QIUQIU-01 the sole lfa-api successor scope on the three named NODE1 overlaps. Prior claims preserve historical evidence, not concurrent write permission; unrelated claims remain protected.
 
 NODE1 review bytes remain frozen until review disposition. NODE3 sequential shared-file access requires NODE1 exact-revision independent Review, separate PM Gate and explicit file release. Original PLAN/DELIVERABLE/TASK-QIUQIU-01/02/03 routing remains unchanged. This governance correction dispatches neither implementation nor Review and grants no acceptance, contract freeze, file release or inherited gate. Actual revision evidence and node-specific reviews remain required. Goal OPEN; Integration NOT_ACCEPTED; FORMAL_REPORTING_ALLOWED=false; geometry research separate.
+
+## PM control-ledger governance registration
+
+TASK_ID: RUN-20260923-PM-GOVERNANCE-FIX
+PLAN_ID: PM-GOV-01
+DELIVERABLE_ID: PM-GOV-01-D01
+REQUIREMENT_IDS: PM-LEDGER-REQ-01, PM-LEDGER-REQ-02, PM-LEDGER-REQ-03
+STATUS: REGISTERED
+SCOPE: Control-plane governance registration only; no business code, milestone, deliverable, progress, M1/M1-D05, D05 UNMAPPED, M2, M6, M7, QR, geometry or Integration state changed.
+
+Three binding rules registered:
+1. PM is the sole writer of the control ledger (MASTER_PLAN, TASK_BOARD, REVIEW_QUEUE, and sibling control records)
+2. Every formal task MUST carry PLAN_ID, DELIVERABLE_ID, TASK_ID and a requirement-trace Gate
+3. Read-only audits MAY be dispatched under OBSERVATION_ONLY
+
+Consistency check: MASTER_PLAN CURRENT_MILESTONE=M1, CURRENT_DELIVERABLE=M1-D05, PROGRAM_PROGRESS=1/6, PARKED_MILESTONES=M6,M7 unchanged. TASK_BOARD historical rows preserved; new governance row appended at line 42. REVIEW_QUEUE submissions and decisions preserved; this governance record appended at line 713. No existing row was rewritten.
+
+M1 Exit, M2 dispatch, QR implementation and Integration remain unauthorized. No Review or PM acceptance is granted by this registration.

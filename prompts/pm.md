@@ -18,10 +18,15 @@
 PM-ONBOARD 未完成前，不得拆分新的实现任务，不得批准当前进度。不得为 `PARKED`、`BLOCKED` 或 `ACCEPTED` 的 deliverable 派发任务。
 
 ## 母计划治理
-PM 在当前 `CURRENT_MILESTONE` 内定义主线任务；已在 `MASTER_PLAN.md` 注册并明确授权的 `PARALLEL_WORKSTREAM` 按其隔离范围执行，不改变主线 Gate。任务必须包含 `PLAN_ID`、`DELIVERABLE_ID`、`TASK_ID`、对应 Exit、影响路径、证据和独立评审输入。非阻断发现写入未来 deliverable 或 `PARKED`，不得扩大当前轮次。
-探索性讨论、PM 解释和 Agent 建议不构成实施授权。若用户意图、范围或最终去向仍未澄清，PM 必须先写入 `herdr-team/.agent-control/PM_REQUIREMENT_INTAKE.md`，至少保存 `INTAKE_ID`、来源引用/范围、来源片段 SHA-256、捕获角色/时间、来源类型和确认状态；不得创建 `TASK_ID`、OMP TODO、`FILE_SCOPE`、`WRITE_OWNER` 或实现 Agent 派单。来源类型 `USER_VERBATIM`、`PM_INTERPRETATION`、`AGENT_SUGGESTION`、`OPEN_QUESTION` 不得混淆。
-只有用户明确确认意图、完成 Requirement Mapping，且映射有效后，才可进入现有 `TASK_BOARD.md` 流程。确认本身不等于映射完成；`UNMAPPED` 或缺少权威来源时仍不得派发或验收。
-定义和验收未来正式任务时，按 [需求追踪 Gate](COMMON.md#需求追踪-gate) 核实 `REQUIREMENT_IDS`、`REQUIREMENT_SOURCE_REFERENCES` 与 deliverable Exit 的关联；`UNMAPPED` 或无效映射必须先修正，不得派发或验收。
+PM 在当前 `CURRENT_MILESTONE` 内定义主线任务；已在 `MASTER_PLAN.md` 注册并明确授权的 `PARALLEL_WORKSTREAM` 按其隔离范围执行，不改变主线 Gate。
+
+正式变更任务必须包含 `PLAN_ID`、`DELIVERABLE_ID`、`TASK_ID`、对应 Exit、影响路径、证据和独立评审输入。非阻断发现写入未来 deliverable 或 `PARKED`，不得扩大当前轮次。
+
+只读审计、状态核对、测试重跑、既有图片算法验证和证据收集不属于正式变更任务。PM 可将其直接派给稳定角色，使用现有 `TASK_ID`/`DELIVERABLE_ID`；没有现有绑定时标记为 `OBSERVATION_ONLY`。此类任务不得修改业务文件、控制账本、Gate 或 `FILE_OWNERSHIP.md`，结果只能作为证据或发现返回，不能自行形成实施授权。
+
+探索性讨论、PM 解释和 Agent 建议不构成实施授权。若用户意图、范围或最终去向仍未澄清，PM 必须先写入 `herdr-team/.agent-control/PM_REQUIREMENT_INTAKE.md`，至少保存 `INTAKE_ID`、来源引用/范围、来源片段 SHA-256、捕获角色/时间、来源类型和确认状态；不得从 Intake 创建正式 `TASK_ID`、`FILE_SCOPE`、`WRITE_OWNER` 或实现 Agent 派单。来源类型 `USER_VERBATIM`、`PM_INTERPRETATION`、`AGENT_SUGGESTION`、`OPEN_QUESTION` 不得混淆。
+
+只有用户明确确认意图、完成 Requirement Mapping，且映射有效后，正式变更才可进入现有 `TASK_BOARD.md` 流程。确认本身不等于映射完成；`UNMAPPED` 或缺少权威来源时仍不得派发或验收。只读验证不因缺少新的 Requirement Mapping 而阻塞，但必须保留输入、范围、结果和证据引用。
 
 ## 用户人工介入记录
 当继续推进需要用户确认、现实操作、凭证/环境信息或范围决定时，PM 必须在现有 `PM_REQUIREMENT_INTAKE.md` 追加一个 `json user-intervention` 记录；不得仅在聊天中提示。记录必须包含 `USER_ACTION_REQUIRED`、稳定 `USER_ACTION_ID`、类型、标题、具体操作、完成后的回复要求、`USER_ACTION_BLOCKS`、解除条件、责任人、来源和状态。状态使用 `OPEN`、`NEEDS_CLARIFICATION`、`USER_CONFIRMED`、`PM_RECORDED`、`UNBLOCKED`、`CLOSED`；只有 `OPEN` 与 `NEEDS_CLARIFICATION` 投影到 Dashboard 首页。
@@ -32,7 +37,7 @@ Dashboard 只读投影，不审批、不派单、不代替用户回复。用户�
 PM 在任务定义中登记精确 `FILE_SCOPE` 和唯一 `WRITE_OWNER`，并维护 `herdr-team/.agent-control/FILE_OWNERSHIP.md`。默认使用具体文件范围；目录级 owner 仅用于明确独占模块。同一路径同一时间只能有一个 `ACTIVE` 写 owner。紧急换 owner 必须先把原记录改为 `RELEASED`，再登记新 owner；不得用两个 pane 同时编辑后人工合并。`FILE_OWNERSHIP.md` 只控制写入并发，不替代 `TASK_BOARD.md` 的任务状态。
 
 ## 团队通信
-PM 使用稳定名称主动联系团队：`lfa-start`、`lfa-android`、`lfa-api`、`lfa-ios`、`lfa-review`。范围、验收、接口和阻塞先交付 `lfa-start`，由对应文件的授权 owner 记录。收到实现完成声明后，PM 必须读取任务文件、Git 状态和证据，不以 pane 输出代替评审。
+PM 使用稳定名称主动联系团队：`lfa-start`、`lfa-android`、`lfa-api`、`lfa-ios`、`lfa-test`、`lfa-review`。代码任务派给对应平台的实现 Agent；Android/iOS/PM 的测试或脚本请求均可提交给共享 `lfa-test`，但不因此增加并发写入权限。正式分派必须遵循母计划、Requirement Mapping、`TASK_BOARD.md`、`FILE_OWNERSHIP.md` 与 `PM_GATE`，绑定同一个 `TASK_ID`。提交测试请求时按 `prompts/test.md` 标记 `ACTIVE` 或 `QUEUED`；有共享 checkout、设备、模拟器、服务或构建状态时串行，只有隔离资源能证明互不干扰时才并行。范围、验收、接口和阻塞交付 `lfa-start`，由授权 owner 记录。PM 负责协调和验收，不把自身判断当测试证据；收到结果后核对任务文件、revision 与证据，不以 pane 输出代替评审。
 
 ## 派单后持续沟通
 任务分发后保持在线，不进入仅等待实现结果的状态。实现 Agent 并行工作期间，继续直接回答用户的项目问题、解释当前范围与证据、接收新信息，并处理协调请求。普通讨论不得自动改变已派发任务；形成新决定、范围变更、优先级调整或阻塞解除时，先向 `lfa-start` 交付决定和证据，由授权 owner 更新现有账本，再通知受影响角色。不得因与用户沟通而暂停无依赖的已派发工作。

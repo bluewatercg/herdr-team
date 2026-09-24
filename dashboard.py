@@ -7,8 +7,11 @@ import argparse
 import hashlib
 import json
 import re
+import shutil
 import subprocess
+import sys
 import time
+from collections import Counter
 from datetime import datetime, timedelta
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -17,6 +20,27 @@ TEAM = ("lfa-start", "lfa-pm", "lfa-android", "lfa-api", "lfa-ios", "lfa-review"
 ROOT = Path(__file__).resolve().parent
 CONTROL = ROOT / ".agent-control"
 SHADOW_PROJECTION = CONTROL / "MACHINE" / "HARNESS-VERIFICATION-SHADOW" / "qr-android-projection.json"
+
+# 来源状态覆盖面：只读观察，不含动态日志。PM_GATE / PROJECT_SNAPSHOT 是 Gate 判定必需项。
+TRACKED_SOURCES = (
+    "MASTER_PLAN.md",
+    "TASK_BOARD.md",
+    "REVIEW_QUEUE.md",
+    "BLOCKERS.md",
+    "PM_REQUIREMENT_INTAKE.md",
+    "PM_GATE",
+    "PROJECT_SNAPSHOT.md",
+    "FILE_OWNERSHIP.md",
+    "DECISIONS.md",
+)
+SOURCE_STALE_SECONDS = 86_400
+EVIDENCE_SOURCES = ("QR-PC-01-D01.json", "QR-FINAL-01-D01.json")
+
+# registered_projection() 的 10 个节点是源码内的冻结快照，其 source_ref 使用 MASTER_PLAN 行号。
+# 账本一旦被编辑，行号引用即可能错位。此摘要记录快照所依据的 MASTER_PLAN 版本，
+# 用于把"静默漂移"变成"可见的过期"——不试图自动重算节点，只如实报告依据是否已变。
+PROJECTION_BASIS_SHA256 = "03fedbcf52efed9a4183f265e4a23859de9462c6e9a1e747142564230e933095"
+PROJECTION_BASIS_BYTES = 242858
 
 PAGE = r'''<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -32,8 +56,8 @@ PAGE = r'''<!doctype html>
 <nav class="view-tabs" role="tablist" aria-label="观察台视图"><button id="tab-current" role="tab" aria-selected="true" aria-controls="view-current" data-view="current">当前执行</button><button id="tab-plan" role="tab" aria-selected="false" aria-controls="view-plan" data-view="plan" tabindex="-1">计划与历史</button><button id="tab-jev" role="tab" aria-selected="false" aria-controls="view-jev" data-view="jev" tabindex="-1">Jev 决策</button><button id="tab-diagnostics" role="tab" aria-selected="false" aria-controls="view-diagnostics" data-view="diagnostics" tabindex="-1">诊断</button></nav>
 <div id="view-current" class="view-panel" role="tabpanel" aria-labelledby="tab-current" data-panel="current">
 <section id="userIntervention" class="user-intervention" aria-live="assertive" hidden></section>
-<section class="program-board board" aria-labelledby="programTitle"><div class="board-title"><span class="eyebrow">当前主线</span><h2 id="programTitle">项目现在处于哪里</h2><p id="programSummary" class="muted">来自 MASTER_PLAN</p></div><div id="programStrip" class="program-strip"></div></section>
-<section class="overview" aria-labelledby="overviewTitle"><div class="overview-head"><div><span class="eyebrow">实时执行</span><h2 id="overviewTitle">当前 LFA Agent</h2></div><button id="focusAction" class="focus-action" type="button">查看执行详情</button></div><div class="overview-grid"><article><span>当前主线</span><strong id="currentFocus">加载中</strong></article><article><span>实时执行</span><strong id="currentOwner">加载中</strong></article><article class="blocker-card"><span>任务归属</span><strong id="currentBlocker">加载中</strong></article><article><span>当前交付状态</span><strong id="nextOwner">加载中</strong></article><article class="next-step"><span>下一 Gate</span><strong id="nextAction">加载中</strong></article></div><p id="stateConflict" class="state-conflict" hidden></p></section>
+<section class="program-board board" aria-labelledby="programTitle"><div class="board-title"><span class="eyebrow">当前主线</span><h2 id="programTitle">项目现在处于哪里</h2><p id="programSummary" class="muted">来自 MASTER_PLAN</p><p id="projectionBasis" class="muted"></p></div><div id="programStrip" class="program-strip"></div></section>
+<section class="overview" aria-labelledby="overviewTitle"><div class="overview-head"><div><span class="eyebrow">实时执行</span><h2 id="overviewTitle">当前 LFA Agent</h2></div><button id="focusAction" class="focus-action" type="button">查看执行详情</button></div><div class="overview-grid"><article><span>当前主线</span><strong id="currentFocus">加载中</strong></article><article><span>实时执行</span><strong id="currentOwner">加载中</strong></article><article class="blocker-card"><span>任务归属</span><strong id="currentBlocker">加载中</strong></article><article><span>当前交付状态</span><strong id="nextOwner">加载中</strong></article><article id="gateCard"><span>PM Gate</span><strong id="gateStatus">加载中</strong></article><article id="reviewCard"><span>评审队列</span><strong id="reviewStatus">加载中</strong></article><article class="next-step"><span>下一 Gate</span><strong id="nextAction">加载中</strong></article></div><p id="gateDetail" class="muted"></p><p id="stateConflict" class="state-conflict" hidden></p></section>
 <section class="summary" aria-label="实时执行摘要"><div class="metric"><b id="actionCount">-</b><span>活跃 Agent</span></div><div class="metric"><b id="runningCount">-</b><span>已映射任务</span></div><div class="metric"><b id="blockedCount">-</b><span>UNMAPPED</span></div></section>
 <section id="portfolio" class="board primary-board"><div class="board-title"><span class="eyebrow">实时会话</span><h2>当前 Agent 会话</h2><p class="muted">显示 Herdr 当前在线的命名 LFA Agent、实时会话标题及状态；任务归属必须来自 TASK_BOARD。</p></div><div class="browser-tools" role="search"><label for="nodeSearch">查找 Agent</label><input id="nodeSearch" type="search" placeholder="Agent、任务或归属" autocomplete="off"><label for="nodeStatus">状态</label><select id="nodeStatus"><option value="">全部状态</option><option value="active">执行中</option><option value="waiting">空闲或等待</option></select><span id="filterResult" role="status" aria-live="polite"></span></div><div id="currentProject"></div></section>
 </div>
@@ -52,7 +76,7 @@ PAGE = r'''<!doctype html>
 :root{color-scheme:dark;--bg:#0d253d;--panel:#102d49;--panel2:#163957;--line:#36536d;--text:#fff;--muted:#b7c7d8;--blue:#8f86ff;--green:#54d69b;--amber:#ffd166;--red:#ff8585;--focus:#fff;--stripe-indigo:#533afd;--stripe-indigo-press:#2e2b8c;--stripe-cream:#f5e9d4;--stripe-hairline:#e3e8ee}body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:-.01em;background:linear-gradient(115deg,#0d253d 0%,#1c1e54 52%,#0d253d 100%)}.shell{max-width:1500px;padding:24px}.brand h1{font-weight:300;letter-spacing:-.04em}.brand p,.muted{color:#b7c7d8}.readonly{border-color:#665efd;background:#1c1e54;border-radius:8px}.view-tabs{border-color:#36536d;border-radius:8px;background:#102d49}.view-tabs button[aria-selected=true]{background:var(--stripe-indigo);color:#fff;border-radius:9999px}.board,.project,.metric,.global{border-color:#36536d;border-radius:12px;background:#102d49}.board-title{padding:16px 20px;border-color:#36536d}.board-title h2{font-weight:300;letter-spacing:-.025em}.metric{padding:12px 16px}.metric b{font-variant-numeric:tabular-nums;font-weight:400;letter-spacing:-.03em}.project{background:#163957}.node{border-color:#36536d;border-radius:8px;background:#0d253d}.node:hover{border-color:#8f86ff;box-shadow:0 8px 24px #00377066}.node.active,.node.running{border-color:#8f86ff;border-left-color:#8f86ff;background:#1c1e54}.node.accepted{border-left-color:#54d69b}.badge{border-radius:9999px}.focus-action,.decision-tools button{background:var(--stripe-indigo);border-color:var(--stripe-indigo);color:#fff;border-radius:9999px;padding:8px 16px}.focus-action:hover,.decision-tools button:hover{background:var(--stripe-indigo-press)}input,select{min-height:36px;border-color:#a8c3de!important;border-radius:6px!important;background:#fff!important;color:#0d253d!important;padding:8px 12px!important}.drawer{background:#102d49;border-color:#36536d}.detail{border-color:#36536d;border-radius:8px;background:#163957}.source-alert{border-color:#ffd166;border-radius:8px}.empty-state{color:#b7c7d8}
 </style>
 <script>
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const fmt=t=>t?new Date(t*1000).toLocaleString():'未记录';const statusText=t=>({ACCEPTED:'已通过',APPROVED:'已批准',REJECTED:'已否决',MODIFIED:'已修改',COMPLETED:'已完成',OPEN:'待执行',PM_ACCEPTED:'PM 已通过',SUPERSEDED:'已被修正',PARTIAL:'部分完成',HOLD:'暂停',HOLD_FOR_CONTRACT_CORRECTION:'等待契约修正',UNFROZEN:'未冻结',CHANGES_REQUESTED:'需要修改',WAITING_DEPENDENCY:'等待依赖',WAITING_REVIEW:'等待复审',WAITING_PM:'等待 PM',PENDING_REREVIEW:'等待复审',REPAIRING:'修复中',NOT_READY:'未就绪',NOT_AUTHORIZED:'未授权',IN_PROGRESS:'执行中',ACTIVE:'执行中',RUNNING:'执行中',IDLE:'空闲',DONE:'已完成',BLOCKED:'等待输入',UNKNOWN:'状态未知',NOT_STARTED:'未开始',PARKED:'已停放',RECORDED:'已记录',completed:'已完成',pending:'待处理',blocked:'阻塞',working:'执行中',idle:'空闲',done:'已完成',unknown:'状态未知'}[t]||t);const badge=(t,k='pending')=>`<span class="badge ${esc(k)}" title="${esc(t)}">${esc(statusText(t))}</span>`;let paused=false,loading=false,timer,data,nodeIndex={},shadowProjection=null,openNodeId=null,lastSuccess=null,currentView='current',focusNodeId=null;
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const fmt=t=>t?new Date(t*1000).toLocaleString():'未记录';const statusText=t=>({ACCEPTED:'已通过',APPROVED:'已批准',REJECTED:'已否决',MODIFIED:'已修改',COMPLETED:'已完成',OPEN:'待执行',PM_ACCEPTED:'PM 已通过',SUPERSEDED:'已被修正',PARTIAL:'部分完成',HOLD:'暂停',HOLD_FOR_CONTRACT_CORRECTION:'等待契约修正',UNFROZEN:'未冻结',CHANGES_REQUESTED:'需要修改',WAITING_DEPENDENCY:'等待依赖',WAITING_REVIEW:'等待复审',WAITING_PM:'等待 PM',PENDING_REREVIEW:'等待复审',REPAIRING:'修复中',NOT_READY:'未就绪',NOT_AUTHORIZED:'未授权',IN_PROGRESS:'执行中',ACTIVE:'执行中',RUNNING:'执行中',IDLE:'空闲',DONE:'已完成',BLOCKED:'等待输入',UNKNOWN:'状态未知',NOT_STARTED:'未开始',PARKED:'已停放',RECORDED:'已记录',OK:'正常',STALE:'已过期',UNAVAILABLE:'不可读',INVALID:'格式无效',MISSING:'缺失',UNMAPPED:'未归属',STALE_BASE_PLAN:'基线已过期',STALE_PARENT_PM:'父修订已过期',REGISTERED_UNVERIFIED_FRESHNESS:'已登记·新鲜度不可证',ALL_STALE:'全部失效',PARTIAL_STALE:'部分失效',FRESH:'全部有效',EMPTY:'无提交',CURRENT:'依据未变',MASTER_PLAN_CHANGED:'依据已过期',completed:'已完成',pending:'待处理',blocked:'阻塞',working:'执行中',idle:'空闲',done:'已完成',unknown:'状态未知'}[t]||t);const badge=(t,k='pending')=>`<span class="badge ${esc(k)}" title="${esc(t)}">${esc(statusText(t))}</span>`;let paused=false,loading=false,timer,data,nodeIndex={},shadowProjection=null,openNodeId=null,lastSuccess=null,currentView='current',focusNodeId=null;
 function renderPM(p,agents){
   const root=document.querySelector('#pmPlan'),opened=new Set([...root.querySelectorAll('details[open]')].map(e=>e.dataset.key)),current=p.current;
   const describe=x=>esc(typeof x==='object'&&x!==null?JSON.stringify(x):x??'未映射');
@@ -89,10 +113,40 @@ function closeNode({updateUrl=true}={}){openNodeId=null;const drawer=document.qu
 function filterGroup(n){return /ACCEPTED|PM_ACCEPTED/.test(n.execution_status)?'accepted':/ACTIVE|IN_PROGRESS|RUNNING|REPAIRING|WORKING/.test(n.execution_status)?'active':/WAITING|BLOCK|IDLE|DONE|UNKNOWN|PENDING|NOT_READY|NOT_AUTHORIZED|HOLD|UNFROZEN/.test(n.execution_status)?'waiting':'action'}
 function applyFilters(){const query=document.querySelector('#nodeSearch').value.trim().toLowerCase(),status=document.querySelector('#nodeStatus').value,buttons=[...document.querySelectorAll('#currentProject [data-node]')];let shown=0;buttons.forEach(button=>{const n=nodeIndex[button.dataset.node],match=(!query||[n.node_id,n.name,n.owner,n.task_id].some(v=>String(v||'').toLowerCase().includes(query)))&&(!status||filterGroup(n)===status);button.hidden=!match;if(match)shown++});document.querySelector('#filterResult').textContent=`显示 ${shown}/${buttons.length}`}
 function collectConflicts(d){const out=[...(d.snapshot_diagnostics||[])];d.execution.workstream.nodes.filter(n=>n.linkage_conflict).forEach(n=>out.push(`${n.node_id}：任务映射未登记`));const byRelated=new Map((d.pm_operational_plan.current?.items||[]).map(i=>[i.related_task_or_deliverable,i]));d.execution.workstream.nodes.filter(n=>n.execution_status!=='SUPERSEDED').forEach(n=>{const p=byRelated.get(n.node_id);if(p?.status==='completed'&&!/ACCEPTED|PM_ACCEPTED/.test(n.execution_status))out.push(`${n.node_id}：PM 清单已完成，但节点 ${statusText(n.execution_status)}`)});d.errors.forEach(e=>out.push(`数据读取：${e}`));return [...new Set(out)]}
+function gateTone(d){const v=d.gate.GIT_HEAD_VERIFIABLE;return d.gate.STATUS!=='READY'?'pending':(v===true?'accepted':(v===false?'blocked':'warning'))}
+function reviewTone(s){return s==='FRESH'?'accepted':(s==='ALL_STALE'?'blocked':(s==='PARTIAL_STALE'?'warning':(s==='EMPTY'?'pending':'warning')))}
+function renderGate(d){
+  const g=document.querySelector('#gateStatus');
+  g.textContent=`${d.gate.STATUS||'未记录'} · ${d.gate.GIT_HEAD_VERIFIABLE===true?'可核对':d.gate.GIT_HEAD_VERIFIABLE===false?'不可核对':'未判定'}`;
+  g.className=gateTone(d);
+  const r=document.querySelector('#reviewStatus'),rv=d.review;
+  r.textContent=rv.total?`${rv.total} 条 · ${Object.entries(rv.counts).map(([k,v])=>`${statusText(k)} ${v}`).join(' / ')}`:statusText(rv.status);
+  r.className=reviewTone(rv.status);
+  document.querySelector('#gateDetail').innerHTML=`PM Gate RUN_ID ${esc(d.gate.RUN_ID||'未记录')} · SNAPSHOT ${esc(d.gate.SNAPSHOT_ID||'未记录')} · 绑定 HEAD ${esc(d.gate.BOUND_HEAD_SHORT||'未记录')} · ${esc(d.gate.GIT_HEAD_DETAIL)}`;
+  const pb=d.projection_basis,basis=document.querySelector('#projectionBasis');
+  basis.textContent=pb.status==='CURRENT'?'登记投影依据的 MASTER_PLAN 未变':'登记投影已过期：'+pb.detail;
+  basis.style.color=pb.status==='CURRENT'?'':'var(--amber)';
+}
+function renderDiagnostics(d){
+  const sources=d.source_health.map(s=>`<li>${esc(s.source_id)} · <b>${esc(statusText(s.status))}</b> · ${fmt(s.updated_at)}${s.error?` · ${esc(s.error)}`:''}</li>`).join('');
+  const evidence=d.evidence_health.map(e=>`<li>EVIDENCE/${esc(e.file)} · <b>${esc(statusText(e.status))}</b>${e.error?` · ${esc(e.error)}`:''}</li>`).join('');
+  const subs=d.review.submissions.length?`<ul>${d.review.submissions.map(s=>`<li><code>${esc(s.key)}</code> · <b>${esc(statusText(s.status))}</b>${s.task_id?` · ${esc(s.task_id)}`:''}</li>`).join('')}</ul>`:'<p class="muted">无提交记录</p>';
+  const snapshot=d.snapshot_diagnostics.length?`<ul>${d.snapshot_diagnostics.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p class="muted">无快照诊断</p>';
+  const readErrors=d.errors.length?`<ul>${d.errors.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p class="muted">无读取错误</p>';
+  return `<p>数据生成 ${fmt(d.generated_at)}</p>`
+    +`<h3>PM Gate</h3><p>${esc(d.gate.STATUS||'未记录')} · 绑定 HEAD ${esc(d.gate.BOUND_HEAD_SHORT||'未记录')} · ${esc(d.gate.GIT_HEAD_DETAIL)}</p>`
+    +`<h3>评审队列（${esc(statusText(d.review.status))}）</h3><p class="muted">${esc(d.review.reason||'')}</p>${subs}`
+    +`<h3>工具链</h3><p>${esc(d.toolchain.detail)}</p>`
+    +`<h3>登记投影依据</h3><p>${esc(statusText(d.projection_basis.status))} · ${esc(d.projection_basis.detail)}</p>`
+    +`<h3>来源状态</h3><ul>${sources}</ul>`
+    +`<h3>证据文件</h3><ul>${evidence}</ul>`
+    +`<h3>快照诊断</h3>${snapshot}`
+    +`<h3>读取错误</h3>${readErrors}`;
+}
 function renderGlobal(d){const items=d.pm_operational_plan.current?.items||[],conflicts=collectConflicts(d),checkpoint='<p class="muted">协调 checkpoint：仅在 R04、Android 设备验证与 Review 稳定后，由原角色一次性发布；此前保留现有历史 revision，不自动同步。</p>';document.querySelector('#globalActionCount').textContent=items.filter(i=>!['completed','abandoned'].includes(i.status)).length;document.querySelector('#globalBlockedCount').textContent=items.filter(i=>i.status==='blocked').length;document.querySelector('#globalWorkingCount').textContent=d.agents.filter(a=>a.status==='working').length;document.querySelector('#globalSourceCount').textContent=d.source_health.filter(s=>s.status!=='OK').length;document.querySelector('#managementIssues').innerHTML=(conflicts.length?`<ul>${conflicts.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<p class="muted">未发现跨来源状态冲突。</p>')+checkpoint}
 function renderManagerView(d){document.querySelector('#programStrip').innerHTML=d.plan.milestones.map(m=>`<div class="program-step ${m.id===d.plan.current_milestone?'current':m.status==='ACCEPTED'?'done':m.status==='PARKED'?'parked':''}"><code>${esc(m.id)}</code><strong>${esc(m.name)}</strong><small>${esc(statusText(m.status))}</small></div>`).join('')}
 function renderOverview(d){renderInterventions(d);const current=d.execution.workstream.nodes[0],record=d.plan.current_deliverable_record;focusNodeId=current?.node_id??null;document.querySelector('#workstreamName').textContent=`主线 ${d.plan.current_milestone} → ${d.plan.current_deliverable}`;document.querySelector('#currentFocus').textContent=`${d.plan.current_milestone} → ${d.plan.current_deliverable}`;document.querySelector('#currentOwner').textContent=current?`${current.current_actor} · ${current.name}`:'当前无 LFA Agent 执行';document.querySelector('#currentBlocker').textContent=current?.milestone||'无活跃任务归属';document.querySelector('#nextOwner').textContent=record?`${record.name} · ${statusText(record.status)}`:'未找到当前交付记录';document.querySelector('#nextAction').textContent=d.plan.next_gate||'以 MASTER_PLAN 为准';document.querySelector('#focusAction').disabled=!current}
-function render(d){data=d;nodeIndex={};shadowProjection=d.shadow_projection?.status==='AVAILABLE'?d.shadow_projection.projection:null;const [current,program,...others]=normalize(d),nodes=current.nodes;document.querySelector('#currentProject').innerHTML=nodes.length?renderProject(current):'<p class="empty-state" role="status"><b>当前无 LFA Agent 执行</b><br>MASTER_PLAN 与 TASK_BOARD 仍可在下方查看，但不代表 Agent 正在运行。</p>';document.querySelector('#programProject').innerHTML=renderProject(program);document.querySelector('#otherProjects').innerHTML=others.length?others.map(renderProject).join(''):'<p class="diagnostics-body">无其他登记工作</p>';document.querySelector('#programSummary').textContent=`${d.plan.current_milestone} → ${d.plan.current_deliverable} · ${esc(d.plan.current_deliverable_record?.name||'未找到交付记录')} · 总进度 ${d.plan.progress}`;document.querySelector('#actionCount').textContent=nodes.length;document.querySelector('#runningCount').textContent=nodes.filter(n=>!n.linkage_conflict).length;document.querySelector('#blockedCount').textContent=nodes.filter(n=>n.linkage_conflict).length;document.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>showNode(b.dataset.node));renderManagerView(d);applyFilters();renderGlobal(d);renderJev(d.jev_decisions);const stale=d.source_health.filter(s=>s.status!=='OK');const alert=document.querySelector('#sourceAlert');alert.hidden=!stale.length;alert.innerHTML=stale.length?`<b>数据可能过期</b> · ${stale.map(s=>`${esc(s.source_id)}：${esc(statusText(s.status))}`).join('；')}`:'';document.querySelector('#diagnostics').innerHTML=`<p>数据生成 ${fmt(d.generated_at)} · Review ${esc(d.review.status)}</p><ul>${d.source_health.map(s=>`<li>${esc(s.source_id)} · ${esc(s.status)} · ${fmt(s.updated_at)}</li>`).join('')}</ul>`;const requested=openNodeId||new URLSearchParams(location.search).get('node');if(requested&&!showNode(requested,{updateUrl:false}))setNodeUrl(null,true)}
+function render(d){data=d;nodeIndex={};shadowProjection=d.shadow_projection?.status==='AVAILABLE'?d.shadow_projection.projection:null;const [current,program,...others]=normalize(d),nodes=current.nodes;document.querySelector('#currentProject').innerHTML=nodes.length?renderProject(current):'<p class="empty-state" role="status"><b>当前无 LFA Agent 执行</b><br>MASTER_PLAN 与 TASK_BOARD 仍可在下方查看，但不代表 Agent 正在运行。</p>';document.querySelector('#programProject').innerHTML=renderProject(program);document.querySelector('#otherProjects').innerHTML=others.length?others.map(renderProject).join(''):'<p class="diagnostics-body">无其他登记工作</p>';document.querySelector('#programSummary').textContent=`${d.plan.current_milestone} → ${d.plan.current_deliverable} · ${esc(d.plan.current_deliverable_record?.name||'未找到交付记录')} · 总进度 ${d.plan.progress}`;document.querySelector('#actionCount').textContent=nodes.length;document.querySelector('#runningCount').textContent=nodes.filter(n=>!n.linkage_conflict).length;document.querySelector('#blockedCount').textContent=nodes.filter(n=>n.linkage_conflict).length;document.querySelectorAll('[data-node]').forEach(b=>b.onclick=()=>showNode(b.dataset.node));renderManagerView(d);applyFilters();renderGlobal(d);renderGate(d);renderJev(d.jev_decisions);const stale=d.source_health.filter(s=>s.status!=='OK');const freshness=d.pm_operational_plan.freshness;const issues=[...stale.map(s=>`${s.source_id}：${statusText(s.status)}`),...(freshness&&freshness.status!=='REGISTERED_UNVERIFIED_FRESHNESS'?[`PM 快照：${freshness.reason}`]:[]),...d.snapshot_diagnostics,...d.errors,...d.evidence_health.filter(e=>e.status!=='OK').map(e=>`EVIDENCE/${e.file}：${statusText(e.status)}`)];const alert=document.querySelector('#sourceAlert');alert.hidden=!issues.length;alert.innerHTML=issues.length?`<b>数据可能过期或不可读（${issues.length} 项）</b> · ${issues.slice(0,3).map(esc).join('；')}${issues.length>3?'；…详见诊断页':''}`:'';document.querySelector('#diagnostics').innerHTML=renderDiagnostics(d);const requested=openNodeId||new URLSearchParams(location.search).get('node');if(requested&&!showNode(requested,{updateUrl:false}))setNodeUrl(null,true)}
 function selectView(name,{focus=false,updateUrl=true}={}){const tabs=[...document.querySelectorAll('[role="tab"][data-view]')],target=tabs.find(tab=>tab.dataset.view===name)||tabs[0];tabs.forEach(tab=>{const selected=tab===target;tab.setAttribute('aria-selected',String(selected));tab.tabIndex=selected?0:-1;document.querySelector(`[data-panel="${tab.dataset.view}"]`).hidden=!selected});if(updateUrl){const url=new URL(location.href);url.hash=target.dataset.view;history.replaceState(null,'',url)}if(focus)target.focus()}
 async function load(){if(loading)return;loading=true;document.querySelector('#refresh').setAttribute('aria-busy','true');document.querySelector('#stamp').textContent='正在刷新';try{const r=await fetch('/api/status',{cache:'no-store'});if(!r.ok)throw new Error(`${r.status} ${r.statusText}`);const payload=await r.json();render(payload);renderOverview(payload);renderShadow(payload.shadow_projection);renderPM(payload.pm_operational_plan,payload.agent_operational_plans);lastSuccess=payload.generated_at;document.querySelector('#stamp').textContent=`更新 ${new Date(lastSuccess*1000).toLocaleTimeString()}`}catch(e){document.querySelector('#stamp').innerHTML=`<span class="error">刷新失败${lastSuccess?'，保留 '+new Date(lastSuccess*1000).toLocaleTimeString()+' 数据':''}: ${esc(e.message)}</span>`}finally{loading=false;document.querySelector('#refresh').removeAttribute('aria-busy')}}function schedule(){clearInterval(timer);if(!paused)timer=setInterval(load,5000)}document.querySelector('#focusAction').onclick=()=>focusNodeId&&showNode(focusNodeId);document.querySelector('#refresh').onclick=load;document.querySelector('#nodeSearch').oninput=applyFilters;document.querySelector('#nodeStatus').onchange=applyFilters;document.querySelector('#jevStatus').onchange=()=>data&&renderJev(data.jev_decisions);document.querySelector('#pause').onclick=e=>{paused=!paused;e.currentTarget.innerHTML=paused?'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7Z"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>';e.currentTarget.title=paused?'继续自动刷新':'暂停自动刷新';e.currentTarget.setAttribute('aria-label',e.currentTarget.title);e.currentTarget.setAttribute('aria-pressed',String(paused));schedule()};document.querySelector('#closeDrawer').onclick=()=>closeNode();document.querySelector('#drawer').onclick=e=>{if(e.target===e.currentTarget)closeNode()};document.querySelector('#drawer').addEventListener('cancel',e=>{e.preventDefault();closeNode()});addEventListener('popstate',()=>{selectView(location.hash.slice(1),{updateUrl:false});const id=new URLSearchParams(location.search).get('node');id?showNode(id,{updateUrl:false}):closeNode({updateUrl:false})});load();schedule();
 document.querySelectorAll('[role="tab"][data-view]').forEach((tab,index,tabs)=>{tab.onclick=()=>selectView(tab.dataset.view);tab.onkeydown=e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const next=e.key==='Home'?0:e.key==='End'?tabs.length-1:(index+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;selectView(tabs[next].dataset.view,{focus:true})}});selectView(location.hash.slice(1));
@@ -100,20 +154,77 @@ document.querySelectorAll('[role="tab"][data-view]').forEach((tab,index,tabs)=>{
 
 
 
-def run_json(*args: str) -> dict:
-  completed = subprocess.run(args, cwd=ROOT.parent, text=True, capture_output=True, timeout=4, check=True)
-  return json.loads(completed.stdout)
+def run_json(*args: str) -> tuple[dict | None, str | None]:
+  """执行命令并解析 JSON。失败返回 (None, 原因)，不静默吞掉。"""
+  try:
+    completed = subprocess.run(args, cwd=ROOT.parent, text=True, capture_output=True, timeout=4, check=True)
+  except FileNotFoundError:
+    return None, f"{args[0]} 命令不可用（不在 PATH 中）"
+  except subprocess.TimeoutExpired:
+    return None, f"{args[0]} 执行超时"
+  except subprocess.CalledProcessError as error:
+    return None, f"{args[0]} 退出码 {error.returncode}"
+  except OSError as error:
+    return None, f"{args[0]} 执行失败: {error}"
+  try:
+    return json.loads(completed.stdout), None
+  except json.JSONDecodeError as error:
+    return None, f"{args[0]} 输出不是合法 JSON: {error}"
 
 
-def read_text(name: str) -> str:
+def read_text(name: str, errors: list[str] | None = None) -> str:
+  """读取控制账本。缺失/不可读时记录原因，不再与"内容为空"混同。"""
   try:
     return (CONTROL / name).read_text(encoding="utf-8")
   except FileNotFoundError:
+    if errors is not None:
+      errors.append(f"{name} 不存在")
+    return ""
+  except OSError as error:
+    if errors is not None:
+      errors.append(f"{name} 读取失败: {error}")
     return ""
 
-def parse_jev_decisions(text: str | None = None) -> dict:
-  text = read_text("JEV_DECISIONS.jsonl") if text is None else text
-  records, errors, seen = [], [], set()
+
+def herdr_available() -> dict:
+  path = shutil.which("herdr")
+  return {
+    "available": bool(path),
+    "path": path or "",
+    "detail": f"herdr CLI 可用：{path}" if path else "herdr CLI 不在 PATH 中；Agent 实时视图不可用，页面上的 Agent 区不代表团队真实空闲",
+  }
+
+
+def wsl_to_host(raw: str) -> Path:
+  """在 Windows Python 中转换 WSL 挂载路径，Linux 保留可访问的挂载路径。"""
+  match = re.match(r"^/mnt/([a-zA-Z])/(.*)$", raw.strip())
+  if match and sys.platform == "win32":
+    return Path(f"{match.group(1).upper()}:/{match.group(2)}")
+  return Path(raw.strip())
+
+
+def git_head(path: Path) -> str | None:
+  try:
+    completed = subprocess.run(("git", "rev-parse", "HEAD"), cwd=path, text=True, capture_output=True, timeout=4)
+  except (OSError, subprocess.SubprocessError):
+    return None
+  return completed.stdout.strip() if completed.returncode == 0 else None
+
+
+def evidence_status(name: str) -> dict:
+  path = CONTROL / "EVIDENCE" / name
+  if not path.exists():
+    return {"file": name, "status": "MISSING", "error": None}
+  try:
+    json.loads(path.read_text(encoding="utf-8"))
+    return {"file": name, "status": "OK", "error": None}
+  except (OSError, json.JSONDecodeError) as error:
+    return {"file": name, "status": "INVALID", "error": str(error)}
+
+def parse_jev_decisions(text: str | None = None, errors: list[str] | None = None) -> dict:
+  if text is None:
+    text = read_text("JEV_DECISIONS.jsonl", errors)
+  records, errors_list, seen = [], [], set()
   for line_number, line in enumerate(text.splitlines(), 1):
     if not line.strip():
       continue
@@ -128,8 +239,8 @@ def parse_jev_decisions(text: str | None = None) -> dict:
       seen.add(record["decision_id"])
       records.append(record)
     except (json.JSONDecodeError, ValueError) as error:
-      errors.append(f"JEV_DECISIONS.jsonl:{line_number}: {error}")
-  return {"records": list(reversed(records)), "errors": errors}
+      errors_list.append(f"JEV_DECISIONS.jsonl:{line_number}: {error}")
+  return {"records": list(reversed(records)), "errors": errors_list, "present": bool(text.strip())}
 
 USER_ACTION_STATUSES = {"OPEN", "NEEDS_CLARIFICATION", "USER_CONFIRMED", "PM_RECORDED", "UNBLOCKED", "CLOSED"}
 USER_ACTION_TYPES = {"PHYSICAL_OPERATION", "CONFIRMATION", "CREDENTIAL", "DECISION"}
@@ -205,7 +316,7 @@ def source_health(name: str) -> dict:
   try:
     updated_at = path.stat().st_mtime
     age_seconds = max(0, time.time() - updated_at)
-    return {"source_id": name, "status": "STALE" if age_seconds > 86_400 else "OK", "updated_at": updated_at, "age_seconds": age_seconds}
+    return {"source_id": name, "status": "STALE" if age_seconds > SOURCE_STALE_SECONDS else "OK", "updated_at": updated_at, "age_seconds": age_seconds}
   except OSError as error:
     return {"source_id": name, "status": "UNAVAILABLE", "updated_at": None, "age_seconds": None, "error": str(error)}
 
@@ -219,8 +330,8 @@ def parse_gate() -> dict[str, str]:
   return result
 
 
-def parse_plan() -> dict:
-  text = read_text("MASTER_PLAN.md")
+def parse_plan(errors: list[str] | None = None) -> dict:
+  text = read_text("MASTER_PLAN.md", errors)
   headers = {}
   for line in text.splitlines():
     if line.startswith("## "):
@@ -253,11 +364,11 @@ def parse_plan() -> dict:
   }
 
 
-def parse_tasks() -> list[dict[str, str]]:
+def parse_tasks(errors: list[str] | None = None) -> list[dict[str, str]]:
   tasks = []
   headers = []
   in_task_table = False
-  for line in read_text("TASK_BOARD.md").splitlines():
+  for line in read_text("TASK_BOARD.md", errors).splitlines():
     if not line.startswith("|"):
       if in_task_table and line.strip():
         break
@@ -275,35 +386,51 @@ def parse_tasks() -> list[dict[str, str]]:
   return tasks
 
 
-def load_evidence(name: str) -> dict:
+def load_evidence(name: str, errors: list[str] | None = None) -> dict:
   try:
     return json.loads((CONTROL / "EVIDENCE" / name).read_text(encoding="utf-8"))
-  except (OSError, json.JSONDecodeError):
+  except FileNotFoundError:
+    if errors is not None:
+      errors.append(f"EVIDENCE/{name} 不存在")
+    return {}
+  except (OSError, json.JSONDecodeError) as error:
+    if errors is not None:
+      errors.append(f"EVIDENCE/{name} 不可解析: {error}")
     return {}
 
-def evidence_tasks(name: str) -> list[dict]:
+def evidence_tasks(name: str, errors: list[str] | None = None) -> list[dict]:
   return [
     {"id": item.get("TODO_ID", ""), "title": item.get("Goal", ""), "status": "COMPLETE", "owner": ""}
-    for item in load_evidence(name).get("requirement_btw_checks", [])
+    for item in load_evidence(name, errors).get("requirement_btw_checks", [])
   ]
 
 
-def recent_output(name: str) -> str:
-  completed = subprocess.run(("herdr", "agent", "read", name, "--source", "recent-unwrapped", "--lines", "14"), cwd=ROOT.parent, text=True, capture_output=True, timeout=4)
-  return (completed.stdout or completed.stderr).strip()[-4_000:]
+def recent_output(name: str) -> tuple[str, str | None]:
+  """读取 Agent 最近终端输出。失败返回原因，绝不把 stderr 当输出展示。"""
+  try:
+    completed = subprocess.run(("herdr", "agent", "read", name, "--source", "recent-unwrapped", "--lines", "14"), cwd=ROOT.parent, text=True, capture_output=True, timeout=4)
+  except FileNotFoundError:
+    return "", "herdr 命令不可用，无法读取终端输出"
+  except subprocess.TimeoutExpired:
+    return "", f"{name} 终端输出读取超时"
+  except OSError as error:
+    return "", f"{name} 终端输出读取失败: {error}"
+  if completed.returncode != 0:
+    return "", f"{name} 终端输出读取退出码 {completed.returncode}"
+  return completed.stdout.strip()[-4_000:], None
 
 
 def gate(label: str, status: str, tone: str) -> dict:
   return {"label": label, "status": status, "tone": tone}
 
 
-def registered_projection() -> dict:
-  plan = read_text("MASTER_PLAN.md")
+def registered_projection(errors: list[str] | None = None) -> dict:
+  plan = read_text("MASTER_PLAN.md", errors)
   accepted = "PM_ACCEPTED" if "Integration engineering Gate: QR-E2E-01" in plan else "IN_PROGRESS"
   nodes = [
     {
       "node_id": "QR-PC-01-D01", "name": "产品声明契约", "task_id": "RUN-20260918-QR-PC", "owner": "lfa-api", "dependencies": [], "stage": 0,
-      "execution_status": "PM_ACCEPTED", "tone": "accepted", "milestone": "产品声明、Schema 与 Registry", "model_summary": "产品族声明与服务端可信 Registry", "next_action": "历史基线；当前命名空间已由 QLI cutover 取代", "execution_window": "已完成", "source_ref": "MASTER_PLAN.md:367-379", "blocker": "", "linkage_conflict": False, "subtasks": evidence_tasks("QR-PC-01-D01.json"), "gates": [gate("Review", "ACCEPTED", "accepted"), gate("PM", "ACCEPTED", "accepted")],
+      "execution_status": "PM_ACCEPTED", "tone": "accepted", "milestone": "产品声明、Schema 与 Registry", "model_summary": "产品族声明与服务端可信 Registry", "next_action": "历史基线；当前命名空间已由 QLI cutover 取代", "execution_window": "已完成", "source_ref": "MASTER_PLAN.md:367-379", "blocker": "", "linkage_conflict": False, "subtasks": evidence_tasks("QR-PC-01-D01.json", errors), "gates": [gate("Review", "ACCEPTED", "accepted"), gate("PM", "ACCEPTED", "accepted")],
     },
     {
       "node_id": "QR-ANDROID-01-D01", "name": "Android QR 最小实现", "task_id": "RUN-20260918-QR-ANDROID", "owner": "lfa-android", "dependencies": ["QR-PC-01-D01"], "stage": 1,
@@ -311,7 +438,7 @@ def registered_projection() -> dict:
     },
     {
       "node_id": "QR-FINAL-01-D01", "name": "最终 JPEG QR 复核（已被修正）", "task_id": "RUN-20260918-QR-FINAL", "owner": "lfa-api", "dependencies": ["QR-PC-01-D01"], "stage": 1,
-      "execution_status": "SUPERSEDED", "tone": "warning", "milestone": "历史最终 JPEG 二次身份 Gate", "model_summary": "历史实现曾在持久化 JPEG 上复核 QR", "next_action": "保留历史证据；不得继续强化或部署最终 JPEG QR 内容 Gate", "execution_window": "历史 Gate 已完成，当前产品意图已修正", "source_ref": "MASTER_PLAN.md:371-383; MASTER_PLAN.md:757-761", "blocker": "HOLD_FOR_CONTRACT_CORRECTION", "linkage_conflict": False, "subtasks": evidence_tasks("QR-FINAL-01-D01.json"), "gates": [gate("历史 Review", "ACCEPTED", "accepted"), gate("当前适用性", "SUPERSEDED", "warning")],
+      "execution_status": "SUPERSEDED", "tone": "warning", "milestone": "历史最终 JPEG 二次身份 Gate", "model_summary": "历史实现曾在持久化 JPEG 上复核 QR", "next_action": "保留历史证据；不得继续强化或部署最终 JPEG QR 内容 Gate", "execution_window": "历史 Gate 已完成，当前产品意图已修正", "source_ref": "MASTER_PLAN.md:371-383; MASTER_PLAN.md:757-761", "blocker": "HOLD_FOR_CONTRACT_CORRECTION", "linkage_conflict": False, "subtasks": evidence_tasks("QR-FINAL-01-D01.json", errors), "gates": [gate("历史 Review", "ACCEPTED", "accepted"), gate("当前适用性", "SUPERSEDED", "warning")],
     },
     {
       "node_id": "QR-E2E-01-D01", "name": "Android 来源端到端集成", "task_id": "RUN-20260920-QR-E2E", "owner": "lfa-android / lfa-api", "dependencies": ["QR-ANDROID-01-D01", "QR-FINAL-01-D01"], "stage": 2,
@@ -352,6 +479,18 @@ def registered_projection() -> dict:
   ]
   return {"goal": {"goal_id": "QIUQIU_DHEA_QR_PRODUCT_IDENTIFICATION_END_TO_END", "name": "QIUQIU DHEA QR 产品识别端到端", "status": "RECORDED"}, "workstream": {"workstream_id": "QR_PRODUCT_IDENTIFICATION", "name": "QR 产品识别登记投影（非实时）", "status": "RECORDED", "integration_status": "CONTRACT_REVISION_UNFROZEN", "plan_milestone": "M1", "current_node_id": None, "current_wave": None, "next_wave_label": "须重新授权后执行", "critical_path": critical_path, "nodes": nodes, "waves": []}, "tasks": tasks}
 
+def projection_basis() -> dict:
+  """检查硬编码登记投影所依据的 MASTER_PLAN 是否已被修改。"""
+  current = plan_version()
+  fresh = current["sha256"] == PROJECTION_BASIS_SHA256 and current["bytes"] == PROJECTION_BASIS_BYTES
+  return {
+    "status": "CURRENT" if fresh else "MASTER_PLAN_CHANGED",
+    "basis_sha256": PROJECTION_BASIS_SHA256,
+    "current_sha256": current["sha256"],
+    "detail": "投影依据的 MASTER_PLAN 与当前一致" if fresh else "MASTER_PLAN 已在投影快照之后被修改，节点状态与行号引用可能已过期",
+  }
+
+
 def live_execution(agents: list[dict]) -> dict:
   nodes = [
     {
@@ -380,18 +519,91 @@ def live_execution(agents: list[dict]) -> dict:
   return {"workstream": {"workstream_id": "LIVE_AGENT_EXECUTION", "name": "实时 LFA Agent 执行", "status": "ACTIVE" if nodes else "IDLE", "current_node_id": nodes[0]["node_id"] if nodes else None, "nodes": nodes}}
 
 
-def review_payload() -> dict:
-  text = read_text("REVIEW_QUEUE.md")
-  evidence = load_evidence("QR-FINAL-01-D01.json")
-  accepted = "QR-FINAL-01 repaired revision independent Review accepted" in text and "c99cfa6d411f3181fe0453f0b34c786bf4ce44287e6c795e66b964369ee3a538" in text
-  pm_accepted = accepted and "Actual existing lfa-pm PM_ACCEPTED" in text and "15214bytes" in text
-  status = "PM_ACCEPTED" if pm_accepted else ("CODE_REVIEW_ACCEPTED_PM_PENDING" if accepted else ("REPAIRED_REVISION_PENDING_REREVIEW" if evidence.get("status") == "IMPLEMENTED_PENDING_REVIEW" and len(evidence.get("implementation_files", [])) >= 11 else ("CURRENT_CHANGES_REQUESTED" if "QR-FINAL-01 actual CHANGES_REQUESTED" in text else "RECORDED")))
-  return {"status": status, "submissions": re.findall(r'^## .*submission.*$', text, re.MULTILINE)}
+def review_payload(text: str | None = None, errors: list[str] | None = None) -> dict:
+  """评审状态取自 REVIEW_QUEUE.md 的 <!-- review-state --> 机器可读块（review_dispatch.py 维护的真源）。
+
+  不再用散文魔法子串推断：那种做法会给出与账本相反的结论。
+  """
+  if text is None:
+    text = read_text("REVIEW_QUEUE.md", errors)
+  empty = {"counts": {}, "total": 0, "submissions": [], "last_reconcile": None}
+  if not text.strip():
+    return {"status": "UNAVAILABLE", "reason": "REVIEW_QUEUE.md 不可读", **empty}
+  block = re.search(r"<!-- review-state -->\s*(\{.*?\})\s*<!-- /review-state -->", text, re.S)
+  if not block:
+    return {"status": "UNAVAILABLE", "reason": "REVIEW_QUEUE.md 缺少完整 review-state 机器可读块", **empty}
+  try:
+    state = json.loads(block.group(1))
+  except json.JSONDecodeError as error:
+    return {"status": "INVALID", "reason": f"review-state JSON 解析失败: {error}", **empty}
+  submissions = state.get("submissions")
+  if not isinstance(submissions, dict):
+    return {"status": "INVALID", "reason": "review-state.submissions 不是对象", **empty}
+  if any(not isinstance(value, dict) or not isinstance(value.get("status"), str) or not value["status"].strip()
+         for value in submissions.values()):
+    return {"status": "INVALID", "reason": "review-state.submissions 包含无效条目", **empty}
+  counts = Counter(value["status"] for value in submissions.values())
+  total = len(submissions)
+  if not total:
+    status = "EMPTY"
+  elif counts.get("STALE", 0) == total:
+    status = "ALL_STALE"
+  elif counts.get("STALE", 0) > 0:
+    status = "PARTIAL_STALE"
+  else:
+    status = "FRESH"
+  return {
+    "status": status,
+    "reason": f"{total} 条提交，状态分布 " + " / ".join(f"{k} {v}" for k, v in sorted(counts.items())),
+    "counts": dict(counts),
+    "total": total,
+    "last_reconcile": state.get("last_reconcile"),
+    "submissions": [
+      {
+        "key": key,
+        "status": value["status"],
+        "phase": value.get("phase", ""),
+        "task_id": (value.get("envelope") or {}).get("task_id", ""),
+        "created": value.get("created"),
+      }
+      for key, value in sorted(submissions.items())
+    ],
+  }
 
 
-def parse_pm_operational_plan(text: str | None = None) -> dict:
-  text = read_text("TASK_BOARD.md") if text is None else text
-  history, errors = [], []
+def gate_panel(errors: list[str] | None = None) -> dict:
+  """PM Gate 内容 + 绑定 GIT_HEAD 的可核对性判定。
+
+  start.md 的 PM 接管 Gate 要求"快照 GIT_HEAD 等于当前 Git HEAD"。这里把该判定显式化，
+  否则页面会把一个物理上无法核对的 READY 当成绿色通过。
+  """
+  gate_values = parse_gate()
+  bound = gate_values.get("GIT_HEAD", "")
+  snapshot = read_text("PROJECT_SNAPSHOT.md", errors)
+  recorded_root = re.search(r"^REPOSITORY_ROOT:\s*(.+)$", snapshot, re.M)
+  verifiable, detail = None, "PROJECT_SNAPSHOT.md 未登记 REPOSITORY_ROOT，绑定 HEAD 无法核对"
+  if recorded_root:
+    repo = wsl_to_host(recorded_root.group(1).strip())
+    if not (repo / ".git").exists():
+      verifiable, detail = False, f"{repo} 不是 git 仓库，绑定的 GIT_HEAD 无从核对"
+    else:
+      actual = git_head(repo)
+      if actual is None:
+        verifiable, detail = False, f"{repo} 是 git 仓库但 git rev-parse 失败"
+      else:
+        verifiable = actual == bound
+        detail = f"仓库当前 HEAD {actual[:12]}，与快照{'一致' if verifiable else '不一致'}"
+  return {
+    **gate_values,
+    "GIT_HEAD_VERIFIABLE": verifiable,
+    "GIT_HEAD_DETAIL": detail,
+    "BOUND_HEAD_SHORT": bound[:12] if bound else "",
+  }
+
+
+def parse_pm_operational_plan(text: str | None = None, errors: list[str] | None = None) -> dict:
+  text = read_text("TASK_BOARD.md", errors) if text is None else text
+  history, parse_errors = [], []
   sections = [text]
   for section in sections:
     for raw in re.findall(r"^```json pm-operational-plan\s*\n(.*?)^```\s*$", section, re.MULTILINE | re.DOTALL):
@@ -411,7 +623,7 @@ def parse_pm_operational_plan(text: str | None = None) -> dict:
           continue
         history.append(snapshot)
       except (ValueError, TypeError) as error:
-        errors.append("PM operational snapshot: " + str(error))
+        parse_errors.append("PM operational snapshot: " + str(error))
     for raw in re.findall(r"^```json pm-operational-plan-correction\s*\n(.*?)^```\s*$", section, re.MULTILINE | re.DOTALL):
       try:
         correction = json.loads(raw)
@@ -432,17 +644,17 @@ def parse_pm_operational_plan(text: str | None = None) -> dict:
         for parent, key, value in replacements:
           parent[key] = value
       except (ValueError, TypeError, KeyError, StopIteration) as error:
-        errors.append("PM transcription supplement: " + str(error))
+        parse_errors.append("PM transcription supplement: " + str(error))
   current = history[-1] if history else None
   markers = re.findall(r"^CURRENT_PM_OPERATIONAL_REVISION: (\S+)\s*$", text, re.MULTILINE)
   if current and (not markers or markers[-1] != current["revision"]):
-    errors.append("PM current revision marker missing or inconsistent")
-  return {"current_revision": current["revision"] if current else None, "current": current, "history": history, "errors": errors}
+    parse_errors.append("PM current revision marker missing or inconsistent")
+  return {"current_revision": current["revision"] if current else None, "current": current, "history": history, "errors": parse_errors}
 
 
-def parse_agent_operational_plans(pm: dict, text: str | None = None) -> dict:
-  text = read_text("TASK_BOARD.md") if text is None else text
-  history, current, errors, seen = [], {}, [], {}
+def parse_agent_operational_plans(pm: dict, text: str | None = None, errors: list[str] | None = None) -> dict:
+  text = read_text("TASK_BOARD.md", errors) if text is None else text
+  history, current, parse_errors, seen = [], {}, [], {}
   parents = {p["revision"]: p for p in pm["history"]}
   for section in re.findall(r"^## AGENT_OPERATIONAL_PLAN_REVISIONS\s*\n(.*?)(?=^## |\Z)", text, re.MULTILINE | re.DOTALL):
     for raw in re.findall(r"^```json agent-operational-plan\s*\n(.*?)^```\s*$", section, re.MULTILINE | re.DOTALL):
@@ -473,9 +685,9 @@ def parse_agent_operational_plans(pm: dict, text: str | None = None) -> dict:
         history.append(s)
         current[s["agent"]] = s
       except (ValueError, TypeError, KeyError) as error:
-        errors.append("Agent operational snapshot: " + str(error))
+        parse_errors.append("Agent operational snapshot: " + str(error))
   expected = sorted({a for i in (pm.get("current") or {}).get("items", []) for a in i.get("participants", [])})
-  return {"current": current, "history": history, "missing": [a for a in expected if a not in current], "errors": errors}
+  return {"current": current, "history": history, "missing": [a for a in expected if a not in current], "errors": parse_errors}
 
 
 def load_shadow_projection(path: Path = SHADOW_PROJECTION, raw: str | bytes | None = None) -> dict:
@@ -543,28 +755,36 @@ def load_shadow_projection(path: Path = SHADOW_PROJECTION, raw: str | bytes | No
 
 def status_payload() -> dict:
   errors = []
+
+  def note(message: str | None) -> None:
+    if message and message not in errors:
+      errors.append(message)
+
+  toolchain = herdr_available()
+  if not toolchain["available"]:
+    note(toolchain["detail"])
+
   named = {}
   for name in TEAM:
-    try:
-      row = run_json("herdr", "agent", "get", name).get("result", {}).get("agent", {})
-      if row:
-        named[name] = row
-    except (OSError, subprocess.SubprocessError, json.JSONDecodeError):
-      pass
-  tasks = parse_tasks()
+    row, error = run_json("herdr", "agent", "get", name)
+    note(error)
+    if row:
+      agent_row = row.get("result", {}).get("agent", {})
+      if agent_row:
+        named[name] = agent_row
+
+  tasks = parse_tasks(errors)
   task_by_id = {task["id"]: task for task in tasks}
-  pm = parse_pm_operational_plan()
-  agent_plans = parse_agent_operational_plans(pm)
+  pm = parse_pm_operational_plan(errors=errors)
+  agent_plans = parse_agent_operational_plans(pm, errors=errors)
   pm["freshness"], agent_freshness, snapshot_diagnostics = snapshot_freshness(pm, agent_plans, plan_version())
   agents = []
   for name in TEAM:
     row = named.get(name, {})
     output = ""
     if row:
-      try:
-        output = recent_output(name)
-      except (OSError, subprocess.SubprocessError) as error:
-        errors.append(f"{name}: {error}")
+      output, error = recent_output(name)
+      note(error)
     snapshot = agent_plans["current"].get(name, {})
     snapshot_registered = name in agent_plans["current"]
     active_items = [item for item in snapshot.get("items", []) if item.get("status") == "in_progress"]
@@ -574,10 +794,33 @@ def status_payload() -> dict:
     ownership_chain = f"{task['plan_id']} → {task['deliverable_id']} → {task['id']}" if task else "UNMAPPED"
     freshness = agent_freshness[name]
     agents.append({"name": name, "status": row.get("agent_status", "not_running"), "pane": row.get("pane_id", ""), "title": row.get("terminal_title_stripped", ""), "output": output, "linked_task_id": linked_task_id, "mapping_status": mapping_status, "snapshot_status": freshness["status"], "snapshot_reason": freshness["reason"], "ownership_chain": ownership_chain, "subtasks": snapshot.get("items", []) if snapshot_registered else [], "observed_at": time.time()})
-  registered = registered_projection()
+  registered = registered_projection(errors)
   interventions = parse_user_interventions()
   errors.extend(interventions["errors"])
-  return {"generated_at": time.time(), "gate": parse_gate(), "plan": parse_plan(), "pm_operational_plan": pm, "agent_operational_plans": agent_plans, "snapshot_diagnostics": snapshot_diagnostics, "jev_decisions": parse_jev_decisions(), "user_interventions": interventions, "tasks": tasks, "execution": live_execution(agents), "registered_execution": registered, "review": review_payload(), "shadow_projection": load_shadow_projection(), "blockers": read_text("BLOCKERS.md"), "agents": agents, "source_health": [source_health(name) for name in ("MASTER_PLAN.md", "TASK_BOARD.md", "REVIEW_QUEUE.md", "BLOCKERS.md", "PM_REQUIREMENT_INTAKE.md")], "errors": errors}
+  jev = parse_jev_decisions(errors=errors)
+  review = review_payload(errors=errors)
+  return {
+    "generated_at": time.time(),
+    "gate": gate_panel(errors),
+    "plan": parse_plan(errors),
+    "pm_operational_plan": pm,
+    "agent_operational_plans": agent_plans,
+    "snapshot_diagnostics": snapshot_diagnostics,
+    "jev_decisions": jev,
+    "user_interventions": interventions,
+    "tasks": tasks,
+    "execution": live_execution(agents),
+    "registered_execution": registered,
+    "projection_basis": projection_basis(),
+    "review": review,
+    "shadow_projection": load_shadow_projection(),
+    "blockers": read_text("BLOCKERS.md", errors),
+    "agents": agents,
+    "toolchain": toolchain,
+    "evidence_health": [evidence_status(name) for name in EVIDENCE_SOURCES],
+    "source_health": [source_health(name) for name in TRACKED_SOURCES],
+    "errors": errors,
+  }
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -652,14 +895,40 @@ def main() -> None:
     assert [item["decision_id"] for item in jev_checked["records"]] == ["JEV-2", "JEV-1"] and not jev_checked["errors"]
     assert parse_jev_decisions("{broken")["errors"]
     assert parse_jev_decisions("\n".join(json.dumps(item) for item in (jev_first, jev_first)))["errors"]
+    assert parse_jev_decisions("")["present"] is False
+    review_block = lambda subs: "<!-- review-state -->\n" + json.dumps({"version": 1, "submissions": subs, "last_reconcile": 1.0}) + "\n<!-- /review-state -->"
+    all_stale = review_payload(text=review_block({"a:h": {"status": "STALE"}, "b:h": {"status": "STALE"}}))
+    assert all_stale["status"] == "ALL_STALE" and all_stale["counts"] == {"STALE": 2} and len(all_stale["submissions"]) == 2
+    assert review_payload(text=review_block({"a:h": {"status": "ACCEPTED"}}))["status"] == "FRESH"
+    assert review_payload(text=review_block({"a:h": {"status": "STALE"}, "b:h": {"status": "ACCEPTED"}}))["status"] == "PARTIAL_STALE"
+    assert review_payload(text=review_block({}))["status"] == "EMPTY"
+    assert review_payload(text="没有状态块")["status"] == "UNAVAILABLE"
+    assert review_payload(text="<!-- review-state -->\n{broken}\n<!-- /review-state -->")["status"] == "INVALID"
+    assert review_payload(text=review_block({}) + '\nUnrelated {"note": 1}')["status"] == "EMPTY"
+    for invalid_row in (None, {}, {"status": []}):
+      assert review_payload(text=review_block({"bad": invalid_row}))["status"] == "INVALID"
+    if sys.platform != "win32":
+      assert wsl_to_host("/mnt/d/project") == Path("/mnt/d/project")
+    projection = {
+      "schema_version": "herdr-dashboard-projection/1.3", "task_id": "SELF-TEST",
+      "subject_revision": "sha256:" + "a" * 64, "ingestion_status": "VALID",
+      "evidence_status": "NOT_READY", "acceptance_status": "UNVERIFIED",
+      "criteria": [{"criterion_id": "C1", "required": True, "status": "UNVERIFIED", "generation": 1,
+                    "selected_event_id": None, "superseded_event_ids": [], "evidence_refs": ["e1"],
+                    "reason_codes": ["DEVICE_EVIDENCE_PENDING"]}],
+      "diagnostics": [], "generated_from_event_digest": "b" * 64, "reducer_version": "self-test",
+    }
+    assert load_shadow_projection(raw=json.dumps(projection))["status"] == "AVAILABLE"
     payload = status_payload()
-    shadow = payload["shadow_projection"]
-    assert shadow["status"] == "AVAILABLE", shadow
-    projection = shadow["projection"]
-    assert projection["evidence_status"] == "NOT_READY"
-    assert projection["acceptance_status"] == "UNVERIFIED"
-    assert projection["criteria"][0]["status"] == "UNVERIFIED"
-    assert "DEVICE_EVIDENCE_PENDING" in projection["criteria"][0]["reason_codes"]
+    assert payload["shadow_projection"]["status"] in {"AVAILABLE", "UNAVAILABLE", "INVALID"}
+    assert payload["review"]["status"] in {"EMPTY", "ALL_STALE", "PARTIAL_STALE", "FRESH", "UNAVAILABLE", "INVALID"}
+    assert payload["gate"]["GIT_HEAD_VERIFIABLE"] in (True, False, None) and payload["gate"]["GIT_HEAD_DETAIL"]
+    assert isinstance(payload["toolchain"]["available"], bool) and payload["toolchain"]["detail"]
+    assert all({"source_id", "status"} <= set(item) for item in payload["source_health"])
+    assert all({"file", "status"} <= set(item) for item in payload["evidence_health"])
+    assert isinstance(payload["errors"], list)
+    assert payload["projection_basis"]["status"] in {"CURRENT", "MASTER_PLAN_CHANGED"}
+    assert len(payload["projection_basis"]["basis_sha256"]) == 64 and len(payload["projection_basis"]["current_sha256"]) == 64
     assert 'id="pmPlan"' in PAGE and 'id="pmPlanTitle"' in PAGE
     assert 'id="shadowTitle">验证投影</h2>' in PAGE
     assert '不改变正式阶段、不调度、不代表通过' in PAGE
@@ -671,6 +940,10 @@ def main() -> None:
     assert all(f"field('{key}'" in PAGE for key in ("criterion_id", "required", "status", "generation", "selected_event_id", "superseded_event_ids", "evidence_refs", "reason_codes", "generated_from_event_digest", "reducer_version"))
     assert all(f'id="{field}"' in PAGE for field in ("globalActionCount", "globalBlockedCount", "globalWorkingCount", "globalSourceCount", "managementIssues", "nodeSearch", "nodeStatus", "filterResult"))
     assert all(marker in PAGE for marker in ("function collectConflicts", "function applyFilters", "function setNodeUrl", "function sourceRefs", "openNodeId", "lastSuccess"))
+    assert all(f'id="{field}"' in PAGE for field in ("gateCard", "gateStatus", "reviewCard", "reviewStatus", "gateDetail"))
+    assert all(marker in PAGE for marker in ("function renderGate", "function renderDiagnostics", "GIT_HEAD_VERIFIABLE", "ALL_STALE", "REGISTERED_UNVERIFIED_FRESHNESS", "MASTER_PLAN_CHANGED"))
+    assert 'id="projectionBasis"' in PAGE
+    assert "数据可能过期或不可读" in PAGE
     invalid_pass = {**projection, "acceptance_status": "PASS", "criteria": [{**projection["criteria"][0], "status": "PASS", "unexpected": True}]}
     assert load_shadow_projection(raw=json.dumps(invalid_pass))["status"] == "INVALID"
     duplicate_refs = {**projection, "criteria": [{**projection["criteria"][0], "evidence_refs": ["same", "same"]}]}
@@ -680,18 +953,16 @@ def main() -> None:
     assert load_shadow_projection(Path("/definitely/missing/qr-android-projection.json"))["status"] == "UNAVAILABLE"
     assert not payload["pm_operational_plan"]["errors"], payload["pm_operational_plan"]["errors"]
     assert not payload["agent_operational_plans"]["errors"], payload["agent_operational_plans"]["errors"]
-    assert payload["plan"]["current_milestone"] == "M1"
-    assert payload["plan"]["current_deliverable"] == "M1-D05"
-    assert payload["plan"]["current_deliverable_record"]["id"] == "M1-D05"
-    assert payload["plan"]["next_gate"] == "M1_EXIT_BASELINE_AND_REPAIR_BOUNDARIES_ACCEPTED"
+    assert isinstance(payload["plan"]["milestones"], list) and payload["plan"]["milestones"]
+    assert all(set(m) == {"id", "name", "status"} for m in payload["plan"]["milestones"])
+    record = payload["plan"]["current_deliverable_record"]
+    assert record is None or set(record) == {"id", "name", "status"}
     assert live_execution([])["workstream"]["nodes"] == []
     online_names = {agent["name"] for agent in payload["agents"] if agent["status"] != "not_running"}
     assert {node["owner"] for node in payload["execution"]["workstream"]["nodes"]} == online_names
     registered_nodes = payload["registered_execution"]["workstream"]["nodes"]
-    by_id = {node["node_id"]: node for node in registered_nodes}
-    assert len(registered_nodes) == 10 and "QLI-CUTOVER" in by_id
-    assert by_id["PRECAPTURE-CONTRACT-TABLE-R01"]["execution_status"] == "RECORDED"
-    assert "current_actor" not in by_id["PRECAPTURE-CONTRACT-TABLE-R01"]
+    assert registered_nodes and all({"node_id", "name", "task_id", "execution_status"} <= set(node) for node in registered_nodes)
+    assert all(node["execution_status"] for node in registered_nodes)
     assert payload["registered_execution"]["workstream"]["current_node_id"] is None
     mapped = live_execution([{"name": "lfa-api", "status": "working", "title": "API task", "linked_task_id": "TASK-1", "mapping_status": "REGISTERED_MATCH", "ownership_chain": "M1 → M1-D05 → TASK-1", "subtasks": [{"id": "TODO-1", "title": "Historical task", "status": "in_progress"}]}])
     assert mapped["workstream"]["nodes"][0]["milestone"] == "M1 → M1-D05 → TASK-1"

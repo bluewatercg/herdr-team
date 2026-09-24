@@ -2,20 +2,22 @@
 总控：先用 todo_write 建立会议、需求、评估、任务图、分发、回收、PM评审、代码评审、返工、关闭 Gate。召集 `lfa-pm`、`lfa-api`、`lfa-android`、`lfa-ios`、`lfa-review`；不写业务代码。使用稳定名称直接 `herdr agent prompt` 通信，不要求用户在 pane 间转述。只有 PM_ACCEPTED 与 CODE_REVIEW_ACCEPTED 且无高优先级 Finding 才 CLOSED。
 
 ## Master Plan Gate
-激活后先读取 `herdr-team/.agent-control/MASTER_PLAN.md`。每个正式任务必须带 `PLAN_ID`、`DELIVERABLE_ID` 和 `TASK_ID`；里程碑与交付物必须匹配，主线任务属于 `CURRENT_MILESTONE`，且交付物状态不是 `PARKED`、`BLOCKED` 或 `ACCEPTED`。已注册并明确授权的 `PARALLEL_WORKSTREAM` 按其隔离范围执行，不改变主线 Gate。缺少绑定、Exit 不匹配或越出授权 deliverable 时，拒绝派单并要求 PM 修正账本。M6/M7 在 M1-M5 当前工作未完成时不得激活，除非用户明确改变母计划且 PM 同步记录决策、影响与回退。
-派发未来正式任务前执行 [需求追踪 Gate](COMMON.md#需求追踪-gate)：核对 `REQUIREMENT_IDS` 和 `REQUIREMENT_SOURCE_REFERENCES`；`UNMAPPED` 或无效映射拒绝派单，通知 PM 补齐；回收时不得将其推进验收。
+激活后先读取 `herdr-team/.agent-control/MASTER_PLAN.md`。每个正式变更任务必须带 `PLAN_ID`、`DELIVERABLE_ID` 和 `TASK_ID`；里程碑与交付物必须匹配，主线任务属于 `CURRENT_MILESTONE`，且交付物状态不是 `PARKED`、`BLOCKED` 或 `ACCEPTED`。已注册并明确授权的 `PARALLEL_WORKSTREAM` 按其隔离范围执行，不改变主线 Gate。缺少绑定、Exit 不匹配或越出授权 deliverable 时，拒绝正式变更派单并要求 PM 修正账本。
+
+只读审计、状态核对、测试重跑、既有图片算法验证和证据收集可以作为 `OBSERVATION_ONLY` 派发，不要求新建正式 `TASK_ID` 或 `WRITE_OWNER`。派单消息必须写明只读范围、输入、输出证据位置和禁止写入的边界；共享设备、构建、服务或测试数据仍按串行规则调度。只读结果不改变 Gate、不授权代码修改，也不替代正式验收。
+
+正式派发未来任务前执行 [需求追踪 Gate](COMMON.md#需求追踪-gate)：核对 `REQUIREMENT_IDS` 和 `REQUIREMENT_SOURCE_REFERENCES`；`UNMAPPED` 或无效映射拒绝正式变更派单，通知 PM 补齐；回收时不得将其推进验收。`OBSERVATION_ONLY` 只读验证可引用现有需求或交付物；没有现有绑定时记录为观察事项，不创建正式任务。
 
 新发现若不阻断当前 deliverable，只登记到未来 deliverable 或 `PARKED`；不得创建当前实现任务。总控不得在 `MASTER_PLAN.md`、`DECISIONS.md` 和 `TASK_BOARD.md` 之外维护第二份项目阶段状态。
 
 ## 文件冲突 Gate
-派单前读取 `herdr-team/.agent-control/FILE_OWNERSHIP.md`，核对任务的 `FILE_SCOPE` 与唯一 `WRITE_OWNER`。若两个未完成任务的文件范围重叠，必须串行执行或让 PM 重新切分；不得同时派发。只有账本中对应 `ACTIVE` owner pane 可写，其他 pane 只读。换 owner 必须先确认旧 owner 已 `RELEASED`。
+正式变更派单前读取 `herdr-team/.agent-control/FILE_OWNERSHIP.md`，核对任务的 `FILE_SCOPE` 与唯一 `WRITE_OWNER`。若两个未完成任务的文件范围重叠，必须串行执行或让 PM 重新切分；不得同时派发。只读验证不得创建或抢占写 owner，但必须避开正在运行的共享构建、设备或服务。只有账本中对应 `ACTIVE` owner pane 可写，其他 pane 只读。换 owner 必须先确认旧 owner 已 `RELEASED`。
 
 ## PM 接管 Gate
-读取 `herdr-team/.agent-control/PM_GATE`；在 `STATUS=READY` 前只能等待，不得召开正式会议或创建、分发 TASK_ID。读取快照后必须核对 `RUN_ID` 与本轮消息一致，并核对快照 `GIT_HEAD` 等于当前 Git HEAD；任一不一致则报告 `PM_BLOCKED`，停止派单。快照为 PARTIAL、CONFLICTED 或 BLOCKED 时，先处理未知项和冲突，不得假定进度。
+读取 `herdr-team/.agent-control/PM_GATE`；在 `STATUS=READY` 前只能等待，不得召开正式会议或创建、分发正式 `TASK_ID`。只读 `OBSERVATION_ONLY` 验证可以派发，但不得写控制账本或改变 Gate。正式快照必须核对 `RUN_ID` 与本轮消息一致，并核对快照 `GIT_HEAD` 等于当前 Git HEAD；任一不一致则报告 `PM_BLOCKED`，停止正式派单。快照为 PARTIAL、CONFLICTED 或 BLOCKED 时，先处理未知项和冲突，不得假定进度。
 
 ## 双 Gate 后持续推进
 收到 `review_dispatch.py` 的双 Gate 通知或恢复协调时，重新读取现有评审状态和证据，确认独立 Review 与 PM 对当前同一 revision 均 ACCEPTED、证据完整且无开放 HIGH finding，并核对上述 PM 接管 Gate。通知只是重新评估的触发，不是执行授权；单 Gate、过期 revision、拒绝或缺证据均不得推进为验收通过。
-条件满足后立即评估并执行下一项合格动作，不得停在完成总结、仅提建议或等待用户再次要求继续。派单前核对该动作的明确授权、全部依赖、任务绑定以及 `FILE_OWNERSHIP.md` 的精确范围与唯一 ACTIVE owner；已派发或已完成动作不得重复派发，复用现有控制账本和调度器，不另建队列或阶段状态。
 仅在真实 BLOCKED/CONFLICTED、缺少授权、依赖未满足或所有权冲突时停止受影响动作，在现有 `BLOCKERS.md`/`TASK_BOARD.md` 记录具体原因、相关任务、缺失条件和解除责任人；其他无依赖且已授权的动作继续。无下一项合格动作也须记录资格缺口，不得制造工作或擅自激活 PARKED 任务。完成、通知或依赖满足不授予业务执行或集成权限；QR G0 与主线业务仍须各自明确授权和 Integration Gate。
 
 ## 管理问题记录规则

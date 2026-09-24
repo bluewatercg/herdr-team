@@ -53,16 +53,79 @@ python3 -B herdr-team/dashboard.py --check
 ## 自动继续与 watch 恢复
 新建团队和“恢复 PM 协调”均调用 `review_dispatch.py ensure-watch`，为当前项目与 Herdr session 保持一个常驻 watch；只有确认进程就绪才返回成功。重复启动复用现有实例，进程退出后重新运行恢复入口即可重建，不终止其他项目或 session 的进程。
 
-当前同一 revision 的独立 Review 与 PM 双 ACCEPTED、证据完整且源文件哈希仍匹配时，现有评审队列持久化通知 `lfa-start`。已确认的通知不会因重复轮询或重启再次发送；总控重新核对授权、依赖与精确文件所有权后继续合格动作，无合格动作则记录具体原因。通知不授予业务、QR G0 或集成权限。
+### Agent 每日日记与统一日报
 
-发送中断或结果不明保留 `DELIVERY_UNKNOWN`，不假定成功、不盲目重发。核实实际投递证据后，使用 `python3 herdr-team/review_dispatch.py resolve '<submission-key>' lfa-start SENT '<投递证据>'` 确认已送达，或以 `QUEUED` 和未送达证据允许重试。单 Gate、过期、拒绝、BLOCKED/CONFLICTED 或缺证据不触发继续。专门隔离回归：`python3 herdr-team/review_dispatch.py self-test`；不会向真实业务队列写入验收。
+`daily_memory.py watch` 是统一入口：扫描所有命名 Agent 的会话记录，将每个 pane（包括 `lfa-test`）写入同一日期目录的 `events.jsonl`，并生成 `daily-report.md`。日报输入包含工作、测试结果、阻塞、TASK_ID、revision 和证据引用；测试 PASS 仍只是测试证据，不等同 Review 或 PM 验收。
+
+长期记忆与日报分离：`lfa-test` 的操作和测试结果只进入日报事件投影，不写入 `records`、`summary.md` 或 `CURRENT.md`。其他 pane 继续进入原有记忆摘要。开始采集：
+
+```bash
+cd /mnt/d/Project/Aventura/java_developer/AIPoweredHealthManager-lfa-reader/herdr-team
+HERDR_ENV=1 python3 daily_memory.py watch
+```
+
+同一时间只运行一个 watcher；重复启动会因 `writer.lock` 返回 `Resource temporarily unavailable`。检查已有实例：
+
+```bash
+pgrep -af 'daily_memory.py watch'
+```
+
+日报与原始事件位于 `~/.local/share/lfa-team-memory/YYYY-MM-DD/`：
+
+```bash
+cat ~/.local/share/lfa-team-memory/2026-09-23/daily-report.md
+less ~/.local/share/lfa-team-memory/2026-09-23/events.jsonl
+grep '"agent": "lfa-test"' ~/.local/share/lfa-team-memory/2026-09-23/events.jsonl
+```
+
+验证 `lfa-test` 不进入长期记忆：
+
+```bash
+python3 - <<'PY'
+import sqlite3
+db = sqlite3.connect('/root/.local/share/lfa-team-memory/records.sqlite')
+print(db.execute("SELECT day, agent, count(*) FROM report_events WHERE agent='lfa-test' GROUP BY day, agent").fetchall())
+print(db.execute("SELECT day, agent, count(*) FROM records WHERE agent='lfa-test' GROUP BY day, agent").fetchall())
+PY
+```
+
+预期第二行为空。测试事件进入 `report_events` 和日报，不进入 `records`、`summary.md` 或 `CURRENT.md`。
+
+### 如何 Review 日报
+
+日报不是代码验收。Review 时依次核对：
+
+1. `daily-report.md`：查看所有 pane 的工作、测试结果和阻塞。
+2. `events.jsonl`：回看原始事件，不只看模型生成的摘要。
+3. `TASK_ID`、`PLAN_ID`、`DELIVERABLE_ID`：确认测试和实现属于同一任务链路。
+4. 测试使用的 Git revision、命令、退出码和证据路径。
+5. `lfa-review` 的独立 Review 结果。
+6. `lfa-pm` 的 PM 验收结论。
+
+`lfa-test` 的 `PASS` 只证明指定 revision 上的测试结果，不自动等于 `CODE_REVIEW_ACCEPTED`、`PM_ACCEPTED` 或任务关闭。正式流程仍为：`lfa-test` 提供测试证据，`lfa-review` 独立 Review，`lfa-pm` 验收，`lfa-start` 同步账本与 Gate。
+
+原有 `summary.md`/`CURRENT.md` 仍是非权威派生视图，控制账本和任务状态不由日报入口修改。
 
 ## 模型分工
-`lfa-start`、`lfa-pm`、`lfa-review` 使用 `shuaiapi-020/gpt-6-astra`；`lfa-android`、`lfa-api`、`lfa-ios` 使用 `shuaiapi-020/gpt-5.6-sol`。`lfa-grok-review` 使用 Grok CLI 的 `shuai-grok`；`lfa-claude-review` 使用 Claude CLI 的本机默认模型。模型和 kind 记录在 `herdr-team/.agent-control/AGENT_STATUS/`。
+`lfa-start`、`lfa-pm` 使用 `shuaiapi-020/gpt-6-astra`；`lfa-android`、`lfa-api`、`lfa-ios` 使用 `shuaiapi-020/gpt-5.6-sol`；独立测试/脚本角色 `lfa-test` 使用 `aliyun/qwen3.7-plus`，独立评审仍使用各自现有配置。PM 负责协调；测试/脚本任务派给 `lfa-test`，代码任务派给对应实现 Agent。正式任务与回报继续绑定同一 `TASK_ID`；该分工不绕过既有 Gate、owner 和授权要求。实际模型和 kind 记录在 `.agent-control/AGENT_STATUS/`。
 
 OMP 使用 `--auto-approve`，Grok 使用 `--always-approve`，Claude 使用 `--permission-mode auto`。辅助评审角色的 prompt 明确限制为只读第二意见。
 
 Web 面板使用 Python 标准库并仅绑定 `127.0.0.1`，无需安装 Node 或额外依赖。运行日志写入 `.agent-control/dashboard.log`；动态控制账本和日志不纳入静态发行哈希。
+
+## 静态清单校验与冻结
+
+`python3 herdr-team/checksum_manifest.py` 只读校验；`--self-test` 检查注释、损坏清单、路径越界、符号链接和缺文件时保留旧清单。`verify_governance.py` 使用同一校验实现。清单错误、缺文件、漏覆盖或摘要不符均失败，不会把 Git 失败自动降级成摘要通过。
+
+每批受保护变更冻结后、提交评审前，由有写入授权且无 ACTIVE 冲突的 owner 执行 `python3 herdr-team/checksum_manifest.py --refresh`，再运行 `sha256sum -c SHA256SUMS.txt`。逐任务更新也必须在该批文件冻结后进行。生成器先读取所有必需文件，缺失即失败，写入前复核内容并原子替换；冻结期间不得并发修改受保护文件。
+
+保护范围由 `checksum_manifest.py` 的 `STATIC_FILES` 与全部 `prompts/*.md` 定义，涵盖运行脚本、治理/Jev/harness 实现和校验器、README/config、任务模板。动态账本、日志、历史 Evidence、独立 remediation/package 发行包及设计文档不纳入本清单；独立包保留自己的清单。此范围不同于 Jev 深度触发集，后者还含动态治理账本。扩大保护范围须评审，不代表当前 Gate 已通过。
+
+清单头的 `BASE_COMMIT` 仅记录生成时 HEAD，`CONTENT_SOURCE: WORKTREE` 明确摘要来自工作树，可能包含未提交修改；时间与提交号不证明内容获批或未被篡改。工具通过不替代同 revision 的非作者 Review 和独立 PM Gate，也不继承历史 ACCEPTED。
+
+治理检查器将母计划之外、在 `FILE_OWNERSHIP.md` 或其登记的 PM-owned Evidence 中找到同任务声明的记录列为 `BIND-AUTHORITY-MANUAL-REVIEW`。这仍是违规，不是授权通过；须核验相同任务三元组、原始授权、精确 scope/owner、需求与 Exit。TASK_BOARD 自填行、命名前缀及 `CONTROL_PLANE_ONLY` / `MAINLINE_IMPACT=NONE` 不授予权限，不追溯回填历史 MASTER_PLAN 或改写 ACCEPTED。COMMON 的现行派发规则和独立双 Gate 继续适用。
+
+显式 `REQUIREMENT_SOURCE_REFERENCES` 列使用分号分隔本地文件引用，可附 `#heading` 或 `:起行-止行`。校验只证明引用可定位，拒绝越界、符号链接或不存在的来源，不证明授权内容真实有效。
 
 ## Jev 任务深度观察
 `jev_task_depth.py` 是 PM 语义传感器，不是授权或派发器；其 `authority` 全部为 `false`，`authority_effect` 固定为 `NONE`。CLI 接受位置参数 `user_verbatim`，以及 `--pm-interpretation`、`--candidate-action`、`--source-type`、`--files`、`--domains`、`--real-device`、`--no-jev`；来源类型必须区分 `USER_VERBATIM`、`PM_INTERPRETATION`、`AGENT_SUGGESTION`、`OPEN_QUESTION`。

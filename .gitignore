@@ -5,3 +5,4 @@ __pycache__/
 .agent-control/AGENT_STATUS/
 .agent-control/EVIDENCE/activate-lfa-*.log
 .desensitize-mapping.json
+config.env

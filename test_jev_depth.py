@@ -159,14 +159,15 @@ class TestObserveTaskDepth(unittest.TestCase):
 
     def test_no_api_key_returns_unavailable(self):
         """无 API Key 返回 UNAVAILABLE"""
-        result = observe_task_depth(
-            user_verbatim="简单任务",
-            pm_interpretation="用户想要完成一个简单任务",
-            candidate_action="执行简单修复",
-            source_type="USER_VERBATIM",
-            affected_files=["test.txt"],
-            api_key=None,
-        )
+        with patch("jev_task_depth.get_api_key", return_value=None):
+            result = observe_task_depth(
+                user_verbatim="简单任务",
+                pm_interpretation="用户想要完成一个简单任务",
+                candidate_action="执行简单修复",
+                source_type="USER_VERBATIM",
+                affected_files=["test.txt"],
+                api_key=None,
+            )
         self.assertEqual(result["status"], "UNAVAILABLE")
         self.assertIsNone(result["jev_recommendation"])
         self.assertEqual(result["authority_effect"], "NONE")
@@ -421,7 +422,9 @@ class TestEnvironmentIsolation(unittest.TestCase):
 
     def test_no_env_var_no_api_call(self):
         """无环境变量不调用 API"""
-        with patch.dict(os.environ, {}, clear=True):
+        with patch.dict(os.environ, {}, clear=True), patch(
+            "jev_task_depth.get_api_key", return_value=None
+        ):
             result = observe_task_depth(
                 user_verbatim="测试",
                 pm_interpretation="测试任务",

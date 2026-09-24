@@ -1,4 +1,7 @@
 RUN_ID: 20260918T043217Z
-STATUS: READY
+STATUS: CONFLICTED
 SNAPSHOT_ID: PM-ONBOARD-20260918T043217Z-410b17a0
 GIT_HEAD: 410b17a00b63374f5d28a5531c478db8b30e8427
+CONFLICT: v1.7 current bytes still declare only `1:QLI:DHEA:1234567890`; Cor support is not present in the reread revision.
+DOCUMENT_STATUS: DOCUMENTARY_CANDIDATE_PENDING_REVIEW_AND_PM_GATE
+REQUIRED_ACTION: publish the exact DHEA+Cor revision, then bind fresh independent Review and separate PM Gate; do not infer implementation or acceptance.

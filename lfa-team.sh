@@ -11,7 +11,7 @@ status() {
   printf '\nPM Gate:\n'
   [ ! -f "$CONTROL_DIR/PM_GATE" ] || cat "$CONTROL_DIR/PM_GATE"
   printf '\nTeam Agents:\n'
-  for role in lfa-start lfa-pm lfa-android lfa-api lfa-ios lfa-review lfa-grok-review lfa-claude-review; do
+  for role in lfa-start lfa-pm lfa-android lfa-api lfa-ios lfa-test lfa-review lfa-grok-review lfa-claude-review; do
     herdr agent get "$role" 2>/dev/null || printf '%s: NOT_RUNNING\n' "$role"
   done
 }
@@ -52,7 +52,7 @@ choose_panes() {
   echo '可接入的当前项目空闲 Shell pane：'
   list_available_panes
   echo '为每个角色输入 pane ID；直接回车表示自动创建 workspace。'
-  for role in lfa-start lfa-pm lfa-android lfa-api lfa-ios lfa-review lfa-grok-review lfa-claude-review; do
+  for role in lfa-start lfa-pm lfa-android lfa-api lfa-ios lfa-test lfa-review lfa-grok-review lfa-claude-review; do
     while :; do
       printf '%s pane: ' "$role"
       IFS= read -r pane
@@ -71,8 +71,9 @@ printf '%s\n' \
   '3) 恢复 PM 协调' \
   '4) 打开 PM 对话窗口' \
   '5) 环境预检' \
-  '6) 打开团队 Web 面板'
-printf '请选择 [1-6]: '
+  '6) 打开团队 Web 面板' \
+  '7) 设置 Jev API Key'
+printf '请选择 [1-7]: '
 IFS= read -r action
 
 case "$action" in
@@ -98,7 +99,7 @@ case "$action" in
     status
     ;;
   3)
-    [ -f "$CONTROL_DIR/PM_GATE" ] || { echo "没有可恢复的 PM_GATE" >&2; exit 2; }
+    "$KIT_DIR/activate.sh" --recover
     python3 "$KIT_DIR/review_dispatch.py" --root "$PROJECT_ROOT" ensure-watch >/dev/null
     reconcile_reviews
     herdr agent prompt lfa-pm "这是断线恢复，不是首次激活：不要重跑 PM-ONBOARD，不要重建或拆分读取类 TODO。保留已有业务 TODO；用一个原子恢复检查批量读取 MASTER_PLAN.md、FILE_OWNERSHIP.md、PM_GATE、PROJECT_SNAPSHOT.md、TASK_BOARD.md、DECISIONS.md、BLOCKERS.md、REVIEW_QUEUE.md 和 AGENT_STATUS，并核对当前 Git HEAD。只处理自上次状态以来的变化，继续下一项已授权、依赖满足且所有权无冲突的动作；无法推进时记录具体原因。" >/dev/null
@@ -125,6 +126,18 @@ case "$action" in
       }
     fi
     echo '团队面板: http://127.0.0.1:8765'
+    ;;
+  7)
+    printf '请输入 TYPESAFE_API_KEY（回车取消）: '
+    IFS= read -r key
+    [ -n "$key" ] || { echo '已取消'; exit 0; }
+    if grep -q '^TYPESAFE_API_KEY=' "$KIT_DIR/config.env" 2>/dev/null; then
+      sed -i "s|^TYPESAFE_API_KEY=.*|TYPESAFE_API_KEY=$key|" "$KIT_DIR/config.env"
+    else
+      printf '\nTYPESAFE_API_KEY=%s\n' "$key" >> "$KIT_DIR/config.env"
+    fi
+    echo "✓ Jev API Key 已保存到 config.env"
+    echo "✓ 所有 agents 现在可以自动使用 Jev 语义预检功能"
     ;;
   *)
     echo "无效选择" >&2

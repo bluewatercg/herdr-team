@@ -11,7 +11,7 @@ import hashlib
 import json
 import os
 import sys
-from pathlib import PurePosixPath
+from pathlib import Path, PurePosixPath
 from typing import Optional
 import urllib.request
 import urllib.error
@@ -114,8 +114,23 @@ def compute_input_digest(inputs: dict) -> tuple[str, str]:
 
 
 def get_api_key() -> Optional[str]:
-    """从环境变量获取 API Key"""
-    return os.environ.get(JEV_API_KEY_ENV)
+    """从环境变量或 config.env 获取 API Key"""
+    # 优先从环境变量
+    key = os.environ.get(JEV_API_KEY_ENV)
+    if key:
+        return key
+
+    # 回退到 config.env
+    config_path = Path(__file__).parent / "config.env"
+    if config_path.exists():
+        try:
+            for line in config_path.read_text().splitlines():
+                if line.startswith(f"{JEV_API_KEY_ENV}="):
+                    return line.split("=", 1)[1].strip()
+        except Exception:
+            pass
+
+    return None
 
 
 def call_jev_api(state: dict, questions: dict, api_key: str) -> tuple[Optional[dict], Optional[str]]:
